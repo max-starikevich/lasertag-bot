@@ -1,6 +1,6 @@
 {
   "name": "lasertag-bot",
-  "version": "1.0.0",
+  "version": "0.3.0",
   "repository": "git@github.com:max-starikevich/lasertag-bot.git",
   "author": "Max Starikevich <maxim.starikevich@gmail.com>",
   "license": "MIT",
