@@ -31,14 +31,7 @@ const requiredVariables: EnvironmentToCheck = {
 
   COUNT_RANGE: async () => validateRange(process.env.COUNT_RANGE),
   WEAPONS_RANGE: async () => validateRange(process.env.WEAPONS_RANGE),
-  USERNAME_RANGE: async () => validateRange(process.env.USERNAME_RANGE),
-
-  SENTRY_DSN: async () => {
-    if (process.env.NODE_ENV !== 'production') {
-      return true;
-    }
-    return !!process.env.SENTRY_DSN;
-  }
+  USERNAME_RANGE: async () => validateRange(process.env.USERNAME_RANGE)
 };
 
 export const checkEnvironment = async () => {
