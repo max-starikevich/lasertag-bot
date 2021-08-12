@@ -9,5 +9,6 @@ To start some development:
 ```bash
 $ yarn install
 $ cp .env.example .env # adjust values inside .env
+$ npx husky install
 $ yarn start
 ```
