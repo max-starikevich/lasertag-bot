@@ -1,5 +1,5 @@
 #### TYPESCRIPT BUILDER IMAGE
-FROM node:12.14-alpine as ts-builder
+FROM node:16.6-alpine as ts-builder
 LABEL maintainer="maxim.starikevich@gmail.com"
 
 USER node
@@ -20,7 +20,7 @@ COPY --chown=node:node ./src ./src
 RUN tsc
 
 #### SERVER RUNTIME IMAGE
-FROM node:12.14-alpine as runtime
+FROM node:16.6-alpine as runtime
 LABEL maintainer="maxim.starikevich@gmail.com"
 
 USER node
