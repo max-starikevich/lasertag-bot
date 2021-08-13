@@ -15,7 +15,6 @@ export const handlerWrapper = async (
       return;
     }
 
-    ctx.reply('❌ Внутренняя ошибка системы. Повторите свой запрос позже.');
     handleActionError(e);
   }
 };

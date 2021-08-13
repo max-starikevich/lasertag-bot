@@ -1,23 +1,36 @@
 import { google } from 'googleapis';
-import { Compute, JWT, UserRefreshClient } from 'google-auth-library';
+import {
+  Compute,
+  JWT,
+  UserRefreshClient,
+  Impersonated,
+  BaseExternalAccountClient
+} from 'google-auth-library';
 
 import { ValueRange, SheetsClient } from '../types';
 
 const { spreadsheets } = google.sheets('v4');
 
+type GoogleAuth =
+  | Compute
+  | JWT
+  | UserRefreshClient
+  | Impersonated
+  | BaseExternalAccountClient;
+
 interface ReadSheetParams {
-  auth: Compute | JWT | UserRefreshClient;
+  auth: GoogleAuth;
   spreadsheetId: string;
   ranges: string[];
 }
 
 interface ChangeSheetParams {
-  auth: Compute | JWT | UserRefreshClient;
+  auth: GoogleAuth;
   spreadsheetId: string;
   data: ValueRange[];
 }
 
-const getAuthToken = async (): Promise<Compute | JWT | UserRefreshClient> => {
+const getAuthToken = async () => {
   const scopes = ['https://www.googleapis.com/auth/spreadsheets'];
   const auth = new google.auth.GoogleAuth({ scopes });
   const authToken = await auth.getClient();
