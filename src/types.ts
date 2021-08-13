@@ -1,8 +1,8 @@
-import { TelegrafContext } from 'telegraf/typings/context';
+import { Context } from 'telegraf';
 
 export type AttendHandlerFunction = (ctx: BotContext) => Promise<any>;
 
-export interface BotContext extends TelegrafContext {
+export interface BotContext extends Context {
   sheetsClient?: SheetsClient;
 }
 

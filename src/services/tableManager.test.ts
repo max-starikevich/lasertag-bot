@@ -1,6 +1,6 @@
 import { updatePlayerCount } from './tableManager';
 import { SheetsClient, ValueRange } from '../types';
-import { ClientError } from '../errors';
+import { HandledError } from '../errors';
 
 const getSheetsClient = async () => {
   const tableData: { [key: string]: ValueRange } = {
@@ -103,7 +103,9 @@ describe('Table manager module', () => {
         weaponsCount
       });
 
-      const expectedError = new ClientError(`@${username} не найден в таблице`);
+      const expectedError = new HandledError(
+        `@${username} не найден в таблице`
+      );
 
       await expect(updatePromise).rejects.toEqual(expectedError);
     });

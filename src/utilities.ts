@@ -1,6 +1,6 @@
 import { Context } from 'telegraf';
 
-import { handleActionError, ClientError } from './errors';
+import { handleActionError, HandledError } from './errors';
 import { AttendHandlerFunction } from './types';
 
 export const handlerWrapper = async (
@@ -10,12 +10,11 @@ export const handlerWrapper = async (
   try {
     await handler(ctx);
   } catch (e) {
-    if (e instanceof ClientError) {
+    if (e instanceof HandledError) {
       ctx.reply(`❌ ${e.message}`);
       return;
     }
 
-    ctx.reply('❌ Внутренняя ошибка системы. Повторите свой запрос позже.');
     handleActionError(e);
   }
 };

@@ -1,5 +1,6 @@
 #### TYPESCRIPT BUILDER IMAGE
-FROM node:12.14-alpine as ts-builder
+ARG BASE_IMAGE=node:16.6-alpine
+FROM ${BASE_IMAGE} as ts-builder
 LABEL maintainer="maxim.starikevich@gmail.com"
 
 USER node
@@ -20,8 +21,11 @@ COPY --chown=node:node ./src ./src
 RUN tsc
 
 #### SERVER RUNTIME IMAGE
-FROM node:12.14-alpine as runtime
+FROM ${BASE_IMAGE} as runtime
 LABEL maintainer="maxim.starikevich@gmail.com"
+
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
 
 USER node
 ENV PATH="/home/node/app/node_modules/.bin:${PATH}"
@@ -37,4 +41,5 @@ RUN yarn install && yarn cache clean
 
 COPY --chown=node:node --from=ts-builder /home/node/app/build build
 
+ENTRYPOINT ["/entrypoint.sh"]
 CMD ["node", "./build/server.js"]

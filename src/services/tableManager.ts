@@ -1,5 +1,5 @@
 import { SheetsClient, ValueRange } from '../types';
-import { ClientError } from '../errors';
+import { HandledError } from '../errors';
 
 interface UpdateParams {
   sheetsClient: SheetsClient;
@@ -27,7 +27,7 @@ export const updatePlayerCount = async ({
   ]);
 
   if (!usernameData || !usernameData.values || !usernameData.values.length) {
-    throw new ClientError(
+    throw new HandledError(
       `Не удалось найти список пользователей в ${usernameRange}`
     );
   }
@@ -37,7 +37,7 @@ export const updatePlayerCount = async ({
   );
 
   if (targetIndex === -1) {
-    throw new ClientError(`@${username} не найден в таблице`);
+    throw new HandledError(`@${username} не найден в таблице`);
   }
 
   const updatedCountData: ValueRange = {
