@@ -4,7 +4,7 @@ phases:
     commands:
       - TAG=$CODEBUILD_RESOLVED_SOURCE_VERSION
       - APP_IMAGE=$REGISTRY/lasertag-bot
-      - BASE_IMAGE=$REGISTRY/node:14.17-alpine
+      - BASE_IMAGE=$REGISTRY/node:16.6-alpine
       - $(aws ecr get-login --no-include-email --region $AWS_REGION)
   build:
     commands:
