@@ -1,0 +1,35 @@
+version: 0.2
+phases:
+  pre_build:
+    commands:
+      - TAG=$CODEBUILD_RESOLVED_SOURCE_VERSION
+      - APP_IMAGE=$REGISTRY/lasertag-bot
+      - BASE_IMAGE=$REGISTRY/node:14.17-alpine
+      - $(aws ecr get-login --no-include-email --region $AWS_REGION)
+  build:
+    commands:
+      - docker image build -t $APP_IMAGE:$TAG --build-arg BASE_IMAGE=$BASE_IMAGE .
+
+      # replacing $APP_IMAGE with full image name using sed.
+      # Beanstalk doesn't know the exact image we did build,
+      # so let's tell him that explicitly
+      - sed -i "s|\$APP_IMAGE|$APP_IMAGE:$TAG|g" docker-compose.yml
+      - echo "VERSION=$TAG" >> .app.env
+
+  post_build:
+    commands:
+      # pushes the image only if it doesn't exist in ECR
+      - docker image tag $APP_IMAGE:$TAG
+      - docker image push $APP_IMAGE
+
+artifacts:
+  files:
+    # containers and their images data
+    - 'docker-compose.yml'
+
+    # custom environment variables in a separate file,
+    # because .env will be created by Beanstalk automatically
+    - '.app.env'
+
+    # some potential tweaks for host/Beanstalk system
+    - '.ebextensions/*'

@@ -1,0 +1,19 @@
+# production config, it will be renamed to docker-compose.yml during CodeBuild
+# and be sended to live environment
+version: '3.8'
+services:
+  openresty:
+    # this value will be replaced with full image name
+    # during CodeBuild run
+    image: $APP_IMAGE
+
+    ports:
+      - '443:443'
+      - '80:80'
+
+    env_file:
+      - .env # Beanstalk-level variables, we don't touch it
+      - .app.env # custom env to add during CodeBuild
+
+    volumes:
+      - /var/log/nginx:/var/log/nginx
