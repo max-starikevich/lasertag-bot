@@ -1,7 +1,7 @@
 import { Context } from 'telegraf';
 
 export default async (ctx: Context): Promise<void> => {
-  const helpMessage = `Hello!`;
+  const helpMessage = `Привет!`;
 
   await ctx.replyWithMarkdown(helpMessage);
 };

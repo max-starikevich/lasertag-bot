@@ -24,14 +24,18 @@ export const prepareBot = async () => {
 };
 
 export const launchBot = async (bot: Telegraf<BotContext>) => {
-  if (process.env.APP_ENV === 'production' || !!process.env.HOOK_PATH) {
+  if (process.env.HOOK_PATH && process.env.HOOK_PATH.length > 0) {
     await bot.launch({
       webhook: {
         hookPath: process.env.HOOK_PATH
       }
     });
 
-    console.info(`🚀 The bot is online at https://${process.env.HOOK_PATH}.`);
+    console.info(
+      `🚀 The bot is online at ${process.env.HOOK_PATH}. Version: ${
+        process.env.VERSION || 'undefined'
+      }`
+    );
   } else {
     await bot.launch();
 

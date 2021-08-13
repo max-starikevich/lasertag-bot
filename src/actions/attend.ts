@@ -3,12 +3,6 @@ import { HandledError } from '../errors';
 import { BotContext } from '../types';
 
 export default async (ctx: BotContext) => {
-  const input = 'test';
-
-  if (!input) {
-    return;
-  }
-
   // const { sheetsClient } = ctx;
 
   // if (!sheetsClient) {
