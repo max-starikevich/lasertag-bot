@@ -4,15 +4,19 @@
   "repository": "git@github.com:max-starikevich/lasertag-bot.git",
   "author": "Max Starikevich <maxim.starikevich@gmail.com>",
   "license": "MIT",
+  "main": "build/server.js",
   "engines": {
     "node": "^16",
     "yarn": "^1"
   },
   "dependencies": {
-    "googleapis": "^84.0.0",
+    "@types/lodash": "^4.14.172",
+    "google-spreadsheet": "^3.1.15",
+    "lodash": "^4.17.21",
     "telegraf": "^4.4.1"
   },
   "devDependencies": {
+    "@types/google-spreadsheet": "^3.1.5",
     "@types/jest": "^27.0.0",
     "@types/node": "^16.6.0",
     "@typescript-eslint/eslint-plugin": "^4.29.1",

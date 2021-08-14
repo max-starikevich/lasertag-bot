@@ -1,7 +1,8 @@
-import { Context } from 'telegraf';
+import { Context, Markup } from 'telegraf';
 
 export default async (ctx: Context): Promise<void> => {
-  const helpMessage = `Привет!`;
-
-  await ctx.replyWithMarkdown(helpMessage);
+  await ctx.reply(
+    'Выберите одну из доступных ниже команд:',
+    Markup.keyboard(['🪄 Составы']).oneTime().resize()
+  );
 };
