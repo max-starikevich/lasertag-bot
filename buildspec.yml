@@ -4,11 +4,17 @@ phases:
     commands:
       - TAG=$CODEBUILD_RESOLVED_SOURCE_VERSION
       - APP_IMAGE=$REGISTRY/lasertag-bot
-      - BASE_IMAGE=$REGISTRY/node:16.6-alpine
+      - BASE_IMAGE=node:16.6-alpine
       - $(aws ecr get-login --no-include-email --region $AWS_REGION)
   build:
     commands:
-      - docker image build -t $APP_IMAGE:$TAG --build-arg BASE_IMAGE=$BASE_IMAGE .
+      - |
+        docker image pull $REGISTRY/$BASE_IMAGE ||
+        docker image pull $BASE_IMAGE &&
+        docker image tag $BASE_IMAGE $REGISTRY/$BASE_IMAGE && 
+        docker image push $REGISTRY/$BASE_IMAGE
+
+      - docker image build -t $APP_IMAGE:$TAG --build-arg BASE_IMAGE=$REGISTRY/$BASE_IMAGE .
 
       # replacing $APP_IMAGE with full image name using sed.
       # Beanstalk doesn't know the exact image we did build,
