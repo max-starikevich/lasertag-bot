@@ -1,9 +1,10 @@
+import { GoogleSpreadsheet } from 'google-spreadsheet';
 import { Context } from 'telegraf';
 
 export type AttendHandlerFunction = (ctx: BotContext) => Promise<any>;
 
 export interface BotContext extends Context {
-  sheetsClient?: SheetsClient;
+  document?: GoogleSpreadsheet;
 }
 
 export interface SheetsClient {

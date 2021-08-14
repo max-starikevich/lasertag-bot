@@ -1,22 +1,27 @@
 import { Telegraf } from 'telegraf';
+import { GoogleSpreadsheet } from 'google-spreadsheet';
 
+import teamsHandler from './teams';
 import helpHandler from './help';
-import attendHandler from './attend';
-import { handlerWrapper } from '../utilities';
-// import { getSheetsClient } from '../services/sheetsClient';
 
+import { handlerWrapper } from '../utilities';
 import { BotContext } from '../types';
 
 export const prepareBot = async () => {
   const bot = new Telegraf<BotContext>(process.env.BOT_TOKEN as string);
 
-  // bot.context.sheetsClient = await getSheetsClient();
+  const document = new GoogleSpreadsheet(
+    process.env.GOOGLE_SPREADSHEET_ID as string
+  );
+
+  document.useApiKey(process.env.GOOGLE_API_KEY as string);
+
+  bot.context.document = document;
 
   bot.start((ctx) => handlerWrapper(helpHandler, ctx));
-  // bot.help((ctx) => handlerWrapper(helpHandler, ctx));
-  bot.command('attend', (ctx) => handlerWrapper(attendHandler, ctx));
+  bot.help((ctx) => handlerWrapper(helpHandler, ctx));
+  bot.hears('🪄 Составы', (ctx) => handlerWrapper(teamsHandler, ctx));
 
-  // Enable graceful stop
   process.once('SIGINT', () => bot.stop('SIGINT'));
   process.once('SIGTERM', () => bot.stop('SIGTERM'));
 
@@ -24,23 +29,9 @@ export const prepareBot = async () => {
 };
 
 export const launchBot = async (bot: Telegraf<BotContext>) => {
-  if (process.env.HOOK_PATH && process.env.HOOK_PATH.length > 0) {
-    await bot.launch({
-      webhook: {
-        hookPath: process.env.HOOK_PATH
-      }
-    });
+  if (process.env) await bot.launch();
 
-    console.info(
-      `🚀 The bot is online at ${process.env.HOOK_PATH}. Version: ${
-        process.env.VERSION || 'undefined'
-      }`
-    );
-  } else {
-    await bot.launch();
-
-    console.info(`🚀 The bot is online in polling mode.`);
-  }
+  console.info(`🚀 The bot is online in polling mode.`);
 
   return bot;
 };
