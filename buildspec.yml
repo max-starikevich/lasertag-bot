@@ -8,13 +8,13 @@ phases:
       - $(aws ecr get-login --no-include-email --region $AWS_REGION)
   build:
     commands:
-      - |
-        docker image pull $REGISTRY/$BASE_IMAGE ||
-        docker image pull $BASE_IMAGE &&
-        docker image tag $BASE_IMAGE $REGISTRY/$BASE_IMAGE && 
-        docker image push $REGISTRY/$BASE_IMAGE
+      # - |
+      #   docker image pull $REGISTRY/$BASE_IMAGE ||
+      #   docker image pull $BASE_IMAGE &&
+      #   docker image tag $BASE_IMAGE $REGISTRY/$BASE_IMAGE &&
+      #   docker image push $REGISTRY/$BASE_IMAGE
 
-      - docker image build -t $APP_IMAGE:$TAG --build-arg BASE_IMAGE=$REGISTRY/$BASE_IMAGE .
+      - docker image build -t $APP_IMAGE:$TAG --build-arg BASE_IMAGE=$BASE_IMAGE .
 
       # replacing $APP_IMAGE with full image name using sed.
       # Beanstalk doesn't know the exact image we did build,
