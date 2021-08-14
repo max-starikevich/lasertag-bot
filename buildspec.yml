@@ -24,9 +24,7 @@ phases:
 
   post_build:
     commands:
-      # pushes the image only if it doesn't exist in ECR
-      - docker image tag $APP_IMAGE:$TAG
-      - docker image push $APP_IMAGE
+      - docker image push $APP_IMAGE:$TAG
 
 artifacts:
   files:
