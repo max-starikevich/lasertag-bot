@@ -11,24 +11,18 @@ import { setBotActions } from '@/actions/index';
 export const launchBot = async () => {
   const bot = new Telegraf<BotContext>(config.BOT_TOKEN);
 
-  bot.use(async (ctx, next) => {
-    const tag = `Processed update #${ctx.update.update_id}`;
-    console.time(tag);
-    await next();
-    console.timeEnd(tag);
-  });
-
   const document = new GoogleSpreadsheet(config.GOOGLE_SPREADSHEET_ID);
   document.useApiKey(config.GOOGLE_API_KEY);
   bot.context.document = document;
 
   await setBotActions(bot);
 
-  const secretPath = `/webhook/${bot.secretPathComponent()}`;
-  bot.telegram.setWebhook(`https://${config.HOOK_DOMAIN}${secretPath}`);
-
   const koa = new Koa();
   const router = new Router();
+
+  // set up webhooks
+  const secretPath = `/webhook/${bot.secretPathComponent()}`;
+  bot.telegram.setWebhook(`https://${config.HOOK_DOMAIN}${secretPath}`);
 
   router.post(secretPath, async (ctx, next) => {
     await bot.handleUpdate(ctx.request.body);
@@ -50,8 +44,6 @@ export const launchBot = async () => {
   koa.use(router.routes());
   koa.listen(config.PORT);
 
-  console.info(`🚀 The bot is online`);
-
   process.once('SIGINT', () => {
     bot.stop('SIGINT');
   });
@@ -59,6 +51,8 @@ export const launchBot = async () => {
   process.once('SIGTERM', () => {
     bot.stop('SIGTERM');
   });
+
+  console.info(`🚀 The bot is online`);
 
   return bot;
 };

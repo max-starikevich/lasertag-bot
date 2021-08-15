@@ -38,6 +38,11 @@ export const actions: Action[] = [
 
 export const setBotActions = async (bot: Telegraf<BotContext>) => {
   actions.map(({ command, handler }) => {
-    bot.command(command, (ctx) => handlerWrapper(handler, ctx));
+    bot.command(command, async (ctx) => {
+      const tag = `Processed ${command}`;
+      console.time(tag);
+      await handlerWrapper(handler, ctx);
+      console.timeEnd(tag);
+    });
   });
 };
