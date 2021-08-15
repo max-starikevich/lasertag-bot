@@ -1,8 +1,8 @@
 import { Markup } from 'telegraf';
 import { chunk } from 'lodash';
 
-import { actions } from './index';
-import { BotContext } from '../types';
+import { actions } from '@/actions/index';
+import { BotContext } from '@/types';
 
 const commandsToHide = ['/start', '/version'];
 

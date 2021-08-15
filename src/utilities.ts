@@ -1,7 +1,7 @@
 import { Context } from 'telegraf';
 
-import { handleActionError, HandledError } from './errors';
-import { AttendHandlerFunction } from './types';
+import { handleActionError, HandledError } from '@/errors';
+import { AttendHandlerFunction } from '@/types';
 
 export const handlerWrapper = async (
   handler: AttendHandlerFunction,

@@ -4,9 +4,9 @@ import Koa from 'koa';
 import body from 'koa-body';
 import Router from 'koa-router';
 
-import config from '../config';
-import { BotContext } from '../types';
-import { setBotActions } from './index';
+import config from '@/config';
+import { BotContext } from '@/types';
+import { setBotActions } from '@/actions/index';
 
 export const launchBot = async () => {
   const bot = new Telegraf<BotContext>(config.BOT_TOKEN);

@@ -1,11 +1,12 @@
 import { Telegraf } from 'telegraf';
 
-import { AttendHandlerFunction, BotContext } from '../types';
-import { handlerWrapper } from '../utilities';
-import help from './help';
-import teams from './teams';
-import commands from './commands';
-import version from './version';
+import { AttendHandlerFunction, BotContext } from '@/types';
+import { handlerWrapper } from '@/utilities';
+
+import help from '@/actions/help';
+import teams from '@/actions/teams';
+import commands from '@/actions/commands';
+import version from '@/actions/version';
 
 interface Action {
   command: string;
