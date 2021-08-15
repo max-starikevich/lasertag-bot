@@ -45,5 +45,13 @@ export const launchBot = async () => {
 
   console.info(`🚀 The bot is online`);
 
+  process.once('SIGINT', () => {
+    bot.stop('SIGINT');
+  });
+
+  process.once('SIGTERM', () => {
+    bot.stop('SIGTERM');
+  });
+
   return bot;
 };
