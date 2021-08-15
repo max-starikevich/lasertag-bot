@@ -1,5 +1,3 @@
-# production config, it will be renamed to docker-compose.yml during CodeBuild
-# and be sended to live environment
 version: '3.8'
 services:
   bot:
