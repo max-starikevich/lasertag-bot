@@ -38,4 +38,4 @@ RUN yarn install && yarn cache clean
 
 COPY --chown=node:node --from=ts-builder /home/node/app/build build
 
-CMD ["node", "./build/server.js"]
+CMD ["pm2-runtime", "./build/server.js"]
