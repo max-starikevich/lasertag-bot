@@ -1,7 +1,7 @@
-import { prepareBot, launchBot } from './actions';
+import { launchBot } from './actions/init';
 import { checkEnvironment } from './config';
 import { handleStartupError, handleUnexpectedRejection } from './errors';
 
-checkEnvironment().then(prepareBot).then(launchBot).catch(handleStartupError);
+checkEnvironment().then(launchBot).catch(handleStartupError);
 
 process.on('unhandledRejection', handleUnexpectedRejection);

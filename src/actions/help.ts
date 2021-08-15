@@ -1,8 +1,5 @@
-import { Context, Markup } from 'telegraf';
+import { BotContext } from '../types';
 
-export default async (ctx: Context): Promise<void> => {
-  await ctx.reply(
-    'Выберите одну из доступных ниже команд:',
-    Markup.keyboard(['🪄 Составы']).oneTime().resize()
-  );
+export default async (ctx: BotContext): Promise<void> => {
+  await ctx.reply('Список доступных команд доступен через /commands.');
 };
