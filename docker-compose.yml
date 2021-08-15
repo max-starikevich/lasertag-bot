@@ -14,6 +14,3 @@ services:
     env_file:
       - .env # Beanstalk-level variables, we don't touch it
       - .app.env # custom env to add during CodeBuild
-
-    volumes:
-      - /var/log/nginx:/var/log/nginx

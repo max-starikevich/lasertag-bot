@@ -10,14 +10,19 @@
     "yarn": "^1"
   },
   "dependencies": {
-    "@types/lodash": "^4.14.172",
     "google-spreadsheet": "^3.1.15",
+    "koa": "^2.13.1",
+    "koa-body": "^4.2.0",
+    "koa-router": "^10.0.0",
     "lodash": "^4.17.21",
     "telegraf": "^4.4.1"
   },
   "devDependencies": {
     "@types/google-spreadsheet": "^3.1.5",
     "@types/jest": "^27.0.0",
+    "@types/koa": "^2.13.4",
+    "@types/koa-router": "^7.4.4",
+    "@types/lodash": "^4.14.172",
     "@types/node": "^16.6.0",
     "@typescript-eslint/eslint-plugin": "^4.29.1",
     "@typescript-eslint/parser": "^4.29.1",
