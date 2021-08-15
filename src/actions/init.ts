@@ -17,11 +17,12 @@ export const launchBot = async () => {
 
   await setBotActions(bot);
 
-  const secretPath = `/webhook/${bot.secretPathComponent()}`;
-  bot.telegram.setWebhook(`https://${config.HOOK_DOMAIN}${secretPath}`);
-
   const koa = new Koa();
   const router = new Router();
+
+  // set up webhooks
+  const secretPath = `/webhook/${bot.secretPathComponent()}`;
+  bot.telegram.setWebhook(`https://${config.HOOK_DOMAIN}${secretPath}`);
 
   router.post(secretPath, async (ctx, next) => {
     await bot.handleUpdate(ctx.request.body);
