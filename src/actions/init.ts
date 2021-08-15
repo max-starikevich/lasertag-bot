@@ -11,6 +11,13 @@ import { setBotActions } from '@/actions/index';
 export const launchBot = async () => {
   const bot = new Telegraf<BotContext>(config.BOT_TOKEN);
 
+  bot.use(async (ctx, next) => {
+    const tag = `Processed update #${ctx.update.update_id}`;
+    console.time(tag);
+    await next();
+    console.timeEnd(tag);
+  });
+
   const document = new GoogleSpreadsheet(config.GOOGLE_SPREADSHEET_ID);
   document.useApiKey(config.GOOGLE_API_KEY);
   bot.context.document = document;
