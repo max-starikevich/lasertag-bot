@@ -24,9 +24,6 @@ RUN tsc
 FROM ${BASE_IMAGE} as runtime
 LABEL maintainer="maxim.starikevich@gmail.com"
 
-COPY entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
-
 USER node
 ENV PATH="/home/node/app/node_modules/.bin:${PATH}"
 ENV NODE_ENV=production
@@ -41,5 +38,4 @@ RUN yarn install && yarn cache clean
 
 COPY --chown=node:node --from=ts-builder /home/node/app/build build
 
-ENTRYPOINT ["/entrypoint.sh"]
 CMD ["node", "./build/server.js"]
