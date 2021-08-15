@@ -44,6 +44,8 @@ export const launchBot = async () => {
   koa.use(router.routes());
   koa.listen(config.PORT);
 
+  console.info(`🚀 The bot is online`);
+
   process.once('SIGINT', () => {
     bot.stop('SIGINT');
   });
@@ -51,8 +53,6 @@ export const launchBot = async () => {
   process.once('SIGTERM', () => {
     bot.stop('SIGTERM');
   });
-
-  console.info(`🚀 The bot is online`);
 
   return bot;
 };
