@@ -5,6 +5,7 @@ import { handlerWrapper } from '../utilities';
 import help from './help';
 import teams from './teams';
 import commands from './commands';
+import version from './version';
 
 interface Action {
   command: string;
@@ -27,6 +28,10 @@ export const actions: Action[] = [
   {
     command: '/commands',
     handler: commands
+  },
+  {
+    command: '/version',
+    handler: version
   }
 ];
 
