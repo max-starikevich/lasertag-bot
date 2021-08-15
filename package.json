@@ -15,6 +15,7 @@
     "koa-body": "^4.2.0",
     "koa-router": "^10.0.0",
     "lodash": "^4.17.21",
+    "module-alias": "^2.2.2",
     "pm2": "^5.1.0",
     "telegraf": "^4.4.1"
   },
@@ -41,5 +42,8 @@
     "lint": "eslint './src/**/*.ts'",
     "test": "jest",
     "build": "tsc"
+  },
+  "_moduleAliases": {
+    "@": "./build"
   }
 }

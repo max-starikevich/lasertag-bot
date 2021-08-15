@@ -4,6 +4,7 @@ const isProduction = APP_ENV === 'production';
 export default {
   isProduction,
   APP_ENV,
+  VERSION: process.env.VERSION || 'local',
   BOT_TOKEN: process.env.BOT_TOKEN as string,
   GOOGLE_API_KEY: process.env.GOOGLE_API_KEY as string,
   GOOGLE_SPREADSHEET_ID: process.env.GOOGLE_SPREADSHEET_ID as string,

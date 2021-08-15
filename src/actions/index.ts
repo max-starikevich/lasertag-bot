@@ -1,10 +1,12 @@
 import { Telegraf } from 'telegraf';
 
-import { AttendHandlerFunction, BotContext } from '../types';
-import { handlerWrapper } from '../utilities';
-import help from './help';
-import teams from './teams';
-import commands from './commands';
+import { AttendHandlerFunction, BotContext } from '@/types';
+import { handlerWrapper } from '@/utilities';
+
+import help from '@/actions/help';
+import teams from '@/actions/teams';
+import commands from '@/actions/commands';
+import version from '@/actions/version';
 
 interface Action {
   command: string;
@@ -27,6 +29,10 @@ export const actions: Action[] = [
   {
     command: '/commands',
     handler: commands
+  },
+  {
+    command: '/version',
+    handler: version
   }
 ];
 

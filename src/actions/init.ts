@@ -4,9 +4,9 @@ import Koa from 'koa';
 import body from 'koa-body';
 import Router from 'koa-router';
 
-import config from '../config';
-import { BotContext } from '../types';
-import { setBotActions } from './index';
+import config from '@/config';
+import { BotContext } from '@/types';
+import { setBotActions } from '@/actions/index';
 
 export const launchBot = async () => {
   const bot = new Telegraf<BotContext>(config.BOT_TOKEN);
@@ -20,7 +20,7 @@ export const launchBot = async () => {
   const secretPath = `/webhook/${bot.secretPathComponent()}`;
   bot.telegram.setWebhook(`https://${config.HOOK_DOMAIN}${secretPath}`);
 
-  const app = new Koa();
+  const koa = new Koa();
   const router = new Router();
 
   router.post(secretPath, async (ctx, next) => {
@@ -34,11 +34,24 @@ export const launchBot = async () => {
     ctx.status = 200;
   });
 
-  app.use(body());
-  app.use(router.routes());
-  app.listen(config.PORT);
+  router.get('/version', (ctx) => {
+    ctx.status = 200;
+    ctx.body = config.VERSION;
+  });
+
+  koa.use(body());
+  koa.use(router.routes());
+  koa.listen(config.PORT);
 
   console.info(`🚀 The bot is online`);
+
+  process.once('SIGINT', () => {
+    bot.stop('SIGINT');
+  });
+
+  process.once('SIGTERM', () => {
+    bot.stop('SIGTERM');
+  });
 
   return bot;
 };

@@ -1,11 +1,12 @@
-import { Context, Markup } from 'telegraf';
+import { Markup } from 'telegraf';
 import { chunk } from 'lodash';
 
-import { actions } from './index';
+import { actions } from '@/actions/index';
+import { BotContext } from '@/types';
 
-const commandsToHide = ['/start'];
+const commandsToHide = ['/start', '/version'];
 
-export default async (ctx: Context): Promise<void> => {
+export default async (ctx: BotContext): Promise<void> => {
   const commandsToDisplay = actions
     .map(({ command }) => command)
     .filter((command) => !commandsToHide.includes(command));

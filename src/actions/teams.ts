@@ -1,7 +1,7 @@
 import { shuffle } from 'lodash';
 
-import { HandledError } from '../errors';
-import { BotContext } from '../types';
+import { HandledError } from '@/errors';
+import { BotContext } from '@/types';
 
 interface Player {
   name: string;
