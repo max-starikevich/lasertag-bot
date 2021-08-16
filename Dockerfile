@@ -36,6 +36,7 @@ COPY --chown=node:node package.json yarn.lock ./
 # installing only "dependencies" (run-time packages, see NODE_ENV)
 RUN yarn install && yarn cache clean
 
-COPY --chown=node:node --from=ts-builder /home/node/app/build build
+COPY --chown=node:node --from=ts-builder /home/node/app/build ./build
+COPY --chown=node:node ecosystem.config.js ./
 
-CMD ["pm2-runtime", "start", "build/server.js", "-i", "max"]
+CMD ["pm2-runtime", "start", "ecosystem.config.js"]
