@@ -36,7 +36,7 @@ phases:
     commands:
       # turn new image into the "latest" and push it to ECR
       - docker image tag  $APP_IMAGE:$TAG $APP_IMAGE:latest
-      - docker image push $APP_IMAGE:$TAG $APP_IMAGE:latest
+      - docker image push $APP_IMAGE
 
 artifacts:
   files:
