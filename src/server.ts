@@ -15,20 +15,18 @@ import { logger } from '@/logger';
 process.on('unhandledRejection', handleUnexpectedRejection);
 
 const launchBot = async () => {
-  const bot = new Telegraf<BotContext>(config.BOT_TOKEN);
-
+  const bot = new Telegraf<BotContext>(config.BOT_TOKEN, {});
   const document = new GoogleSpreadsheet(config.GOOGLE_SPREADSHEET_ID);
+  const koa = new Koa();
+  const router = new Router();
+
   document.useApiKey(config.GOOGLE_API_KEY);
   bot.context.document = document;
 
   await setBotActions(bot);
 
-  const koa = new Koa();
-  const router = new Router();
-
-  // set up webhooks
   const secretPath = `/webhook/${bot.secretPathComponent()}`;
-  bot.telegram.setWebhook(`https://${config.HOOK_DOMAIN}${secretPath}`);
+  await bot.telegram.setWebhook(`https://${config.HOOK_DOMAIN}${secretPath}`);
 
   router.post(secretPath, async (ctx, next) => {
     await bot.handleUpdate(ctx.request.body);
@@ -48,9 +46,6 @@ const launchBot = async () => {
 
   koa.use(body());
   koa.use(router.routes());
-  koa.listen(config.PORT);
-
-  logger.info(`🚀 The bot is online`);
 
   process.once('SIGINT', () => {
     bot.stop('SIGINT');
@@ -59,6 +54,19 @@ const launchBot = async () => {
   process.once('SIGTERM', () => {
     bot.stop('SIGTERM');
   });
+
+  await new Promise((resolve) => {
+    koa.listen(config.PORT, () => {
+      resolve(true);
+    });
+  });
+
+  // tell PM2 that this process is ready
+  if (process.send) {
+    process.send('ready');
+  }
+
+  logger.info(`🚀 The bot is online`);
 
   return bot;
 };
