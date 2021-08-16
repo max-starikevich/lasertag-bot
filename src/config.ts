@@ -9,7 +9,8 @@ export default {
   GOOGLE_API_KEY: process.env.GOOGLE_API_KEY as string,
   GOOGLE_SPREADSHEET_ID: process.env.GOOGLE_SPREADSHEET_ID as string,
   HOOK_DOMAIN: process.env.HOOK_DOMAIN as string,
-  PORT: process.env.PORT || '4000'
+  PORT: process.env.PORT || '4000',
+  PM2_NODE_ID: process.env.pm_id || '0'
 };
 
 type EnvironmentValidator = () => Promise<boolean>;
