@@ -17,7 +17,8 @@
     "lodash": "^4.17.21",
     "module-alias": "^2.2.2",
     "pm2": "^5.1.0",
-    "telegraf": "^4.4.1"
+    "telegraf": "^4.4.1",
+    "winston": "^3.3.3"
   },
   "devDependencies": {
     "@types/google-spreadsheet": "^3.1.5",
@@ -38,10 +39,11 @@
     "typescript": "^4.3.5"
   },
   "scripts": {
-    "start": "tsc-watch --onSuccess 'node --inspect -r dotenv/config ./build/server.js'",
-    "lint": "eslint './src/**/*.ts'",
+    "start": "tsc-watch --onSuccess 'node -r dotenv/config build/server.js'",
+    "lint": "eslint src/**/*.ts",
     "test": "jest",
-    "build": "tsc"
+    "build": "tsc",
+    "prepare": "husky install"
   },
   "_moduleAliases": {
     "@": "./build"
