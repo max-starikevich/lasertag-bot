@@ -6,6 +6,7 @@ import help from '@/actions/help';
 import teams from '@/actions/teams';
 import commands from '@/actions/commands';
 import version from '@/actions/version';
+import players from '@/actions/players';
 
 import { HandledError, handleActionError } from '@/errors';
 import { logger } from '@/logger';
@@ -39,6 +40,10 @@ export const actions: Action[] = [
     handler: teams
   },
   {
+    command: '/players',
+    handler: players
+  },
+  {
     command: '/help',
     handler: help
   },
@@ -56,7 +61,7 @@ export const setBotActions = async (bot: Telegraf<BotContext>) => {
   actions.map(({ command, handler }) => {
     bot.command(command, async (ctx) => {
       await wrapper(handler, ctx);
-      logger.info(`Processed ${command}`);
+      logger.info(`Processed ${command} command`);
     });
   });
 };

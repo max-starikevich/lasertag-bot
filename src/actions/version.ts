@@ -1,6 +1,6 @@
 import { BotContext } from '@/types';
 import config from '@/config';
 
-export default async (ctx: BotContext): Promise<void> => {
-  await ctx.reply(`Версия: ${config.VERSION}`);
+export default (ctx: BotContext) => {
+  return ctx.reply(config.VERSION);
 };
