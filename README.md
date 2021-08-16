@@ -4,11 +4,14 @@ Meant to automate some daily functions, like add yourself to the playerlist (Goo
 
 # Quick start
 
-To start some development:
+You will need Node.js 16, yarn and ngrok installed.
 
-```bash
+```console
+$ ngrok http 4000 # copy generated ngrok domain to .env#HOOK_DOMAIN
+```
+
+```console
 $ yarn install
-$ cp .env.example .env # adjust values inside .env
-$ npx husky install
+$ cp .env.example .env # adjust .env
 $ yarn start
 ```
