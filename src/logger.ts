@@ -1,11 +1,16 @@
-import winston from 'winston';
+import { createLogger, transports, format } from 'winston';
 
-export const logger = winston.createLogger({
+export const logger = createLogger({
   level: 'info',
-  format: winston.format.json(),
-  transports: [
-    new winston.transports.Console({
-      format: winston.format.simple()
-    })
-  ]
+  format: format.combine(
+    format.timestamp({ format: 'YYYY-MM-DDTHH:mm:ss' }),
+    format.printf((data) =>
+      JSON.stringify({
+        level: data.level,
+        timestamp: data.timestamp,
+        message: data.message
+      })
+    )
+  ),
+  transports: [new transports.Console()]
 });
