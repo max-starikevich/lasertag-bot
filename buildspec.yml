@@ -8,13 +8,23 @@ phases:
       - $(aws ecr get-login --no-include-email --region $AWS_REGION)
   build:
     commands:
-      # - |
-      #   docker image pull $REGISTRY/$BASE_IMAGE ||
-      #   docker image pull $BASE_IMAGE &&
-      #   docker image tag $BASE_IMAGE $REGISTRY/$BASE_IMAGE &&
-      #   docker image push $REGISTRY/$BASE_IMAGE
+      # download latest image to use as a cache later
+      - docker image pull $APP_IMAGE:latest || true
 
-      - docker image build -t $APP_IMAGE:$TAG --build-arg BASE_IMAGE=$BASE_IMAGE .
+      # download base image from ECR,
+      # if it doesn't exist - download from Docker Hub and save to ECR
+      - |
+        docker image pull $REGISTRY/$BASE_IMAGE || \
+          (docker image pull $BASE_IMAGE && \
+           docker image tag $BASE_IMAGE $REGISTRY/$BASE_IMAGE && \
+           docker image push $REGISTRY/$BASE_IMAGE)
+
+      # build new app image using the previous image as a cache (if exists)
+      - |
+        docker image build \
+          -t $APP_IMAGE:$TAG \
+          --build-arg BASE_IMAGE=$REGISTRY/$BASE_IMAGE \
+          --cache-from $APP_IMAGE:latest .
 
       # replacing $APP_IMAGE with full image name using sed.
       # Beanstalk doesn't know the exact image we did build,
@@ -24,7 +34,9 @@ phases:
 
   post_build:
     commands:
-      - docker image push $APP_IMAGE:$TAG
+      # turn new image into the "latest" and push it to ECR
+      - docker image tag  $APP_IMAGE:$TAG $APP_IMAGE:latest
+      - docker image push $APP_IMAGE:$TAG $APP_IMAGE:latest
 
 artifacts:
   files:
