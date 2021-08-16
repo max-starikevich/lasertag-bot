@@ -16,3 +16,8 @@ export interface ValueRange {
   range?: string | null;
   values?: any[][] | null;
 }
+
+export interface Player {
+  name: string;
+  count: number;
+}

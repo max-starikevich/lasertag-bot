@@ -1,5 +1,5 @@
 import { BotContext } from '@/types';
 
-export default async (ctx: BotContext): Promise<void> => {
-  await ctx.reply('Список доступных команд доступен через /commands.');
+export default (ctx: BotContext) => {
+  return ctx.reply('Список доступных команд доступен через /commands.');
 };

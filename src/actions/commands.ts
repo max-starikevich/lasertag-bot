@@ -1,18 +1,33 @@
-import { Markup } from 'telegraf';
 import { chunk } from 'lodash';
+import { Markup } from 'telegraf';
 
 import { actions } from '@/actions/index';
 import { BotContext } from '@/types';
 
-const commandsToHide = ['/start', '/version'];
+const commandsToHide = ['/start', '/version', '/commands'];
 
-export default async (ctx: BotContext): Promise<void> => {
-  const commandsToDisplay = actions
-    .map(({ command }) => command)
-    .filter((command) => !commandsToHide.includes(command));
+export default (ctx: BotContext) => {
+  const commandsToDisplay = actions.filter(
+    ({ command }) => !commandsToHide.includes(command)
+  );
 
-  await ctx.reply(
-    'Доступные команды:',
-    Markup.keyboard(chunk(commandsToDisplay, 2)).oneTime().resize()
+  return ctx.reply(
+    `
+Доступные команды:
+
+${commandsToDisplay
+  .map(
+    ({ command, description }) => `${command} - ${description.toLowerCase()}`
+  )
+  .join('\n')}
+  `,
+    Markup.keyboard(
+      chunk(
+        commandsToDisplay.map(({ command }) => command),
+        2
+      )
+    )
+      .oneTime()
+      .resize()
   );
 };
