@@ -28,32 +28,39 @@ const wrapper = async (handler: AttendHandlerFunction, ctx: BotContext) => {
 interface Action {
   command: string;
   handler: AttendHandlerFunction;
+  description: string;
 }
 
 export const actions: Action[] = [
   {
     command: '/start',
-    handler: help
+    handler: help,
+    description: 'Начало работы с ботом'
   },
   {
     command: '/teams',
-    handler: teams
+    handler: teams,
+    description: 'Получить случайные составы команд по файлу записи'
   },
   {
     command: '/players',
-    handler: players
+    handler: players,
+    description: 'Список записавшихся игроков в файл'
   },
   {
     command: '/help',
-    handler: help
+    handler: help,
+    description: 'Помощь'
   },
   {
     command: '/commands',
-    handler: commands
+    handler: commands,
+    description: 'Список доступных команд'
   },
   {
     command: '/version',
-    handler: version
+    handler: version,
+    description: 'Текущая версия'
   }
 ];
 
