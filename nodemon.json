@@ -1,5 +1,6 @@
 {
-  "watch": ["src"],
-  "ext": "ts",
-  "exec": "tsc && node -r dotenv/config build/server.js"
+  "watch": [".env", "src/**/*.ts"],
+  "ext": "*",
+  "exec": "tsc && node -r dotenv/config build/server.js",
+  "ignore": ["src/**/*.test.ts"]
 }
