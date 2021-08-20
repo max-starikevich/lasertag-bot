@@ -1,5 +1,12 @@
 require('module-alias/register');
 
+import * as Sentry from '@sentry/node';
+
+Sentry.init({
+  dsn: process.env.SENTRY_DSN,
+  tracesSampleRate: 1
+});
+
 import { Telegraf } from 'telegraf';
 import { GoogleSpreadsheet } from 'google-spreadsheet';
 import Koa from 'koa';
