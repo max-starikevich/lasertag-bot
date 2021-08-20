@@ -48,11 +48,6 @@ const launchBot = async () => {
     ctx.status = 200;
   });
 
-  router.get('/version', (ctx) => {
-    ctx.status = 200;
-    ctx.body = config.VERSION;
-  });
-
   koa.use(body());
   koa.use(router.routes());
 
