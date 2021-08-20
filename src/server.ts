@@ -7,15 +7,13 @@ import body from 'koa-body';
 import Router from 'koa-router';
 
 import { BotContext } from '@/types';
-import { setBotActions } from '@/actions/index';
+import { setBotCommands } from '@/commands';
 import config, { checkEnvironment } from '@/config';
 import { handleStartupError, handleUnexpectedRejection } from '@/errors';
 import { logger } from '@/logger';
 
-process.on('unhandledRejection', handleUnexpectedRejection);
-
 const launchBot = async () => {
-  const bot = new Telegraf<BotContext>(config.BOT_TOKEN, {});
+  const bot = new Telegraf<BotContext>(config.BOT_TOKEN);
   const document = new GoogleSpreadsheet(config.GOOGLE_SPREADSHEET_ID);
   const koa = new Koa();
   const router = new Router();
@@ -23,16 +21,14 @@ const launchBot = async () => {
   document.useApiKey(config.GOOGLE_API_KEY);
   bot.context.document = document;
 
-  await setBotActions(bot);
+  await setBotCommands(bot);
 
   const secretPath = `/webhook/${bot.secretPathComponent()}`;
   await bot.telegram.setWebhook(`https://${config.HOOK_DOMAIN}${secretPath}`);
 
-  router.post(secretPath, async (ctx, next) => {
+  router.post(secretPath, async (ctx) => {
     await bot.handleUpdate(ctx.request.body);
     ctx.status = 200;
-
-    next();
   });
 
   router.get('/healthcheck', (ctx) => {
@@ -46,14 +42,6 @@ const launchBot = async () => {
 
   koa.use(body());
   koa.use(router.routes());
-
-  process.once('SIGINT', () => {
-    bot.stop('SIGINT');
-  });
-
-  process.once('SIGTERM', () => {
-    bot.stop('SIGTERM');
-  });
 
   await new Promise((resolve) => {
     koa.listen(config.PORT, () => {
@@ -70,5 +58,7 @@ const launchBot = async () => {
 
   return bot;
 };
+
+process.on('unhandledRejection', handleUnexpectedRejection);
 
 checkEnvironment().then(launchBot).catch(handleStartupError);

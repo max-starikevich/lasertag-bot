@@ -5,12 +5,11 @@ export default {
   isProduction,
   APP_ENV,
   VERSION: process.env.VERSION || 'local',
+  PORT: process.env.PORT || '4000',
   BOT_TOKEN: process.env.BOT_TOKEN as string,
   GOOGLE_API_KEY: process.env.GOOGLE_API_KEY as string,
   GOOGLE_SPREADSHEET_ID: process.env.GOOGLE_SPREADSHEET_ID as string,
-  HOOK_DOMAIN: process.env.HOOK_DOMAIN as string,
-  PORT: process.env.PORT || '4000',
-  PM2_NODE_ID: process.env.pm_id || '0'
+  HOOK_DOMAIN: process.env.HOOK_DOMAIN as string
 };
 
 type EnvironmentValidator = () => Promise<boolean>;
