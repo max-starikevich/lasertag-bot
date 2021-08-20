@@ -31,12 +31,12 @@ export default async (ctx: BotContext) => {
 
       Команда 1 (${team1.length})
       ${team1
-        .map((player, index) => `- ${player.name} ${index === 0 ? `⭐` : ''}`)
+        .map((player, i) => `- ${player.name} ${i === 0 ? `⭐` : ''}`)
         .join('\n')}
 
       Команда 2 (${team2.length})
       ${team2
-        .map((player, index) => `- ${player.name}  ${index === 0 ? `⭐` : ''}`)
+        .map((player, i) => `- ${player.name}  ${i === 0 ? `⭐` : ''}`)
         .join('\n')}
     `
   );

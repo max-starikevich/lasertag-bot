@@ -14,19 +14,19 @@ export default async (ctx: BotContext) => {
   const activePlayers = await getActivePlayers(document);
 
   if (activePlayers.length === 0) {
-    return ctx.reply('Пока никто не записан');
+    return ctx.reply('Пока что никто не записан');
   }
 
   const placeAndTime = await getPlaceAndTime(document);
 
   return ctx.replyWithMarkdown(
     dedent`
-      **${placeAndTime}**
+      *${placeAndTime}*
 
       ${activePlayers
         .map(
-          (player, index) =>
-            `${index + 1}) ${player.name} ${
+          (player, i) =>
+            `${i + 1}) ${player.name} ${
               player.count > 1 ? `[${player.count}]` : ``
             }`
         )

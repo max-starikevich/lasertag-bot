@@ -1,20 +1,18 @@
 import { GoogleSpreadsheet } from 'google-spreadsheet';
 import { Player } from '@/types';
 
-const CELLS_TO_LOAD = 'A1:D100';
-
 export const getActivePlayers = async (document: GoogleSpreadsheet) => {
   await document.loadInfo();
   const sheet = document.sheetsByIndex[0];
-  await sheet.loadCells(CELLS_TO_LOAD);
+  await sheet.loadCells(['A3:A100', 'C3:C100']);
 
   const activePlayers: Player[] = [];
 
   // TODO: move these numbers to config/env somehow
-  for (let rowIndex = 2; rowIndex < 100; rowIndex++) {
+  for (let i = 2; i < 100; i++) {
     const player = {
-      name: sheet.getCell(rowIndex, 0).value?.toString().trim(),
-      count: +sheet.getCell(rowIndex, 2).value
+      name: sheet.getCell(i, 0).value?.toString().trim(),
+      count: +sheet.getCell(i, 2).value
     };
 
     if (player.count === 1) {
@@ -37,7 +35,7 @@ export const getActivePlayers = async (document: GoogleSpreadsheet) => {
 export const getPlaceAndTime = async (document: GoogleSpreadsheet) => {
   await document.loadInfo();
   const sheet = document.sheetsByIndex[0];
-  await sheet.loadCells(CELLS_TO_LOAD);
+  await sheet.loadCells('C1');
 
   return sheet.getCell(0, 2).value.toString();
 };
