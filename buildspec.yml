@@ -2,7 +2,7 @@ version: 0.2
 phases:
   pre_build:
     commands:
-      - TAG=$CODEBUILD_RESOLVED_SOURCE_VERSION
+      - COMMIT_HASH=$CODEBUILD_RESOLVED_SOURCE_VERSION
       - APP_IMAGE=$REGISTRY/lasertag-bot
       - BASE_IMAGE=node:16.6-alpine
       - $(aws ecr get-login --no-include-email --region $AWS_REGION)
@@ -22,20 +22,20 @@ phases:
       # build new app image using the previous image as a cache (if exists)
       - |
         docker image build \
-          -t $APP_IMAGE:$TAG \
+          -t $APP_IMAGE:$COMMIT_HASH \
           --build-arg BASE_IMAGE=$REGISTRY/$BASE_IMAGE \
           --cache-from $APP_IMAGE:latest .
 
       # replacing $APP_IMAGE with full image name using sed.
       # Beanstalk doesn't know the exact image we did build,
       # so let's tell him that explicitly
-      - sed -i "s|\$APP_IMAGE|$APP_IMAGE:$TAG|g" docker-compose.yml
-      - echo "VERSION=$TAG" >> .app.env
+      - sed -i "s|\$APP_IMAGE|$APP_IMAGE:$COMMIT_HASH|g" docker-compose.yml
+      - echo "COMMIT_HASH=$COMMIT_HASH" >> .app.env
 
   post_build:
     commands:
       # turn new image into the "latest" and push it to ECR
-      - docker image tag  $APP_IMAGE:$TAG $APP_IMAGE:latest
+      - docker image tag  $APP_IMAGE:$COMMIT_HASH $APP_IMAGE:latest
       - docker image push $APP_IMAGE
 
 artifacts:
