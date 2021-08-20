@@ -1,5 +1,7 @@
 import { GoogleSpreadsheet } from 'google-spreadsheet';
 
+import { escapeHtml } from './utils';
+
 interface Player {
   name: string;
   count: number;
@@ -14,7 +16,7 @@ export const getActivePlayers = async (document: GoogleSpreadsheet) => {
 
   for (let i = 2; i < 100; i++) {
     const player = {
-      name: sheet.getCell(i, 0).value?.toString().trim(),
+      name: escapeHtml(sheet.getCell(i, 0).value?.toString().trim()),
       count: +sheet.getCell(i, 2).value
     };
 

@@ -1,13 +1,9 @@
-import { version } from '../package.json';
-
 const APP_ENV = process.env.APP_ENV || 'local';
 const isProduction = APP_ENV === 'production';
 
 export default {
   isProduction,
   APP_ENV,
-  VERSION: version,
-  COMMIT_HASH: process.env.COMMIT_HASH || 'local',
   PORT: process.env.PORT || '4000',
   BOT_TOKEN: process.env.BOT_TOKEN as string,
   GOOGLE_API_KEY: process.env.GOOGLE_API_KEY as string,

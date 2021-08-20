@@ -8,7 +8,7 @@ import { logger } from '@/logger';
 import help from '@/commands/help';
 import playerList from '@/commands/playerList';
 import randomTeams from '@/commands/randomTeams';
-import version from '@/commands/version';
+import about from '@/commands/about';
 
 type AttendHandlerFunction = (ctx: BotContext) => Promise<any>;
 
@@ -27,15 +27,15 @@ const commands: BotCommand[] = [
     showInMenu: false
   },
   {
-    command: '/randomTeams',
-    handler: randomTeams,
-    description: 'Получить случайные составы команд по файлу записи',
-    showInMenu: true
-  },
-  {
     command: '/playerList',
     handler: playerList,
     description: 'Список записавшихся игроков в файл',
+    showInMenu: true
+  },
+  {
+    command: '/randomTeams',
+    handler: randomTeams,
+    description: 'Получить случайные составы команд по файлу записи',
     showInMenu: true
   },
   {
@@ -45,10 +45,10 @@ const commands: BotCommand[] = [
     showInMenu: true
   },
   {
-    command: '/version',
-    handler: version,
-    description: 'Текущая версия',
-    showInMenu: false
+    command: '/about',
+    handler: about,
+    description: 'Информация о боте',
+    showInMenu: true
   }
 ];
 
@@ -59,7 +59,7 @@ export const commandsInMenu = commands.filter(
 export const menuKeyboard = Markup.keyboard(
   chunk(
     commandsInMenu.map(({ command }) => command),
-    3
+    2
   )
 )
   .oneTime()
