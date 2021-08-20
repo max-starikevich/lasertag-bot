@@ -8,6 +8,7 @@ import { logger } from '@/logger';
 import help from '@/commands/help';
 import playerList from '@/commands/playerList';
 import randomTeams from '@/commands/randomTeams';
+import organizerData from '@/commands/organizerData';
 import about from '@/commands/about';
 
 type AttendHandlerFunction = (ctx: BotContext) => Promise<any>;
@@ -33,9 +34,15 @@ const commands: BotCommand[] = [
     showInMenu: true
   },
   {
+    command: '/organizerData',
+    handler: organizerData,
+    description: 'Данные для организаторов',
+    showInMenu: true
+  },
+  {
     command: '/randomTeams',
     handler: randomTeams,
-    description: 'Получить случайные составы команд по файлу записи',
+    description: 'Сделать случайные составы команд по файлу записи',
     showInMenu: true
   },
   {

@@ -5,19 +5,23 @@ import { escapeHtml } from './utils';
 interface Player {
   name: string;
   count: number;
+  rentCount: number;
+  comment: string;
 }
 
 export const getActivePlayers = async (document: GoogleSpreadsheet) => {
   await document.loadInfo();
   const sheet = document.sheetsByIndex[0];
-  await sheet.loadCells(['A3:A100', 'C3:C100']);
+  await sheet.loadCells(['A3:A100', 'C3:C100', 'D3:D100', 'E3:E100']);
 
   const activePlayers: Player[] = [];
 
   for (let i = 2; i < 100; i++) {
     const player = {
       name: escapeHtml(sheet.getCell(i, 0).value?.toString().trim()),
-      count: +sheet.getCell(i, 2).value
+      count: +sheet.getCell(i, 2).value,
+      rentCount: +sheet.getCell(i, 3).value,
+      comment: escapeHtml(sheet.getCell(i, 4).value?.toString().trim())
     };
 
     if (player.count === 1) {
@@ -27,6 +31,7 @@ export const getActivePlayers = async (document: GoogleSpreadsheet) => {
     if (player.count > 1) {
       for (let i = 1; i <= player.count; i++) {
         activePlayers.push({
+          ...player,
           name: `${player.name} [${i}]`,
           count: 1
         });
