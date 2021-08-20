@@ -14,10 +14,8 @@ import { logger } from '@/logger';
 
 const launchBot = async () => {
   const bot = new Telegraf<BotContext>(config.BOT_TOKEN);
-  const document = new GoogleSpreadsheet(config.GOOGLE_SPREADSHEET_ID);
-  const koa = new Koa();
-  const router = new Router();
 
+  const document = new GoogleSpreadsheet(config.GOOGLE_SPREADSHEET_ID);
   document.useApiKey(config.GOOGLE_API_KEY);
   bot.context.document = document;
 
@@ -26,9 +24,17 @@ const launchBot = async () => {
   const secretPath = `/webhook/${bot.secretPathComponent()}`;
   await bot.telegram.setWebhook(`https://${config.HOOK_DOMAIN}${secretPath}`);
 
+  const koa = new Koa();
+  const router = new Router();
+
   router.post(secretPath, async (ctx) => {
-    await bot.handleUpdate(ctx.request.body);
-    ctx.status = 200;
+    try {
+      await bot.handleUpdate(ctx.request.body);
+      ctx.status = 200;
+    } catch (e) {
+      ctx.status = 500;
+      logger.error(e);
+    }
   });
 
   router.get('/healthcheck', (ctx) => {

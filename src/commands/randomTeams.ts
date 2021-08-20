@@ -28,9 +28,9 @@ export default async (ctx: BotContext) => {
   team1[0].name += ' ⭐';
   team2[0].name += ' ⭐';
 
-  return ctx.replyWithMarkdown(
+  return ctx.replyWithHTML(
     dedent`
-      *${placeAndTime}*
+      <b>${placeAndTime}</b>
 
       Команда 1 (${team1.length})
       ${team1.map((player) => `- ${player.name}`).join('\n')}
