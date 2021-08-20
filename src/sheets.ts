@@ -1,5 +1,9 @@
 import { GoogleSpreadsheet } from 'google-spreadsheet';
-import { Player } from '@/types';
+
+interface Player {
+  name: string;
+  count: number;
+}
 
 export const getActivePlayers = async (document: GoogleSpreadsheet) => {
   await document.loadInfo();
@@ -8,7 +12,6 @@ export const getActivePlayers = async (document: GoogleSpreadsheet) => {
 
   const activePlayers: Player[] = [];
 
-  // TODO: move these numbers to config/env somehow
   for (let i = 2; i < 100; i++) {
     const player = {
       name: sheet.getCell(i, 0).value?.toString().trim(),

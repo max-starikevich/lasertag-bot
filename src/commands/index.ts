@@ -1,7 +1,7 @@
 import { Markup, Telegraf } from 'telegraf';
 import { chunk } from 'lodash';
 
-import { AttendHandlerFunction, BotContext } from '@/types';
+import { BotContext } from '@/types';
 
 import help from '@/commands/help';
 import players from '@/commands/players';
@@ -11,6 +11,8 @@ import version from '@/commands/version';
 import { HandledError, handleActionError } from '@/errors';
 import { logger } from '@/logger';
 
+type AttendHandlerFunction = (ctx: BotContext) => Promise<any>;
+
 interface BotCommand {
   command: string;
   handler: AttendHandlerFunction;
@@ -18,7 +20,7 @@ interface BotCommand {
   showInMenu: boolean;
 }
 
-export const commands: BotCommand[] = [
+const commands: BotCommand[] = [
   {
     command: '/start',
     handler: help,
