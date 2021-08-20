@@ -19,9 +19,9 @@ export default async (ctx: BotContext) => {
 
   const placeAndTime = await getPlaceAndTime(document);
 
-  return ctx.replyWithMarkdown(
+  return ctx.replyWithHTML(
     dedent`
-      *${placeAndTime}*
+      <b>${placeAndTime}</b>
 
       ${activePlayers
         .map(

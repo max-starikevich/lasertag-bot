@@ -2,14 +2,13 @@ import { Markup, Telegraf } from 'telegraf';
 import { chunk } from 'lodash';
 
 import { BotContext } from '@/types';
-
-import help from '@/commands/help';
-import players from '@/commands/players';
-import teams from '@/commands/teams';
-import version from '@/commands/version';
-
 import { HandledError, handleActionError } from '@/errors';
 import { logger } from '@/logger';
+
+import help from '@/commands/help';
+import playerList from '@/commands/playerList';
+import randomTeams from '@/commands/randomTeams';
+import version from '@/commands/version';
 
 type AttendHandlerFunction = (ctx: BotContext) => Promise<any>;
 
@@ -29,13 +28,13 @@ const commands: BotCommand[] = [
   },
   {
     command: '/randomTeams',
-    handler: teams,
+    handler: randomTeams,
     description: 'Получить случайные составы команд по файлу записи',
     showInMenu: true
   },
   {
     command: '/playerList',
-    handler: players,
+    handler: playerList,
     description: 'Список записавшихся игроков в файл',
     showInMenu: true
   },
@@ -75,7 +74,7 @@ const wrapper = async (handler: AttendHandlerFunction, ctx: BotContext) => {
       return;
     }
 
-    ctx.reply(`❌ Неизвестная ошибка`);
+    ctx.reply(`❌ Неизвестная ошибка. Попробуйте позже.`);
     handleActionError(e);
   }
 };

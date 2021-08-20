@@ -4,9 +4,9 @@ import { BotContext } from '@/types';
 import { commandsInMenu, menuKeyboard } from './index';
 
 export default (ctx: BotContext) => {
-  return ctx.replyWithMarkdown(
+  return ctx.replyWithHTML(
     dedent`
-      *Доступные команды*:
+      <b>Доступные команды</b>:
 
       ${commandsInMenu
         .map(
