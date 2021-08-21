@@ -1,5 +1,6 @@
 import { GoogleSpreadsheet } from 'google-spreadsheet';
 
+import config from './config';
 import { escapeHtml } from './utils';
 
 interface Player {
@@ -8,6 +9,12 @@ interface Player {
   rentCount: number;
   comment: string;
 }
+
+export const getSpreadsheetDocument = () => {
+  const document = new GoogleSpreadsheet(config.GOOGLE_SPREADSHEET_ID);
+  document.useApiKey(config.GOOGLE_API_KEY);
+  return document;
+};
 
 export const getActivePlayers = async (document: GoogleSpreadsheet) => {
   await document.loadInfo();
