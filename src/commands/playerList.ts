@@ -25,10 +25,8 @@ export default async (ctx: BotContext) => {
 
       ${activePlayers
         .map(
-          (player, i) =>
-            `${i + 1}) ${player.name} ${
-              player.count > 1 ? `[${player.count}]` : ``
-            }`
+          ({ name, count }, i) =>
+            `${i + 1}) ${name} ${count > 1 ? `[${count}]` : ``}`
         )
         .join('\n')}
     `

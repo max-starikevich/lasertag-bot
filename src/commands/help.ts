@@ -1,7 +1,7 @@
 import dedent from 'dedent-js';
 
 import { BotContext } from '@/types';
-import { commandsInMenu, menuKeyboard } from './index';
+import { commandsInMenu, menuKeyboard } from '@/commands/index';
 
 export default (ctx: BotContext) => {
   return ctx.replyWithHTML(
