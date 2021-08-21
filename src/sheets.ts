@@ -36,11 +36,16 @@ export const getActivePlayers = async (document: GoogleSpreadsheet) => {
     }
 
     if (player.count > 1) {
-      for (let i = 1; i <= player.count; i++) {
+      for (
+        let i = 1, rentCount = player.rentCount;
+        i <= player.count;
+        i++, rentCount--
+      ) {
         activePlayers.push({
-          ...player,
-          name: `${player.name} [${i}]`,
-          count: 1
+          name: `${player.name} ${i > 1 ? `[${i}]` : ''}`,
+          count: 1,
+          rentCount: rentCount > 0 ? 1 : 0,
+          comment: i === 1 ? player.comment : ''
         });
       }
     }
