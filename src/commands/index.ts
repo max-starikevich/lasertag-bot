@@ -1,14 +1,13 @@
-import { Markup, Telegraf } from 'telegraf';
-import { chunk } from 'lodash';
+import { Telegraf } from 'telegraf';
 
 import { BotContext } from '@/types';
 import { HandledError, handleActionError } from '@/errors';
 import { logger } from '@/logger';
 
 import help from '@/commands/help';
-import playerList from '@/commands/playerList';
-import randomTeams from '@/commands/randomTeams';
-import organizerData from '@/commands/organizerData';
+import playerlist from '@/commands/playerlist';
+import randomTeams from '@/commands/randomteams';
+import organizerdata from '@/commands/organizerdata';
 import about from '@/commands/about';
 
 type AttendHandlerFunction = (ctx: BotContext) => Promise<any>;
@@ -28,19 +27,19 @@ const commands: BotCommand[] = [
     showInMenu: false
   },
   {
-    command: '/playerList',
-    handler: playerList,
+    command: '/playerlist',
+    handler: playerlist,
     description: 'Список записавшихся игроков в файл',
     showInMenu: true
   },
   {
-    command: '/organizerData',
-    handler: organizerData,
+    command: '/organizerdata',
+    handler: organizerdata,
     description: 'Данные для организаторов',
     showInMenu: true
   },
   {
-    command: '/randomTeams',
+    command: '/randomteams',
     handler: randomTeams,
     description: 'Сделать случайные составы команд по файлу записи',
     showInMenu: true
@@ -62,15 +61,6 @@ const commands: BotCommand[] = [
 export const commandsInMenu = commands.filter(
   ({ showInMenu }) => showInMenu === true
 );
-
-export const menuKeyboard = Markup.keyboard(
-  chunk(
-    commandsInMenu.map(({ command }) => command),
-    2
-  )
-)
-  .oneTime()
-  .resize();
 
 const wrapper = async (handler: AttendHandlerFunction, ctx: BotContext) => {
   try {
