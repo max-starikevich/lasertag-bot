@@ -13,8 +13,8 @@ export default async (ctx: BotContext) => {
 
   const activePlayers = await getActivePlayers(document);
 
-  if (activePlayers.length === 0) {
-    return ctx.reply('Пока что никто не записан');
+  if (activePlayers.length < 2) {
+    return ctx.reply('Записано меньше двух человек');
   }
 
   const placeAndTime = await getPlaceAndTime(document);
