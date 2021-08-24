@@ -10,17 +10,17 @@ import { BotContext } from '@/types';
 
 interface ApiOptions {
   bot: Telegraf<BotContext>;
-  secretPath: string;
+  webhookPath: string;
 }
 
 export const launchApi = async ({
   bot,
-  secretPath
+  webhookPath
 }: ApiOptions): Promise<Server> => {
   const koa = new Koa();
   const router = new Router();
 
-  router.post(secretPath, async (ctx) => {
+  router.post(webhookPath, async (ctx) => {
     try {
       await bot.handleUpdate(ctx.request.body);
       ctx.status = 200;
