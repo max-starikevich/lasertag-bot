@@ -5,7 +5,7 @@ import * as Sentry from '@sentry/node';
 import { version } from '../package.json';
 import config, { checkEnvironment } from '@/config';
 import { handleStartupError, handleUnexpectedRejection } from '@/errors';
-import { launchBot } from '@/bot';
+import { prepareBot } from '@/bot';
 import { logger } from '@/logger';
 import { launchApi } from '@/api';
 
@@ -17,11 +17,9 @@ Sentry.init({
 
 checkEnvironment()
   .then(async () => {
-    const bot = await launchBot();
-    const secretPath = `/webhook/${bot.secretPathComponent()}`;
-    const api = await launchApi(bot, secretPath);
-
-    logger.info(`🚀 The bot is online. PID: ${process.pid}`);
+    const bot = await prepareBot();
+    const webhookPath = `/webhook/${bot.secretPathComponent()}`;
+    const api = await launchApi({ bot, webhookPath });
 
     process.on('unhandledRejection', handleUnexpectedRejection);
 
@@ -32,7 +30,11 @@ checkEnvironment()
       process.exit();
     });
 
-    await bot.telegram.setWebhook(`https://${config.HOOK_DOMAIN}${secretPath}`);
+    await bot.telegram.setWebhook(
+      `https://${config.HOOK_DOMAIN}${webhookPath}`
+    );
+
+    logger.info(`🚀 The bot is online. PID: ${process.pid}`);
 
     return bot;
   })

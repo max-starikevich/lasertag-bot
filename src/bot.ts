@@ -5,7 +5,7 @@ import { setBotCommands } from '@/commands';
 import config from '@/config';
 import { getSpreadsheetDocument } from '@/sheets';
 
-export const launchBot = async () => {
+export const prepareBot = async () => {
   const bot = new Telegraf<BotContext>(config.BOT_TOKEN);
   bot.context.document = getSpreadsheetDocument();
 
