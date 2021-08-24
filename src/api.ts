@@ -8,10 +8,15 @@ import config from '@/config';
 import { logger } from '@/logger';
 import { BotContext } from '@/types';
 
-export const launchApi = async (
-  bot: Telegraf<BotContext>,
-  secretPath: string
-): Promise<Server> => {
+interface ApiOptions {
+  bot: Telegraf<BotContext>;
+  secretPath: string;
+}
+
+export const launchApi = async ({
+  bot,
+  secretPath
+}: ApiOptions): Promise<Server> => {
   const koa = new Koa();
   const router = new Router();
 
