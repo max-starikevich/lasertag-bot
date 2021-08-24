@@ -8,7 +8,8 @@ export default {
   BOT_TOKEN: process.env.BOT_TOKEN as string,
   GOOGLE_API_KEY: process.env.GOOGLE_API_KEY as string,
   GOOGLE_SPREADSHEET_ID: process.env.GOOGLE_SPREADSHEET_ID as string,
-  HOOK_DOMAIN: process.env.HOOK_DOMAIN as string
+  HOOK_DOMAIN: process.env.HOOK_DOMAIN as string,
+  SENTRY_DSN: process.env.SENTRY_DSN
 };
 
 type EnvironmentValidator = () => Promise<boolean>;

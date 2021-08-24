@@ -2,9 +2,6 @@ import { shuffle } from 'lodash';
 
 import { Player } from '@/types';
 
-export const wait = (ms: number) =>
-  new Promise((resolve) => setTimeout(resolve, ms));
-
 export const escapeHtml = (unsafe = '') =>
   unsafe
     .replace(/&/g, '&amp;')

@@ -1,4 +1,5 @@
 import { Telegraf } from 'telegraf';
+import { Server } from 'http';
 import Koa from 'koa';
 import body from 'koa-body';
 import Router from 'koa-router';
@@ -7,7 +8,10 @@ import config from '@/config';
 import { logger } from '@/logger';
 import { BotContext } from '@/types';
 
-export const launchApi = (bot: Telegraf<BotContext>, secretPath: string) => {
+export const launchApi = async (
+  bot: Telegraf<BotContext>,
+  secretPath: string
+): Promise<Server> => {
   const koa = new Koa();
   const router = new Router();
 
@@ -28,5 +32,9 @@ export const launchApi = (bot: Telegraf<BotContext>, secretPath: string) => {
   koa.use(body());
   koa.use(router.routes());
 
-  return new Promise((resolve) => koa.listen(config.PORT, () => resolve(true)));
+  return new Promise((resolve) => {
+    const server = koa.listen(config.PORT, () => {
+      resolve(server);
+    });
+  });
 };
