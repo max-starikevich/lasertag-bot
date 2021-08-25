@@ -52,7 +52,7 @@ export const getActivePlayers = async (document: GoogleSpreadsheet) => {
 
         activePlayers.push({
           ...player,
-          name: `${player.name} ${isFirst ? `[${i}]` : ''}`,
+          name: `${player.name} ${!isFirst ? `[${i}]` : ''}`,
           count: 1,
           rentCount: rentCount > 0 ? 1 : 0,
           comment: isFirst ? player.comment : '',
