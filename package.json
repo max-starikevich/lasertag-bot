@@ -1,6 +1,6 @@
 {
   "name": "lasertag-bot",
-  "version": "2.1.2",
+  "version": "2.2.0",
   "repository": "https://github.com/max-starikevich/lasertag-bot",
   "author": "Max Starikevich <maxim.starikevich@gmail.com>",
   "license": "MIT",
@@ -42,7 +42,7 @@
     "typescript": "^4.3.5"
   },
   "scripts": {
-    "start": "rm -rf build && tsc-watch --noClear --onSuccess 'node --inspect -r dotenv/config build/src/index.js'",
+    "start": "rm -rf build && tsc-watch --noClear --onSuccess 'node -r dotenv/config build/src/index.js'",
     "lint": "eslint src/**/*.ts",
     "test": "jest",
     "build": "tsc",

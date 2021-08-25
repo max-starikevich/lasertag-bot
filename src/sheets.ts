@@ -11,6 +11,7 @@ export const getSpreadsheetDocument = () => {
 };
 
 const DEFAULT_GROUP_NAME = '0';
+const IS_LATE_SYMBOL = '*';
 
 export const getActivePlayers = async (document: GoogleSpreadsheet) => {
   await document.loadInfo();
@@ -21,6 +22,7 @@ export const getActivePlayers = async (document: GoogleSpreadsheet) => {
     'C3:C100',
     'D3:D100',
     'E3:E100',
+    'H3:H100',
     'V3:V100'
   ]);
 
@@ -32,6 +34,7 @@ export const getActivePlayers = async (document: GoogleSpreadsheet) => {
       count: +sheet.getCell(i, 2).value,
       rentCount: +sheet.getCell(i, 3).value,
       comment: escapeHtml(sheet.getCell(i, 4).value?.toString().trim()),
+      isLate: sheet.getCell(i, 7).value?.toString().trim() === IS_LATE_SYMBOL,
       group: sheet.getCell(i, 21).value?.toString().trim() || DEFAULT_GROUP_NAME
     };
 
@@ -48,6 +51,7 @@ export const getActivePlayers = async (document: GoogleSpreadsheet) => {
         const isFirst = i === 1;
 
         activePlayers.push({
+          ...player,
           name: `${player.name} ${isFirst ? `[${i}]` : ''}`,
           count: 1,
           rentCount: rentCount > 0 ? 1 : 0,

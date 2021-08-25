@@ -11,4 +11,5 @@ export interface Player {
   rentCount: number;
   comment: string;
   group: string;
+  isLate: boolean;
 }
