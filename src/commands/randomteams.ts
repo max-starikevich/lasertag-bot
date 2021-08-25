@@ -21,8 +21,10 @@ export default async (ctx: BotContext) => {
 
   const placeAndTime = await getPlaceAndTime(document);
 
+  const latePlayers = activePlayers.filter(({ isLate }) => isLate);
+
   const groupedPlayers = groupBy<Player>(
-    activePlayers,
+    activePlayers.filter(({ isLate }) => !isLate),
     (player) => player.group
   );
 
@@ -63,6 +65,15 @@ export default async (ctx: BotContext) => {
       ${shuffle(team2)
         .map((player) => `- ${player.name}`)
         .join('\n')}
+
+      ${
+        latePlayers.length > 0
+          ? dedent`
+              Опаздывают (${latePlayers.length})
+              ${latePlayers.map((player) => `- ${player.name}`).join('\n')}
+            `
+          : ''
+      }
     `
   );
 };
