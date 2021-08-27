@@ -1,10 +1,10 @@
 {
   "name": "lasertag-bot",
-  "version": "2.2.0",
+  "version": "2.2.1",
   "repository": "https://github.com/max-starikevich/lasertag-bot",
   "author": "Max Starikevich <maxim.starikevich@gmail.com>",
   "license": "MIT",
-  "main": "build/bot.js",
+  "main": "build/src/index.js",
   "engines": {
     "node": "^16",
     "yarn": "^1"
