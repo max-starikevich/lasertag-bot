@@ -20,19 +20,26 @@ checkEnvironment()
     const bot = await prepareBot();
     const webhookPath = `/webhook/${bot.secretPathComponent()}`;
     const api = await launchApi({ bot, webhookPath });
+    const webhook = `https://${config.HOOK_DOMAIN}${webhookPath}`;
+
+    const { url: currentWebhook } = await bot.telegram.getWebhookInfo();
+
+    if (webhook !== currentWebhook) {
+      await bot.telegram.setWebhook(webhook);
+    }
 
     process.on('unhandledRejection', handleUnexpectedRejection);
 
-    process.on('SIGTERM', async () => {
+    process.on('SIGTERM', () => {
       logger.info('⏳ Shutting down the server gracefully');
 
       api.close();
       process.exit();
     });
 
-    await bot.telegram.setWebhook(
-      `https://${config.HOOK_DOMAIN}${webhookPath}`
-    );
+    if (process.send) {
+      process.send('ready');
+    }
 
     logger.info(`🚀 The bot is online. PID: ${process.pid}`);
 
