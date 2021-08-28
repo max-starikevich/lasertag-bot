@@ -2,8 +2,15 @@ import * as Sentry from '@sentry/node';
 
 import { logger } from '@/logger';
 
+export class UserError extends Error {}
+
 export const handleActionError = (error: Error) => {
   logger.error('❌ Action failed.', error);
+  Sentry.captureException(error);
+};
+
+export const handleWebhookError = (error: Error) => {
+  logger.error('❌ Webhook handler failed.', error);
   Sentry.captureException(error);
 };
 
@@ -24,5 +31,3 @@ export const handleUnexpectedRejection = (error: Error) => {
     process.exit();
   });
 };
-
-export class HandledError extends Error {}
