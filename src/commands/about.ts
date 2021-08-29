@@ -1,7 +1,7 @@
 import dedent from 'dedent-js';
 
 import { author, version, repository } from '../../package.json';
-import { BotContext } from '@/types';
+import { BotContext } from '@/bot';
 import { escapeHtml } from '@/utils';
 
 export default (ctx: BotContext) => {

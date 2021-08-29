@@ -1,6 +1,6 @@
 import handler from '@/commands/playerlist';
 import { UserError } from '@/errors';
-import { BotContext } from '@/types';
+import { BotContext } from '@/bot';
 
 describe('Command /playerlist', () => {
   it('should throw a user error, if there is no "document" object in the context', () => {

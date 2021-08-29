@@ -5,7 +5,7 @@ import body from 'koa-body';
 import Router from 'koa-router';
 
 import config from '@/config';
-import { BotContext } from '@/types';
+import { BotContext } from '@/bot';
 import { handleWebhookError } from '@/errors';
 
 interface ApiOptions {
