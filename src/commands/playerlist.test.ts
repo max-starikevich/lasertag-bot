@@ -1,8 +1,8 @@
-import handler from '@/commands/randomteams';
+import handler from '@/commands/playerlist';
 import { UserError } from '@/errors';
 import { BotContext } from '@/bot';
 
-describe('Command /randomteams', () => {
+describe('Command /playerlist', () => {
   it('should throw a user error, if there is no "document" object in the context', () => {
     const context = {} as BotContext;
 

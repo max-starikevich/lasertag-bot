@@ -5,8 +5,8 @@ import body from 'koa-body';
 import Router from 'koa-router';
 
 import config from '@/config';
-import { logger } from '@/logger';
-import { BotContext } from '@/types';
+import { BotContext } from '@/bot';
+import { handleWebhookError } from '@/errors';
 
 interface ApiOptions {
   bot: Telegraf<BotContext>;
@@ -25,8 +25,8 @@ export const launchApi = async ({
       await bot.handleUpdate(ctx.request.body);
       ctx.status = 200;
     } catch (e) {
+      handleWebhookError(e);
       ctx.status = 500;
-      logger.error(e);
     }
   });
 

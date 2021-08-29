@@ -1,6 +1,6 @@
 import dedent from 'dedent-js';
 
-import { BotContext } from '@/types';
+import { BotContext } from '@/bot';
 import { commandsInMenu } from '@/commands/index';
 
 export default (ctx: BotContext) => {

@@ -1,7 +1,7 @@
 import { Telegraf } from 'telegraf';
 
-import { BotContext } from '@/types';
-import { HandledError, handleActionError } from '@/errors';
+import { BotContext } from '@/bot';
+import { UserError, handleActionError } from '@/errors';
 import { logger } from '@/logger';
 
 import help from '@/commands/help';
@@ -10,11 +10,11 @@ import randomTeams from '@/commands/randomteams';
 import organizerdata from '@/commands/organizerdata';
 import about from '@/commands/about';
 
-type AttendHandlerFunction = (ctx: BotContext) => Promise<any>;
+type CommandHandler = (ctx: BotContext) => Promise<any>;
 
 interface BotCommand {
   command: string;
-  handler: AttendHandlerFunction;
+  handler: CommandHandler;
   description: string;
   showInMenu: boolean;
 }
@@ -62,29 +62,33 @@ export const commandsInMenu = commands.filter(
   ({ showInMenu }) => showInMenu === true
 );
 
-const wrapper = async (handler: AttendHandlerFunction, ctx: BotContext) => {
+const handlerWrapper = async (handler: CommandHandler, ctx: BotContext) => {
   try {
     await handler(ctx);
   } catch (e) {
-    if (e instanceof HandledError) {
+    if (e instanceof UserError) {
       ctx.reply(`❌ ${e.message}`);
-      return;
+    } else {
+      handleActionError(e);
+      ctx.reply(`❌ Что-то пошло не так. Попробуйте свой запрос позже.`);
     }
-
-    ctx.reply(`❌ Неизвестная ошибка. Попробуйте позже.`);
-    handleActionError(e);
   }
 };
 
 export const setBotCommands = async (bot: Telegraf<BotContext>) => {
   commands.map(({ command, handler }) => {
     bot.command(command, async (ctx) => {
-      await wrapper(handler, ctx);
-      logger.info(`Processed ${command} command`);
+      const start = Date.now();
+      await handlerWrapper(handler, ctx);
+      const ms = Date.now() - start;
+
+      logger.info(`✅ Processed ${command} in ${ms}ms.`);
     });
   });
 
   bot.hears(/^\/[a-z0-9]+$/i, (ctx) =>
-    ctx.reply('Не удалось распознать команду. Попробуйте /help')
+    ctx.reply(
+      'Не удалось распознать команду. Используйте меню или команду /help'
+    )
   );
 };

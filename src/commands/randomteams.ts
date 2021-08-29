@@ -1,56 +1,29 @@
-import { groupBy, shuffle } from 'lodash';
+import { shuffle } from 'lodash';
 import dedent from 'dedent-js';
 
-import { HandledError } from '@/errors';
-import { BotContext, Player } from '@/types';
+import { UserError } from '@/errors';
+import { BotContext } from '@/bot';
 import { getActivePlayers, getPlaceAndTime } from '@/sheets';
-import { getRandomizedTeams } from '@/utils';
+import { getBalancedTeams } from '@/player';
 
 export default async (ctx: BotContext) => {
   const { document } = ctx;
 
   if (!document) {
-    throw new HandledError(`Не удалось прочитать таблицу`);
+    throw new UserError(`Не удалось прочитать таблицу`);
   }
 
   const activePlayers = await getActivePlayers(document);
 
-  if (activePlayers.length < 2) {
-    return ctx.reply('Записано меньше двух человек');
+  if (activePlayers.length < 8) {
+    throw new UserError(
+      'Записано меньше 8 человек. Делить меньшее количество бессмысленно.'
+    );
   }
 
   const placeAndTime = await getPlaceAndTime(document);
 
-  const latePlayers = activePlayers.filter(({ isLate }) => isLate);
-
-  const groupedPlayers = groupBy<Player>(
-    activePlayers.filter(({ isLate }) => !isLate),
-    (player) => player.group
-  );
-
-  const groups = Object.keys(groupedPlayers);
-
-  const [team1, team2] = groups.reduce(
-    ([resultTeam1, resultTeam2], groupName) => {
-      const players = groupedPlayers[groupName];
-
-      // groupTeam1 is always bigger or equal to groupTeam2
-      const [groupTeam1, groupTeam2] = getRandomizedTeams(players);
-
-      if (resultTeam1.length > resultTeam2.length) {
-        return [
-          [...resultTeam1, ...groupTeam2],
-          [...resultTeam2, ...groupTeam1]
-        ];
-      } else {
-        return [
-          [...resultTeam1, ...groupTeam1],
-          [...resultTeam2, ...groupTeam2]
-        ];
-      }
-    },
-    [[], []] as Player[][]
-  );
+  const [team1, team2] = getBalancedTeams(activePlayers);
 
   return ctx.replyWithHTML(
     dedent`
@@ -65,15 +38,6 @@ export default async (ctx: BotContext) => {
       ${shuffle(team2)
         .map((player) => `- ${player.name}`)
         .join('\n')}
-
-      ${
-        latePlayers.length > 0
-          ? dedent`
-              Опаздывают (${latePlayers.length})
-              ${latePlayers.map((player) => `- ${player.name}`).join('\n')}
-            `
-          : ''
-      }
     `
   );
 };
