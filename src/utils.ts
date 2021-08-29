@@ -5,3 +5,5 @@ export const escapeHtml = (unsafeString = '') =>
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;')
     .replace(/'/g, '&#039;');
+
+export const getRandomOneOrZero = () => (Math.random() > 0.5 ? 1 : 0);
