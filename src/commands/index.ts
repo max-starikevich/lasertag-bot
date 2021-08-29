@@ -78,8 +78,11 @@ const handlerWrapper = async (handler: CommandHandler, ctx: BotContext) => {
 export const setBotCommands = async (bot: Telegraf<BotContext>) => {
   commands.map(({ command, handler }) => {
     bot.command(command, async (ctx) => {
+      const start = Date.now();
       await handlerWrapper(handler, ctx);
-      logger.info(`Processed ${command} command`);
+      const ms = Date.now() - start;
+
+      logger.info(`✅ Processed ${command} in ${ms}ms.`);
     });
   });
 
