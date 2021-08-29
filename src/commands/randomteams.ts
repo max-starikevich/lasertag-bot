@@ -1,3 +1,4 @@
+import { shuffle } from 'lodash';
 import dedent from 'dedent-js';
 
 import { UserError } from '@/errors';
@@ -29,10 +30,14 @@ export default async (ctx: BotContext) => {
       <b>${placeAndTime}</b>
 
       Команда 1 (${team1.length})
-      ${team1.map((player) => `- ${player.name}`).join('\n')}
+      ${shuffle(team1)
+        .map((player) => `- ${player.name}`)
+        .join('\n')}
 
       Команда 2 (${team2.length})
-      ${team2.map((player) => `- ${player.name}`).join('\n')}
+      ${shuffle(team2)
+        .map((player) => `- ${player.name}`)
+        .join('\n')}
     `
   );
 };
