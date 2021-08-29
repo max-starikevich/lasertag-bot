@@ -1,20 +1,20 @@
 import dedent from 'dedent-js';
 
-import { BotContext } from '@/types';
-import { HandledError } from '@/errors';
+import { BotContext } from '@/bot';
+import { UserError } from '@/errors';
 import { getActivePlayers, getPlaceAndTime } from '@/sheets';
 
 export default async (ctx: BotContext) => {
   const { document } = ctx;
 
   if (!document) {
-    throw new HandledError(`Не удалось прочитать таблицу`);
+    throw new UserError(`Не удалось прочитать таблицу`);
   }
 
   const activePlayers = await getActivePlayers(document);
 
-  if (activePlayers.length < 2) {
-    return ctx.reply('Записано меньше двух человек');
+  if (activePlayers.length === 0) {
+    throw new UserError('Никто не записан');
   }
 
   const placeAndTime = await getPlaceAndTime(document);
@@ -23,12 +23,7 @@ export default async (ctx: BotContext) => {
     dedent`
       <b>${placeAndTime}</b>
 
-      ${activePlayers
-        .map(
-          ({ name, count }, i) =>
-            `${i + 1}) ${name} ${count > 1 ? `[${count}]` : ``}`
-        )
-        .join('\n')}
+      ${activePlayers.map(({ name }, i) => `${i + 1}) ${name}`).join('\n')}
     `
   );
 };
