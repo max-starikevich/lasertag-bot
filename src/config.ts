@@ -4,12 +4,16 @@ const isProduction = APP_ENV === 'production';
 export default {
   isProduction,
   APP_ENV,
+
   PORT: process.env.PORT || '4000',
   BOT_TOKEN: process.env.BOT_TOKEN as string,
   GOOGLE_API_KEY: process.env.GOOGLE_API_KEY as string,
   GOOGLE_SPREADSHEET_ID: process.env.GOOGLE_SPREADSHEET_ID as string,
   HOOK_DOMAIN: process.env.HOOK_DOMAIN as string,
-  SENTRY_DSN: process.env.SENTRY_DSN
+  SENTRY_DSN: process.env.SENTRY_DSN,
+
+  DEFAULT_PLAYER_LEVEL: 1,
+  IS_LATE_SYMBOL: '*'
 };
 
 type EnvironmentValidator = () => Promise<boolean>;
@@ -50,6 +54,4 @@ export const checkEnvironment = async () => {
       'Bad environment. Check these variables: ' + failedVariables.join(', ')
     );
   }
-
-  return true;
 };
