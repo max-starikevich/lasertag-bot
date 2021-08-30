@@ -1,7 +1,7 @@
 import { chunk, sortBy } from 'lodash';
 
 import config from '@/config';
-import { getRandomOneOrZero as tossCoin } from './utils';
+import { getRandomOneOrZero } from './utils';
 
 export interface Player {
   name: string;
@@ -30,7 +30,7 @@ export const flattenPlayer = (player: Player): Player[] => {
 
       players.push({
         ...player,
-        name: `${player.name} ${!isFirst ? `[${i}]` : ''}`,
+        name: `${player.name}${!isFirst ? ` (${i})` : ''}`,
         count: 1,
         rentCount: rentCount > 0 ? 1 : 0,
         comment: isFirst ? player.comment : '',
@@ -45,6 +45,10 @@ export const flattenPlayer = (player: Player): Player[] => {
 };
 
 export const getBalancedTeams = (players: Player[]): Teams => {
+  if (players.length < 2) {
+    return [[...players], []];
+  }
+
   const ratedPlayers = sortBy(players, ({ level }) => level).reverse();
   const playerPairs = chunk(ratedPlayers, 2);
 
@@ -54,7 +58,7 @@ export const getBalancedTeams = (players: Player[]): Teams => {
         return [[...team1, player1], team2];
       }
 
-      if (tossCoin()) {
+      if (getRandomOneOrZero() === 1) {
         return [
           [...team1, player1],
           [...team2, player2]
