@@ -15,10 +15,8 @@ export default async (ctx: BotContext) => {
 
   const activePlayers = await getActivePlayers(document);
 
-  if (activePlayers.length < 8) {
-    throw new UserError(
-      'Записано меньше 8 человек. Делить меньшее количество бессмысленно.'
-    );
+  if (activePlayers.length < 2) {
+    throw new UserError('Записано меньше двух человек');
   }
 
   const placeAndTime = await getPlaceAndTime(document);

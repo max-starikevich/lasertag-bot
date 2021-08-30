@@ -41,7 +41,7 @@ checkEnvironment()
       process.send('ready');
     }
 
-    logger.info(`🚀 The bot is online. PID: ${process.pid}`);
+    logger.info(`🚀 The bot v${version} is online. PID: ${process.pid}`);
 
     return bot;
   })
