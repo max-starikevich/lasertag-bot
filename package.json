@@ -44,7 +44,7 @@
   "scripts": {
     "start": "tsc-watch --noClear --onSuccess 'node --enable-source-maps -r dotenv/config build/src/index.js'",
     "lint": "eslint src/**/*.ts",
-    "test": "jest",
+    "test": "jest --setupFiles dotenv/config",
     "build": "tsc",
     "clear": "rm -rf ./build",
     "prepare": "husky install"
