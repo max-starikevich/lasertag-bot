@@ -62,9 +62,23 @@ export const commandsInMenu = commands.filter(
   ({ showInMenu }) => showInMenu === true
 );
 
-const handlerWrapper = async (handler: CommandHandler, ctx: BotContext) => {
+interface HandlerWrapperOptions {
+  command: string;
+  handler: CommandHandler;
+  ctx: BotContext;
+}
+
+const handlerWrapper = async ({
+  command,
+  handler,
+  ctx
+}: HandlerWrapperOptions) => {
   try {
+    const startMs = Date.now();
     await handler(ctx);
+    const finishMs = Date.now() - startMs;
+
+    logger.info(`✅ Processed ${command} in ${finishMs}ms.`);
   } catch (e) {
     if (e instanceof UserError) {
       ctx.reply(`❌ ${e.message}`);
@@ -76,15 +90,9 @@ const handlerWrapper = async (handler: CommandHandler, ctx: BotContext) => {
 };
 
 export const setBotCommands = async (bot: Telegraf<BotContext>) => {
-  commands.map(({ command, handler }) => {
-    bot.command(command, async (ctx) => {
-      const start = Date.now();
-      await handlerWrapper(handler, ctx);
-      const ms = Date.now() - start;
-
-      logger.info(`✅ Processed ${command} in ${ms}ms.`);
-    });
-  });
+  commands.map(({ command, handler }) =>
+    bot.command(command, (ctx) => handlerWrapper({ command, handler, ctx }))
+  );
 
   bot.hears(/^\/[a-z0-9]+$/i, (ctx) =>
     ctx.reply(
