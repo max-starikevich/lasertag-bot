@@ -18,7 +18,7 @@ RUN yarn install && yarn cache clean
 COPY --chown=node:node tsconfig.json ./
 COPY --chown=node:node ./src ./src
 
-RUN tsc
+RUN yarn build
 
 #### SERVER RUNTIME IMAGE
 FROM ${BASE_IMAGE} as runtime
