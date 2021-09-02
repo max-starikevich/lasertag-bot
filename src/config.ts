@@ -17,12 +17,12 @@ const config = {
   MAX_ROW_NUMBER: parseInt(process.env.MAX_ROW_NUMBER || '') || 100,
 
   NAME_COLUMN: process.env.NAME_COLUMN as string,
-  USERNAME_COLUMN: process.env.USERNAME_COLUMN,
+  USERNAME_COLUMN: process.env.USERNAME_COLUMN as string,
   COUNT_COLUMN: process.env.COUNT_COLUMN as string,
   RENT_COLUMN: process.env.RENT_COLUMN as string,
-  COMMENT_COLUMN: process.env.COMMENT_COLUMN,
-  LEVEL_COLUMN: process.env.LEVEL_COLUMN,
-  PLACE_AND_TIME_COLUMN: process.env.PLACE_AND_TIME_COLUMN
+  COMMENT_COLUMN: process.env.COMMENT_COLUMN as string,
+  LEVEL_COLUMN: process.env.LEVEL_COLUMN as string,
+  PLACE_AND_TIME_CELL: process.env.PLACE_AND_TIME_CELL as string
 };
 
 type EnvironmentValidator = () => Promise<boolean>;
@@ -30,6 +30,9 @@ type EnvironmentValidator = () => Promise<boolean>;
 type EnvironmentToCheck = {
   [key: string]: EnvironmentValidator;
 };
+
+const isCapitalLetter = (content: string) =>
+  content.length === 1 && content === content.toUpperCase();
 
 const requiredVariables: EnvironmentToCheck = {
   BOT_TOKEN: async () => (process.env.BOT_TOKEN || '').length > 0,
@@ -41,11 +44,21 @@ const requiredVariables: EnvironmentToCheck = {
 
   HOOK_DOMAIN: async () => (process.env.HOOK_DOMAIN || '').length > 0,
 
-  NAME_COLUMN: async () => (process.env.NAME_COLUMN || '').length > 0,
+  NAME_COLUMN: async () => isCapitalLetter(process.env.NAME_COLUMN || ''),
 
-  COUNT_COLUMN: async () => (process.env.COUNT_COLUMN || '').length > 0,
+  USERNAME_COLUMN: async () =>
+    isCapitalLetter(process.env.USERNAME_COLUMN || ''),
 
-  RENT_COLUMN: async () => (process.env.RENT_COLUMN || '').length > 0
+  COUNT_COLUMN: async () => isCapitalLetter(process.env.COUNT_COLUMN || ''),
+
+  RENT_COLUMN: async () => isCapitalLetter(process.env.RENT_COLUMN || ''),
+
+  COMMENT_COLUMN: async () => isCapitalLetter(process.env.COMMENT_COLUMN || ''),
+
+  LEVEL_COLUMN: async () => isCapitalLetter(process.env.LEVEL_COLUMN || ''),
+
+  PLACE_AND_TIME_CELL: async () =>
+    (process.env.PLACE_AND_TIME_CELL || '').length > 0
 };
 
 export const checkEnvironment = async () => {

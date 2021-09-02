@@ -83,7 +83,7 @@ export const getActivePlayers = async (document: GoogleSpreadsheet) => {
 export const getPlaceAndTime = async (document: GoogleSpreadsheet) => {
   await document.loadInfo();
   const sheet = document.sheetsByIndex[0];
-  await sheet.loadCells('C1');
+  await sheet.loadCells(config.PLACE_AND_TIME_CELL);
 
-  return sheet.getCell(0, 2).value.toString();
+  return sheet.getCellByA1(config.PLACE_AND_TIME_CELL).value.toString();
 };
