@@ -1,7 +1,7 @@
 const APP_ENV = process.env.APP_ENV || 'local';
 const isProduction = APP_ENV === 'production';
 
-export default {
+const config = {
   isProduction,
   APP_ENV,
 
@@ -13,7 +13,16 @@ export default {
   SENTRY_DSN: process.env.SENTRY_DSN,
 
   DEFAULT_PLAYER_LEVEL: 1,
-  IS_LATE_SYMBOL: '*'
+  START_FROM_ROW: parseInt(process.env.START_FROM_ROW || '') || 1,
+  MAX_ROW_NUMBER: parseInt(process.env.MAX_ROW_NUMBER || '') || 100,
+
+  NAME_COLUMN: process.env.NAME_COLUMN as string,
+  USERNAME_COLUMN: process.env.USERNAME_COLUMN,
+  COUNT_COLUMN: process.env.COUNT_COLUMN as string,
+  RENT_COLUMN: process.env.RENT_COLUMN as string,
+  COMMENT_COLUMN: process.env.COMMENT_COLUMN,
+  LEVEL_COLUMN: process.env.LEVEL_COLUMN,
+  PLACE_AND_TIME_COLUMN: process.env.PLACE_AND_TIME_COLUMN
 };
 
 type EnvironmentValidator = () => Promise<boolean>;
@@ -30,7 +39,13 @@ const requiredVariables: EnvironmentToCheck = {
   GOOGLE_SPREADSHEET_ID: async () =>
     (process.env.GOOGLE_SPREADSHEET_ID || '').length > 0,
 
-  HOOK_DOMAIN: async () => (process.env.HOOK_DOMAIN || '').length > 0
+  HOOK_DOMAIN: async () => (process.env.HOOK_DOMAIN || '').length > 0,
+
+  NAME_COLUMN: async () => (process.env.NAME_COLUMN || '').length > 0,
+
+  COUNT_COLUMN: async () => (process.env.COUNT_COLUMN || '').length > 0,
+
+  RENT_COLUMN: async () => (process.env.RENT_COLUMN || '').length > 0
 };
 
 export const checkEnvironment = async () => {
@@ -55,3 +70,5 @@ export const checkEnvironment = async () => {
     );
   }
 };
+
+export default config;
