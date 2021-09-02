@@ -1,16 +1,8 @@
-import { createLogger, transports, format } from 'winston';
+import { createLogger, format, transports } from 'winston';
+
+const { combine, timestamp, errors, prettyPrint } = format;
 
 export const logger = createLogger({
-  level: 'info',
-  format: format.combine(
-    format.timestamp({ format: 'YYYY-MM-DDTHH:mm:ss' }),
-    format.printf((data) =>
-      JSON.stringify({
-        level: data.level,
-        timestamp: data.timestamp,
-        message: data.message
-      })
-    )
-  ),
+  format: combine(errors({ stack: true }), timestamp(), prettyPrint()),
   transports: [new transports.Console()]
 });
