@@ -1,15 +1,22 @@
-import { createLogger, transports, format } from 'winston';
+import { createLogger, format, transports } from 'winston';
+
+const { combine, timestamp, errors, printf } = format;
 
 export const logger = createLogger({
-  level: 'info',
-  format: format.combine(
-    format.timestamp({ format: 'YYYY-MM-DDTHH:mm:ss' }),
-    format.printf((data) =>
-      JSON.stringify({
-        level: data.level,
-        timestamp: data.timestamp,
-        message: data.message
-      })
+  format: combine(
+    errors({ stack: true }),
+    timestamp(),
+    printf((info) =>
+      JSON.stringify(
+        {
+          timestamp: info.timestamp,
+          level: info.level,
+          message: info.message,
+          stack: info.stack
+        },
+        null,
+        4
+      )
     )
   ),
   transports: [new transports.Console()]

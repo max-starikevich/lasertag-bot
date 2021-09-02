@@ -4,7 +4,11 @@ import * as Sentry from '@sentry/node';
 
 import { version } from '../package.json';
 import config, { checkEnvironment } from '@/config';
-import { handleStartupError, handleUnexpectedRejection } from '@/errors';
+import {
+  handleStartupError,
+  handleUnexpectedException,
+  handleUnexpectedRejection
+} from '@/errors';
 import { prepareBot } from '@/bot';
 import { logger } from '@/logger';
 import { launchApi } from '@/api';
@@ -29,8 +33,9 @@ checkEnvironment()
     }
 
     process.on('unhandledRejection', handleUnexpectedRejection);
+    process.on('uncaughtException', handleUnexpectedException);
 
-    process.on('SIGTERM', () => {
+    process.on('exit', () => {
       logger.info('⏳ Shutting down the server gracefully');
 
       api.close();
