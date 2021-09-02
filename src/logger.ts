@@ -7,12 +7,16 @@ export const logger = createLogger({
     errors({ stack: true }),
     timestamp(),
     printf((info) =>
-      JSON.stringify({
-        timestamp: info.timestamp,
-        level: info.level,
-        message: info.message,
-        stack: info.stack
-      })
+      JSON.stringify(
+        {
+          timestamp: info.timestamp,
+          level: info.level,
+          message: info.message,
+          stack: info.stack
+        },
+        null,
+        4
+      )
     )
   ),
   transports: [new transports.Console()]
