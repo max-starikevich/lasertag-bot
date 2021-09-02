@@ -4,17 +4,17 @@ import { logger } from '@/logger';
 
 export class UserError extends Error {}
 
-export const handleActionError = (error: Error) => {
+export const handleActionError = (error: any) => {
   Sentry.captureException(error);
   logger.error('❌ Action failed.', error);
 };
 
-export const handleWebhookError = (error: Error) => {
+export const handleWebhookError = (error: any) => {
   Sentry.captureException(error);
   logger.error('❌ Webhook handler failed.', error);
 };
 
-export const handleStartupError = (error: Error) => {
+export const handleStartupError = (error: any) => {
   Sentry.captureException(error);
   logger.error('❌ Startup failed.', error);
 
@@ -23,7 +23,7 @@ export const handleStartupError = (error: Error) => {
   });
 };
 
-export const handleUnexpectedRejection = (error: Error) => {
+export const handleUnexpectedRejection = (error: any) => {
   Sentry.captureException(error);
   logger.error('❌ Unexpected rejection.', error);
 
@@ -32,7 +32,7 @@ export const handleUnexpectedRejection = (error: Error) => {
   });
 };
 
-export const handleUnexpectedException = (error: Error) => {
+export const handleUnexpectedException = (error: any) => {
   Sentry.captureException(error);
   logger.error('❌ Unexpected exception.', error);
 
