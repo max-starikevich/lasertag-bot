@@ -29,8 +29,9 @@ phases:
       # replacing $APP_IMAGE with full image name using sed.
       # Beanstalk doesn't know the exact image we did build,
       # so let's tell him that explicitly
-      - sed -i "s|\$APP_IMAGE|$APP_IMAGE:$COMMIT_HASH|g" docker-compose.yml
+      - sed -i "s|\$APP_IMAGE|$APP_IMAGE:$COMMIT_HASH|g" docker-compose.prod.yml
       - echo "COMMIT_HASH=$COMMIT_HASH" >> .app.env
+      - mv docker-compose.prod.yml docker-compose.yml
 
   post_build:
     commands:
