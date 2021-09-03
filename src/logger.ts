@@ -8,12 +8,16 @@ export const logger = createLogger({
     timestamp(),
     printf((info) =>
       JSON.stringify({
-        timestamp: info.timestamp,
         level: info.level,
         message: info.message,
-        stack: info.stack
+        stack: info.stack,
+        timestamp: info.timestamp
       })
     )
   ),
-  transports: [new transports.Console()]
+  transports: [
+    new transports.Console(),
+    new transports.File({ filename: 'logs/error.log', level: 'error' }),
+    new transports.File({ filename: 'logs/info.log', level: 'info' })
+  ]
 });
