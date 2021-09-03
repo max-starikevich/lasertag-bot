@@ -1,7 +1,7 @@
 import { Telegraf } from 'telegraf';
 
 import { BotContext } from '@/bot';
-import { UserError, handleActionError } from '@/errors';
+import { UserError, handleCommandError } from '@/errors';
 import { logger } from '@/logger';
 
 import help from '@/commands/help';
@@ -83,7 +83,7 @@ const handlerWrapper = async ({
     if (e instanceof UserError) {
       ctx.reply(`❌ ${e.message}`);
     } else {
-      handleActionError(e);
+      handleCommandError(e);
       ctx.reply(`❌ Что-то пошло не так. Попробуйте свой запрос позже.`);
     }
   }

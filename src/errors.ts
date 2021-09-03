@@ -4,9 +4,9 @@ import { logger } from '@/logger';
 
 export class UserError extends Error {}
 
-export const handleActionError = (error: any) => {
+export const handleCommandError = (error: any) => {
   Sentry.captureException(error);
-  logger.error('❌ Action failed.', error);
+  logger.error('❌ Command failed.', error);
 };
 
 export const handleWebhookError = (error: any) => {
