@@ -24,11 +24,12 @@ RUN yarn build
 FROM ${BASE_IMAGE} as runtime
 LABEL maintainer="maxim.starikevich@gmail.com"
 
+RUN mkdir -p /home/node/app/logs && chown -R node:node /home/node/app
+
 USER node
 ENV PATH="/home/node/app/node_modules/.bin:${PATH}"
 ENV NODE_ENV=production
 
-RUN mkdir /home/node/app
 WORKDIR /home/node/app
 
 COPY --chown=node:node package.json yarn.lock ./

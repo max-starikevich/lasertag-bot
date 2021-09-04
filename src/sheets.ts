@@ -4,25 +4,35 @@ import config from '@/config';
 import { escapeHtml } from '@/utils';
 import { Player } from '@/player';
 
+const {
+  NAME_COLUMN,
+  USERNAME_COLUMN,
+  COUNT_COLUMN,
+  RENT_COLUMN,
+  COMMENT_COLUMN,
+  LEVEL_COLUMN,
+  START_FROM_ROW,
+  MAX_ROW_NUMBER,
+  DEFAULT_PLAYER_LEVEL,
+  PLACE_AND_TIME_CELL
+} = config;
+
+const PLAYER_DATA_RANGES = [
+  NAME_COLUMN,
+  USERNAME_COLUMN,
+  COUNT_COLUMN,
+  RENT_COLUMN,
+  COMMENT_COLUMN,
+  LEVEL_COLUMN
+]
+  .filter((columnName) => !!columnName)
+  .map((column) => `${column}${START_FROM_ROW}:${column}${MAX_ROW_NUMBER}`);
+
 export const getSpreadsheetDocument = () => {
   const document = new GoogleSpreadsheet(config.GOOGLE_SPREADSHEET_ID);
   document.useApiKey(config.GOOGLE_API_KEY);
   return document;
 };
-
-const PLAYER_DATA_RANGES = [
-  config.NAME_COLUMN,
-  config.USERNAME_COLUMN,
-  config.COUNT_COLUMN,
-  config.RENT_COLUMN,
-  config.COMMENT_COLUMN,
-  config.LEVEL_COLUMN
-]
-  .filter((columnName) => !!columnName)
-  .map(
-    (column) =>
-      `${column}${config.START_FROM_ROW}:${column}${config.MAX_ROW_NUMBER}`
-  );
 
 export const getActivePlayers = async (document: GoogleSpreadsheet) => {
   await document.loadInfo();
@@ -32,25 +42,24 @@ export const getActivePlayers = async (document: GoogleSpreadsheet) => {
 
   const activePlayers: Player[] = [];
 
-  for (let row = config.START_FROM_ROW; row < config.MAX_ROW_NUMBER; row++) {
+  for (let row = START_FROM_ROW; row < MAX_ROW_NUMBER; row++) {
     const player: Player = {
       name: escapeHtml(
         sheet
-          .getCellByA1(`${config.NAME_COLUMN}${row}`)
+          .getCellByA1(NAME_COLUMN + row)
           .value?.toString()
           .trim()
       ),
-      count: +sheet.getCellByA1(`${config.COUNT_COLUMN}${row}`).value || 0,
-      rentCount: +sheet.getCellByA1(`${config.RENT_COLUMN}${row}`).value || 0,
+      count: +sheet.getCellByA1(COUNT_COLUMN + row).value || 0,
+      rentCount: +sheet.getCellByA1(RENT_COLUMN + row).value || 0,
       comment: escapeHtml(
         sheet
-          .getCellByA1(`${config.COMMENT_COLUMN}${row}`)
+          .getCellByA1(COMMENT_COLUMN + row)
           .value?.toString()
           .trim()
       ),
       level:
-        +sheet.getCellByA1(`${config.LEVEL_COLUMN}${row}`).value ||
-        config.DEFAULT_PLAYER_LEVEL
+        +sheet.getCellByA1(LEVEL_COLUMN + row).value || DEFAULT_PLAYER_LEVEL
     };
 
     if (player.count === 1) {
@@ -67,11 +76,11 @@ export const getActivePlayers = async (document: GoogleSpreadsheet) => {
 
         activePlayers.push({
           ...player,
-          name: `${player.name}${!isFirst ? ` (${i})` : ''}`,
+          name: player.name + (!isFirst ? ` (${i})` : ''),
           count: 1,
           rentCount: rentCount > 0 ? 1 : 0,
           comment: isFirst ? player.comment : '',
-          level: isFirst ? player.level : config.DEFAULT_PLAYER_LEVEL
+          level: isFirst ? player.level : DEFAULT_PLAYER_LEVEL
         });
       }
     }
@@ -83,7 +92,7 @@ export const getActivePlayers = async (document: GoogleSpreadsheet) => {
 export const getPlaceAndTime = async (document: GoogleSpreadsheet) => {
   await document.loadInfo();
   const sheet = document.sheetsByIndex[0];
-  await sheet.loadCells(config.PLACE_AND_TIME_CELL);
+  await sheet.loadCells(PLACE_AND_TIME_CELL);
 
-  return sheet.getCellByA1(config.PLACE_AND_TIME_CELL).value.toString();
+  return sheet.getCellByA1(PLACE_AND_TIME_CELL).value.toString();
 };
