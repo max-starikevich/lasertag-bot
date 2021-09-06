@@ -22,7 +22,9 @@ const config = {
   RENT_COLUMN: process.env.RENT_COLUMN as string,
   COMMENT_COLUMN: process.env.COMMENT_COLUMN as string,
   LEVEL_COLUMN: process.env.LEVEL_COLUMN as string,
-  PLACE_AND_TIME_CELL: process.env.PLACE_AND_TIME_CELL as string
+  PLACE_AND_TIME_CELLS: (process.env.PLACE_AND_TIME_CELLS || '').split(
+    ','
+  ) as string[]
 };
 
 type EnvironmentValidator = () => Promise<boolean>;
@@ -57,8 +59,15 @@ const requiredVariables: EnvironmentToCheck = {
 
   LEVEL_COLUMN: async () => isCapitalLetter(process.env.LEVEL_COLUMN || ''),
 
-  PLACE_AND_TIME_CELL: async () =>
-    (process.env.PLACE_AND_TIME_CELL || '').length > 0
+  PLACE_AND_TIME_CELLS: async () => {
+    const cells = (process.env.PLACE_AND_TIME_CELLS || '').split(',');
+
+    const failedCells = cells.filter(
+      (cell) => cell.length < 2 || !isCapitalLetter(cell[0])
+    );
+
+    return failedCells.length === 0;
+  }
 };
 
 export const checkEnvironment = async () => {

@@ -14,7 +14,7 @@ const {
   START_FROM_ROW,
   MAX_ROW_NUMBER,
   DEFAULT_PLAYER_LEVEL,
-  PLACE_AND_TIME_CELL
+  PLACE_AND_TIME_CELLS
 } = config;
 
 const PLAYER_DATA_RANGES = [
@@ -92,7 +92,9 @@ export const getActivePlayers = async (document: GoogleSpreadsheet) => {
 export const getPlaceAndTime = async (document: GoogleSpreadsheet) => {
   await document.loadInfo();
   const sheet = document.sheetsByIndex[0];
-  await sheet.loadCells(PLACE_AND_TIME_CELL);
+  await sheet.loadCells(PLACE_AND_TIME_CELLS);
 
-  return sheet.getCellByA1(PLACE_AND_TIME_CELL).value.toString();
+  return PLACE_AND_TIME_CELLS.map((cell) =>
+    sheet.getCellByA1(cell).value.toString()
+  ).join(', ');
 };
