@@ -1,4 +1,4 @@
-import { shuffle } from 'lodash';
+import { partition, shuffle } from 'lodash';
 import dedent from 'dedent-js';
 
 import { UserError } from '@/errors';
@@ -21,7 +21,12 @@ export default async (ctx: BotContext) => {
 
   const placeAndTime = await getPlaceAndTime(document);
 
-  const [team1, team2] = getBalancedTeams(activePlayers);
+  const [playersToDivide] = partition(
+    activePlayers,
+    ({ isQuestionable, isCompanion }) => !isQuestionable && !isCompanion
+  );
+
+  const [team1, team2] = getBalancedTeams(playersToDivide);
 
   return ctx.replyWithHTML(
     dedent`

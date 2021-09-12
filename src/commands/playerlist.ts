@@ -1,3 +1,4 @@
+import { partition } from 'lodash';
 import dedent from 'dedent-js';
 
 import { BotContext } from '@/bot';
@@ -19,11 +20,27 @@ export default async (ctx: BotContext) => {
 
   const placeAndTime = await getPlaceAndTime(document);
 
+  const [combinedPlayers] = partition(
+    activePlayers,
+    ({ isCompanion }) => !isCompanion
+  );
+
+  const [readyPlayers, questionablePlayers] = partition(
+    combinedPlayers,
+    ({ isQuestionable }) => !isQuestionable
+  );
+
   return ctx.replyWithHTML(
     dedent`
       <b>${placeAndTime}</b>
 
-      ${activePlayers.map(({ name }, i) => `${i + 1}) ${name}`).join('\n')}
+      Всего записано: ${activePlayers.length}
+
+      ${readyPlayers.map(({ combinedName }) => `- ${combinedName}`).join('\n')}
+
+      ${questionablePlayers
+        .map(({ combinedName }) => `- ${combinedName} ???`)
+        .join('\n')}
     `
   );
 };

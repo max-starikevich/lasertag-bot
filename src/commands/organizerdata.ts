@@ -1,3 +1,4 @@
+import { partition } from 'lodash';
 import dedent from 'dedent-js';
 
 import { BotContext } from '@/bot';
@@ -19,11 +20,17 @@ export default async (ctx: BotContext) => {
 
   const placeAndTime = await getPlaceAndTime(document);
 
+  const [readyPlayers, questionablePlayers] = partition(
+    activePlayers,
+    ({ isQuestionable }) => !isQuestionable
+  );
+
   return ctx.replyWithHTML(
     dedent`
       <b>${placeAndTime}</b>
 
-      Всего записано: ${activePlayers.length}
+      Всего записано: ${readyPlayers.length}
+      Под вопросом: ${questionablePlayers.length}
       Нужен прокат: ${activePlayers.reduce(
         (rentSum, { rentCount }) => rentSum + rentCount,
         0
@@ -31,7 +38,9 @@ export default async (ctx: BotContext) => {
 
       ${activePlayers
         .filter(({ comment }) => comment.length > 0)
-        .map(({ name, comment }) => `${name}: "<i>${comment}</i>"`)
+        .map(
+          ({ combinedName, comment }) => `${combinedName}: "<i>${comment}</i>"`
+        )
         .join('\n')}
     `
   );
