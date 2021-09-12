@@ -1,4 +1,7 @@
-import { GoogleSpreadsheet } from 'google-spreadsheet';
+import {
+  GoogleSpreadsheet,
+  GoogleSpreadsheetWorksheet
+} from 'google-spreadsheet';
 
 import config from '@/config';
 import { escapeHtml } from '@/utils';
@@ -34,6 +37,19 @@ export const getSpreadsheetDocument = () => {
   return document;
 };
 
+const getSheetsValue = (
+  sheet: GoogleSpreadsheetWorksheet,
+  a1: string
+): string => {
+  const value = sheet.getCellByA1(a1).value;
+
+  if (!value) {
+    return '';
+  }
+
+  return escapeHtml(value.toString());
+};
+
 export const getActivePlayers = async (document: GoogleSpreadsheet) => {
   await document.loadInfo();
   const sheet = document.sheetsByIndex[0];
@@ -43,23 +59,17 @@ export const getActivePlayers = async (document: GoogleSpreadsheet) => {
   const activePlayers: Player[] = [];
 
   for (let row = START_FROM_ROW; row < MAX_ROW_NUMBER; row++) {
+    const count = getSheetsValue(sheet, COUNT_COLUMN + row);
+    const name = getSheetsValue(sheet, NAME_COLUMN + row);
     const player: Player = {
-      name: escapeHtml(
-        sheet
-          .getCellByA1(NAME_COLUMN + row)
-          .value?.toString()
-          .trim()
-      ),
-      count: +sheet.getCellByA1(COUNT_COLUMN + row).value || 0,
-      rentCount: +sheet.getCellByA1(RENT_COLUMN + row).value || 0,
-      comment: escapeHtml(
-        sheet
-          .getCellByA1(COMMENT_COLUMN + row)
-          .value?.toString()
-          .trim()
-      ),
-      level:
-        +sheet.getCellByA1(LEVEL_COLUMN + row).value || DEFAULT_PLAYER_LEVEL
+      name,
+      count: +count.replace('?', '') || 0,
+      rentCount: +getSheetsValue(sheet, RENT_COLUMN + row) || 0,
+      comment: getSheetsValue(sheet, COMMENT_COLUMN + row),
+      level: +getSheetsValue(sheet, LEVEL_COLUMN + row) || DEFAULT_PLAYER_LEVEL,
+      isQuestionable: count.includes('?'),
+      isCompanion: false,
+      combinedName: name
     };
 
     if (player.count === 1) {
@@ -67,22 +77,35 @@ export const getActivePlayers = async (document: GoogleSpreadsheet) => {
     }
 
     if (player.count > 1) {
+      const combinedPlayers: Player[] = [];
+
       for (
         let i = 1, rentCount = player.rentCount;
         i <= player.count;
         i++, rentCount--
       ) {
-        const isFirst = i === 1;
+        const isCompanion = i > 1;
 
-        activePlayers.push({
+        combinedPlayers.push({
           ...player,
-          name: player.name + (!isFirst ? ` (${i})` : ''),
+          name: player.name + (isCompanion ? ` (${i})` : ''),
           count: 1,
           rentCount: rentCount > 0 ? 1 : 0,
-          comment: isFirst ? player.comment : '',
-          level: isFirst ? player.level : DEFAULT_PLAYER_LEVEL
+          comment: isCompanion ? '' : player.comment,
+          level: isCompanion ? DEFAULT_PLAYER_LEVEL : player.level,
+          isCompanion
         });
       }
+
+      const [main, ...companions] = combinedPlayers;
+
+      activePlayers.push(
+        {
+          ...main,
+          combinedName: `${main.name} +${companions.length}`
+        },
+        ...companions
+      );
     }
   }
 
@@ -94,7 +117,7 @@ export const getPlaceAndTime = async (document: GoogleSpreadsheet) => {
   const sheet = document.sheetsByIndex[0];
   await sheet.loadCells(PLACE_AND_TIME_CELLS);
 
-  return PLACE_AND_TIME_CELLS.map((cell) =>
-    sheet.getCellByA1(cell).value.toString()
-  ).join(', ');
+  return PLACE_AND_TIME_CELLS.map((cell) => getSheetsValue(sheet, cell)).join(
+    ', '
+  );
 };

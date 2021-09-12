@@ -12,7 +12,7 @@ const config = {
   HOOK_DOMAIN: process.env.HOOK_DOMAIN as string,
   SENTRY_DSN: process.env.SENTRY_DSN,
 
-  DEFAULT_PLAYER_LEVEL: 1,
+  DEFAULT_PLAYER_LEVEL: 0,
   START_FROM_ROW: parseInt(process.env.START_FROM_ROW || '') || 1,
   MAX_ROW_NUMBER: parseInt(process.env.MAX_ROW_NUMBER || '') || 100,
 
