@@ -37,10 +37,10 @@ export default async (ctx: BotContext) => {
       )}
 
       ${activePlayers
-        .filter(({ comment }) => comment.length > 0)
-        .map(
-          ({ combinedName, comment }) => `${combinedName}: "<i>${comment}</i>"`
+        .filter(
+          ({ comment, isCompanion }) => comment.length > 0 && !isCompanion
         )
+        .map(({ name, comment }) => `${name}: "<i>${comment}</i>"`)
         .join('\n')}
     `
   );

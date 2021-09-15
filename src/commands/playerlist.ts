@@ -20,13 +20,8 @@ export default async (ctx: BotContext) => {
 
   const placeAndTime = await getPlaceAndTime(document);
 
-  const [combinedPlayers] = partition(
-    activePlayers,
-    ({ isCompanion }) => !isCompanion
-  );
-
   const [readyPlayers, questionablePlayers] = partition(
-    combinedPlayers,
+    activePlayers,
     ({ isQuestionable }) => !isQuestionable
   );
 
@@ -34,11 +29,15 @@ export default async (ctx: BotContext) => {
     dedent`
       <b>${placeAndTime}</b>
 
-      Всего записано: ${activePlayers.length}
+      Всего записано: ${readyPlayers.length}
 
-      ${readyPlayers.map(({ combinedName }) => `- ${combinedName}`).join('\n')}
+      ${readyPlayers
+        .filter(({ isCompanion }) => !isCompanion)
+        .map(({ combinedName }) => `- ${combinedName}`)
+        .join('\n')}
 
       ${questionablePlayers
+        .filter(({ isCompanion }) => !isCompanion)
         .map(({ combinedName }) => `- ${combinedName} ???`)
         .join('\n')}
     `
