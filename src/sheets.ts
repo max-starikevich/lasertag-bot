@@ -102,7 +102,9 @@ export const getActivePlayers = async (document: GoogleSpreadsheet) => {
       activePlayers.push(
         {
           ...main,
-          combinedName: `${main.name} +${companions.length}`
+          combinedName: `${main.name} ${
+            companions.length > 0 ? `(${companions.length + 1})` : ''
+          }`
         },
         ...companions
       );
