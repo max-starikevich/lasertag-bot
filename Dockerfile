@@ -1,5 +1,5 @@
 #### TYPESCRIPT BUILDER IMAGE
-ARG BASE_IMAGE=node:16.6-alpine
+ARG BASE_IMAGE=node:14.17-alpine
 FROM ${BASE_IMAGE} as ts-builder
 LABEL maintainer="maxim.starikevich@gmail.com"
 
@@ -38,6 +38,5 @@ COPY --chown=node:node package.json yarn.lock ./
 RUN yarn install && yarn cache clean
 
 COPY --chown=node:node --from=ts-builder /home/node/app/build ./build
-COPY --chown=node:node ecosystem.config.js ./
 
-CMD ["pm2-runtime", "start", "ecosystem.config.js"]
+CMD ["node", "build/index.js"]
