@@ -9,7 +9,7 @@ export interface BotContext extends Context {
   document?: GoogleSpreadsheet;
 }
 
-export const prepareBot = async () => {
+export const initBot = async () => {
   const bot = new Telegraf<BotContext>(config.BOT_TOKEN);
   bot.context.document = getSpreadsheetDocument();
 

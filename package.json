@@ -1,12 +1,12 @@
 {
   "name": "lasertag-bot",
-  "version": "2.6.1",
+  "version": "3.0.0",
   "repository": "https://github.com/max-starikevich/lasertag-bot",
   "author": "Max Starikevich <maxim.starikevich@gmail.com>",
   "license": "MIT",
-  "main": "build/src/index.js",
+  "main": "build/index.js",
   "engines": {
-    "node": "^16",
+    "node": "^14",
     "yarn": "^1"
   },
   "dependencies": {
@@ -14,16 +14,13 @@
     "@sentry/tracing": "^6.11.0",
     "dedent-js": "^1.0.1",
     "google-spreadsheet": "^3.1.15",
-    "koa": "^2.13.1",
-    "koa-body": "^4.2.0",
-    "koa-router": "^10.0.0",
     "lodash": "^4.17.21",
     "module-alias": "^2.2.2",
-    "pm2": "^5.1.0",
     "telegraf": "^4.4.1",
     "winston": "^3.3.3"
   },
   "devDependencies": {
+    "@types/aws-lambda": "^8.10.83",
     "@types/google-spreadsheet": "^3.1.5",
     "@types/jest": "^27.0.0",
     "@types/koa": "^2.13.4",
@@ -43,7 +40,7 @@
   },
   "scripts": {
     "start": "tsc-watch --noClear --onSuccess 'node --inspect --enable-source-maps -r dotenv/config build/src/index.js'",
-    "start:prod": "docker-compose up --build",
+    "deploy": "yarn build && serverless deploy",
     "lint": "eslint src/**/*.ts",
     "test": "jest --setupFiles dotenv/config",
     "build": "tsc",
@@ -51,6 +48,6 @@
     "prepare": "husky install"
   },
   "_moduleAliases": {
-    "@": "./build/src"
+    "@": "./build"
   }
 }
