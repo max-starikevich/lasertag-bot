@@ -1,29 +1,23 @@
 require('module-alias/register');
 
 import * as Sentry from '@sentry/node';
+import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
 
-import { version } from '../package.json';
 import config, { checkEnvironment } from '@/config';
-import {
-  handleStartupError,
-  handleUnexpectedException,
-  handleUnexpectedRejection
-} from '@/errors';
-import { prepareBot } from '@/bot';
-import { logger } from '@/logger';
-import { launchApi } from '@/api';
+import { initBot } from '@/bot';
+import { handleCommandError, handleStartupError } from './errors';
 
-Sentry.init({
-  dsn: config.SENTRY_DSN,
-  environment: config.APP_ENV,
-  release: version
-});
+const init = async () => {
+  try {
+    Sentry.init({
+      dsn: config.SENTRY_DSN,
+      environment: config.APP_ENV
+    });
 
-checkEnvironment()
-  .then(async () => {
-    const bot = await prepareBot();
-    const webhookPath = `/webhook/${bot.secretPathComponent()}`;
-    const api = await launchApi({ bot, webhookPath });
+    await checkEnvironment();
+
+    const bot = await initBot();
+    const webhookPath = `/webhook/${config.BOT_TOKEN}`;
     const webhook = `https://${config.HOOK_DOMAIN}${webhookPath}`;
 
     const { url: currentWebhook } = await bot.telegram.getWebhookInfo();
@@ -32,22 +26,49 @@ checkEnvironment()
       await bot.telegram.setWebhook(webhook);
     }
 
-    process.on('unhandledRejection', handleUnexpectedRejection);
-    process.on('uncaughtException', handleUnexpectedException);
+    return { bot };
+  } catch (e) {
+    handleStartupError(e);
+    return null;
+  }
+};
 
-    process.on('exit', () => {
-      logger.info('⏳ Shutting down the server gracefully');
+const instancePromise = init();
 
-      api.close();
-      process.exit();
-    });
+export const handler = async (
+  event: APIGatewayProxyEvent
+): Promise<APIGatewayProxyResult> => {
+  try {
+    const instance = await instancePromise;
 
-    if (process.send) {
-      process.send('ready');
+    if (!instance) {
+      return {
+        statusCode: 500,
+        body: `Server error`
+      };
     }
 
-    logger.info(`🚀 The bot v${version} is online. PID: ${process.pid}`);
+    if (!event.body) {
+      return {
+        statusCode: 400,
+        body: 'Missing body'
+      };
+    }
 
-    return bot;
-  })
-  .catch(handleStartupError);
+    const { bot } = instance;
+
+    await bot.handleUpdate(JSON.parse(event.body));
+
+    return {
+      statusCode: 200,
+      body: 'OK'
+    };
+  } catch (e) {
+    handleCommandError(e);
+
+    return {
+      statusCode: 500,
+      body: 'Server error'
+    };
+  }
+};
