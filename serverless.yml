@@ -1,0 +1,27 @@
+service: lasertag-bot
+useDotenv: true
+
+plugins:
+  - serverless-domain-manager
+  - serverless-dotenv-plugin
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+  lambdaHashingVersion: 20201221
+  memorySize: 128
+
+functions:
+  lasertag-bot:
+    handler: build/index.handler
+    events:
+      - http:
+          path: /webhook/${env:BOT_TOKEN}
+          method: post
+
+custom:
+  customDomain:
+    domainName: ${env:HOOK_DOMAIN}
+    certificateName: ${env:SSL_CERTIFICATE_NAME}
+    basePath: ''
+    createRoute53Record: true
