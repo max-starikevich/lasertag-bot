@@ -5,6 +5,8 @@ const config = {
   isProduction,
   APP_ENV,
 
+  PORT: process.env.PORT || '4000', // dev only
+
   BOT_TOKEN: process.env.BOT_TOKEN as string,
   GOOGLE_API_KEY: process.env.GOOGLE_API_KEY as string,
   GOOGLE_SPREADSHEET_ID: process.env.GOOGLE_SPREADSHEET_ID as string,
