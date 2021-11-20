@@ -13,7 +13,7 @@ provider:
 
 functions:
   lasertag-bot:
-    handler: build/index.handler
+    handler: build/src/index.handler
     events:
       - http:
           path: /webhook/${env:BOT_TOKEN}

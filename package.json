@@ -48,7 +48,7 @@
   "scripts": {
     "build": "tsc",
     "start": "tsc-watch --noClear --onSuccess 'node --inspect -r dotenv/config build/src/dev.js'",
-    "deploy": "yarn build && serverless deploy --stage prod",
+    "deploy": "yarn build && NODE_ENV=production serverless deploy --stage production",
     "lint": "eslint src/**/*.ts",
     "test": "jest --setupFiles dotenv/config",
     "clean": "rm -rf build",
