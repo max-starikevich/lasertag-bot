@@ -3,6 +3,8 @@ ARG BASE_IMAGE=node:14.17-alpine
 FROM ${BASE_IMAGE} as ts-builder
 LABEL maintainer="maxim.starikevich@gmail.com"
 
+RUN apk add --no-cache alpine-sdk python3
+
 USER node
 ENV PATH="/home/node/app/node_modules/.bin:${PATH}"
 ENV NODE_ENV=development
@@ -39,4 +41,4 @@ RUN yarn install && yarn cache clean
 
 COPY --chown=node:node --from=ts-builder /home/node/app/build ./build
 
-CMD ["node", "build/index.js"]
+CMD ["node", "build/src/index.js"]

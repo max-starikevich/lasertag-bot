@@ -5,7 +5,7 @@ import Koa from 'koa';
 import bodyParser from 'koa-bodyparser';
 import Router from 'koa-router';
 
-import { handler, instancePromise } from '@/index';
+import { handler as lambdaHandler, instancePromise } from '@/index';
 import config from '@/config';
 import { logger } from '@/logger';
 
@@ -18,14 +18,13 @@ const dev = async () => {
 
   const { bot } = instance;
 
-  const { url: currentWebhook } = await bot.telegram.getWebhookInfo();
+  const { url: savedWebhook } = await bot.telegram.getWebhookInfo();
 
   const webhookPath = `/webhook/${config.BOT_TOKEN}`;
   const webhook = `https://${config.HOOK_DOMAIN}${webhookPath}`;
 
-  if (currentWebhook && webhook !== currentWebhook) {
+  if (webhook !== savedWebhook) {
     await bot.telegram.setWebhook(webhook);
-
     console.info('The webhook has been updated');
   }
 
@@ -36,7 +35,7 @@ const dev = async () => {
 
   router.post(webhookPath, async (ctx) => {
     try {
-      const { statusCode, body } = await handler({
+      const { statusCode, body } = await lambdaHandler({
         body: ctx.request.rawBody
       } as APIGatewayProxyEvent);
 
