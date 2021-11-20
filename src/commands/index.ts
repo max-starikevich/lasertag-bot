@@ -8,6 +8,7 @@ import help from '@/commands/help';
 import playerlist from '@/commands/playerlist';
 import randomTeams from '@/commands/randomteams';
 import organizerdata from '@/commands/organizerdata';
+import about from '@/commands/about';
 
 type CommandHandler = (ctx: BotContext) => Promise<any>;
 
@@ -47,6 +48,12 @@ const commands: BotCommand[] = [
     command: '/help',
     handler: help,
     description: 'Помощь',
+    showInMenu: true
+  },
+  {
+    command: '/about',
+    handler: about,
+    description: 'Информация о боте',
     showInMenu: true
   }
 ];
