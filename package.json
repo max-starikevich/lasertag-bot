@@ -1,10 +1,10 @@
 {
   "name": "lasertag-bot",
-  "version": "3.1.0",
+  "version": "3.2.0",
   "repository": "https://github.com/max-starikevich/lasertag-bot",
   "author": "Max Starikevich <maxim.starikevich@gmail.com>",
   "license": "MIT",
-  "main": "build/index.js",
+  "main": "build/src/index.js",
   "engines": {
     "node": "^14",
     "yarn": "^1"
@@ -47,7 +47,7 @@
   },
   "scripts": {
     "build": "tsc",
-    "start": "tsc-watch --noClear --onSuccess 'node --inspect -r dotenv/config build/dev.js'",
+    "start": "tsc-watch --noClear --onSuccess 'node --inspect -r dotenv/config build/src/dev.js'",
     "deploy": "yarn build && serverless deploy --stage prod",
     "lint": "eslint src/**/*.ts",
     "test": "jest --setupFiles dotenv/config",
@@ -55,6 +55,6 @@
     "prepare": "husky install"
   },
   "_moduleAliases": {
-    "@": "./build"
+    "@": "./build/src"
   }
 }
