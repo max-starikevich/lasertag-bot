@@ -48,7 +48,9 @@ const dev = async () => {
   app.use(router.routes());
 
   app.listen(config.PORT, () => {
-    console.info(`🚀 Koa is ready at https://${config.HOOK_DOMAIN}`);
+    console.info(
+      `🚀 Development server is ready at https://${config.HOOK_DOMAIN}`
+    );
   });
 };
 
