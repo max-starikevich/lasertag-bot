@@ -1,13 +1,13 @@
 {
   "name": "lasertag-bot",
-  "version": "3.2.0",
+  "version": "4.0.0",
   "repository": "https://github.com/max-starikevich/lasertag-bot",
   "author": "Max Starikevich <maxim.starikevich@gmail.com>",
   "license": "MIT",
   "main": "build/src/index.js",
   "engines": {
-    "node": "^14",
-    "yarn": "^1"
+    "node": "^16",
+    "npm": "^7"
   },
   "dependencies": {
     "@sentry/node": "^6.11.0",
@@ -27,11 +27,11 @@
     "@types/koa-bodyparser": "^4.3.3",
     "@types/koa-router": "^7.4.4",
     "@types/lodash": "^4.14.172",
-    "@types/node": "^16.6.0",
-    "@typescript-eslint/eslint-plugin": "^4.29.1",
-    "@typescript-eslint/parser": "^4.29.1",
-    "dotenv": "^10.0.0",
-    "eslint": "^7.32.0",
+    "@types/node": "^16.11.21",
+    "@typescript-eslint/eslint-plugin": "^5.10.0",
+    "@typescript-eslint/parser": "^5.10.0",
+    "dotenv": "^14.2.0",
+    "eslint": "^8.7.0",
     "husky": "^7.0.1",
     "jest": "^27.0.6",
     "koa": "^2.13.3",
@@ -40,14 +40,13 @@
     "prettier": "^2.3.2",
     "serverless": "^2.61.0",
     "serverless-domain-manager": "^5.1.5",
-    "serverless-dotenv-plugin": "^3.10.0",
     "ts-jest": "^27.0.4",
     "tsc-watch": "^4.5.0",
     "typescript": "^4.3.5"
   },
   "scripts": {
     "build": "tsc",
-    "start": "tsc-watch --noClear --onSuccess 'node --inspect -r dotenv/config build/src/dev.js'",
+    "start": "rm -rf build && tsc-watch --noClear --onSuccess 'node --inspect -r dotenv/config build/src/dev.js'",
     "deploy": "yarn build && NODE_ENV=production serverless deploy --stage production",
     "lint": "eslint src/**/*.ts",
     "test": "jest --setupFiles dotenv/config",
