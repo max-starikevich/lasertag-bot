@@ -1,9 +1,7 @@
 service: lasertag-bot
-useDotenv: true
 
 plugins:
   - serverless-domain-manager
-  - serverless-dotenv-plugin
 
 provider:
   name: aws
