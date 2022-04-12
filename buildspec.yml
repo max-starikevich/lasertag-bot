@@ -1,52 +1,7 @@
 version: 0.2
 phases:
-  pre_build:
-    commands:
-      - COMMIT_HASH=$CODEBUILD_RESOLVED_SOURCE_VERSION
-      - APP_IMAGE=$REGISTRY/lasertag-bot
-      - BASE_IMAGE=node:16.6-alpine
-      - $(aws ecr get-login --no-include-email --region $AWS_REGION)
   build:
     commands:
-      # download latest image to use as a cache later
-      - docker image pull $APP_IMAGE:latest || true
-
-      # download base image from ECR,
-      # if it doesn't exist - download from Docker Hub and save to ECR
-      - |
-        docker image pull $REGISTRY/$BASE_IMAGE || \
-          (docker image pull $BASE_IMAGE && \
-           docker image tag $BASE_IMAGE $REGISTRY/$BASE_IMAGE && \
-           docker image push $REGISTRY/$BASE_IMAGE)
-
-      # build new app image using the previous image as a cache (if exists)
-      - |
-        docker image build \
-          -t $APP_IMAGE:$COMMIT_HASH \
-          --build-arg BASE_IMAGE=$REGISTRY/$BASE_IMAGE \
-          --cache-from $APP_IMAGE:latest .
-
-      # replacing $APP_IMAGE with full image name using sed.
-      # Beanstalk doesn't know the exact image we did build,
-      # so let's tell him that explicitly
-      - sed -i "s|\$APP_IMAGE|$APP_IMAGE:$COMMIT_HASH|g" docker-compose.prod.yml
-      - echo "COMMIT_HASH=$COMMIT_HASH" >> .app.env
-      - mv docker-compose.prod.yml docker-compose.yml
-
-  post_build:
-    commands:
-      # turn new image into the "latest" and push it to ECR
-      - docker image tag  $APP_IMAGE:$COMMIT_HASH $APP_IMAGE:latest
-      - docker image push $APP_IMAGE
-
-artifacts:
-  files:
-    # containers and their images data
-    - 'docker-compose.yml'
-
-    # custom environment variables in a separate file,
-    # because .env will be created by Beanstalk automatically
-    - '.app.env'
-
-    # some potential tweaks for host/Beanstalk system
-    - '.ebextensions/*'
+      - yarn install
+      - yarn build
+      - yarn deploy

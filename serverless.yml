@@ -1,7 +1,5 @@
 service: lasertag-bot
-
-plugins:
-  - serverless-domain-manager
+useDotenv: true
 
 provider:
   name: aws
@@ -11,15 +9,8 @@ provider:
 
 functions:
   lasertag-bot:
-    handler: build/src/index.handler
+    handler: dist/src/index.handler
     events:
       - http:
           path: /webhook/${env:BOT_TOKEN}
           method: post
-
-custom:
-  customDomain:
-    domainName: ${env:HOOK_DOMAIN}
-    certificateName: ${env:SSL_CERTIFICATE_NAME}
-    basePath: ''
-    createRoute53Record: true

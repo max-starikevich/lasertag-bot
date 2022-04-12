@@ -26,7 +26,7 @@ RUN yarn build
 FROM ${BASE_IMAGE} as runtime
 LABEL maintainer="maxim.starikevich@gmail.com"
 
-RUN mkdir -p /home/node/app/logs && chown -R node:node /home/node/app
+RUN chown -R node:node /home/node/app
 
 USER node
 ENV PATH="/home/node/app/node_modules/.bin:${PATH}"
@@ -39,6 +39,6 @@ COPY --chown=node:node package.json yarn.lock ./
 # installing only "dependencies" (run-time packages, see NODE_ENV)
 RUN yarn install && yarn cache clean
 
-COPY --chown=node:node --from=ts-builder /home/node/app/build ./build
+COPY --chown=node:node --from=ts-builder /home/node/app/dist ./dist
 
-CMD ["node", "build/src/index.js"]
+CMD ["node", "dist/src/index.js"]
