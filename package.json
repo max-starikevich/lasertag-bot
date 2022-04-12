@@ -50,5 +50,10 @@
   },
   "_moduleAliases": {
     "$": "./dist/src"
+  },
+  "ts-standard": {
+    "files": [
+      "src/**/*.ts"
+    ]
   }
 }
