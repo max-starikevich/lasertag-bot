@@ -1,22 +1,22 @@
-import { Telegraf } from 'telegraf';
+import { Telegraf } from 'telegraf'
 
-import { BotContext } from '@/bot';
-import { handleCommandError, UserError } from '@/errors';
-import { logger } from '@/logger';
+import { BotContext } from '$/bot'
+import { handleCommandError, UserError } from '$/errors'
+import { logger } from '$/logger'
 
-import help from '@/commands/help';
-import playerlist from '@/commands/playerlist';
-import randomTeams from '@/commands/randomteams';
-import organizerdata from '@/commands/organizerdata';
-import about from '@/commands/about';
+import help from '$/commands/help'
+import playerlist from '$/commands/playerlist'
+import randomTeams from '$/commands/randomteams'
+import organizerdata from '$/commands/organizerdata'
+import about from '$/commands/about'
 
-type CommandHandler = (ctx: BotContext) => Promise<any>;
+export type CommandHandler = (ctx: BotContext) => Promise<any>
 
 interface BotCommand {
-  command: string;
-  handler: CommandHandler;
-  description: string;
-  showInMenu: boolean;
+  command: string
+  handler: CommandHandler
+  description: string
+  showInMenu: boolean
 }
 
 const commands: BotCommand[] = [
@@ -56,47 +56,47 @@ const commands: BotCommand[] = [
     description: 'Информация о боте',
     showInMenu: true
   }
-];
+]
 
 export const commandsInMenu = commands.filter(
-  ({ showInMenu }) => showInMenu === true
-);
+  ({ showInMenu }) => showInMenu
+)
 
 interface HandlerWrapperOptions {
-  command: string;
-  handler: CommandHandler;
-  ctx: BotContext;
+  command: string
+  handler: CommandHandler
+  ctx: BotContext
 }
 
 const handlerWrapper = async ({
   command,
   handler,
   ctx
-}: HandlerWrapperOptions) => {
+}: HandlerWrapperOptions): Promise<void> => {
   try {
-    const startMs = Date.now();
-    await handler(ctx);
-    const finishMs = Date.now() - startMs;
+    const startMs = Date.now()
+    await handler(ctx)
+    const finishMs = Date.now() - startMs
 
-    logger.info(`✅ Processed ${command} in ${finishMs}ms.`);
+    logger.info(`✅ Processed ${command} in ${finishMs}ms.`)
   } catch (e) {
     if (e instanceof UserError) {
-      ctx.reply(`❌ ${e.message}`);
+      void ctx.reply(`❌ ${e.message}`)
     } else {
-      handleCommandError(e);
-      ctx.reply(`❌ Произошла ошибка. Повторите свой запрос позже.`);
+      handleCommandError(e)
+      void ctx.reply('❌ Произошла ошибка. Повторите свой запрос позже.')
     }
   }
-};
+}
 
-export const setBotCommands = async (bot: Telegraf<BotContext>) => {
+export const setBotCommands = async (bot: Telegraf<BotContext>): Promise<void> => {
   commands.map(({ command, handler }) =>
-    bot.command(command, (ctx) => handlerWrapper({ command, handler, ctx }))
-  );
+    bot.command(command, async (ctx) => await handlerWrapper({ command, handler, ctx }))
+  )
 
-  bot.hears(/^\/[a-z0-9]+$/i, (ctx) =>
-    ctx.reply(
+  bot.hears(/^\/[a-z0-9]+$/i, async (ctx) =>
+    await ctx.reply(
       'Не удалось распознать команду. Используйте меню или команду /help'
     )
-  );
-};
+  )
+}

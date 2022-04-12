@@ -1,11 +1,11 @@
-import dedent from 'dedent-js';
+import dedent from 'dedent-js'
 
-import { author, version, repository } from '../../package.json';
-import { BotContext } from '@/bot';
-import { escapeHtml } from '@/utils';
+import { author, version, repository } from '../../package.json'
+import { escapeHtml } from '$/utils'
+import { CommandHandler } from '$/commands'
 
-export default (ctx: BotContext) => {
-  return ctx.replyWithHTML(dedent`
+const handler: CommandHandler = async (ctx) => {
+  return await ctx.replyWithHTML(dedent`
     <b>Telegram-бот для лазертага</b>
 
     Версия: ${version}
@@ -13,5 +13,7 @@ export default (ctx: BotContext) => {
     Автор: ${escapeHtml(author)}
     
     Исходный код: ${repository}
-  `);
-};
+  `)
+}
+
+export default handler
