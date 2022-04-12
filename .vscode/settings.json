@@ -1,4 +1,5 @@
 {
   "standard.engine": "ts-standard",
-  "standard.autoFixOnSave": true
+  "standard.autoFixOnSave": true,
+  "typescript.preferences.importModuleSpecifier": "relative"
 }
