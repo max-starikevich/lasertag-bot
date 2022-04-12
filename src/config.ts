@@ -1,8 +1,10 @@
 const APP_ENV = process.env.APP_ENV ?? 'local'
 const isProduction = APP_ENV === 'production'
+const isLocal = !isProduction
 
 const config = {
   isProduction,
+  isLocal,
   APP_ENV,
 
   PORT: process.env.PORT ?? '4000', // dev only
