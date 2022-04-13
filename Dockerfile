@@ -1,44 +1,27 @@
-#### TYPESCRIPT BUILDER IMAGE
-ARG BASE_IMAGE=node:14.17-alpine
-FROM ${BASE_IMAGE} as ts-builder
-LABEL maintainer="maxim.starikevich@gmail.com"
+# BUILDER
+FROM public.ecr.aws/lambda/nodejs:14-arm64 as builder
+RUN npm i yarn -g
 
-RUN apk add --no-cache alpine-sdk python3
-
-USER node
-ENV PATH="/home/node/app/node_modules/.bin:${PATH}"
 ENV NODE_ENV=development
 
-RUN mkdir /home/node/app
-WORKDIR /home/node/app
+COPY package.json yarn.lock ./
+RUN yarn install
 
-COPY --chown=node:node package.json yarn.lock ./
-
-# installing "dependencies" + "devDependencies" (see NODE_ENV)
-RUN yarn install && yarn cache clean
-
-COPY --chown=node:node tsconfig.json ./
-COPY --chown=node:node ./src ./src
+COPY src src
+COPY tsconfig.json ./
 
 RUN yarn build
 
-#### SERVER RUNTIME IMAGE
-FROM ${BASE_IMAGE} as runtime
-LABEL maintainer="maxim.starikevich@gmail.com"
+# RUNTIME
+FROM public.ecr.aws/lambda/nodejs:14-arm64 as runtime
+RUN npm i yarn -g
 
-RUN chown -R node:node /home/node/app
-
-USER node
-ENV PATH="/home/node/app/node_modules/.bin:${PATH}"
 ENV NODE_ENV=production
+ENV APP_ENV=production
 
-WORKDIR /home/node/app
+COPY package.json yarn.lock ./
+RUN yarn install
 
-COPY --chown=node:node package.json yarn.lock ./
+COPY --from=builder /var/task/dist dist
 
-# installing only "dependencies" (run-time packages, see NODE_ENV)
-RUN yarn install && yarn cache clean
-
-COPY --chown=node:node --from=ts-builder /home/node/app/dist ./dist
-
-CMD ["node", "dist/src/index.js"]
+CMD ["dist/src/handler.lambdaHandler"]
