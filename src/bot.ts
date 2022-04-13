@@ -17,3 +17,13 @@ export const initBot = async (): Promise<Telegraf<BotContext>> => {
 
   return bot
 }
+
+export const updateWebhook = async (bot: Telegraf<BotContext>): Promise<void> => {
+  const { url: savedWebhook } = await bot.telegram.getWebhookInfo()
+
+  if (config.WEBHOOK_FULL !== savedWebhook) {
+    await bot.telegram.setWebhook(config.WEBHOOK_FULL)
+  }
+
+  console.info(`The webhook is ${config.WEBHOOK_BASE}/...`)
+}

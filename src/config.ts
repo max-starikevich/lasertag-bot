@@ -1,6 +1,17 @@
+import dotenv from 'dotenv'
+
 const APP_ENV = process.env.APP_ENV ?? 'local'
+const pathToEnvFile = APP_ENV === 'local' ? '.env' : `.env.${APP_ENV}`
+
+dotenv.config({ path: pathToEnvFile })
+
 const isProduction = APP_ENV === 'production'
 const isLocal = !isProduction
+
+const BOT_TOKEN = process.env.BOT_TOKEN as string
+const WEBHOOK_BASE = process.env.WEBHOOK_BASE as string
+const WEBHOOK_PATH = `/webhook/${BOT_TOKEN}`
+const WEBHOOK_FULL = `https://${WEBHOOK_BASE}${WEBHOOK_PATH}`
 
 const config = {
   isProduction,
@@ -9,10 +20,12 @@ const config = {
 
   PORT: process.env.PORT ?? '4000', // dev only
 
-  BOT_TOKEN: process.env.BOT_TOKEN as string,
+  WEBHOOK_BASE,
+  WEBHOOK_PATH,
+  WEBHOOK_FULL,
+  BOT_TOKEN,
   GOOGLE_API_KEY: process.env.GOOGLE_API_KEY as string,
   GOOGLE_SPREADSHEET_ID: process.env.GOOGLE_SPREADSHEET_ID as string,
-  HOOK_DOMAIN: process.env.HOOK_DOMAIN as string,
   SENTRY_DSN: process.env.SENTRY_DSN,
 
   DEFAULT_PLAYER_LEVEL: 0,
@@ -47,7 +60,7 @@ const requiredVariables: EnvironmentToCheck = {
   GOOGLE_SPREADSHEET_ID: async () =>
     (process.env.GOOGLE_SPREADSHEET_ID ?? '').length > 0,
 
-  HOOK_DOMAIN: async () => (process.env.HOOK_DOMAIN ?? '').length > 0,
+  WEBHOOK_BASE: async () => (process.env.WEBHOOK_BASE ?? '').length > 0,
 
   NAME_COLUMN: async () => isCapitalLetter(process.env.NAME_COLUMN ?? ''),
 

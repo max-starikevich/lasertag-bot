@@ -2,9 +2,10 @@ import Koa from 'koa'
 import bodyParser from 'koa-bodyparser'
 import Router from 'koa-router'
 
-import { handler as lambdaHandler, instancePromise } from '$/index'
+import { lambdaHandler, instancePromise } from '$/handler'
 import config from '$/config'
 import { logger } from '$/logger'
+import { updateWebhook } from '$/bot'
 
 const dev = async (): Promise<void> => {
   try {
@@ -16,22 +17,14 @@ const dev = async (): Promise<void> => {
 
     const { bot } = instance
 
-    const { url: savedWebhook } = await bot.telegram.getWebhookInfo()
-
-    const webhookPath = `/webhook/${config.BOT_TOKEN}`
-    const webhook = `https://${config.HOOK_DOMAIN}${webhookPath}`
-
-    if (webhook !== savedWebhook) {
-      await bot.telegram.setWebhook(webhook)
-      console.info('The webhook has been updated')
-    }
+    await updateWebhook(bot)
 
     const app = new Koa()
     const router = new Router()
 
     app.use(bodyParser())
 
-    router.post(webhookPath, async (ctx) => {
+    router.post(config.WEBHOOK_PATH, async (ctx) => {
       try {
         const event = {
           body: ctx.request.rawBody
@@ -50,7 +43,7 @@ const dev = async (): Promise<void> => {
 
     app.listen(config.PORT, () => {
       console.info(
-        `🚀 Development server is ready at https://${config.HOOK_DOMAIN}`
+        `🚀 Development server is ready at https://${config.WEBHOOK_BASE}`
       )
     })
   } catch (e) {
