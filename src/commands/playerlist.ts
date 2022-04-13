@@ -1,31 +1,31 @@
-import { partition } from 'lodash';
-import dedent from 'dedent-js';
+import { partition } from 'lodash'
+import dedent from 'dedent-js'
 
-import { BotContext } from '@/bot';
-import { UserError } from '@/errors';
-import { getActivePlayers, getPlaceAndTime } from '@/sheets';
+import { UserError } from '$/errors'
+import { getActivePlayers, getPlaceAndTime } from '$/sheets'
+import { CommandHandler } from '$/commands'
 
-export default async (ctx: BotContext) => {
-  const { document } = ctx;
+const handler: CommandHandler = async (ctx) => {
+  const { document } = ctx
 
-  if (!document) {
-    throw new UserError(`Не удалось прочитать таблицу`);
+  if (document == null) {
+    throw new UserError('Не удалось прочитать таблицу')
   }
 
-  const activePlayers = await getActivePlayers(document);
+  const activePlayers = await getActivePlayers(document)
 
   if (activePlayers.length === 0) {
-    throw new UserError('Никто не записан');
+    throw new UserError('Никто не записан')
   }
 
-  const placeAndTime = await getPlaceAndTime(document);
+  const placeAndTime = await getPlaceAndTime(document)
 
   const [readyPlayers, questionablePlayers] = partition(
     activePlayers,
     ({ isQuestionable }) => !isQuestionable
-  );
+  )
 
-  return ctx.replyWithHTML(
+  return await ctx.replyWithHTML(
     dedent`
       <b>${placeAndTime}</b>
 
@@ -41,5 +41,7 @@ export default async (ctx: BotContext) => {
         .map(({ combinedName }) => `- ${combinedName} ???`)
         .join('\n')}
     `
-  );
-};
+  )
+}
+
+export default handler

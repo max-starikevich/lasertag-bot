@@ -1,10 +1,9 @@
-import dedent from 'dedent-js';
+import dedent from 'dedent-js'
 
-import { BotContext } from '@/bot';
-import { commandsInMenu } from '@/commands/index';
+import { CommandHandler, commandsInMenu } from '$/commands'
 
-export default (ctx: BotContext) => {
-  return ctx.replyWithHTML(
+const handler: CommandHandler = async (ctx) => {
+  return await ctx.replyWithHTML(
     dedent`
       <b>Доступные команды</b>:
 
@@ -15,5 +14,7 @@ export default (ctx: BotContext) => {
         )
         .join('\n\n')}
       `
-  );
-};
+  )
+}
+
+export default handler

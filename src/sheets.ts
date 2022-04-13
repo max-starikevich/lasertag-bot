@@ -1,11 +1,11 @@
 import {
   GoogleSpreadsheet,
   GoogleSpreadsheetWorksheet
-} from 'google-spreadsheet';
+} from 'google-spreadsheet'
 
-import config from '@/config';
-import { escapeHtml } from '@/utils';
-import { Player } from '@/player';
+import config from '$/config'
+import { escapeHtml } from '$/utils'
+import { Player } from '$/player'
 
 const {
   NAME_COLUMN,
@@ -18,7 +18,7 @@ const {
   MAX_ROW_NUMBER,
   DEFAULT_PLAYER_LEVEL,
   PLACE_AND_TIME_CELLS
-} = config;
+} = config
 
 const PLAYER_DATA_RANGES = [
   NAME_COLUMN,
@@ -28,63 +28,66 @@ const PLAYER_DATA_RANGES = [
   COMMENT_COLUMN,
   LEVEL_COLUMN
 ]
-  .filter((columnName) => !!columnName)
-  .map((column) => `${column}${START_FROM_ROW}:${column}${MAX_ROW_NUMBER}`);
+  .map((column) => `${column}${START_FROM_ROW}:${column}${MAX_ROW_NUMBER}`)
 
-export const getSpreadsheetDocument = () => {
-  const document = new GoogleSpreadsheet(config.GOOGLE_SPREADSHEET_ID);
-  document.useApiKey(config.GOOGLE_API_KEY);
-  return document;
-};
+export const getSpreadsheetDocument = (): GoogleSpreadsheet => {
+  const document = new GoogleSpreadsheet(config.GOOGLE_SPREADSHEET_ID)
+  document.useApiKey(config.GOOGLE_API_KEY)
+  return document
+}
 
 const getSheetsValue = (
   sheet: GoogleSpreadsheetWorksheet,
   a1: string
 ): string => {
-  const value = sheet.getCellByA1(a1).value;
+  const value = sheet.getCellByA1(a1).value
 
-  if (!value) {
-    return '';
+  if (typeof value === 'string') {
+    return escapeHtml(value)
   }
 
-  return escapeHtml(value.toString());
-};
+  if (typeof value === 'number') {
+    return escapeHtml(value.toString())
+  }
 
-export const getActivePlayers = async (document: GoogleSpreadsheet) => {
-  await document.loadInfo();
-  const sheet = document.sheetsByIndex[0];
+  return ''
+}
 
-  await sheet.loadCells(PLAYER_DATA_RANGES);
+export const getActivePlayers = async (document: GoogleSpreadsheet): Promise<Player[]> => {
+  await document.loadInfo()
+  const sheet = document.sheetsByIndex[0]
 
-  const activePlayers: Player[] = [];
+  await sheet.loadCells(PLAYER_DATA_RANGES)
+
+  const activePlayers: Player[] = []
 
   for (let row = START_FROM_ROW; row < MAX_ROW_NUMBER; row++) {
-    const count = getSheetsValue(sheet, COUNT_COLUMN + row);
-    const name = getSheetsValue(sheet, NAME_COLUMN + row);
+    const count = getSheetsValue(sheet, COUNT_COLUMN + row.toString())
+    const name = getSheetsValue(sheet, NAME_COLUMN + row.toString())
     const player: Player = {
       name,
-      count: +count.replace('?', '') || 0,
-      rentCount: +getSheetsValue(sheet, RENT_COLUMN + row) || 0,
-      comment: getSheetsValue(sheet, COMMENT_COLUMN + row),
-      level: +getSheetsValue(sheet, LEVEL_COLUMN + row) || DEFAULT_PLAYER_LEVEL,
+      count: +count.replace('?', '') ?? 0,
+      rentCount: +getSheetsValue(sheet, RENT_COLUMN + row.toString()) ?? 0,
+      comment: getSheetsValue(sheet, COMMENT_COLUMN + row.toString()),
+      level: +getSheetsValue(sheet, LEVEL_COLUMN + row.toString()) ?? DEFAULT_PLAYER_LEVEL,
       isQuestionable: count.includes('?'),
       isCompanion: false,
       combinedName: name
-    };
+    }
 
     if (player.count === 1) {
-      activePlayers.push(player);
+      activePlayers.push(player)
     }
 
     if (player.count > 1) {
-      const combinedPlayers: Player[] = [];
+      const combinedPlayers: Player[] = []
 
       for (
         let i = 1, rentCount = player.rentCount;
         i <= player.count;
         i++, rentCount--
       ) {
-        const isCompanion = i > 1;
+        const isCompanion = i > 1
 
         combinedPlayers.push({
           ...player,
@@ -94,10 +97,10 @@ export const getActivePlayers = async (document: GoogleSpreadsheet) => {
           comment: isCompanion ? '' : player.comment,
           level: isCompanion ? DEFAULT_PLAYER_LEVEL : player.level,
           isCompanion
-        });
+        })
       }
 
-      const [main, ...companions] = combinedPlayers;
+      const [main, ...companions] = combinedPlayers
 
       activePlayers.push(
         {
@@ -107,19 +110,19 @@ export const getActivePlayers = async (document: GoogleSpreadsheet) => {
           }`
         },
         ...companions
-      );
+      )
     }
   }
 
-  return activePlayers;
-};
+  return activePlayers
+}
 
-export const getPlaceAndTime = async (document: GoogleSpreadsheet) => {
-  await document.loadInfo();
-  const sheet = document.sheetsByIndex[0];
-  await sheet.loadCells(PLACE_AND_TIME_CELLS);
+export const getPlaceAndTime = async (document: GoogleSpreadsheet): Promise<string> => {
+  await document.loadInfo()
+  const sheet = document.sheetsByIndex[0]
+  await sheet.loadCells(PLACE_AND_TIME_CELLS)
 
   return PLACE_AND_TIME_CELLS.map((cell) => getSheetsValue(sheet, cell)).join(
     ', '
-  );
-};
+  )
+}

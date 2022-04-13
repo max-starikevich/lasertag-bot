@@ -1,42 +1,42 @@
-import * as Sentry from '@sentry/node';
+import * as Sentry from '@sentry/node'
 
-import { logger } from '@/logger';
+import { logger } from '$/logger'
 
 export class UserError extends Error {}
 
-export const handleCommandError = (error: any) => {
-  Sentry.captureException(error);
-  logger.error('❌ Command failed.', error);
-};
+export const handleCommandError = (error: any): void => {
+  Sentry.captureException(error)
+  logger.error('❌ Command failed.', error)
+}
 
-export const handleWebhookError = (error: any) => {
-  Sentry.captureException(error);
-  logger.error('❌ Webhook handler failed.', error);
-};
+export const handleWebhookError = (error: any): void => {
+  Sentry.captureException(error)
+  logger.error('❌ Webhook handler failed.', error)
+}
 
-export const handleStartupError = (error: any) => {
-  Sentry.captureException(error);
-  logger.error('❌ Startup failed.', error);
+export const handleStartupError = (error: any): void => {
+  Sentry.captureException(error)
+  logger.error('❌ Startup failed.', error)
 
-  Sentry.close(5000).then(() => {
-    process.exit();
-  });
-};
+  void Sentry.close(5000).then(() => {
+    process.exit()
+  })
+}
 
-export const handleUnexpectedRejection = (error: any) => {
-  Sentry.captureException(error);
-  logger.error('❌ Unexpected rejection.', error);
+export const handleUnexpectedRejection = (error: any): void => {
+  Sentry.captureException(error)
+  logger.error('❌ Unexpected rejection.', error)
 
-  Sentry.close(5000).then(() => {
-    process.exit();
-  });
-};
+  void Sentry.close(5000).then(() => {
+    process.exit()
+  })
+}
 
-export const handleUnexpectedException = (error: any) => {
-  Sentry.captureException(error);
-  logger.error('❌ Unexpected exception.', error);
+export const handleUnexpectedException = (error: any): void => {
+  Sentry.captureException(error)
+  logger.error('❌ Unexpected exception.', error)
 
-  Sentry.close(5000).then(() => {
-    process.exit();
-  });
-};
+  void Sentry.close(5000).then(() => {
+    process.exit()
+  })
+}

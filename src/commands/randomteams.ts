@@ -1,34 +1,34 @@
-import { partition, shuffle } from 'lodash';
-import dedent from 'dedent-js';
+import { partition, shuffle } from 'lodash'
+import dedent from 'dedent-js'
 
-import { UserError } from '@/errors';
-import { BotContext } from '@/bot';
-import { getActivePlayers, getPlaceAndTime } from '@/sheets';
-import { getBalancedTeams } from '@/player';
+import { UserError } from '$/errors'
+import { getActivePlayers, getPlaceAndTime } from '$/sheets'
+import { getBalancedTeams } from '$/player'
+import { CommandHandler } from '$/commands'
 
-export default async (ctx: BotContext) => {
-  const { document } = ctx;
+const handler: CommandHandler = async (ctx) => {
+  const { document } = ctx
 
-  if (!document) {
-    throw new UserError(`Не удалось прочитать таблицу`);
+  if (document == null) {
+    throw new UserError('Не удалось прочитать таблицу')
   }
 
-  const activePlayers = await getActivePlayers(document);
+  const activePlayers = await getActivePlayers(document)
 
   if (activePlayers.length < 2) {
-    throw new UserError('Записано меньше двух человек');
+    throw new UserError('Записано меньше двух человек')
   }
 
-  const placeAndTime = await getPlaceAndTime(document);
+  const placeAndTime = await getPlaceAndTime(document)
 
   const [playersToDivide] = partition(
     activePlayers,
     ({ isQuestionable, isCompanion }) => !isQuestionable && !isCompanion
-  );
+  )
 
-  const [team1, team2] = getBalancedTeams(playersToDivide);
+  const [team1, team2] = getBalancedTeams(playersToDivide)
 
-  return ctx.replyWithHTML(
+  return await ctx.replyWithHTML(
     dedent`
       <b>${placeAndTime}</b>
 
@@ -42,5 +42,7 @@ export default async (ctx: BotContext) => {
         .map((player) => `- ${player.name}`)
         .join('\n')}
     `
-  );
-};
+  )
+}
+
+export default handler
