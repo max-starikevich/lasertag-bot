@@ -24,7 +24,7 @@ const init = async (): Promise<BotInstance | null> => {
 
 export const instancePromise = init()
 
-export const lambdaHandler = async (
+export const handler = async (
   event: APIGatewayProxyEvent
 ): Promise<APIGatewayProxyResult> => {
   try {

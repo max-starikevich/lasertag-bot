@@ -1,3 +1,4 @@
+import 'module-alias/register';
 import * as Sentry from '@sentry/node'
 import { version } from '../package.json'
 
@@ -7,4 +8,4 @@ Sentry.init({
   release: version
 })
 
-import './handler'
+export { handler } from '$/handler'

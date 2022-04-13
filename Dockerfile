@@ -24,4 +24,4 @@ RUN yarn install
 
 COPY --from=builder /var/task/dist dist
 
-CMD ["dist/src/handler.lambdaHandler"]
+CMD ["dist/src/index.handler"]

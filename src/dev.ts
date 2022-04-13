@@ -2,7 +2,7 @@ import Koa from 'koa'
 import bodyParser from 'koa-bodyparser'
 import Router from 'koa-router'
 
-import { lambdaHandler, instancePromise } from '$/handler'
+import { handler, instancePromise } from '$/handler'
 import config from '$/config'
 import { logger } from '$/logger'
 import { updateWebhook } from '$/bot'
@@ -30,7 +30,7 @@ const dev = async (): Promise<void> => {
           body: ctx.request.rawBody
         } as any
 
-        const { statusCode, body } = await lambdaHandler(event)
+        const { statusCode, body } = await handler(event)
 
         ctx.status = statusCode
         ctx.body = body
