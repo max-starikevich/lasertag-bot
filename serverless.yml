@@ -4,6 +4,7 @@ useDotenv: true
 provider:
   name: aws
   region: ${env:AWS_REGION}
+  memorySize: 256
   architecture: arm64
   ecr:
     images:
@@ -13,6 +14,20 @@ provider:
 functions:
   webhook:
     image: app
+    environment:
+      BOT_TOKEN: ${env:BOT_TOKEN}
+      GOOGLE_API_KEY: ${env:GOOGLE_API_KEY}
+      GOOGLE_SPREADSHEET_ID: ${env:GOOGLE_SPREADSHEET_ID}
+      WEBHOOK_BASE: ${env:WEBHOOK_BASE}
+      START_FROM_ROW: ${env:START_FROM_ROW}
+      MAX_ROW_NUMBER: ${env:MAX_ROW_NUMBER}
+      NAME_COLUMN: ${env:NAME_COLUMN}
+      USERNAME_COLUMN: ${env:USERNAME_COLUMN}
+      COUNT_COLUMN: ${env:COUNT_COLUMN}
+      RENT_COLUMN: ${env:RENT_COLUMN}
+      COMMENT_COLUMN: ${env:COMMENT_COLUMN}
+      LEVEL_COLUMN: ${env:LEVEL_COLUMN}
+      PLACE_AND_TIME_CELLS: ${env:PLACE_AND_TIME_CELLS}
     events:
       - http:
           path: /webhook/${env:BOT_TOKEN}
