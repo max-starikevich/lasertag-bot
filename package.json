@@ -6,7 +6,7 @@
   "license": "MIT",
   "main": "dist/src/index.js",
   "engines": {
-    "node": "^16"
+    "node": "^14 || ^16"
   },
   "dependencies": {
     "@sentry/node": "^6.19.6",
@@ -42,8 +42,9 @@
   },
   "scripts": {
     "build": "tsc",
-    "start": "rm -rf dist && tsc-watch --noClear --onSuccess 'node --enable-source-maps --inspect -r dotenv/config -r module-alias/register dist/src/dev.js'",
-    "deploy": "serverless deploy --stage production",
+    "start": "rm -rf dist && tsc-watch --noClear --onSuccess 'node --enable-source-maps --inspect -r module-alias/register dist/src/dev.js'",
+    "update-webhook": "node -r module-alias/register dist/src/scripts/update-webhook.js",
+    "deploy": "serverless deploy --verbose --stage production",
     "lint": "ts-standard",
     "test": "jest --setupFiles dotenv/config",
     "prepare": "husky install"
@@ -52,8 +53,6 @@
     "$": "./dist/src"
   },
   "ts-standard": {
-    "files": [
-      "src/**/*.ts"
-    ]
+    "ignore": ["*.js", "src/index.ts"]
   }
 }
