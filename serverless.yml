@@ -15,10 +15,11 @@ functions:
   webhook:
     image: app
     environment:
+      SENTRY_DSN: ${env:SENTRY_DSN}
+      WEBHOOK_BASE: ${env:WEBHOOK_BASE}
       BOT_TOKEN: ${env:BOT_TOKEN}
       GOOGLE_API_KEY: ${env:GOOGLE_API_KEY}
       GOOGLE_SPREADSHEET_ID: ${env:GOOGLE_SPREADSHEET_ID}
-      WEBHOOK_BASE: ${env:WEBHOOK_BASE}
       START_FROM_ROW: ${env:START_FROM_ROW}
       MAX_ROW_NUMBER: ${env:MAX_ROW_NUMBER}
       NAME_COLUMN: ${env:NAME_COLUMN}
