@@ -26,7 +26,6 @@ const config = {
   BOT_TOKEN,
   GOOGLE_API_KEY: process.env.GOOGLE_API_KEY as string,
   GOOGLE_SPREADSHEET_ID: process.env.GOOGLE_SPREADSHEET_ID as string,
-  SENTRY_DSN: process.env.SENTRY_DSN,
 
   DEFAULT_PLAYER_LEVEL: 0,
   START_FROM_ROW: parseInt(process.env.START_FROM_ROW ?? '') ?? 1,
