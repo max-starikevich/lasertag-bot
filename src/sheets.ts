@@ -6,6 +6,7 @@ import {
 import config from '$/config'
 import { escapeHtml } from '$/utils'
 import { Player } from '$/player'
+import { logger } from '$/logger'
 
 const {
   NAME_COLUMN,
@@ -54,11 +55,7 @@ const getSheetsValue = (
 }
 
 export const getActivePlayers = async (document: GoogleSpreadsheet): Promise<Player[]> => {
-  await document.loadInfo()
   const sheet = document.sheetsByIndex[0]
-
-  await sheet.loadCells(PLAYER_DATA_RANGES)
-
   const activePlayers: Player[] = []
 
   for (let row = START_FROM_ROW; row < MAX_ROW_NUMBER; row++) {
@@ -114,15 +111,19 @@ export const getActivePlayers = async (document: GoogleSpreadsheet): Promise<Pla
     }
   }
 
+  void sheet.loadCells(PLAYER_DATA_RANGES).catch(logger.error)
+
   return activePlayers
 }
 
 export const getPlaceAndTime = async (document: GoogleSpreadsheet): Promise<string> => {
-  await document.loadInfo()
   const sheet = document.sheetsByIndex[0]
-  await sheet.loadCells(PLACE_AND_TIME_CELLS)
 
-  return PLACE_AND_TIME_CELLS.map((cell) => getSheetsValue(sheet, cell)).join(
+  const placeAndTime = PLACE_AND_TIME_CELLS.map((cell) => getSheetsValue(sheet, cell)).join(
     ', '
   )
+
+  void sheet.loadCells(PLACE_AND_TIME_CELLS).catch(logger.error)
+
+  return placeAndTime
 }

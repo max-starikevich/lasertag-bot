@@ -11,7 +11,14 @@ export interface BotContext extends Context {
 
 export const initBot = async (): Promise<Telegraf<BotContext>> => {
   const bot = new Telegraf<BotContext>(config.BOT_TOKEN)
-  bot.context.document = getSpreadsheetDocument()
+
+  const document = getSpreadsheetDocument()
+  await document.loadInfo()
+
+  const sheets = document.sheetsByIndex[0]
+  await sheets.loadCells()
+
+  bot.context.document = document
 
   await setBotCommands(bot)
 

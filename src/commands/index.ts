@@ -10,6 +10,9 @@ import randomTeams from '$/commands/randomteams'
 import organizerdata from '$/commands/organizerdata'
 import about from '$/commands/about'
 
+import sentryexception from '$/commands/sentryexception'
+import sentryusererror from '$/commands/sentryusererror'
+
 export type CommandHandler = (ctx: BotContext) => Promise<any>
 
 interface BotCommand {
@@ -21,40 +24,52 @@ interface BotCommand {
 
 const commands: BotCommand[] = [
   {
-    command: '/start',
+    command: 'start',
     handler: help,
     description: 'Начало работы с ботом',
     showInMenu: false
   },
   {
-    command: '/playerlist',
+    command: 'playerlist',
     handler: playerlist,
     description: 'Список записавшихся игроков в файл',
     showInMenu: true
   },
   {
-    command: '/organizerdata',
+    command: 'organizerdata',
     handler: organizerdata,
     description: 'Данные для организаторов',
     showInMenu: true
   },
   {
-    command: '/randomteams',
+    command: 'randomteams',
     handler: randomTeams,
     description: 'Сделать случайные составы команд по файлу записи',
     showInMenu: true
   },
   {
-    command: '/help',
+    command: 'help',
     handler: help,
     description: 'Помощь',
     showInMenu: true
   },
   {
-    command: '/about',
+    command: 'about',
     handler: about,
     description: 'Информация о боте',
     showInMenu: true
+  },
+  {
+    command: 'sentryexception',
+    handler: sentryexception,
+    description: 'Sentry',
+    showInMenu: false
+  },
+  {
+    command: 'sentryusererror',
+    handler: sentryusererror,
+    description: 'Sentry',
+    showInMenu: false
   }
 ]
 
@@ -91,7 +106,7 @@ const handlerWrapper = async ({
 
 export const setBotCommands = async (bot: Telegraf<BotContext>): Promise<void> => {
   commands.map(({ command, handler }) =>
-    bot.command(command, async (ctx) => await handlerWrapper({ command, handler, ctx }))
+    bot.command('/' + command, async (ctx) => await handlerWrapper({ command, handler, ctx }))
   )
 
   bot.hears(/^\/[a-z0-9]+$/i, async (ctx) =>
