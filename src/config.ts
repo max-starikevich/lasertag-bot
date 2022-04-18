@@ -1,10 +1,4 @@
-import dotenv from 'dotenv'
-
 const APP_ENV = process.env.APP_ENV ?? 'local'
-const pathToEnvFile = APP_ENV === 'local' ? '.env' : `.env.${APP_ENV}`
-
-dotenv.config({ path: pathToEnvFile })
-
 const isProduction = APP_ENV === 'production'
 const isLocal = !isProduction
 
