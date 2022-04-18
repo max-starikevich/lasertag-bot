@@ -10,9 +10,6 @@ import randomTeams from '$/commands/randomteams'
 import organizerdata from '$/commands/organizerdata'
 import about from '$/commands/about'
 
-import sentryexception from '$/commands/sentryexception'
-import sentryusererror from '$/commands/sentryusererror'
-
 export type CommandHandler = (ctx: BotContext) => Promise<any>
 
 interface BotCommand {
@@ -58,18 +55,6 @@ const commands: BotCommand[] = [
     handler: about,
     description: 'Информация о боте',
     showInMenu: true
-  },
-  {
-    command: 'sentryexception',
-    handler: sentryexception,
-    description: 'Sentry',
-    showInMenu: false
-  },
-  {
-    command: 'sentryusererror',
-    handler: sentryusererror,
-    description: 'Sentry',
-    showInMenu: false
   }
 ]
 
