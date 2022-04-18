@@ -15,7 +15,7 @@ const handler: CommandHandler = async (ctx) => {
   const activePlayers = await getActivePlayers(document)
 
   if (activePlayers.length === 0) {
-    return await ctx.reply('Пока что никто не записан')
+    throw new UserError('Никто не записан')
   }
 
   const placeAndTime = await getPlaceAndTime(document)
