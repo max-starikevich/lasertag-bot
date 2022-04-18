@@ -1,10 +1,4 @@
-import dotenv from 'dotenv'
-
 const APP_ENV = process.env.APP_ENV ?? 'local'
-const pathToEnvFile = APP_ENV === 'local' ? '.env' : `.env.${APP_ENV}`
-
-dotenv.config({ path: pathToEnvFile })
-
 const isProduction = APP_ENV === 'production'
 const isLocal = !isProduction
 
@@ -52,6 +46,14 @@ const isCapitalLetter = (content: string): boolean =>
   content.length === 1 && content === content.toUpperCase()
 
 const requiredVariables: EnvironmentToCheck = {
+  SENTRY_DSN: async () => {
+    if (config.isLocal) {
+      return true
+    }
+
+    return (process.env.SENTRY_DSN ?? '').length > 0
+  },
+
   BOT_TOKEN: async () => (process.env.BOT_TOKEN ?? '').length > 0,
 
   GOOGLE_API_KEY: async () => (process.env.GOOGLE_API_KEY ?? '').length > 0,

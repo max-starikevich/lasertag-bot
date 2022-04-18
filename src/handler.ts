@@ -2,7 +2,6 @@
 import { Telegraf } from 'telegraf'
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda'
 
-import { checkEnvironment } from '$/config'
 import { BotContext, initBot } from '$/bot'
 import { handleWebhookError, handleStartupError } from '$/errors'
 import { parseJsonSafe } from '$/utils'
@@ -11,10 +10,7 @@ interface BotInstance { bot: Telegraf<BotContext> }
 
 const init = async (): Promise<BotInstance | null> => {
   try {
-    await checkEnvironment()
-
     const bot = await initBot()
-
     return { bot }
   } catch (e) {
     handleStartupError(e)

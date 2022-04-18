@@ -1,8 +1,11 @@
+import 'module-alias/register'
+import 'dotenv/config'
+
 import Koa from 'koa'
 import bodyParser from 'koa-bodyparser'
 import Router from 'koa-router'
 
-import { handler, instancePromise } from '$/handler'
+import { instancePromise, handler } from '$/handler'
 import config from '$/config'
 import { logger } from '$/logger'
 import { updateWebhook } from '$/bot'

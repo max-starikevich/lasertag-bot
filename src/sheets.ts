@@ -31,6 +31,11 @@ const PLAYER_DATA_RANGES = [
 ]
   .map((column) => `${column}${START_FROM_ROW}:${column}${MAX_ROW_NUMBER}`)
 
+export const loadAppCells = async (document: GoogleSpreadsheet): Promise<void> => {
+  const sheet = document.sheetsByIndex[0]
+  return await sheet.loadCells([...PLAYER_DATA_RANGES, ...PLACE_AND_TIME_CELLS])
+}
+
 export const getSpreadsheetDocument = (): GoogleSpreadsheet => {
   const document = new GoogleSpreadsheet(config.GOOGLE_SPREADSHEET_ID)
   document.useApiKey(config.GOOGLE_API_KEY)
