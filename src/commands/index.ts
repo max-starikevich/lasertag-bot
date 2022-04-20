@@ -5,14 +5,14 @@ import { handleCommandError, UserError } from '$/errors'
 import { logger } from '$/logger'
 import { trackUser } from '$/analytics'
 import { initAndLoadDocument, loadSheet } from '$/sheets'
+import { getDateDiffInSeconds } from '$/utils'
+import config from '$/config'
 
 import help, { start } from '$/commands/help'
 import playerlist from '$/commands/playerlist'
 import randomTeams from '$/commands/randomteams'
 import organizerdata from '$/commands/organizerdata'
 import about from '$/commands/about'
-import { getDateDiffInSeconds } from '$/utils'
-import config from '$/config'
 
 export type BotCommandHandler = (ctx: BotContext) => Promise<any>
 
@@ -62,6 +62,8 @@ const botHandlerWrapper = async ({
   bot
 }: BotHandlerWrapperOptions): Promise<void> => {
   try {
+    const startMs = Date.now()
+
     if (ctx.message != null) {
       void trackUser({
         id: `${ctx.message.from.id}`,
@@ -77,8 +79,8 @@ const botHandlerWrapper = async ({
       Object.assign(ctx, bot.context)
     }
 
-    const startMs = Date.now()
     await command.handler(ctx)
+
     const finishMs = Date.now() - startMs
 
     logger.info(`✅ Processed /${command.name} in ${finishMs}ms.`)
