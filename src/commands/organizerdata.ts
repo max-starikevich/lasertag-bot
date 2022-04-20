@@ -3,13 +3,13 @@ import dedent from 'dedent-js'
 
 import { UserError } from '$/errors'
 import { getActivePlayers, getPlaceAndTime } from '$/sheets'
-import { CommandHandler } from '$/commands'
+import { BotCommand, BotCommandHandler } from '$/commands'
 
-const handler: CommandHandler = async (ctx) => {
+const handler: BotCommandHandler = async (ctx) => {
   const { document } = ctx
 
   if (document == null) {
-    throw new UserError('Не удалось прочитать таблицу')
+    throw new Error('Не удалось прочитать таблицу')
   }
 
   const activePlayers = await getActivePlayers(document)
@@ -46,4 +46,12 @@ const handler: CommandHandler = async (ctx) => {
   )
 }
 
-export default handler
+const command: BotCommand = {
+  name: 'organizerdata',
+  handler,
+  description: 'Данные для организаторов',
+  showInMenu: true,
+  requireDocument: true
+}
+
+export default command

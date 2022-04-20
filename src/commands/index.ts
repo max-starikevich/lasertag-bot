@@ -3,95 +3,98 @@ import { Telegraf } from 'telegraf'
 import { BotContext } from '$/bot'
 import { handleCommandError, UserError } from '$/errors'
 import { logger } from '$/logger'
+import { trackUser } from '$/analytics'
+import { initAndLoadDocument, loadSheet } from '$/sheets'
 
-import help from '$/commands/help'
+import help, { start } from '$/commands/help'
 import playerlist from '$/commands/playerlist'
 import randomTeams from '$/commands/randomteams'
 import organizerdata from '$/commands/organizerdata'
 import about from '$/commands/about'
+import { getDateDiffInSeconds } from '$/utils'
+import config from '$/config'
 
-export type CommandHandler = (ctx: BotContext) => Promise<any>
+export type BotCommandHandler = (ctx: BotContext) => Promise<any>
 
-interface BotCommand {
-  command: string
-  handler: CommandHandler
+export interface BotCommand {
+  name: string
+  handler: BotCommandHandler
   description: string
   showInMenu: boolean
+  requireDocument: boolean
 }
 
 const commands: BotCommand[] = [
-  {
-    command: 'start',
-    handler: help,
-    description: 'Начало работы с ботом',
-    showInMenu: false
-  },
-  {
-    command: 'playerlist',
-    handler: playerlist,
-    description: 'Список записавшихся игроков в файл',
-    showInMenu: true
-  },
-  {
-    command: 'organizerdata',
-    handler: organizerdata,
-    description: 'Данные для организаторов',
-    showInMenu: true
-  },
-  {
-    command: 'randomteams',
-    handler: randomTeams,
-    description: 'Сделать случайные составы команд по файлу записи',
-    showInMenu: true
-  },
-  {
-    command: 'help',
-    handler: help,
-    description: 'Помощь',
-    showInMenu: true
-  },
-  {
-    command: 'about',
-    handler: about,
-    description: 'Информация о боте',
-    showInMenu: true
-  }
+  start,
+  playerlist,
+  organizerdata,
+  randomTeams,
+  help,
+  about
 ]
 
 export const commandsInMenu = commands.filter(
   ({ showInMenu }) => showInMenu
 )
 
-interface HandlerWrapperOptions {
-  command: string
-  handler: CommandHandler
+interface BotHandlerWrapperOptions {
+  command: BotCommand
   ctx: BotContext
+  bot: Telegraf<BotContext>
 }
 
-const handlerWrapper = async ({
+const updateDocumentInContext = async (bot: Telegraf<BotContext>): Promise<void> => {
+  if (bot.context.document == null) {
+    bot.context.document = await initAndLoadDocument()
+  }
+
+  const { document, sheetLastUpdate } = bot.context
+
+  if (sheetLastUpdate == null || getDateDiffInSeconds(new Date(), sheetLastUpdate) > config.SHEET_CACHE_TTL_SECONDS) {
+    await loadSheet(document.sheetsByIndex[0])
+    bot.context.sheetLastUpdate = new Date()
+  }
+}
+
+const botHandlerWrapper = async ({
   command,
-  handler,
-  ctx
-}: HandlerWrapperOptions): Promise<void> => {
+  ctx,
+  bot
+}: BotHandlerWrapperOptions): Promise<void> => {
   try {
+    if (ctx.message != null) {
+      void trackUser({
+        id: `${ctx.message.from.id}`,
+        username: ctx.message.from.username,
+        firstName: ctx.message.from.first_name,
+        lastName: ctx.message.from.last_name
+      })
+    }
+
+    if (command.requireDocument) {
+      // update bot.context and copy new values to ctx
+      await updateDocumentInContext(bot)
+      Object.assign(ctx, bot.context)
+    }
+
     const startMs = Date.now()
-    await handler(ctx)
+    await command.handler(ctx)
     const finishMs = Date.now() - startMs
 
-    logger.info(`✅ Processed ${command} in ${finishMs}ms.`)
+    logger.info(`✅ Processed /${command.name} in ${finishMs}ms.`)
   } catch (e) {
     if (e instanceof UserError) {
       void ctx.reply(`❌ ${e.message}`)
     } else {
-      handleCommandError(e)
+      handleCommandError(e as Error)
       void ctx.reply('❌ Произошла ошибка. Повторите свой запрос позже.')
     }
   }
 }
 
 export const setBotCommands = async (bot: Telegraf<BotContext>): Promise<void> => {
-  commands.map(({ command, handler }) =>
-    bot.command('/' + command, async (ctx) => await handlerWrapper({ command, handler, ctx }))
+  commands.map((command) =>
+    bot.command('/' + command.name, async (ctx) => await botHandlerWrapper({ command, ctx, bot }))
   )
 
   bot.hears(/^\/[a-z0-9]+$/i, async (ctx) =>
