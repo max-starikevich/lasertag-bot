@@ -45,8 +45,8 @@ const dev = async (): Promise<void> => {
     app.use(router.routes())
 
     app.listen(config.PORT, () => {
-      console.info(
-        `🚀 Development server is ready at https://${config.WEBHOOK_BASE}`
+      logger.info(
+        `🚀 Kos is ready at https://${config.WEBHOOK_BASE}/*`
       )
     })
   } catch (e) {
