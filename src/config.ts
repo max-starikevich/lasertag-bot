@@ -22,8 +22,8 @@ const config = {
   GOOGLE_SPREADSHEET_ID: process.env.GOOGLE_SPREADSHEET_ID as string,
 
   DEFAULT_PLAYER_LEVEL: 0,
-  START_FROM_ROW: parseInt(process.env.START_FROM_ROW ?? '') ?? 1,
-  MAX_ROW_NUMBER: parseInt(process.env.MAX_ROW_NUMBER ?? '') ?? 100,
+  START_FROM_ROW: parseInt(process.env.START_FROM_ROW || '1'),
+  MAX_ROW_NUMBER: parseInt(process.env.MAX_ROW_NUMBER || '100'),
 
   NAME_COLUMN: process.env.NAME_COLUMN as string,
   USERNAME_COLUMN: process.env.USERNAME_COLUMN as string,
@@ -33,7 +33,9 @@ const config = {
   LEVEL_COLUMN: process.env.LEVEL_COLUMN as string,
   PLACE_AND_TIME_CELLS: (process.env.PLACE_AND_TIME_CELLS ?? '').split(
     ','
-  )
+  ),
+
+  SHEET_CACHE_TTL_SECONDS: parseInt(process.env.SHEET_CACHE_TTL_SECONDS || '15')
 }
 
 type EnvironmentValidator = () => Promise<boolean>
