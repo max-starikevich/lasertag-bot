@@ -5,15 +5,17 @@ import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda'
 import { BotContext, initBot } from '$/bot'
 import { handleWebhookError, handleStartupError } from '$/errors'
 import { parseJsonSafe } from '$/utils'
+import { checkEnvironment } from '$/config'
 
 interface BotInstance { bot: Telegraf<BotContext> }
 
 const init = async (): Promise<BotInstance | null> => {
   try {
+    await checkEnvironment()
     const bot = await initBot()
     return { bot }
   } catch (e) {
-    handleStartupError(e)
+    handleStartupError(e as Error)
     return null
   }
 }
@@ -58,7 +60,7 @@ export const handler = async (
       body: 'OK'
     }
   } catch (e) {
-    handleWebhookError(e)
+    handleWebhookError(e as Error)
 
     return {
       statusCode: 500,
