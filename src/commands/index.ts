@@ -44,9 +44,8 @@ const updateDocumentInContext = async (ctx: Partial<BotContext>): Promise<void> 
 
   const { document } = ctx
 
-  void loadSheet(document.sheetsByIndex[0]).then(() => {
-    logger.info('📄 Updated sheets in the background after a command')
-  })
+  await loadSheet(document.sheetsByIndex[0])
+  logger.info('📄 Updated sheets')
 }
 
 interface HandlerWrapperParams {
