@@ -1,7 +1,7 @@
 import { partition, shuffle } from 'lodash'
 import dedent from 'dedent-js'
 
-import { ServiceError, UserError } from '$/errors'
+import { ServiceErrorCodes, ServiceError, UserError, UserErrorCodes } from '$/errors'
 import { getActivePlayers, getPlaceAndTime } from '$/sheets'
 import { getBalancedTeams } from '$/player'
 import { BotCommand, BotCommandHandler } from '$/commands'
@@ -10,13 +10,13 @@ const handler: BotCommandHandler = async (ctx) => {
   const { document } = ctx
 
   if (document == null) {
-    throw new ServiceError('Не удалось прочитать таблицу')
+    throw new ServiceError('Не удалось прочитать таблицу', ServiceErrorCodes.NO_DOCUMENT_LOADED)
   }
 
   const activePlayers = await getActivePlayers(document)
 
   if (activePlayers.length < 2) {
-    throw new UserError('Записано меньше двух человек')
+    throw new UserError('Записано меньше двух человек', UserErrorCodes.NOT_ENOUGH_PLAYERS)
   }
 
   const placeAndTime = await getPlaceAndTime(document)

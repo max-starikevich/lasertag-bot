@@ -1,10 +1,10 @@
 import { Telegraf } from 'telegraf'
 
 import { BotContext } from '$/bot'
-import { handleCommandError, ServiceError, UserError } from '$/errors'
-import { trackUser } from '$/analytics'
+import { handleCommandError, ServiceError, ServiceErrorCodes, UserError } from '$/errors'
 import { initAndLoadDocument, loadSheet } from '$/sheets'
 import { logger } from '$/logger'
+import { getUserDataFromContext, trackUser, UserFromContext } from '$/context'
 
 import help, { start } from '$/commands/help'
 import playerlist from '$/commands/playerlist'
@@ -35,17 +35,28 @@ export const commandsInMenu = commands.filter(
   ({ showInMenu }) => showInMenu
 )
 
-const updateDocumentInContext = async (ctx: Partial<BotContext>): Promise<void> => {
-  if (ctx.document == null) {
-    ctx.document = await initAndLoadDocument()
-    logger.info('📄 Updated document and sheets')
+const updateDocumentInContext = async (botContext: Partial<BotContext>, userData: UserFromContext): Promise<void> => {
+  if (botContext.document == null) {
+    const startMs = Date.now()
+    botContext.document = await initAndLoadDocument()
+    const finishMs = Date.now() - startMs
+
+    logger.info(`📄 Updated document and sheets in ${finishMs}ms`, {
+      ...userData, finishMs
+    })
+
     return
   }
 
-  const { document } = ctx
+  const { document } = botContext
 
+  const startMs = Date.now()
   await loadSheet(document.sheetsByIndex[0])
-  logger.info('📄 Updated sheets')
+  const finishMs = Date.now() - startMs
+
+  logger.info(`📄 Updated sheets in ${finishMs}ms`, {
+    ...userData, finishMs
+  })
 }
 
 interface HandlerWrapperParams {
@@ -55,23 +66,20 @@ interface HandlerWrapperParams {
 }
 
 const handlerWrapper = async ({ ctx, command, bot }: HandlerWrapperParams): Promise<void> => {
-  try {
-    const startMs = Date.now()
+  const startMs = Date.now()
+  const userData = getUserDataFromContext(ctx.message?.from)
+  void trackUser(userData)
 
-    if (ctx.message != null) {
-      void trackUser({
-        id: `${ctx.message.from.id}`,
-        username: ctx.message.from.username,
-        firstName: ctx.message.from.first_name,
-        lastName: ctx.message.from.last_name
-      })
+  try {
+    if (ctx.message == null) {
+      throw new ServiceError('Не удалось обработать сообщение.', ServiceErrorCodes.NO_MESSAGE_IN_CTX)
     }
 
     const { requireDocument } = command
 
     if (requireDocument) {
       // ctx is a copy of bot.context on every bot.handleUpdate()
-      await updateDocumentInContext(bot.context)
+      await updateDocumentInContext(bot.context, userData)
       Object.assign(ctx, bot.context)
     }
 
@@ -79,21 +87,43 @@ const handlerWrapper = async ({ ctx, command, bot }: HandlerWrapperParams): Prom
 
     const finishMs = Date.now() - startMs
 
-    logger.info(`✅ Processed /${command.name} in ${finishMs}ms.`)
+    logger.info(`✅ Processed /${command.name} in ${finishMs}ms.`, {
+      ...userData, finishMs
+    })
   } catch (e) {
-    if (e instanceof UserError) {
-      void ctx.reply(`❌ ${e.message}`)
-      return
-    }
+    const finishMs = Date.now() - startMs
 
     if (e instanceof ServiceError) {
+      void ctx.reply(`❌ ${e.message}`)
+
+      logger.error(`❌ Processed /${command.name} with a ServiceError ${e.code} code in ${finishMs}ms.`, {
+        ...userData, errorCode: e.code, finishMs
+      })
+
       handleCommandError(e)
-      void ctx.reply('❌ Ошибка системы. Повторите свой запрос позже.')
       return
     }
 
-    handleCommandError(e as Error)
+    if (e instanceof UserError) {
+      void ctx.reply(`⚠️ ${e.message}`)
+
+      logger.info(`⚠️  Processed /${command.name} with a UserError code ${e.code} in ${finishMs}ms.`, {
+        ...userData, errorCode: e.code, finishMs
+      })
+
+      handleCommandError(e)
+      return
+    }
+
+    const error = e as Error
+
     void ctx.reply('❌ Неизвестная ошибка системы. Повторите свой запрос позже.')
+
+    logger.error(`❌ Processed /${command.name} with an unknown code in ${finishMs}ms.`, {
+      ...userData, errorCode: null, finishMs
+    })
+
+    handleCommandError(error)
   }
 }
 
