@@ -1,7 +1,7 @@
 import { Telegraf } from 'telegraf'
 
 import { BotContext } from '$/bot'
-import { handleCommandError, UserError } from '$/errors'
+import { handleCommandError, ServiceError, UserError } from '$/errors'
 import { trackUser } from '$/analytics'
 import { initAndLoadDocument, loadSheet } from '$/sheets'
 import { logger } from '$/logger'
@@ -84,10 +84,17 @@ const handlerWrapper = async ({ ctx, command, bot }: HandlerWrapperParams): Prom
   } catch (e) {
     if (e instanceof UserError) {
       void ctx.reply(`❌ ${e.message}`)
-    } else {
-      handleCommandError(e as Error)
-      void ctx.reply('❌ Произошла ошибка. Повторите свой запрос позже.')
+      return
     }
+
+    if (e instanceof ServiceError) {
+      handleCommandError(e)
+      void ctx.reply('❌ Ошибка системы. Повторите свой запрос позже.')
+      return
+    }
+
+    handleCommandError(e as Error)
+    void ctx.reply('❌ Неизвестная ошибка системы. Повторите свой запрос позже.')
   }
 }
 

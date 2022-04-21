@@ -1,7 +1,7 @@
 import { partition } from 'lodash'
 import dedent from 'dedent-js'
 
-import { UserError } from '$/errors'
+import { UserError, ServiceError } from '$/errors'
 import { getActivePlayers, getPlaceAndTime } from '$/sheets'
 import { BotCommand, BotCommandHandler } from '$/commands'
 
@@ -9,7 +9,7 @@ const handler: BotCommandHandler = async (ctx) => {
   const { document } = ctx
 
   if (document == null) {
-    throw new Error('Не удалось прочитать таблицу')
+    throw new ServiceError('Не удалось прочитать таблицу')
   }
 
   const activePlayers = await getActivePlayers(document)

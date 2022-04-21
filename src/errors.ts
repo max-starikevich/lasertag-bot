@@ -3,6 +3,7 @@ import * as Sentry from '@sentry/node'
 import { logger } from '$/logger'
 
 export class UserError extends Error {}
+export class ServiceError extends Error {}
 
 export const handleCommandError = (error: Error): void => {
   Sentry.captureException(error)
