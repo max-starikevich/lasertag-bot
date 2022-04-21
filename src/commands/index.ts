@@ -4,7 +4,7 @@ import { BotContext } from '$/bot'
 import { handleCommandError, ServiceError, ServiceErrorCodes, UserError } from '$/errors'
 import { initAndLoadDocument, loadSheet } from '$/sheets'
 import { logger } from '$/logger'
-import { getUserDataFromContext, trackUser, UserFromContext } from '$/context'
+import { getLogData, trackUser, LogDataFromContext } from '$/context'
 
 import help, { start } from '$/commands/help'
 import playerlist from '$/commands/playerlist'
@@ -35,14 +35,14 @@ export const commandsInMenu = commands.filter(
   ({ showInMenu }) => showInMenu
 )
 
-const updateDocumentInContext = async (botContext: Partial<BotContext>, userData: UserFromContext): Promise<void> => {
+const updateDocumentInContext = async (botContext: Partial<BotContext>, logData: LogDataFromContext): Promise<void> => {
   if (botContext.document == null) {
     const startMs = Date.now()
     botContext.document = await initAndLoadDocument()
     const finishMs = Date.now() - startMs
 
     logger.info(`📄 Updated document and sheets in ${finishMs}ms`, {
-      ...userData, finishMs
+      ...logData, finishMs
     })
 
     return
@@ -55,7 +55,7 @@ const updateDocumentInContext = async (botContext: Partial<BotContext>, userData
   const finishMs = Date.now() - startMs
 
   logger.info(`📄 Updated sheets in ${finishMs}ms`, {
-    ...userData, finishMs
+    ...logData, finishMs
   })
 }
 
@@ -67,7 +67,8 @@ interface HandlerWrapperParams {
 
 const handlerWrapper = async ({ ctx, command, bot }: HandlerWrapperParams): Promise<void> => {
   const startMs = Date.now()
-  const userData = getUserDataFromContext(ctx.message?.from)
+  const userData = getLogData({ ctx, commandName: command.name })
+
   void trackUser(userData)
 
   try {
@@ -107,7 +108,7 @@ const handlerWrapper = async ({ ctx, command, bot }: HandlerWrapperParams): Prom
     if (e instanceof UserError) {
       void ctx.reply(`⚠️ ${e.message}`)
 
-      logger.info(`⚠️  Processed /${command.name} with a UserError code ${e.code} in ${finishMs}ms.`, {
+      logger.warn(`⚠️  Processed /${command.name} with a UserError code ${e.code} in ${finishMs}ms.`, {
         ...userData, errorCode: e.code, finishMs
       })
 
@@ -132,9 +133,16 @@ export const setBotCommands = async (bot: Telegraf<BotContext>): Promise<void> =
     bot.command('/' + command.name, async (ctx) => await handlerWrapper({ ctx, command, bot }))
   )
 
-  bot.hears(/^\/[a-z0-9]+$/i, async (ctx) =>
-    await ctx.reply(
-      'Не удалось распознать команду. Используйте меню или команду /help'
+  bot.hears(/^\/[a-z0-9]+$/i, async (ctx) => {
+    const commandName = ctx.message.text
+    const userData = getLogData({ ctx, commandName })
+
+    void ctx.reply(
+      '⚠️ Не удалось распознать команду. Используйте меню или команду /help'
     )
-  )
+
+    logger.warn(`⚠️  Unknown ${commandName} command`, {
+      ...userData
+    })
+  })
 }
