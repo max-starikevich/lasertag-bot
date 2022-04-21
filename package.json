@@ -47,9 +47,10 @@
     "test": "jest --setupFiles dotenv/config",
     "prepare": "husky install",
     "build": "tsc -p tsconfig.prod.json",
-    "deploy": "yarn deploy:aws && yarn deploy:webhooks",
-    "deploy:webhooks": "node --enable-source-maps dist/src/scripts/deploy-webhooks.js",
-    "deploy:aws": "serverless deploy --verbose --stage production"
+    "deploy": "yarn deploy:check-image && yarn deploy:aws && yarn deploy:webhooks",
+    "deploy:check-image": "docker image build -t lasertag-bot .",
+    "deploy:aws": "serverless deploy --verbose --stage production",
+    "deploy:webhooks": "node --enable-source-maps dist/src/scripts/deploy-webhooks.js"
   },
   "_moduleAliases": {
     "$": "./dist/src"
