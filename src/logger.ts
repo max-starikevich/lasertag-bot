@@ -8,14 +8,11 @@ const { combine, timestamp, errors, printf, prettyPrint } = format
 const defaultFormats: Format[] = [
   errors({ stack: true }),
   timestamp(),
-  printf((info) =>
-    JSON.stringify({
-      level: info.level,
-      message: info.message,
-      stack: info.stack,
-      timestamp: info.timestamp
+  printf(({ ...data }) => {
+    return JSON.stringify({
+      ...data
     })
-  )
+  })
 ]
 
 const devFormats: Format[] = [
