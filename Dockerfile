@@ -7,7 +7,7 @@ ENV NODE_ENV=development
 RUN yarn install
 
 COPY src src
-COPY tsconfig.json ./
+COPY tsconfig.json tsconfig.prod.json ./
 
 RUN yarn build
 
