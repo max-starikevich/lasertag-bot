@@ -45,17 +45,17 @@ interface EnvironmentToCheck {
 const isCapitalLetter = (content: string): boolean =>
   content.length === 1 && content === content.toUpperCase()
 
-const isValidUrlInProd = async (): Promise<boolean> => {
+const isValidUrlInProd = async (value?: string): Promise<boolean> => {
   try {
     if (config.isLocal) {
       return true
     }
 
-    if (process.env.SENTRY_DSN == null) {
+    if (value == null) {
       return false
     }
 
-    const validUrl = new URL(process.env.SENTRY_DSN)
+    const validUrl = new URL(value)
 
     return Boolean(validUrl)
   } catch {
@@ -63,10 +63,8 @@ const isValidUrlInProd = async (): Promise<boolean> => {
   }
 }
 
-const requiredVariables: EnvironmentToCheck = {
-  SENTRY_DSN: isValidUrlInProd,
-
-  SENTRY_DEPLOY_WEBHOOK: isValidUrlInProd,
+const requiredRuntimeVariables: EnvironmentToCheck = {
+  SENTRY_DSN: async () => await isValidUrlInProd(process.env.SENTRY_DSN),
 
   BOT_TOKEN: async () => (process.env.BOT_TOKEN ?? '').length > 0,
 
@@ -102,7 +100,7 @@ const requiredVariables: EnvironmentToCheck = {
 }
 
 export const checkEnvironment = async (): Promise<void> => {
-  const checksPromises = Object.entries(requiredVariables).map(
+  const checksPromises = Object.entries(requiredRuntimeVariables).map(
     async ([variable, validator]) => {
       try {
         const value = await validator()
