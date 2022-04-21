@@ -67,9 +67,9 @@ interface HandlerWrapperParams {
 
 const handlerWrapper = async ({ ctx, command, bot }: HandlerWrapperParams): Promise<void> => {
   const startMs = Date.now()
-  const userData = getLogData({ ctx, commandName: command.name })
+  const logData = getLogData({ ctx, commandName: command.name })
 
-  void trackUser(userData)
+  void trackUser(logData)
 
   try {
     if (ctx.message == null) {
@@ -80,7 +80,7 @@ const handlerWrapper = async ({ ctx, command, bot }: HandlerWrapperParams): Prom
 
     if (requireDocument) {
       // ctx is a copy of bot.context on every bot.handleUpdate()
-      await updateDocumentInContext(bot.context, userData)
+      await updateDocumentInContext(bot.context, logData)
       Object.assign(ctx, bot.context)
     }
 
@@ -89,7 +89,7 @@ const handlerWrapper = async ({ ctx, command, bot }: HandlerWrapperParams): Prom
     const finishMs = Date.now() - startMs
 
     logger.info(`✅ Processed /${command.name} in ${finishMs}ms.`, {
-      ...userData, finishMs
+      ...logData, finishMs
     })
   } catch (e) {
     const finishMs = Date.now() - startMs
@@ -98,7 +98,7 @@ const handlerWrapper = async ({ ctx, command, bot }: HandlerWrapperParams): Prom
       void ctx.reply(`❌ ${e.message}`)
 
       logger.error(`❌ Processed /${command.name} with a ServiceError ${e.code} code in ${finishMs}ms.`, {
-        ...userData, errorCode: e.code, finishMs
+        ...logData, errorCode: e.code, finishMs
       })
 
       handleCommandError(e)
@@ -109,7 +109,7 @@ const handlerWrapper = async ({ ctx, command, bot }: HandlerWrapperParams): Prom
       void ctx.reply(`⚠️ ${e.message}`)
 
       logger.warn(`⚠️  Processed /${command.name} with a UserError code ${e.code} in ${finishMs}ms.`, {
-        ...userData, errorCode: e.code, finishMs
+        ...logData, errorCode: e.code, finishMs
       })
 
       handleCommandError(e)
@@ -121,7 +121,7 @@ const handlerWrapper = async ({ ctx, command, bot }: HandlerWrapperParams): Prom
     void ctx.reply('❌ Неизвестная ошибка системы. Повторите свой запрос позже.')
 
     logger.error(`❌ Processed /${command.name} with an unknown code in ${finishMs}ms.`, {
-      ...userData, errorCode: null, finishMs
+      ...logData, errorCode: null, finishMs
     })
 
     handleCommandError(error)
