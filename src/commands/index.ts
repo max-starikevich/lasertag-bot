@@ -2,11 +2,9 @@ import { Telegraf } from 'telegraf'
 
 import { BotContext } from '$/bot'
 import { handleCommandError, UserError } from '$/errors'
-import { logger } from '$/logger'
 import { trackUser } from '$/analytics'
 import { initAndLoadDocument, loadSheet } from '$/sheets'
-import { getDateDiffInSeconds } from '$/utils'
-import config from '$/config'
+import { logger } from '$/logger'
 
 import help, { start } from '$/commands/help'
 import playerlist from '$/commands/playerlist'
@@ -37,30 +35,27 @@ export const commandsInMenu = commands.filter(
   ({ showInMenu }) => showInMenu
 )
 
-interface BotHandlerWrapperOptions {
-  command: BotCommand
+const updateDocumentInContext = async (ctx: Partial<BotContext>): Promise<void> => {
+  if (ctx.document == null) {
+    ctx.document = await initAndLoadDocument()
+    logger.info('📄 Updated document and sheets')
+    return
+  }
+
+  const { document } = ctx
+
+  void loadSheet(document.sheetsByIndex[0]).then(() => {
+    logger.info('📄 Updated sheets in the background after a command')
+  })
+}
+
+interface HandlerWrapperParams {
   ctx: BotContext
+  command: BotCommand
   bot: Telegraf<BotContext>
 }
 
-const updateDocumentInContext = async (bot: Telegraf<BotContext>): Promise<void> => {
-  if (bot.context.document == null) {
-    bot.context.document = await initAndLoadDocument()
-  }
-
-  const { document, sheetLastUpdate } = bot.context
-
-  if (sheetLastUpdate == null || getDateDiffInSeconds(new Date(), sheetLastUpdate) > config.SHEET_CACHE_TTL_SECONDS) {
-    await loadSheet(document.sheetsByIndex[0])
-    bot.context.sheetLastUpdate = new Date()
-  }
-}
-
-const botHandlerWrapper = async ({
-  command,
-  ctx,
-  bot
-}: BotHandlerWrapperOptions): Promise<void> => {
+const handlerWrapper = async ({ ctx, command, bot }: HandlerWrapperParams): Promise<void> => {
   try {
     const startMs = Date.now()
 
@@ -73,9 +68,11 @@ const botHandlerWrapper = async ({
       })
     }
 
-    if (command.requireDocument) {
-      // update bot.context and copy new values to ctx
-      await updateDocumentInContext(bot)
+    const { requireDocument } = command
+
+    if (requireDocument) {
+      // ctx is a copy of bot.context on every bot.handleUpdate()
+      await updateDocumentInContext(bot.context)
       Object.assign(ctx, bot.context)
     }
 
@@ -96,7 +93,7 @@ const botHandlerWrapper = async ({
 
 export const setBotCommands = async (bot: Telegraf<BotContext>): Promise<void> => {
   commands.map((command) =>
-    bot.command('/' + command.name, async (ctx) => await botHandlerWrapper({ command, ctx, bot }))
+    bot.command('/' + command.name, async (ctx) => await handlerWrapper({ ctx, command, bot }))
   )
 
   bot.hears(/^\/[a-z0-9]+$/i, async (ctx) =>
