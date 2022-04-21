@@ -1,5 +1,4 @@
 import 'module-alias/register';
-import 'dotenv/config'
 
 import * as Sentry from '@sentry/node'
 import { version } from '../package.json'

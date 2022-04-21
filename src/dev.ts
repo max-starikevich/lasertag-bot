@@ -38,6 +38,8 @@ const dev = async (): Promise<void> => {
         ctx.status = statusCode
         ctx.body = body
       } catch (e) {
+        ctx.status = 500
+        ctx.body = 'Internal server error'
         logger.error(e)
       }
     })
@@ -45,8 +47,8 @@ const dev = async (): Promise<void> => {
     app.use(router.routes())
 
     app.listen(config.PORT, () => {
-      console.info(
-        `🚀 Development server is ready at https://${config.WEBHOOK_BASE}`
+      logger.info(
+        `🚀 Kos is ready at https://${config.WEBHOOK_BASE}/*`
       )
     })
   } catch (e) {

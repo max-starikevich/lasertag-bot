@@ -22,8 +22,8 @@ const config = {
   GOOGLE_SPREADSHEET_ID: process.env.GOOGLE_SPREADSHEET_ID as string,
 
   DEFAULT_PLAYER_LEVEL: 0,
-  START_FROM_ROW: parseInt(process.env.START_FROM_ROW ?? '') ?? 1,
-  MAX_ROW_NUMBER: parseInt(process.env.MAX_ROW_NUMBER ?? '') ?? 100,
+  START_FROM_ROW: parseInt(process.env.START_FROM_ROW ?? '1'),
+  MAX_ROW_NUMBER: parseInt(process.env.MAX_ROW_NUMBER ?? '100'),
 
   NAME_COLUMN: process.env.NAME_COLUMN as string,
   USERNAME_COLUMN: process.env.USERNAME_COLUMN as string,
@@ -45,14 +45,28 @@ interface EnvironmentToCheck {
 const isCapitalLetter = (content: string): boolean =>
   content.length === 1 && content === content.toUpperCase()
 
-const requiredVariables: EnvironmentToCheck = {
-  SENTRY_DSN: async () => {
+const isValidUrlInProd = async (): Promise<boolean> => {
+  try {
     if (config.isLocal) {
       return true
     }
 
-    return (process.env.SENTRY_DSN ?? '').length > 0
-  },
+    if (process.env.SENTRY_DSN == null) {
+      return false
+    }
+
+    const validUrl = new URL(process.env.SENTRY_DSN)
+
+    return Boolean(validUrl)
+  } catch {
+    return false
+  }
+}
+
+const requiredVariables: EnvironmentToCheck = {
+  SENTRY_DSN: isValidUrlInProd,
+
+  SENTRY_DEPLOY_WEBHOOK: isValidUrlInProd,
 
   BOT_TOKEN: async () => (process.env.BOT_TOKEN ?? '').length > 0,
 

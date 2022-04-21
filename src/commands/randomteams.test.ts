@@ -1,12 +1,12 @@
-import handler from '$/commands/randomteams'
-import { UserError } from '$/errors'
+import command from '$/commands/randomteams'
+import { ServiceError } from '$/errors'
 
 describe('Command /randomteams', () => {
   it('should throw a user error, if there is no "document" object in the context', () => {
     const context = {} as any
 
-    handler(context).catch((e) => {
-      expect(e).toBeInstanceOf(UserError)
+    command.handler(context).catch((e) => {
+      expect(e).toBeInstanceOf(ServiceError)
       expect(e.message).toEqual('Не удалось прочитать таблицу')
     })
   })

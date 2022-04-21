@@ -2,9 +2,9 @@ import dedent from 'dedent-js'
 
 import { author, version, repository } from '../../package.json'
 import { escapeHtml } from '$/utils'
-import { CommandHandler } from '$/commands'
+import { BotCommand, BotCommandHandler } from '$/commands'
 
-const handler: CommandHandler = async (ctx) => {
+const handler: BotCommandHandler = async (ctx) => {
   return await ctx.replyWithHTML(dedent`
     <b>Telegram-бот для лазертага</b>
 
@@ -16,4 +16,12 @@ const handler: CommandHandler = async (ctx) => {
   `)
 }
 
-export default handler
+const command: BotCommand = {
+  name: 'about',
+  handler,
+  description: 'Информация о боте',
+  showInMenu: true,
+  requireDocument: false
+}
+
+export default command

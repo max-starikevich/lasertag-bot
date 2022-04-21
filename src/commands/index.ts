@@ -1,97 +1,105 @@
 import { Telegraf } from 'telegraf'
 
 import { BotContext } from '$/bot'
-import { handleCommandError, UserError } from '$/errors'
+import { handleCommandError, ServiceError, UserError } from '$/errors'
+import { trackUser } from '$/analytics'
+import { initAndLoadDocument, loadSheet } from '$/sheets'
 import { logger } from '$/logger'
 
-import help from '$/commands/help'
+import help, { start } from '$/commands/help'
 import playerlist from '$/commands/playerlist'
 import randomTeams from '$/commands/randomteams'
 import organizerdata from '$/commands/organizerdata'
 import about from '$/commands/about'
 
-export type CommandHandler = (ctx: BotContext) => Promise<any>
+export type BotCommandHandler = (ctx: BotContext) => Promise<any>
 
-interface BotCommand {
-  command: string
-  handler: CommandHandler
+export interface BotCommand {
+  name: string
+  handler: BotCommandHandler
   description: string
   showInMenu: boolean
+  requireDocument: boolean
 }
 
 const commands: BotCommand[] = [
-  {
-    command: 'start',
-    handler: help,
-    description: 'Начало работы с ботом',
-    showInMenu: false
-  },
-  {
-    command: 'playerlist',
-    handler: playerlist,
-    description: 'Список записавшихся игроков в файл',
-    showInMenu: true
-  },
-  {
-    command: 'organizerdata',
-    handler: organizerdata,
-    description: 'Данные для организаторов',
-    showInMenu: true
-  },
-  {
-    command: 'randomteams',
-    handler: randomTeams,
-    description: 'Сделать случайные составы команд по файлу записи',
-    showInMenu: true
-  },
-  {
-    command: 'help',
-    handler: help,
-    description: 'Помощь',
-    showInMenu: true
-  },
-  {
-    command: 'about',
-    handler: about,
-    description: 'Информация о боте',
-    showInMenu: true
-  }
+  start,
+  playerlist,
+  organizerdata,
+  randomTeams,
+  help,
+  about
 ]
 
 export const commandsInMenu = commands.filter(
   ({ showInMenu }) => showInMenu
 )
 
-interface HandlerWrapperOptions {
-  command: string
-  handler: CommandHandler
-  ctx: BotContext
+const updateDocumentInContext = async (ctx: Partial<BotContext>): Promise<void> => {
+  if (ctx.document == null) {
+    ctx.document = await initAndLoadDocument()
+    logger.info('📄 Updated document and sheets')
+    return
+  }
+
+  const { document } = ctx
+
+  await loadSheet(document.sheetsByIndex[0])
+  logger.info('📄 Updated sheets')
 }
 
-const handlerWrapper = async ({
-  command,
-  handler,
-  ctx
-}: HandlerWrapperOptions): Promise<void> => {
+interface HandlerWrapperParams {
+  ctx: BotContext
+  command: BotCommand
+  bot: Telegraf<BotContext>
+}
+
+const handlerWrapper = async ({ ctx, command, bot }: HandlerWrapperParams): Promise<void> => {
   try {
     const startMs = Date.now()
-    await handler(ctx)
+
+    if (ctx.message != null) {
+      void trackUser({
+        id: `${ctx.message.from.id}`,
+        username: ctx.message.from.username,
+        firstName: ctx.message.from.first_name,
+        lastName: ctx.message.from.last_name
+      })
+    }
+
+    const { requireDocument } = command
+
+    if (requireDocument) {
+      // ctx is a copy of bot.context on every bot.handleUpdate()
+      await updateDocumentInContext(bot.context)
+      Object.assign(ctx, bot.context)
+    }
+
+    await command.handler(ctx)
+
     const finishMs = Date.now() - startMs
 
-    logger.info(`✅ Processed ${command} in ${finishMs}ms.`)
+    logger.info(`✅ Processed /${command.name} in ${finishMs}ms.`)
   } catch (e) {
     if (e instanceof UserError) {
       void ctx.reply(`❌ ${e.message}`)
-    } else {
-      handleCommandError(e)
-      void ctx.reply('❌ Произошла ошибка. Повторите свой запрос позже.')
+      return
     }
+
+    if (e instanceof ServiceError) {
+      handleCommandError(e)
+      void ctx.reply('❌ Ошибка системы. Повторите свой запрос позже.')
+      return
+    }
+
+    handleCommandError(e as Error)
+    void ctx.reply('❌ Неизвестная ошибка системы. Повторите свой запрос позже.')
   }
 }
 
 export const setBotCommands = async (bot: Telegraf<BotContext>): Promise<void> => {
-  commands.map(({ command, handler }) =>
-    bot.command('/' + command, async (ctx) => await handlerWrapper({ command, handler, ctx }))
+  commands.map((command) =>
+    bot.command('/' + command.name, async (ctx) => await handlerWrapper({ ctx, command, bot }))
   )
 
   bot.hears(/^\/[a-z0-9]+$/i, async (ctx) =>

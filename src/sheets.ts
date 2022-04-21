@@ -6,7 +6,6 @@ import {
 import config from '$/config'
 import { escapeHtml } from '$/utils'
 import { Player } from '$/player'
-import { logger } from '$/logger'
 
 const {
   NAME_COLUMN,
@@ -31,14 +30,25 @@ const PLAYER_DATA_RANGES = [
 ]
   .map((column) => `${column}${START_FROM_ROW}:${column}${MAX_ROW_NUMBER}`)
 
-export const loadAppCells = async (document: GoogleSpreadsheet): Promise<void> => {
-  const sheet = document.sheetsByIndex[0]
-  return await sheet.loadCells([...PLAYER_DATA_RANGES, ...PLACE_AND_TIME_CELLS])
+const loadDocument = async (document: GoogleSpreadsheet): Promise<void> => {
+  await document.loadInfo()
+  await loadSheet(document.sheetsByIndex[0])
 }
 
-export const getSpreadsheetDocument = (): GoogleSpreadsheet => {
+const initDocument = (): GoogleSpreadsheet => {
   const document = new GoogleSpreadsheet(config.GOOGLE_SPREADSHEET_ID)
   document.useApiKey(config.GOOGLE_API_KEY)
+
+  return document
+}
+
+export const loadSheet = async (sheet: GoogleSpreadsheetWorksheet): Promise<void> =>
+  await sheet.loadCells([...PLAYER_DATA_RANGES, ...PLACE_AND_TIME_CELLS])
+
+export const initAndLoadDocument = async (): Promise<GoogleSpreadsheet> => {
+  const document = initDocument()
+  await loadDocument(document)
+
   return document
 }
 
@@ -116,8 +126,6 @@ export const getActivePlayers = async (document: GoogleSpreadsheet): Promise<Pla
     }
   }
 
-  void sheet.loadCells(PLAYER_DATA_RANGES).catch(logger.error)
-
   return activePlayers
 }
 
@@ -127,8 +135,6 @@ export const getPlaceAndTime = async (document: GoogleSpreadsheet): Promise<stri
   const placeAndTime = PLACE_AND_TIME_CELLS.map((cell) => getSheetsValue(sheet, cell)).join(
     ', '
   )
-
-  void sheet.loadCells(PLACE_AND_TIME_CELLS).catch(logger.error)
 
   return placeAndTime
 }

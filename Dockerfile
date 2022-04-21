@@ -4,10 +4,10 @@ RUN npm i yarn -g
 COPY package.json yarn.lock ./
 
 ENV NODE_ENV=development
-RUN yarn install
+RUN yarn install && yarn cache clean
 
 COPY src src
-COPY tsconfig.json ./
+COPY tsconfig.json tsconfig.prod.json ./
 
 RUN yarn build
 
@@ -17,7 +17,7 @@ RUN npm i yarn -g
 COPY package.json yarn.lock ./
 
 ENV NODE_ENV=production
-RUN yarn install
+RUN yarn install && yarn cache clean
 
 COPY --from=builder /var/task/dist dist
 
