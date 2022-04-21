@@ -16,9 +16,3 @@ export const parseJsonSafe = (json: string): any => {
     return null
   }
 }
-
-export const getDateDiffInSeconds = (a: Date, b: Date): number => {
-  const diff = a.getTime() - b.getTime()
-
-  return diff / 1000
-}
