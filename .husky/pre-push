@@ -1,4 +1,4 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
-yarn lint && yarn test && docker image build -t lasertag-bot .
+yarn pre-push
