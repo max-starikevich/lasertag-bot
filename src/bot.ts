@@ -6,7 +6,6 @@ import { setBotCommands } from '$/commands'
 
 export interface BotContext extends Context {
   document?: GoogleSpreadsheet
-  sheetLastUpdate?: Date
 }
 
 export const initBot = async (): Promise<Telegraf<BotContext>> => {
