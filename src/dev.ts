@@ -38,6 +38,8 @@ const dev = async (): Promise<void> => {
         ctx.status = statusCode
         ctx.body = body
       } catch (e) {
+        ctx.status = 500
+        ctx.body = 'Internal server error'
         logger.error(e)
       }
     })
