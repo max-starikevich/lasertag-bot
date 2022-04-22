@@ -3,7 +3,7 @@ import { Telegraf } from 'telegraf'
 import { BotContext } from '$/bot'
 import { handleCommandError, ServiceError, ServiceErrorCodes, UserError } from '$/errors'
 import { initAndLoadDocument, loadSheet } from '$/sheets'
-import { logger } from '$/logger'
+import { logger, ActionKind } from '$/logger'
 import { getLogData, trackUser, LogDataFromContext } from '$/context'
 
 import help, { start } from '$/commands/help'
@@ -42,7 +42,7 @@ const updateDocumentInContext = async (botContext: Partial<BotContext>, logData:
     const finishMs = Date.now() - startMs
 
     logger.info(`📄 Updated document and sheets in ${finishMs}ms`, {
-      ...logData, finishMs
+      ...logData, finishMs, actionKind: ActionKind.DOCUMENT_LOADED
     })
 
     return
@@ -55,7 +55,7 @@ const updateDocumentInContext = async (botContext: Partial<BotContext>, logData:
   const finishMs = Date.now() - startMs
 
   logger.info(`📄 Updated sheets in ${finishMs}ms`, {
-    ...logData, finishMs
+    ...logData, finishMs, actionKind: ActionKind.SHEETS_LOADED
   })
 }
 
@@ -89,7 +89,7 @@ const handlerWrapper = async ({ ctx, command, bot }: HandlerWrapperParams): Prom
     const finishMs = Date.now() - startMs
 
     logger.info(`✅ Processed /${command.name} in ${finishMs}ms.`, {
-      ...logData, finishMs
+      ...logData, finishMs, kind: ActionKind.PROCESSED_OK
     })
   } catch (e) {
     const finishMs = Date.now() - startMs
@@ -98,7 +98,7 @@ const handlerWrapper = async ({ ctx, command, bot }: HandlerWrapperParams): Prom
       void ctx.reply(`❌ ${e.message}`)
 
       logger.error(`❌ Processed /${command.name} with a ServiceError ${e.code} code in ${finishMs}ms.`, {
-        ...logData, errorCode: e.code, finishMs
+        ...logData, errorCode: e.code, finishMs, kind: ActionKind.PROCESSED_NOT_OK
       })
 
       handleCommandError(e)
@@ -109,7 +109,7 @@ const handlerWrapper = async ({ ctx, command, bot }: HandlerWrapperParams): Prom
       void ctx.reply(`⚠️ ${e.message}`)
 
       logger.warn(`⚠️  Processed /${command.name} with a UserError code ${e.code} in ${finishMs}ms.`, {
-        ...logData, errorCode: e.code, finishMs
+        ...logData, errorCode: e.code, finishMs, kind: ActionKind.PROCESSED_NOT_OK
       })
 
       handleCommandError(e)
@@ -121,7 +121,7 @@ const handlerWrapper = async ({ ctx, command, bot }: HandlerWrapperParams): Prom
     void ctx.reply('❌ Неизвестная ошибка системы. Повторите свой запрос позже.')
 
     logger.error(`❌ Processed /${command.name} with an unknown code in ${finishMs}ms.`, {
-      ...logData, errorCode: null, finishMs
+      ...logData, errorCode: 'unknown', finishMs, kind: ActionKind.PROCESSED_NOT_OK
     })
 
     handleCommandError(error)
@@ -142,7 +142,7 @@ export const setBotCommands = async (bot: Telegraf<BotContext>): Promise<void> =
     )
 
     logger.warn(`⚠️  Unknown ${commandName} command`, {
-      ...userData
+      ...userData, kind: ActionKind.UNKNOWN_COMMAND
     })
   })
 }
