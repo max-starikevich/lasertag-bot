@@ -1,11 +1,15 @@
 import * as Sentry from '@sentry/node'
+import { GoogleSpreadsheet } from 'google-spreadsheet'
+import { Context } from 'telegraf'
 import { User } from 'telegraf/typings/core/types/typegram'
-
-import { BotContext } from '$/bot'
 
 export interface LogDataFromContextParams {
   ctx: BotContext
   commandName: string
+}
+
+export interface BotContext extends Context {
+  document?: GoogleSpreadsheet
 }
 
 export interface LogDataFromContext {

@@ -1,6 +1,6 @@
 import dedent from 'dedent-js'
 
-import { BotCommand, BotCommandHandler, commandsInMenu } from '$/commands'
+import { BotCommand, BotCommandHandler, commandsInMenu } from '$/bot/commands'
 
 const handler: BotCommandHandler = async (ctx) => {
   return await ctx.replyWithHTML(

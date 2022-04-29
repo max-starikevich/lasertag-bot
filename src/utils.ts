@@ -6,12 +6,9 @@ export const escapeHtml = (unsafeString = ''): string =>
     .replace(/"/g, '&quot;')
     .replace(/'/g, '&#039;')
 
-export const getRandomOneOrZero = (): number => (Math.random() > 0.5 ? 1 : 0)
-
 export const parseJsonSafe = (json: string): any => {
   try {
-    const data = JSON.parse(json)
-    return data
+    return JSON.parse(json)
   } catch (e) {
     return null
   }

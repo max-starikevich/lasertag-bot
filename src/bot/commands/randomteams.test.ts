@@ -1,4 +1,4 @@
-import command from '$/commands/randomteams'
+import command from '$/bot/commands/randomteams'
 import { ServiceError } from '$/errors'
 
 describe('Command /randomteams', () => {

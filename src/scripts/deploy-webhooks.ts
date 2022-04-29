@@ -7,9 +7,11 @@ import { Telegraf } from 'telegraf'
 import axios from 'axios'
 
 import { version } from '../../package.json'
+
 import config, { checkEnvironment } from '$/config'
 import { logger } from '$/logger'
-import { BotContext, updateWebhook } from '$/bot'
+import { updateWebhook } from '$/bot'
+import { BotContext } from '$/bot/context'
 
 async function run (): Promise<void> {
   try {

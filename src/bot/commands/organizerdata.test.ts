@@ -1,4 +1,4 @@
-import command from '$/commands/organizerdata'
+import command from '$/bot/commands/organizerdata'
 import { ServiceError } from '$/errors'
 
 describe('Command /organizerdata', () => {

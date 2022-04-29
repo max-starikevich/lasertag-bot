@@ -1,39 +1,14 @@
 import { Telegraf } from 'telegraf'
 
-import { BotContext } from '$/bot'
-import { handleCommandError, ServiceError, ServiceErrorCodes, UserError } from '$/errors'
-import { initAndLoadDocument, loadSheet } from '$/sheets'
-import { logger, ActionKind } from '$/logger'
-import { getLogData, trackUser, LogDataFromContext } from '$/context'
+import { handleCommandError } from '$/errors'
+import { ServiceError, ServiceErrorCodes } from '$/errors/ServiceError'
+import { UserError } from '$/errors/UserError'
 
-import help, { start } from '$/commands/help'
-import playerlist from '$/commands/playerlist'
-import randomTeams from '$/commands/randomteams'
-import organizerdata from '$/commands/organizerdata'
-import about from '$/commands/about'
-
-export type BotCommandHandler = (ctx: BotContext) => Promise<any>
-
-export interface BotCommand {
-  name: string
-  handler: BotCommandHandler
-  description: string
-  showInMenu: boolean
-  requireDocument: boolean
-}
-
-const commands: BotCommand[] = [
-  start,
-  playerlist,
-  organizerdata,
-  randomTeams,
-  help,
-  about
-]
-
-export const commandsInMenu = commands.filter(
-  ({ showInMenu }) => showInMenu
-)
+import { logger } from '$/logger'
+import { ActionKind } from '$/logger/ActionKind'
+import { initAndLoadDocument, loadSheet } from '$/services/Table'
+import { BotCommand } from '$/bot/commands'
+import { BotContext, LogDataFromContext, getLogData, trackUser } from '$/bot/context'
 
 const updateDocumentInContext = async (botContext: Partial<BotContext>, logData: LogDataFromContext): Promise<void> => {
   if (botContext.document == null) {
@@ -65,7 +40,7 @@ interface HandlerWrapperParams {
   bot: Telegraf<BotContext>
 }
 
-const handlerWrapper = async ({ ctx, command, bot }: HandlerWrapperParams): Promise<void> => {
+export const handlerWrapper = async ({ ctx, command, bot }: HandlerWrapperParams): Promise<void> => {
   const startMs = Date.now()
   const logData = getLogData({ ctx, commandName: command.name })
 
@@ -126,23 +101,4 @@ const handlerWrapper = async ({ ctx, command, bot }: HandlerWrapperParams): Prom
 
     handleCommandError(error)
   }
-}
-
-export const setBotCommands = async (bot: Telegraf<BotContext>): Promise<void> => {
-  commands.map((command) =>
-    bot.command('/' + command.name, async (ctx) => await handlerWrapper({ ctx, command, bot }))
-  )
-
-  bot.hears(/^\/[a-z0-9]+$/i, async (ctx) => {
-    const commandName = ctx.message.text
-    const userData = getLogData({ ctx, commandName })
-
-    void ctx.reply(
-      '⚠️ Не удалось распознать команду. Используйте меню или команду /help'
-    )
-
-    logger.warn(`⚠️  Unknown ${commandName} command`, {
-      ...userData, kind: ActionKind.UNKNOWN_COMMAND
-    })
-  })
 }
