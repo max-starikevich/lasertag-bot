@@ -1,5 +1,5 @@
-import command from '$/commands/playerlist'
-import { ServiceError } from '$/errors'
+import command from '$/bot/commands/playerlist'
+import { ServiceError } from '$/errors/ServiceError'
 
 describe('Command /playerlist', () => {
   it('should throw a user error, if there is no "document" object in the context', () => {

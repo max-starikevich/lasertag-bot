@@ -1,7 +1,5 @@
 import { chunk, sortBy } from 'lodash'
 
-import { getRandomOneOrZero } from '$/utils'
-
 export interface Player {
   name: string
   combinedName: string
@@ -12,6 +10,8 @@ export interface Player {
   isQuestionable: boolean
   isCompanion: boolean
 }
+
+const getRandomOneOrZero = (): number => (Math.random() > 0.5 ? 1 : 0)
 
 export type Teams = [Player[], Player[]]
 

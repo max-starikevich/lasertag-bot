@@ -5,20 +5,18 @@ import Koa from 'koa'
 import bodyParser from 'koa-bodyparser'
 import Router from 'koa-router'
 
-import { instancePromise, handler } from '$/handler'
+import { handler, botPromise } from '$/lambda'
 import config from '$/config'
 import { logger } from '$/logger'
 import { updateWebhook } from '$/bot'
 
 const dev = async (): Promise<void> => {
   try {
-    const instance = await instancePromise
+    const bot = await botPromise
 
-    if (instance == null) {
+    if (bot == null) {
       throw new Error('The instance is unavailable')
     }
-
-    const { bot } = instance
 
     await updateWebhook(bot)
 

@@ -1,8 +1,8 @@
 import dedent from 'dedent-js'
 
-import { author, version, repository } from '../../package.json'
+import { author, version, repository } from '../../../package.json'
 import { escapeHtml } from '$/utils'
-import { BotCommand, BotCommandHandler } from '$/commands'
+import { BotCommand, BotCommandHandler } from '$/bot/commands'
 
 const handler: BotCommandHandler = async (ctx) => {
   return await ctx.replyWithHTML(dedent`

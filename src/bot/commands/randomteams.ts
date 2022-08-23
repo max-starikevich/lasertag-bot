@@ -1,10 +1,11 @@
 import { partition, shuffle } from 'lodash'
 import dedent from 'dedent-js'
 
-import { ServiceErrorCodes, ServiceError, UserError, UserErrorCodes } from '$/errors'
-import { getActivePlayers, getPlaceAndTime } from '$/sheets'
-import { getBalancedTeams } from '$/player'
-import { BotCommand, BotCommandHandler } from '$/commands'
+import { getBalancedTeams } from '$/services/Player'
+import { BotCommand, BotCommandHandler } from '$/bot/commands'
+import { getActivePlayers, getPlaceAndTime } from '$/controllers/PlayerTable'
+import { ServiceError, ServiceErrorCodes } from '$/errors/ServiceError'
+import { UserError, UserErrorCodes } from '$/errors/UserError'
 
 const handler: BotCommandHandler = async (ctx) => {
   const { document } = ctx

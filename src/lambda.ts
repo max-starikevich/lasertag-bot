@@ -1,34 +1,18 @@
-
-import { Telegraf } from 'telegraf'
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda'
 
-import { BotContext, initBot } from '$/bot'
-import { handleWebhookError, handleStartupError } from '$/errors'
+import { initBot } from '$/bot'
+import { handleWebhookError } from '$/errors'
 import { parseJsonSafe } from '$/utils'
-import { checkEnvironment } from '$/config'
 
-interface BotInstance { bot: Telegraf<BotContext> }
-
-const init = async (): Promise<BotInstance | null> => {
-  try {
-    await checkEnvironment()
-    const bot = await initBot()
-    return { bot }
-  } catch (e) {
-    handleStartupError(e as Error)
-    return null
-  }
-}
-
-export const instancePromise = init()
+export const botPromise = initBot()
 
 export const handler = async (
   event: APIGatewayProxyEvent
 ): Promise<APIGatewayProxyResult> => {
   try {
-    const instance = await instancePromise
+    const bot = await botPromise
 
-    if (instance === null) {
+    if (bot === null) {
       return {
         statusCode: 500,
         body: 'Cannot initialize bot'
@@ -50,8 +34,6 @@ export const handler = async (
         body: 'Incorrect payload'
       }
     }
-
-    const { bot } = instance
 
     await bot.handleUpdate(payload)
 

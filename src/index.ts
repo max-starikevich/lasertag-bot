@@ -9,4 +9,4 @@ Sentry.init({
   release: version
 })
 
-export { handler } from '$/handler'
+export { handler } from '$/lambda'

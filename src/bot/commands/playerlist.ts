@@ -1,9 +1,10 @@
 import { partition } from 'lodash'
 import dedent from 'dedent-js'
 
-import { UserError, ServiceError, ServiceErrorCodes, UserErrorCodes } from '$/errors'
-import { getActivePlayers, getPlaceAndTime } from '$/sheets'
-import { BotCommand, BotCommandHandler } from '$/commands'
+import { getActivePlayers, getPlaceAndTime } from '$/controllers/PlayerTable'
+import { BotCommand, BotCommandHandler } from '$/bot/commands'
+import { ServiceError, ServiceErrorCodes } from '$/errors/ServiceError'
+import { UserError, UserErrorCodes } from '$/errors/UserError'
 
 const handler: BotCommandHandler = async (ctx) => {
   const { document } = ctx
@@ -30,26 +31,24 @@ const handler: BotCommandHandler = async (ctx) => {
       <b>${placeAndTime}</b>
 
       Всего записано: ${readyPlayers.length}
-      Под вопросом: ${questionablePlayers.length}
-      Нужен прокат: ${activePlayers.reduce(
-        (rentSum, { rentCount }) => rentSum + rentCount,
-        0
-      )}
 
-      ${activePlayers
-        .filter(
-          ({ comment, isCompanion }) => comment.length > 0 && !isCompanion
-        )
-        .map(({ name, comment }) => `${name}: "<i>${comment}</i>"`)
+      ${readyPlayers
+        .filter(({ isCompanion }) => !isCompanion)
+        .map(({ combinedName }) => `- ${combinedName}`)
+        .join('\n')}
+
+      ${questionablePlayers
+        .filter(({ isCompanion }) => !isCompanion)
+        .map(({ combinedName }) => `- ${combinedName} ???`)
         .join('\n')}
     `
   )
 }
 
 const command: BotCommand = {
-  name: 'organizerdata',
+  name: 'playerlist',
   handler,
-  description: 'Данные для организаторов',
+  description: 'Список записавшихся игроков в файл',
   showInMenu: true,
   requireDocument: true
 }
