@@ -87,7 +87,6 @@ export const handlerWrapper = async ({ ctx, command, bot }: HandlerWrapperParams
         ...logData, errorCode: e.code, finishMs, kind: ActionKind.PROCESSED_NOT_OK
       })
 
-      handleCommandError(e)
       return
     }
 
