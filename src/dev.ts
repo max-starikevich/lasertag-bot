@@ -5,10 +5,11 @@ import Koa from 'koa'
 import bodyParser from 'koa-bodyparser'
 import Router from 'koa-router'
 
-import { handler, botPromise } from '$/lambda'
 import config from '$/config'
-import { logger } from '$/logger'
-import { updateWebhook } from '$/bot'
+
+import { handler, botPromise } from './lambda'
+import { logger } from './logger'
+import { updateWebhook } from './bot'
 
 const dev = async (): Promise<void> => {
   try {
@@ -36,8 +37,8 @@ const dev = async (): Promise<void> => {
         ctx.status = statusCode
         ctx.body = body
       } catch (e) {
-        ctx.status = 500
-        ctx.body = 'Internal server error'
+        ctx.status = 200
+        ctx.body = 'Something is wrong'
         logger.error(e)
       }
     })

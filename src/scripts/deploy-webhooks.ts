@@ -11,13 +11,13 @@ import { version } from '../../package.json'
 import config, { checkEnvironment } from '$/config'
 import { logger } from '$/logger'
 import { updateWebhook } from '$/bot'
-import { BotContext } from '$/bot/context'
+import { GameContext } from '$/bot/types'
 
 async function run (): Promise<void> {
   try {
     await checkEnvironment()
 
-    const bot = new Telegraf<BotContext>(config.BOT_TOKEN)
+    const bot = new Telegraf<GameContext>(config.BOT_TOKEN)
     
     await updateWebhook(bot)
     
