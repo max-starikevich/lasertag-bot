@@ -38,7 +38,6 @@ const dev = async (): Promise<void> => {
         ctx.body = body
       } catch (e) {
         ctx.status = 200
-        ctx.body = 'Something is wrong'
         logger.error(e)
       }
     })
@@ -47,7 +46,7 @@ const dev = async (): Promise<void> => {
 
     app.listen(config.PORT, () => {
       logger.info(
-        `🚀 Dev server is ready: https://${config.WEBHOOK_BASE}/*`
+        `🚀 Dev server is ready: ${config.WEBHOOK_BASE}/*`
       )
     })
   } catch (e) {
