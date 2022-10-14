@@ -20,24 +20,39 @@ export const initBot = async (): Promise<Telegraf<GameContext>> => {
 
   bot.context.game = game
 
-  bot.on('message', (ctx) => {
-    logger.info({
-      update: ctx.update
-    })
+  bot.on('message', async (ctx, next) => {
+    try {
+      await ctx.telegram.getChatMember(config.TELEGRAM_HOME_CHAT_ID, ctx.from.id)
+    } catch (error) {
+      logger.warn({
+        update: ctx.update,
+        status: 'NO_CHAT_ACCESS',
+        error
+      })
+
+      await ctx.reply('⚠️ Нет доступа')
+      return
+    }
+
+    try {
+      await next()
+
+      logger.info({
+        update: ctx.update,
+        status: 'OK'
+      })
+    } catch (error) {
+      logger.error({
+        update: ctx.update,
+        status: 'ERROR',
+        error
+      })
+    }
   })
 
   enabledCommands.map((command) =>
     bot.command('/' + command.name, async ctx => {
       try {
-        try {
-          await ctx.telegram.getChatMember(config.TELEGRAM_HOME_CHAT_ID, ctx.from.id)
-        } catch (e) {
-          logger.error({
-            e, update: ctx.update
-          })
-          return
-        }
-
         await command.handler(ctx)
       } catch (e) {
         logger.error(e)
