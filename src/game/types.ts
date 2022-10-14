@@ -1,8 +1,8 @@
-import { IPlayer, IPlayers } from './player/types'
+import { IPlayer } from './player/types'
 
 export interface IGame {
   refreshData: () => Promise<void>
-  getPlayers: () => Promise<IPlayers>
+  getPlayers: () => Promise<IPlayer[]>
   getPlaceAndTime: () => Promise<string>
   createTeams: () => Promise<[IPlayer[], IPlayer[]]>
 }

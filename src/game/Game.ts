@@ -1,9 +1,9 @@
-import { chunk, partition, sortBy } from 'lodash'
+import { chunk, sortBy, times } from 'lodash'
 
 import config from '$/config'
 
 import { IGame } from './types'
-import { IPlayer, IPlayers } from './player/types'
+import { IPlayer } from './player/types'
 import { ITable } from './table/types'
 
 const {
@@ -25,10 +25,10 @@ export class Game implements IGame {
     await this.table.refreshData()
   }
 
-  getPlayers = async (): Promise<IPlayers> => {
-    const all: IPlayer[] = []
-
-    for (let rowNumber = START_FROM_ROW; rowNumber < MAX_ROW_NUMBER; rowNumber++) {
+  getPlayers = async (): Promise<IPlayer[]> => {
+    return times(MAX_ROW_NUMBER - START_FROM_ROW)
+      .map(n => n + START_FROM_ROW)
+      .reduce<IPlayer[]>((players, rowNumber) => {
       const row = rowNumber.toString()
       const count = this.table.get(COUNT_COLUMN + row)
       const name = this.table.get(NAME_COLUMN + row)
@@ -45,67 +45,50 @@ export class Game implements IGame {
       }
 
       if (player.count === 1) {
-        all.push(player)
+        players.push(player)
       }
 
       if (player.count > 1) {
-        const combinedPlayers: IPlayer[] = []
+        const companions = times(player.count - 1)
+          .map(n => n + 1)
+          .reduce<IPlayer[]>((companions, num) => {
+          const rentCount = player.rentCount - num
 
-        for (
-          let i = 1, rentCount = player.rentCount;
-          i <= player.count;
-          i++, rentCount--
-        ) {
-          const isCompanion = i > 1
-
-          combinedPlayers.push({
+          companions.push({
             ...player,
-            name: player.name + (isCompanion ? ` (${i})` : ''),
+            name: `${player.name} (${num + 1})`,
             count: 1,
             rentCount: rentCount > 0 ? 1 : 0,
-            comment: isCompanion ? '' : player.comment,
-            level: isCompanion ? DEFAULT_PLAYER_LEVEL : player.level,
-            isCompanion
+            comment: '',
+            level: DEFAULT_PLAYER_LEVEL,
+            isCompanion: true
           })
-        }
 
-        const [main, ...companions] = combinedPlayers
+          return companions
+        }, [])
 
-        all.push(
+        players.push(
           {
-            ...main,
-            combinedName: `${main.name} ${
+            ...player,
+            rentCount: player.rentCount > 0 ? 1 : 0,
+            combinedName: `${player.name} ${
               companions.length > 0 ? `(${companions.length + 1})` : ''
             }`
           },
           ...companions
         )
       }
-    }
 
-    const [ready, questionable] = partition(
-      all,
-      ({ isQuestionable }) => !isQuestionable
-    )
-
-    return {
-      all,
-      ready,
-      questionable
-    }
+      return players
+    }, [])
   }
 
   createTeams = async (): Promise<[IPlayer[], IPlayer[]]> => {
-    const { ready: readyPlayers } = await this.getPlayers()
+    const players = await this.getPlayers()
 
-    const [playersToDivide] = partition(
-      readyPlayers,
-      ({ isCompanion }) => !isCompanion
+    const playersToDivide = players.filter(
+      ({ isQuestionable, isCompanion }) => !isQuestionable && !isCompanion
     )
-
-    if (playersToDivide.length < 2) {
-      return [[...readyPlayers], []]
-    }
 
     const ratedPlayers = sortBy(playersToDivide, ({ level }) => level).reverse()
     const playerPairs = chunk(ratedPlayers, 2)

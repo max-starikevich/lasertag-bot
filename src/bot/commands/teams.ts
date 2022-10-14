@@ -12,16 +12,18 @@ const handler: CommandHandler = async (ctx) => {
 
   return await ctx.replyWithHTML(
     dedent`
-      <b>${placeAndTime}</b>
+      📅 <b>${placeAndTime}</b>
 
-      Команда 1 (${team1.length})
+      <b>${team1.length} vs. ${team2.length}</b>
+
+      Красные (${team1.length})
       ${team1
-        .map((player) => `- ${player.name}`)
+        .map((player) => `♦️ ${player.name}`)
         .join('\n')}
 
-      Команда 2 (${team2.length})
+      Синие (${team2.length})
       ${team2
-        .map((player) => `- ${player.name}`)
+        .map((player) => `🔹 ${player.name}`)
         .join('\n')}
     `
   )

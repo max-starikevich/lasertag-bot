@@ -1,4 +1,5 @@
 import dedent from 'dedent-js'
+import { partition } from 'lodash'
 
 import { Command, CommandHandler } from '../types'
 
@@ -7,37 +8,61 @@ const handler: CommandHandler = async (ctx) => {
 
   await game.refreshData()
 
-  const { all, ready, questionable } = await game.getPlayers()
+  const players = await game.getPlayers()
   const placeAndTime = await game.getPlaceAndTime()
 
-  return await ctx.replyWithHTML(
-    dedent`
-      <b>${placeAndTime}</b>
-
-      Всего записано: ${ready.length}
-      Нужен прокат: ${all.reduce(
-        (rentSum, { rentCount }) => rentSum + rentCount,
-        0
-      )}
-
-      ${ready
-        .filter(({ isCompanion }) => !isCompanion)
-        .map(({ combinedName }) => `- ${combinedName}`)
-        .join('\n')}
-
-      ${questionable
-        .filter(({ isCompanion }) => !isCompanion)
-        .map(({ combinedName }) => `- ${combinedName} ???`)
-        .join('\n')}
-        
-      ${all
-        .filter(
-          ({ comment, isCompanion }) => comment.length > 0 && !isCompanion
-        )
-        .map(({ name, comment }) => `${name}: "<i>${comment}</i>"`)
-        .join('\n')}
-    `
+  const [readyPlayers, questionablePlayers] = partition(
+    players,
+    ({ isQuestionable }) => !isQuestionable
   )
+
+  const playersWithComments = readyPlayers.filter(
+    ({ comment }) => comment.length > 0
+  )
+
+  const messageHeader = dedent`
+    📅 <b>${placeAndTime}</b>
+
+    Записано: ${readyPlayers.length}
+    Прокат: ${players.reduce(
+      (rentSum, { rentCount }) => rentSum + rentCount,
+      0
+    )}
+
+
+  `
+
+  const playersMessage = players.length > 0
+    ? dedent`
+      ${readyPlayers
+        .filter(({ isCompanion }) => !isCompanion)
+        .map(({ combinedName }) => `✔️ ${combinedName}`)
+        .join('\n')}
+
+
+      `
+    : ''
+
+  const questionableMessage = questionablePlayers.length > 0
+    ? dedent`
+      ${questionablePlayers
+        .filter(({ isCompanion }) => !isCompanion)
+        .map(({ combinedName }) => `❓ ${combinedName}`)
+        .join('\n')}
+
+
+      `
+    : ''
+
+  const commentsMessage = playersWithComments.length > 0
+    ? dedent`
+      ${playersWithComments
+        .map(({ name, comment }) => `${name} "<i>${comment}</i>"`)
+        .join('\n')}
+      `
+    : ''
+
+  return await ctx.replyWithHTML(messageHeader + playersMessage + questionableMessage + commentsMessage)
 }
 
 export const players: Command = {

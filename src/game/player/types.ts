@@ -8,9 +8,3 @@ export interface IPlayer {
   isQuestionable: boolean
   isCompanion: boolean
 }
-
-export interface IPlayers {
-  all: IPlayer[]
-  ready: IPlayer[]
-  questionable: IPlayer[]
-}
