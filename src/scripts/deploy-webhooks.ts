@@ -10,7 +10,7 @@ import { version } from '../../package.json'
 
 import config, { checkEnvironment } from '$/config'
 import { logger } from '$/logger'
-import { updateWebhook } from '$/bot'
+import { updateWebhook } from '$/bot/webhooks'
 import { GameContext } from '$/bot/types'
 
 async function run (): Promise<void> {

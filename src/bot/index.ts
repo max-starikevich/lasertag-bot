@@ -46,11 +46,3 @@ export const initBot = async (): Promise<Telegraf<GameContext>> => {
 
   return bot
 }
-
-export const updateWebhook = async (bot: Telegraf<GameContext>): Promise<void> => {
-  const { url: savedWebhook } = await bot.telegram.getWebhookInfo()
-
-  if (config.WEBHOOK_FULL !== savedWebhook) {
-    await bot.telegram.setWebhook(config.WEBHOOK_FULL, { allowed_updates: ['message'] })
-  }
-}

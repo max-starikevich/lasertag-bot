@@ -6,10 +6,9 @@ import bodyParser from 'koa-bodyparser'
 import Router from 'koa-router'
 
 import config from '$/config'
-
-import { handler, botPromise } from './lambda'
-import { logger } from './logger'
-import { updateWebhook } from './bot'
+import { handler, botPromise } from '$/lambda'
+import { logger } from '$/logger'
+import { updateWebhook } from '$/bot/webhooks'
 
 const dev = async (): Promise<void> => {
   try {
