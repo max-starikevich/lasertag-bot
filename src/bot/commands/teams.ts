@@ -8,20 +8,21 @@ const handler: CommandHandler = async (ctx) => {
   await game.refreshData()
 
   const [team1, team2] = await game.createTeams()
+
+  if (team1.length === 0 || team2.length === 0) {
+    return await ctx.replyWithHTML('🤷 Недостаточно игроков для этой функции')
+  }
+
   const placeAndTime = await game.getPlaceAndTime()
 
   return await ctx.replyWithHTML(
     dedent`
       📅 <b>${placeAndTime}</b>
 
-      <b>${team1.length} vs. ${team2.length}</b>
-
-      Красные (${team1.length})
       ${team1
         .map((player) => `🔴 ${player.name}`)
         .join('\n')}
 
-      Синие (${team2.length})
       ${team2
         .map((player) => `🔵 ${player.name}`)
         .join('\n')}
