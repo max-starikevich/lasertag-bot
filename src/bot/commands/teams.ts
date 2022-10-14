@@ -18,12 +18,12 @@ const handler: CommandHandler = async (ctx) => {
 
       Красные (${team1.length})
       ${team1
-        .map((player) => `♦️ ${player.name}`)
+        .map((player) => `🔴 ${player.name}`)
         .join('\n')}
 
       Синие (${team2.length})
       ${team2
-        .map((player) => `🔹 ${player.name}`)
+        .map((player) => `🔵 ${player.name}`)
         .join('\n')}
     `
   )
