@@ -1,8 +1,10 @@
 import dedent from 'dedent-js'
 
-import { BotCommand, BotCommandHandler, commandsInMenu } from '$/bot/commands'
+import { commandsInMenu } from '$/bot'
 
-const handler: BotCommandHandler = async (ctx) => {
+import { Command, CommandHandler } from '../types'
+
+const handler: CommandHandler = async (ctx) => {
   return await ctx.replyWithHTML(
     dedent`
       <b>Доступные команды</b>:
@@ -17,15 +19,7 @@ const handler: BotCommandHandler = async (ctx) => {
   )
 }
 
-const command: BotCommand = {
-  name: 'help',
-  handler,
-  description: 'Помощь',
-  showInMenu: true,
-  requireDocument: false
-}
-
-const start: BotCommand = {
+export const start: Command = {
   name: 'start',
   handler,
   description: 'Начало работы с ботом',
@@ -33,5 +27,10 @@ const start: BotCommand = {
   requireDocument: false
 }
 
-export default command
-export { start }
+export const help: Command = {
+  name: 'help',
+  handler,
+  description: 'Помощь',
+  showInMenu: true,
+  requireDocument: false
+}

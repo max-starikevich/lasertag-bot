@@ -5,10 +5,10 @@ import Koa from 'koa'
 import bodyParser from 'koa-bodyparser'
 import Router from 'koa-router'
 
-import { handler, botPromise } from '$/lambda'
 import config from '$/config'
+import { handler, botPromise } from '$/lambda'
 import { logger } from '$/logger'
-import { updateWebhook } from '$/bot'
+import { updateWebhook } from '$/bot/webhooks'
 
 const dev = async (): Promise<void> => {
   try {
@@ -36,8 +36,7 @@ const dev = async (): Promise<void> => {
         ctx.status = statusCode
         ctx.body = body
       } catch (e) {
-        ctx.status = 500
-        ctx.body = 'Internal server error'
+        ctx.status = 200
         logger.error(e)
       }
     })
@@ -46,7 +45,7 @@ const dev = async (): Promise<void> => {
 
     app.listen(config.PORT, () => {
       logger.info(
-        `🚀 Dev server is ready: https://${config.WEBHOOK_BASE}/*`
+        `🚀 Dev server is ready: ${config.WEBHOOK_BASE}/*`
       )
     })
   } catch (e) {
