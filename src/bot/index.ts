@@ -20,13 +20,21 @@ export const initBot = async (): Promise<Telegraf<GameContext>> => {
 
   bot.context.game = game
 
+  bot.on('message', (ctx) => {
+    logger.info({
+      update: ctx.update
+    })
+  })
+
   enabledCommands.map((command) =>
     bot.command('/' + command.name, async ctx => {
       try {
         try {
           await ctx.telegram.getChatMember(config.TELEGRAM_HOME_CHAT_ID, ctx.from.id)
-        } catch {
-          void ctx.reply('🚫 Нет доступа')
+        } catch (e) {
+          logger.error({
+            e, update: ctx.update
+          })
           return
         }
 
