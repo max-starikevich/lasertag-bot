@@ -23,23 +23,25 @@ export const initBot = async (): Promise<Telegraf<GameContext>> => {
   enabledCommands.map((command) =>
     bot.command('/' + command.name, async ctx => {
       try {
+        try {
+          await ctx.telegram.getChatMember(config.TELEGRAM_HOME_CHAT_ID, ctx.from.id)
+        } catch {
+          void ctx.reply('🚫 Нет доступа')
+          return
+        }
+
         await command.handler(ctx)
       } catch (e) {
         logger.error(e)
+        void ctx.reply('⚠️ Неожиданная ошибка. Повторите запрос позже.')
       }
     })
   )
 
   bot.hears(/^\/[a-z0-9]+$/i, async (ctx) => {
-    const commandName = ctx.message.text
-
     void ctx.reply(
       '⚠️ Не удалось распознать команду. Используйте меню или команду /help'
     )
-
-    logger.warn(`⚠️  Unknown ${commandName} command`, {
-      ...ctx
-    })
   })
 
   return bot

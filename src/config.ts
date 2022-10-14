@@ -5,7 +5,7 @@ const isLocal = !isProduction
 const BOT_TOKEN = process.env.BOT_TOKEN as string
 const WEBHOOK_BASE = process.env.WEBHOOK_BASE as string
 const WEBHOOK_PATH = `/webhook/${BOT_TOKEN}`
-const WEBHOOK_FULL = `https://${WEBHOOK_BASE}${WEBHOOK_PATH}`
+const WEBHOOK_FULL = `${WEBHOOK_BASE}${WEBHOOK_PATH}`
 
 const config = {
   isProduction,
@@ -33,7 +33,8 @@ const config = {
   LEVEL_COLUMN: process.env.LEVEL_COLUMN as string,
   PLACE_AND_TIME_CELLS: (process.env.PLACE_AND_TIME_CELLS ?? '').split(
     ','
-  )
+  ),
+  TELEGRAM_HOME_CHAT_ID: process.env.TELEGRAM_HOME_CHAT_ID as string
 }
 
 type EnvironmentValidator = () => Promise<boolean>
@@ -69,6 +70,8 @@ const requiredRuntimeVariables: EnvironmentToCheck = {
   BOT_TOKEN: async () => (process.env.BOT_TOKEN ?? '').length > 0,
 
   GOOGLE_API_KEY: async () => (process.env.GOOGLE_API_KEY ?? '').length > 0,
+
+  TELEGRAM_HOME_CHAT_ID: async () => (process.env.TELEGRAM_HOME_CHAT_ID ?? '').length > 0,
 
   GOOGLE_SPREADSHEET_ID: async () =>
     (process.env.GOOGLE_SPREADSHEET_ID ?? '').length > 0,
