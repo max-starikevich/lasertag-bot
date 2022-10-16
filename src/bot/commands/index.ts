@@ -5,7 +5,7 @@ import { about } from './about'
 
 import { Command } from '../types'
 
-export const enabledCommands: Command[] = [
+export const commands: Command[] = [
   start,
   players,
   teams,

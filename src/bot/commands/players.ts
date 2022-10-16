@@ -7,9 +7,7 @@ const handler: CommandHandler = async (ctx) => {
   const { game } = ctx
 
   await game.refreshData()
-
-  const players = await game.getPlayers()
-  const placeAndTime = await game.getPlaceAndTime()
+  const [players, placeAndTime] = await Promise.all([game.getPlayers(), game.getPlaceAndTime()])
 
   const [readyPlayers, questionablePlayers] = partition(
     players,
