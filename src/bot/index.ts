@@ -8,6 +8,7 @@ import { GoogleTable } from '$/game/table/GoogleTable'
 import { GameContext } from '$/bot/types'
 import { commands } from '$/bot/commands'
 import { setBotMiddlewares } from '$/bot/middleware'
+import { captureException } from '$/errors'
 
 export const commandsInMenu = commands.filter(
   ({ showInMenu }) => showInMenu
@@ -21,6 +22,9 @@ export const initBot = async (): Promise<Telegraf<GameContext>> => {
   bot.context.game = game
 
   setBotMiddlewares(bot)
+
+  process.on('uncaughtException', e => captureException(e))
+  process.on('unhandledRejection', e => captureException(e))
 
   return bot
 }

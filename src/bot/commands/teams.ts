@@ -7,9 +7,9 @@ const handler: CommandHandler = async (ctx) => {
 
   await game.refreshData()
 
-  const [team1, team2] = await game.createTeams()
+  const [redPlayers, bluePlayers] = await game.getTeams()
 
-  if (team1.length === 0 || team2.length === 0) {
+  if (redPlayers.length === 0 || bluePlayers.length === 0) {
     return await ctx.replyWithHTML('🤷 Недостаточно игроков для этой функции')
   }
 
@@ -19,11 +19,11 @@ const handler: CommandHandler = async (ctx) => {
     dedent`
       📅 <b>${placeAndTime}</b>
 
-      ${team1
+      ${redPlayers
         .map((player) => `🔴 ${player.name}`)
         .join('\n')}
 
-      ${team2
+      ${bluePlayers
         .map((player) => `🔵 ${player.name}`)
         .join('\n')}
     `

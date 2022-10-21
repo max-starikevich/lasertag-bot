@@ -4,5 +4,5 @@ export interface IGame {
   refreshData: () => Promise<void>
   getPlayers: () => Promise<IPlayer[]>
   getPlaceAndTime: () => Promise<string>
-  createTeams: () => Promise<[IPlayer[], IPlayer[]]>
+  getTeams: () => Promise<[IPlayer[], IPlayer[]]>
 }

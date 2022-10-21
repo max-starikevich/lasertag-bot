@@ -1,4 +1,3 @@
-import 'module-alias/register';
 
 import * as Sentry from '@sentry/node'
 import { version } from '../package.json'
@@ -8,5 +7,7 @@ Sentry.init({
   environment: process.env.APP_ENV,
   release: version
 })
+
+import 'module-alias/register';
 
 export { handler } from '$/lambda'
