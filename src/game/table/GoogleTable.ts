@@ -19,7 +19,7 @@ const PLAYER_DATA_RANGES = [
 const ALL_RANGES_TO_LOAD = [...PLAYER_DATA_RANGES, ...config.PLACE_AND_TIME_CELLS]
 
 export class GoogleTable implements ITable {
-  constructor(protected spreadsheetId: string, protected apiKey: string) { }
+  constructor (protected spreadsheetId: string, protected apiKey: string) { }
 
   protected document?: GoogleSpreadsheet
   protected sheets?: GoogleSpreadsheetWorksheet

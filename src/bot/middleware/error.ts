@@ -30,7 +30,7 @@ const handleCustomError = async (error: CustomError, ctx: GameContext): Promise<
     update: ctx.update, error: error.cause?.message ?? error.cause
   })
 
-  if (error.replyMessage) {
+  if (error.replyMessage != null) {
     void ctx.reply(`⚠️ ${error.replyMessage}`)
     return
   }
