@@ -83,7 +83,7 @@ export class Game implements IGame {
     }, [])
   }
 
-  createTeams = async (): Promise<[IPlayer[], IPlayer[]]> => {
+  getTeams = async (): Promise<[IPlayer[], IPlayer[]]> => {
     const players = await this.getPlayers()
 
     const playersToDivide = players.filter(

@@ -2,9 +2,9 @@ import { GoogleSpreadsheet, GoogleSpreadsheetWorksheet } from 'google-spreadshee
 
 import config from '$/config'
 import { escapeHtml } from '$/utils'
+import { NoSheetsError } from '$/errors/NoSheetsError'
 
 import { ITable } from './types'
-import { NoSheetsError } from './errors/NoSheetsError'
 
 const PLAYER_DATA_RANGES = [
   config.NAME_COLUMN,
@@ -16,36 +16,37 @@ const PLAYER_DATA_RANGES = [
 ]
   .map((column) => `${column}${config.START_FROM_ROW}:${column}${config.MAX_ROW_NUMBER}`)
 
+const ALL_RANGES_TO_LOAD = [...PLAYER_DATA_RANGES, ...config.PLACE_AND_TIME_CELLS]
+
 export class GoogleTable implements ITable {
-  constructor (protected spreadsheetId: string, protected apiKey: string) {}
+  constructor (protected spreadsheetId: string, protected apiKey: string) { }
 
   protected document?: GoogleSpreadsheet
   protected sheets?: GoogleSpreadsheetWorksheet
 
   refreshData = async (): Promise<void> => {
-    if (this.document === undefined || this.sheets === undefined) {
-      const document = new GoogleSpreadsheet(this.spreadsheetId)
-      document.useApiKey(this.apiKey)
+    if (this.sheets === undefined) {
+      try {
+        const document = new GoogleSpreadsheet(this.spreadsheetId)
+        document.useApiKey(this.apiKey)
+        await document.loadInfo()
 
-      await document.loadInfo()
+        const sheets = document.sheetsByIndex[0]
 
-      const sheets = document.sheetsByIndex[0] as GoogleSpreadsheetWorksheet | undefined
-
-      if (sheets === undefined) {
-        throw new NoSheetsError()
+        this.sheets = sheets
+        this.document = document
+      } catch (e) {
+        throw new NoSheetsError(e)
       }
-
-      this.sheets = sheets
-      this.document = document
     }
 
-    await this.sheets.loadCells([...PLAYER_DATA_RANGES, ...config.PLACE_AND_TIME_CELLS])
+    await this.sheets.loadCells(ALL_RANGES_TO_LOAD)
   }
 
   get = (
     a1: string
   ): string => {
-    if (this.sheets === undefined) {
+    if (this.sheets == null) {
       throw new NoSheetsError()
     }
 

@@ -1,5 +1,5 @@
 # BUILDER
-FROM public.ecr.aws/lambda/nodejs:14-arm64 as builder
+FROM public.ecr.aws/lambda/nodejs:16-arm64 as builder
 RUN npm i yarn -g
 COPY package.json yarn.lock ./
 
@@ -12,7 +12,7 @@ COPY tsconfig.json tsconfig.prod.json ./
 RUN yarn build
 
 # RUNTIME
-FROM public.ecr.aws/lambda/nodejs:14-arm64 as runtime
+FROM public.ecr.aws/lambda/nodejs:16-arm64 as runtime
 RUN npm i yarn -g
 COPY package.json yarn.lock ./
 
