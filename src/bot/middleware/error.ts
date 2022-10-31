@@ -1,10 +1,11 @@
-import { logger } from '$/logger'
 import { captureException } from '$/errors'
 import { CustomError } from '$/errors/CustomError'
 
 import { GameContext } from '../types'
 
 export const errorMiddleware = async (error: any, ctx: GameContext): Promise<void> => {
+  const { logger } = ctx
+
   if (error == null) {
     return
   }
@@ -24,6 +25,8 @@ export const errorMiddleware = async (error: any, ctx: GameContext): Promise<voi
 }
 
 const handleCustomError = async (error: CustomError, ctx: GameContext): Promise<void> => {
+  const { logger } = ctx
+
   captureException(error.cause)
 
   logger.error({
