@@ -1,7 +1,9 @@
 import { GoogleSpreadsheet, GoogleSpreadsheetWorksheet } from 'google-spreadsheet'
 
 import config from '$/config'
+
 import { escapeHtml } from '$/utils'
+import { ILogger } from '$/logger/types'
 import { NoSheetsError } from '$/errors/NoSheetsError'
 
 import { ITable } from './types'
@@ -19,17 +21,25 @@ const PLAYER_DATA_RANGES = [
 const ALL_RANGES_TO_LOAD = [...PLAYER_DATA_RANGES, ...config.PLACE_AND_TIME_CELLS]
 
 export class GoogleTable implements ITable {
-  constructor (protected spreadsheetId: string, protected apiKey: string) { }
+  constructor(protected spreadsheetId: string, protected apiKey: string) { }
 
   protected document?: GoogleSpreadsheet
   protected sheets?: GoogleSpreadsheetWorksheet
 
-  refreshData = async (): Promise<void> => {
+  refreshData = async ({ logger }: { logger: ILogger }): Promise<void> => {
     if (this.sheets === undefined) {
       try {
+        const startMs = performance.now()
+
         const document = new GoogleSpreadsheet(this.spreadsheetId)
         document.useApiKey(this.apiKey)
         await document.loadInfo()
+
+        const timeElapsedMs = Math.round(performance.now() - startMs)
+
+        logger.info('⬇️  Document loaded', {
+          timeElapsedMs
+        })
 
         const sheets = document.sheetsByIndex[0]
 
@@ -40,7 +50,15 @@ export class GoogleTable implements ITable {
       }
     }
 
+    const startMs = performance.now()
+
     await this.sheets.loadCells(ALL_RANGES_TO_LOAD)
+
+    const timeElapsedMs = Math.round(performance.now() - startMs)
+
+    logger.info('⬇️  Sheets loaded', {
+      timeElapsedMs
+    })
   }
 
   get = (

@@ -1,6 +1,7 @@
 import { chunk, sortBy, times } from 'lodash'
 
 import config from '$/config'
+import { ILogger } from '$/logger/types'
 
 import { IGame } from './types'
 import { IPlayer } from './player/types'
@@ -19,10 +20,10 @@ const {
 } = config
 
 export class Game implements IGame {
-  constructor (protected table: ITable) {}
+  constructor (protected table: ITable) { }
 
-  refreshData = async (): Promise<void> => {
-    await this.table.refreshData()
+  refreshData = async ({ logger }: { logger: ILogger }): Promise<void> => {
+    await this.table.refreshData({ logger })
   }
 
   getPlayers = async (): Promise<IPlayer[]> => {
@@ -71,9 +72,8 @@ export class Game implements IGame {
           {
             ...player,
             rentCount: player.rentCount > 0 ? 1 : 0,
-            combinedName: `${player.name} ${
-              companions.length > 0 ? `(${companions.length + 1})` : ''
-            }`
+            combinedName: `${player.name} ${companions.length > 0 ? `(${companions.length + 1})` : ''
+                }`
           },
           ...companions
         )

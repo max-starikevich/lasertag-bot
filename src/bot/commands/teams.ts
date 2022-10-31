@@ -3,9 +3,9 @@ import dedent from 'dedent-js'
 import { Command, CommandHandler } from '../types'
 
 const handler: CommandHandler = async (ctx) => {
-  const { game } = ctx
+  const { game, logger } = ctx
 
-  await game.refreshData()
+  await game.refreshData({ logger })
 
   const [redPlayers, bluePlayers] = await game.getTeams()
 

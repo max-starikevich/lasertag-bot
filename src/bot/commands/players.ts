@@ -4,9 +4,9 @@ import { partition } from 'lodash'
 import { Command, CommandHandler } from '../types'
 
 const handler: CommandHandler = async (ctx) => {
-  const { game } = ctx
+  const { game, logger } = ctx
 
-  await game.refreshData()
+  await game.refreshData({ logger })
   const [players, placeAndTime] = await Promise.all([game.getPlayers(), game.getPlaceAndTime()])
 
   const [readyPlayers, questionablePlayers] = partition(
@@ -23,9 +23,9 @@ const handler: CommandHandler = async (ctx) => {
 
     Записано: ${readyPlayers.length}
     Прокат: ${players.reduce(
-      (rentSum, { rentCount }) => rentSum + rentCount,
-      0
-    )}
+    (rentSum, { rentCount }) => rentSum + rentCount,
+    0
+  )}
 
 
   `

@@ -7,10 +7,12 @@ import Router from 'koa-router'
 
 import config from '$/config'
 import { handler, botPromise } from '$/lambda'
-import { logger } from '$/logger'
 import { updateWebhook } from '$/bot/webhooks'
+import { makeLogger } from '$/logger'
 
 const dev = async (): Promise<void> => {
+  const logger = makeLogger()
+
   try {
     const bot = await botPromise
 

@@ -9,19 +9,19 @@ import axios from 'axios'
 import { version } from '../../package.json'
 
 import config, { checkEnvironment } from '$/config'
-import { logger } from '$/logger'
 import { updateWebhook } from '$/bot/webhooks'
 import { GameContext } from '$/bot/types'
+import { makeLogger } from '$/logger'
 
-async function run (): Promise<void> {
+async function run(): Promise<void> {
+  const logger = makeLogger()
+
   try {
     await checkEnvironment()
 
     const bot = new Telegraf<GameContext>(config.BOT_TOKEN)
-    
+
     await updateWebhook(bot)
-    
-    logger.info(`✅ Telegram webhook has been updated: ${config.WEBHOOK_BASE}/*`)
 
     const sentryWebhook = process.env.SENTRY_DEPLOY_WEBHOOK
 
