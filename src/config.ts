@@ -46,27 +46,7 @@ interface EnvironmentToCheck {
 const isCapitalLetter = (content: string): boolean =>
   content.length === 1 && content === content.toUpperCase()
 
-const isValidUrlInProd = async (value?: string): Promise<boolean> => {
-  try {
-    if (config.isLocal) {
-      return true
-    }
-
-    if (value == null) {
-      return false
-    }
-
-    const validUrl = new URL(value)
-
-    return Boolean(validUrl)
-  } catch {
-    return false
-  }
-}
-
 const requiredRuntimeVariables: EnvironmentToCheck = {
-  SENTRY_DSN: async () => await isValidUrlInProd(process.env.SENTRY_DSN),
-
   BOT_TOKEN: async () => (process.env.BOT_TOKEN ?? '').length > 0,
 
   GOOGLE_API_KEY: async () => (process.env.GOOGLE_API_KEY ?? '').length > 0,
