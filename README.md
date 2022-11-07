@@ -22,7 +22,7 @@ $ ngrok http 4000
 
 ```console
 $ yarn install
-$ cp .env.example .env # use the data from Ngrok, BotFather and Google Cloud console
+$ cp .env.example .env # use the data BotFather and Google Cloud console
 $ yarn start
 ```
 
