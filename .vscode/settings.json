@@ -1,5 +1,8 @@
 {
+  "typescript.preferences.importModuleSpecifier": "relative",
+  "files.autoSave": "off",
   "standard.engine": "ts-standard",
   "standard.autoFixOnSave": true,
-  "typescript.preferences.importModuleSpecifier": "relative"
+  "standard.trace.server": "verbose",
+  "standard.treatErrorsAsWarnings": true,
 }
