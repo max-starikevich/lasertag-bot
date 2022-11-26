@@ -89,9 +89,10 @@ export class Game implements IGame {
 
   getTeams = async (): Promise<[IPlayer[], IPlayer[]]> => {
     const players = await this.getPlayers()
+    const activePlayers = players.filter(({ count }) => count > 0)
 
-    const playersToDivide = players.filter(
-      ({ isQuestionable, isCompanion, count }) => !isQuestionable && !isCompanion && count > 0
+    const playersToDivide = activePlayers.filter(
+      ({ isQuestionable, isCompanion }) => !isQuestionable && !isCompanion
     )
 
     const ratedPlayers = sortBy(playersToDivide, ({ level }) => level).reverse()
