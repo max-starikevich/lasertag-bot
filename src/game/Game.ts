@@ -79,6 +79,10 @@ export class Game implements IGame {
         )
       }
 
+      if (player.count === 0 && player.comment.length > 0) {
+        players.push(player)
+      }
+
       return players
     }, [])
   }
@@ -87,7 +91,7 @@ export class Game implements IGame {
     const players = await this.getPlayers()
 
     const playersToDivide = players.filter(
-      ({ isQuestionable, isCompanion }) => !isQuestionable && !isCompanion
+      ({ isQuestionable, isCompanion, count }) => !isQuestionable && !isCompanion && count > 0
     )
 
     const ratedPlayers = sortBy(playersToDivide, ({ level }) => level).reverse()

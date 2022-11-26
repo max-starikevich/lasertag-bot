@@ -11,10 +11,10 @@ const handler: CommandHandler = async (ctx) => {
 
   const [readyPlayers, questionablePlayers] = partition(
     players,
-    ({ isQuestionable }) => !isQuestionable
+    ({ isQuestionable, count }) => !isQuestionable && count > 0
   )
 
-  const playersWithComments = readyPlayers.filter(
+  const playersWithComments = players.filter(
     ({ comment }) => comment.length > 0
   )
 
@@ -55,7 +55,7 @@ const handler: CommandHandler = async (ctx) => {
   const commentsMessage = playersWithComments.length > 0
     ? dedent`
       ${playersWithComments
-        .map(({ name, comment }) => `${name} "<i>${comment}</i>"`)
+        .map(({ name, comment }) => `💬 ${name} «${comment.trim()}»`)
         .join('\n')}
       `
     : ''
