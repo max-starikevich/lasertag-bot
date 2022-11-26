@@ -8,7 +8,7 @@ Pull requests and issues are welcomed.
 
 To contribute to this project, you need to have:
 
-- Node.js, Yarn installed
+- Node.js, PNPM installed
 - Ngrok, since we use webhooks even in local development
 - Telegram account
 - Bot account created by BotFather: https://core.telegram.org/bots#3-how-do-i-create-a-bot
@@ -21,9 +21,9 @@ $ ngrok http 4000
 ```
 
 ```console
-$ yarn install
+$ pnpm i
 $ cp .env.example .env # use the data BotFather and Google Cloud console
-$ yarn start
+$ pnpm start
 ```
 
 Have fun!
