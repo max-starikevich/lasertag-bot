@@ -8,10 +8,11 @@ const handler: CommandHandler = async (ctx) => {
 
   await game.refreshData({ logger })
   const [players, placeAndTime] = await Promise.all([game.getPlayers(), game.getPlaceAndTime()])
+  const activePlayers = players.filter(({ count }) => count > 0)
 
   const [readyPlayers, questionablePlayers] = partition(
-    players,
-    ({ isQuestionable, count }) => !isQuestionable && count > 0
+    activePlayers,
+    ({ isQuestionable }) => !isQuestionable
   )
 
   const playersWithComments = players.filter(

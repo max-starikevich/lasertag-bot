@@ -1,12 +1,13 @@
 {
   "name": "lasertag-bot",
-  "version": "5.3.1",
+  "version": "5.3.2",
   "repository": "https://github.com/max-starikevich/lasertag-bot",
   "author": "Max Starikevich <maxim.starikevich@gmail.com>",
   "license": "MIT",
   "main": "dist/src/index.js",
   "engines": {
-    "node": "^16"
+    "node": "^16",
+    "pnpm": "^7"
   },
   "dependencies": {
     "@sentry/node": "^7.21.1",
@@ -51,7 +52,7 @@
     "prepare": "husky install",
     "pre-push": "pnpm lint && pnpm test && pnpm deploy:check-image",
     "build": "tsc -p tsconfig.prod.json",
-    "deploy": "pnpm deploy:check-image && pnpm deploy:aws && pnpm deploy:webhooks",
+    "deploy:all": "pnpm deploy:check-image && pnpm deploy:aws && pnpm deploy:webhooks",
     "deploy:check-image": "docker image build -t lasertag-bot .",
     "deploy:aws": "serverless deploy --verbose --stage production",
     "deploy:webhooks": "node --enable-source-maps dist/src/scripts/deploy-webhooks.js"
@@ -61,7 +62,8 @@
   },
   "ts-standard": {
     "ignore": [
-      "*.js"
+      "*.js",
+      "src/scripts"
     ]
   }
 }
