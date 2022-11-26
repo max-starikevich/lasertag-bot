@@ -1,23 +1,25 @@
 # BUILDER
 FROM public.ecr.aws/lambda/nodejs:16-arm64 as builder
-RUN npm i yarn -g
-COPY package.json yarn.lock ./
+RUN npm i pnpm -g
+COPY package.json pnpm-lock.yaml ./
 
 ENV NODE_ENV=development
-RUN yarn install --frozen-lockfile && yarn cache clean
+ENV CI=true
+RUN pnpm i --ignore-scripts
 
 COPY src src
 COPY tsconfig.json tsconfig.prod.json ./
 
-RUN yarn build
+RUN pnpm build
 
 # RUNTIME
 FROM public.ecr.aws/lambda/nodejs:16-arm64 as runtime
-RUN npm i yarn -g
-COPY package.json yarn.lock ./
+RUN npm i pnpm -g
+COPY package.json pnpm-lock.yaml ./
 
 ENV NODE_ENV=production
-RUN yarn install --frozen-lockfile && yarn cache clean
+ENV CI=true
+RUN pnpm i --ignore-scripts
 
 COPY --from=builder /var/task/dist dist
 
