@@ -7,8 +7,6 @@ import { NoHomeChatAccessError } from '$/errors/NoHomeChatAccessError'
 import { GameContext } from '../types'
 
 export const accessMiddleware: MiddlewareFn<NarrowedContext<GameContext, Update.MessageUpdate>> = async (ctx, next) => {
-  ctx.isAdmin = false
-
   try {
     const { status } = await ctx.telegram.getChatMember(config.TELEGRAM_HOME_CHAT_ID, ctx.from.id)
 
