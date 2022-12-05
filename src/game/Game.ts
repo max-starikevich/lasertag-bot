@@ -1,11 +1,12 @@
-import { chunk, sortBy, times } from 'lodash'
+import { chunk, orderBy, times } from 'lodash'
 
 import config from '$/config'
 import { ILogger } from '$/logger/types'
 
 import { IGame } from './types'
-import { IPlayer } from './player/types'
+import { IPlayer, Teams } from './player/types'
 import { ITable } from './table/types'
+import { tryToBalanceTeamsNTimes } from './player/balance'
 
 const {
   NAME_COLUMN,
@@ -87,7 +88,7 @@ export class Game implements IGame {
     }, [])
   }
 
-  getTeams = async (): Promise<[IPlayer[], IPlayer[]]> => {
+  getTeams = async (): Promise<Teams> => {
     const players = await this.getPlayers()
     const activePlayers = players.filter(({ count }) => count > 0)
 
@@ -95,29 +96,18 @@ export class Game implements IGame {
       ({ isQuestionable, isCompanion }) => !isQuestionable && !isCompanion
     )
 
-    const ratedPlayers = sortBy(playersToDivide, ({ level }) => level).reverse()
-    const playerPairs = chunk(ratedPlayers, 2)
+    const ratedPlayers = orderBy(playersToDivide, ({ level }) => level, 'desc')
 
-    return playerPairs.reduce<[IPlayer[], IPlayer[]]>(
-      ([team1, team2], [player1, player2]) => {
-        if (player2 == null) {
-          return [[...team1, player1], team2]
-        }
+    const teams = chunk(ratedPlayers, 2)
+      .reduce<Teams>(([team1, team2], [player1, player2]) => {
+      if (player2 === undefined) {
+        return [[...team1, player1], team2]
+      }
 
-        if ((Math.random() > 0.5 ? 1 : 0) === 1) {
-          return [
-            [...team1, player1],
-            [...team2, player2]
-          ]
-        }
+      return [[...team1, player1], [...team2, player2]]
+    }, [[], []])
 
-        return [
-          [...team1, player2],
-          [...team2, player1]
-        ]
-      },
-      [[], []]
-    )
+    return tryToBalanceTeamsNTimes(teams, 100)
   }
 
   getPlaceAndTime = async (): Promise<string> => {

@@ -15,18 +15,26 @@ const handler: CommandHandler = async (ctx) => {
 
   const placeAndTime = await game.getPlaceAndTime()
 
+  const teams = dedent`
+    📅 <b>${placeAndTime}</b>
+
+    ${redPlayers
+      .map((player) => `🔴 ${player.name}`)
+      .join('\n')}
+
+    ${bluePlayers
+      .map((player) => `🔵 ${player.name}`)
+      .join('\n')}
+
+
+  `
+
+  const levels = dedent`
+    Баланс: 🔴 ${redPlayers.reduce((result, { level }) => result + level, 0)} 🔵 ${bluePlayers.reduce((sum, player) => sum + player.level, 0)}
+  `
+
   return await ctx.replyWithHTML(
-    dedent`
-      📅 <b>${placeAndTime}</b>
-
-      ${redPlayers
-        .map((player) => `🔴 ${player.name}`)
-        .join('\n')}
-
-      ${bluePlayers
-        .map((player) => `🔵 ${player.name}`)
-        .join('\n')}
-    `
+    teams + (ctx.isAdmin ? levels : '')
   )
 }
 

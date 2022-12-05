@@ -8,3 +8,5 @@ export interface IPlayer {
   isQuestionable: boolean
   isCompanion: boolean
 }
+
+export type Teams = [IPlayer[], IPlayer[]]
