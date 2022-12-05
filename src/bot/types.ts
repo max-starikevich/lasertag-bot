@@ -7,6 +7,7 @@ import { ILogger } from '$/logger/types'
 export interface GameContext extends Context {
   game: IGame
   logger: ILogger
+  isAdmin: boolean
 }
 
 export type CommandHandler = (ctx: NarrowedContext<GameContext, Update.MessageUpdate<Message.TextMessage>>) => Promise<Message.TextMessage>
