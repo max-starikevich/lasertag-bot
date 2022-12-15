@@ -1,12 +1,12 @@
-import { chunk, orderBy, times } from 'lodash'
+import { times } from 'lodash'
 
 import config from '$/config'
 import { ILogger } from '$/logger/types'
 
 import { IGame } from './types'
-import { IPlayer, Teams } from './player/types'
+import { Player, Teams } from './player/types'
 import { ITable } from './table/types'
-import { tryToBalanceTeamsNTimes } from './player/balance'
+import { getBalancedTeams } from './player/balance'
 
 const {
   NAME_COLUMN,
@@ -27,15 +27,15 @@ export class Game implements IGame {
     await this.table.refreshData({ logger })
   }
 
-  getPlayers = async (): Promise<IPlayer[]> => {
+  getPlayers = async (): Promise<Player[]> => {
     return times(MAX_ROW_NUMBER - START_FROM_ROW)
       .map(n => n + START_FROM_ROW)
-      .reduce<IPlayer[]>((players, rowNumber) => {
+      .reduce<Player[]>((players, rowNumber) => {
       const row = rowNumber.toString()
       const count = this.table.get(COUNT_COLUMN + row)
       const name = this.table.get(NAME_COLUMN + row)
 
-      const player: IPlayer = {
+      const player: Player = {
         name,
         count: +count.replace('?', '') ?? 0,
         rentCount: +this.table.get(RENT_COLUMN + row) ?? 0,
@@ -53,7 +53,7 @@ export class Game implements IGame {
       if (player.count > 1) {
         const companions = times(player.count - 1)
           .map(n => n + 1)
-          .reduce<IPlayer[]>((companions, num) => {
+          .reduce<Player[]>((companions, num) => {
           const rentCount = player.rentCount - num
 
           companions.push({
@@ -96,18 +96,7 @@ export class Game implements IGame {
       ({ isQuestionable, isCompanion }) => !isQuestionable && !isCompanion
     )
 
-    const ratedPlayers = orderBy(playersToDivide, ({ level }) => level, 'desc')
-
-    const teams = chunk(ratedPlayers, 2)
-      .reduce<Teams>(([team1, team2], [player1, player2]) => {
-      if (player2 === undefined) {
-        return [[...team1, player1], team2]
-      }
-
-      return [[...team1, player1], [...team2, player2]]
-    }, [[], []])
-
-    return tryToBalanceTeamsNTimes(teams, 100)
+    return getBalancedTeams(playersToDivide)
   }
 
   getPlaceAndTime = async (): Promise<string> => {

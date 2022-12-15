@@ -1,4 +1,4 @@
-export interface IPlayer {
+export interface Player {
   name: string
   combinedName: string
   count: number
@@ -9,4 +9,4 @@ export interface IPlayer {
   isCompanion: boolean
 }
 
-export type Teams = [IPlayer[], IPlayer[]]
+export type Teams = [Player[], Player[]]
