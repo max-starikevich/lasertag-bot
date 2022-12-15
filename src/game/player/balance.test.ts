@@ -1,20 +1,7 @@
-import { getRandomArray } from '../../utils'
-
-import { Player } from './types'
-import { getBalancedTeams, getTeamsLevels } from './balance'
 import { times } from 'lodash'
 
-type BaseTestPlayer = Pick<Player, 'name' | 'combinedName' | 'count' | 'rentCount' | 'comment' | 'isQuestionable' | 'isCompanion'>
-
-const base: BaseTestPlayer = {
-  name: 'player',
-  combinedName: 'player',
-  count: 1,
-  rentCount: 0,
-  comment: '',
-  isQuestionable: false,
-  isCompanion: false
-}
+import { getRandomArray } from '../../utils'
+import { getBalancedTeams, getTeamsLevels } from './balance'
 
 describe('balance.ts', () => {
   describe('getBalancedTeams()', () => {
@@ -27,8 +14,15 @@ describe('balance.ts', () => {
       const successTries = times(numberOfTries).reduce((successTries) => {
         const levels = getRandomArray(playerCount, maxLevel)
 
-        const players = levels.map(level => ({
-          ...base, level
+        const players = levels.map(randomLevel => ({
+          name: 'random-player',
+          combinedName: 'random-player',
+          count: 1,
+          rentCount: 0,
+          comment: '',
+          isQuestionable: false,
+          isCompanion: false,
+          level: randomLevel
         }))
 
         const balancedTeams = getBalancedTeams(players)
@@ -42,14 +36,6 @@ describe('balance.ts', () => {
 
         return successTries + 1
       }, 0)
-
-      console.debug({
-        successTries,
-        numberOfTries,
-        maxLevel,
-        playerCount,
-        targetSuccessPercentage
-      })
 
       expect((successTries / numberOfTries) * 100).toBeGreaterThan(targetSuccessPercentage)
     })
