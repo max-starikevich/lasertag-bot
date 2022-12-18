@@ -1,4 +1,4 @@
-import { times } from 'lodash'
+import { shuffle, times } from 'lodash'
 
 import config from '$/config'
 import { ILogger } from '$/logger/types'
@@ -96,11 +96,15 @@ export class Game implements IGame {
       ({ isQuestionable, isCompanion }) => !isQuestionable && !isCompanion
     )
 
-    return getBalancedTeams(playersToDivide)
+    const [team1, team2] = getBalancedTeams(playersToDivide)
+      .map(team => shuffle(team))
+
+    return [team1, team2]
   }
 
   getPlaceAndTime = async (): Promise<string> => {
-    const placeAndTime = PLACE_AND_TIME_CELLS.map((cell) => this.table.get(cell)).join(
+    const placeAndTime = PLACE_AND_TIME_CELLS.map((cell) =>
+      this.table.get(cell)).join(
       ', '
     )
 

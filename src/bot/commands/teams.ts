@@ -18,6 +18,8 @@ const handler: CommandHandler = async (ctx) => {
   const teams = dedent`
     📅 <b>${placeAndTime}</b>
 
+    🔴 ${redPlayers.length} vs. ${bluePlayers.length} 🔵
+
     ${redPlayers
       .map((player) => `🔴 ${player.name}`)
       .join('\n')}
@@ -26,16 +28,10 @@ const handler: CommandHandler = async (ctx) => {
       .map((player) => `🔵 ${player.name}`)
       .join('\n')}
 
-
-  `
-
-  const levels = dedent`
     Баланс: 🔴 ${redPlayers.reduce((result, { level }) => result + level, 0)} 🔵 ${bluePlayers.reduce((sum, player) => sum + player.level, 0)}
   `
 
-  return await ctx.replyWithHTML(
-    teams + (ctx.isAdmin ? levels : '')
-  )
+  return await ctx.replyWithHTML(teams)
 }
 
 export const teams: Command = {
