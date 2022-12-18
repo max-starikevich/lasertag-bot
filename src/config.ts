@@ -21,7 +21,7 @@ const config = {
   GOOGLE_API_KEY: process.env.GOOGLE_API_KEY as string,
   GOOGLE_SPREADSHEET_ID: process.env.GOOGLE_SPREADSHEET_ID as string,
 
-  DEFAULT_PLAYER_LEVEL: 0,
+  DEFAULT_PLAYER_LEVEL: parseInt(process.env.DEFAULT_PLAYER_LEVEL ?? '0'),
   START_FROM_ROW: parseInt(process.env.START_FROM_ROW ?? '1'),
   MAX_ROW_NUMBER: parseInt(process.env.MAX_ROW_NUMBER ?? '100'),
 
