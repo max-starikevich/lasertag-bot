@@ -2,7 +2,7 @@ import { chunk, orderBy } from 'lodash'
 
 import { Player, Teams } from './types'
 
-const MIN_PLAYERS_FOR_BALANCE_ADJUST = 3
+export const MIN_PLAYERS_FOR_BALANCE_ADJUST = 5
 
 export const getTeamsLevels = ([team1, team2]: Teams): [number, number] => {
   const level1 = team1.reduce((result, { level }) => result + level, 0)
