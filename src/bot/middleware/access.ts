@@ -16,9 +16,10 @@ export const accessMiddleware: MiddlewareFn<NarrowedContext<GameContext, Update.
 
     if (['creator'].includes(status)) {
       ctx.isCreator = true
+      ctx.isAdmin = true
     }
 
-    if (['creator', 'administrator'].includes(status)) {
+    if (['administrator'].includes(status)) {
       ctx.isAdmin = true
     }
   } catch (error) {
