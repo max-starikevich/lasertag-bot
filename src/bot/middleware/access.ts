@@ -14,7 +14,7 @@ export const accessMiddleware: MiddlewareFn<NarrowedContext<GameContext, Update.
       throw new NoHomeChatAccessError('This member isn\'t a member of the group')
     }
 
-    if (['creator', 'member', 'administrator'].includes(status)) {
+    if (['creator', 'administrator'].includes(status)) {
       ctx.isAdmin = true
     }
   } catch (error) {
