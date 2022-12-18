@@ -8,6 +8,7 @@ export interface GameContext extends Context {
   game: IGame
   logger: ILogger
   isAdmin: boolean
+  isCreator: boolean
 }
 
 export type CommandHandler = (ctx: NarrowedContext<GameContext, Update.MessageUpdate<Message.TextMessage>>) => Promise<Message.TextMessage>

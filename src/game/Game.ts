@@ -1,4 +1,4 @@
-import { times } from 'lodash'
+import { sortBy, times } from 'lodash'
 
 import config from '$/config'
 import { ILogger } from '$/logger/types'
@@ -96,7 +96,14 @@ export class Game implements IGame {
       ({ isQuestionable, isCompanion }) => !isQuestionable && !isCompanion
     )
 
-    return getBalancedTeams(playersToDivide)
+    const [team1, team2] = getBalancedTeams(playersToDivide)
+      .map(team =>
+        sortBy(team, (player) =>
+          players.findIndex(({ name }) => player.name === name)
+        )
+      )
+
+    return [team1, team2]
   }
 
   getPlaceAndTime = async (): Promise<string> => {

@@ -20,7 +20,10 @@ export const initBot = async (): Promise<Telegraf<GameContext>> => {
   const bot = new Telegraf<GameContext>(config.BOT_TOKEN)
 
   bot.context.game = game
-  bot.context.isAdmin = false // may be overriden in middlewares
+
+  // may be overriden in middlewares
+  bot.context.isAdmin = false
+  bot.context.isCreator = false
 
   setBotMiddlewares(bot)
 
