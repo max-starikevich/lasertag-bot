@@ -1,6 +1,6 @@
 import { times } from 'lodash'
 
-import { getRandomArray } from '../../utils'
+import { getRandomArray } from '../../utils.dev'
 import { getBalancedTeams, getTeamsLevels } from './balance'
 
 describe('balance.ts', () => {
@@ -10,7 +10,7 @@ describe('balance.ts', () => {
     const maxLevel = 6
     const targetSuccessPercentage = 99
 
-    it(`should balance properly with ${playerCount} random players in ${targetSuccessPercentage}%+ cases`, () => {
+    it(`should balance properly with ${playerCount} random players in ${targetSuccessPercentage}%+ cases after ${numberOfTries} tries`, () => {
       const successTries = times(numberOfTries).reduce((successTries) => {
         const levels = getRandomArray(playerCount, maxLevel)
 
