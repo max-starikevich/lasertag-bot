@@ -23,14 +23,12 @@ export const start: Command = {
   name: 'start',
   handler,
   description: 'Начало работы с ботом',
-  showInMenu: false,
-  requireDocument: false
+  showInMenu: false
 }
 
 export const help: Command = {
   name: 'help',
   handler,
   description: 'Помощь',
-  showInMenu: true,
-  requireDocument: false
+  showInMenu: true
 }

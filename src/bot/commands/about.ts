@@ -21,6 +21,5 @@ export const about: Command = {
   name: 'about',
   handler,
   description: 'Информация о боте',
-  showInMenu: true,
-  requireDocument: false
+  showInMenu: true
 }

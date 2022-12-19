@@ -40,6 +40,5 @@ export const teams: Command = {
   name: 'teams',
   handler,
   description: 'Создать команды на базе файла записи',
-  showInMenu: true,
-  requireDocument: true
+  showInMenu: true
 }
