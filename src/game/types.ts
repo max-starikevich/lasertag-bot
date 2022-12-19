@@ -1,8 +1,8 @@
-import { ILogger } from '../logger/types'
+import { BaseLogger } from '../logger/types'
 import { Player } from './player/types'
 
-export interface IGame {
-  refreshData: ({ logger }: { logger: ILogger }) => Promise<void>
+export interface BaseGame {
+  refreshData: ({ logger }: { logger: BaseLogger }) => Promise<void>
   getPlayers: () => Promise<Player[]>
   getPlaceAndTime: () => Promise<string>
   getTeams: () => Promise<[Player[], Player[]]>

@@ -3,7 +3,7 @@ import { createLogger, format, transports } from 'winston'
 
 import config from '$/config'
 
-import { ILogger } from './types'
+import { BaseLogger } from './types'
 
 const { combine, timestamp, errors, printf, prettyPrint } = format
 
@@ -19,7 +19,7 @@ const devFormats: Format[] = [
   prettyPrint({ colorize: true })
 ]
 
-export const makeLogger = (id?: string): ILogger => {
+export const makeLogger = (id?: string): BaseLogger => {
   return createLogger({
     format: combine(
       ...[

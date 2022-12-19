@@ -1,11 +1,11 @@
 import { shuffle, times } from 'lodash'
 
 import config from '$/config'
-import { ILogger } from '$/logger/types'
+import { BaseLogger } from '$/logger/types'
 
-import { IGame } from './types'
+import { BaseGame } from './types'
 import { Player, Teams } from './player/types'
-import { ITable } from './table/types'
+import { BaseTable } from './table/types'
 import { getBalancedTeams } from './player/balance'
 
 const {
@@ -20,10 +20,10 @@ const {
   DEFAULT_PLAYER_LEVEL
 } = config
 
-export class Game implements IGame {
-  constructor (protected table: ITable) { }
+export class Game implements BaseGame {
+  constructor (protected table: BaseTable) { }
 
-  refreshData = async ({ logger }: { logger: ILogger }): Promise<void> => {
+  refreshData = async ({ logger }: { logger: BaseLogger }): Promise<void> => {
     await this.table.refreshData({ logger })
   }
 
@@ -103,11 +103,9 @@ export class Game implements IGame {
   }
 
   getPlaceAndTime = async (): Promise<string> => {
-    const placeAndTime = PLACE_AND_TIME_CELLS.map((cell) =>
+    return PLACE_AND_TIME_CELLS.map((cell) =>
       this.table.get(cell)).join(
       ', '
     )
-
-    return placeAndTime
   }
 }

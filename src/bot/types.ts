@@ -1,12 +1,12 @@
 import { Context, NarrowedContext } from 'telegraf'
 import { Message, Update } from 'telegraf/typings/core/types/typegram'
 
-import { IGame } from '$/game/types'
-import { ILogger } from '$/logger/types'
+import { BaseGame } from '$/game/types'
+import { BaseLogger } from '$/logger/types'
 
 export interface GameContext extends Context {
-  game: IGame
-  logger: ILogger
+  game: BaseGame
+  logger: BaseLogger
   isAdmin: boolean
   isCreator: boolean
 }
@@ -18,5 +18,4 @@ export interface Command {
   handler: CommandHandler
   description: string
   showInMenu: boolean
-  requireDocument: boolean
 }

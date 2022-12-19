@@ -3,10 +3,10 @@ import { GoogleSpreadsheet, GoogleSpreadsheetWorksheet } from 'google-spreadshee
 import config from '$/config'
 
 import { escapeHtml } from '$/utils'
-import { ILogger } from '$/logger/types'
+import { BaseLogger } from '$/logger/types'
 import { NoSheetsError } from '$/errors/NoSheetsError'
 
-import { ITable } from './types'
+import { BaseTable } from './types'
 
 const PLAYER_DATA_RANGES = [
   config.NAME_COLUMN,
@@ -20,13 +20,13 @@ const PLAYER_DATA_RANGES = [
 
 const ALL_RANGES_TO_LOAD = [...PLAYER_DATA_RANGES, ...config.PLACE_AND_TIME_CELLS]
 
-export class GoogleTable implements ITable {
+export class GoogleTable implements BaseTable {
   constructor (protected spreadsheetId: string, protected apiKey: string) { }
 
   protected document?: GoogleSpreadsheet
   protected sheets?: GoogleSpreadsheetWorksheet
 
-  refreshData = async ({ logger }: { logger: ILogger }): Promise<void> => {
+  refreshData = async ({ logger }: { logger: BaseLogger }): Promise<void> => {
     if (this.sheets === undefined) {
       try {
         const startMs = performance.now()
