@@ -4,7 +4,7 @@ useDotenv: true
 provider:
   name: aws
   region: ${env:AWS_REGION}
-  memorySize: 512
+  memorySize: 256
   architecture: arm64
   ecr:
     images:
