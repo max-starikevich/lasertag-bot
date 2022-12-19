@@ -1,12 +1,9 @@
-import { MiddlewareFn, NarrowedContext } from 'telegraf'
-import { Update } from 'telegraf/typings/core/types/typegram'
-
 import config from '$/config'
 import { NoHomeChatAccessError } from '$/errors/NoHomeChatAccessError'
 
-import { GameContext } from '../types'
+import { BotMiddleware } from '.'
 
-export const accessMiddleware: MiddlewareFn<NarrowedContext<GameContext, Update.MessageUpdate>> = async (ctx, next) => {
+export const accessMiddleware: BotMiddleware = async (ctx, next) => {
   try {
     const { status } = await ctx.telegram.getChatMember(config.TELEGRAM_HOME_CHAT_ID, ctx.from.id)
 

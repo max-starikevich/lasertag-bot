@@ -1,6 +1,6 @@
-import { ILogger } from '$/logger/types'
+import { BaseLogger } from '$/logger/types'
 
-export interface ITable {
-  refreshData: ({ logger }: { logger: ILogger }) => Promise<void>
+export interface BaseTable {
+  refreshData: ({ logger }: { logger: BaseLogger }) => Promise<void>
   get: (a1: string) => string
 }

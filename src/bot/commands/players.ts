@@ -68,6 +68,5 @@ export const players: Command = {
   name: 'players',
   handler,
   description: 'Список игроков в файле записи',
-  showInMenu: true,
-  requireDocument: true
+  showInMenu: true
 }
