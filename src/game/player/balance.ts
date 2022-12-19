@@ -26,7 +26,7 @@ export const getBalancedTeams = (players: Player[]): Teams => {
   return balanceTeamsNTimes(dividedTeams, 100)
 }
 
-export const balanceTeamsNTimes = (teams: Teams, attemptAmount: number): Teams => {
+const balanceTeamsNTimes = (teams: Teams, attemptAmount: number): Teams => {
   if (teams[0].length < MIN_PLAYERS_FOR_BALANCE_ADJUST) {
     return teams
   }
