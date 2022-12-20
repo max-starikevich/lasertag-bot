@@ -1,7 +1,9 @@
 export abstract class CustomError extends Error {
-  public cause: any
-  public message: string = 'CustomError occured. Try again later'
-  public replyMessage: string | null = 'CustomError occured. Try again later'
+  public abstract message: string
+  public abstract replyMessage: string
+  public abstract shouldBeReported: boolean
+
+  public cause?: any
 
   constructor (cause?: any) {
     super()
