@@ -1,4 +1,4 @@
-import { captureException } from '$/errors'
+import { reportException as reportError } from '$/errors'
 import { CustomError } from '$/errors/CustomError'
 
 import { GameContext } from '../types'
@@ -15,7 +15,7 @@ export const errorMiddleware = async (error: any, ctx: GameContext): Promise<voi
     return
   }
 
-  captureException(error)
+  reportError(error)
 
   logger.error({
     update: ctx.update, error
@@ -25,9 +25,11 @@ export const errorMiddleware = async (error: any, ctx: GameContext): Promise<voi
 }
 
 const handleCustomError = async (error: CustomError, ctx: GameContext): Promise<void> => {
-  const { logger } = ctx
+  if (error.shouldBeReported) {
+    reportError(error.cause)
+  }
 
-  captureException(error.cause)
+  const { logger } = ctx
 
   logger.error({
     update: ctx.update, error: error.cause?.message ?? error.cause
