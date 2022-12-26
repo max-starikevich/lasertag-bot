@@ -1,6 +1,7 @@
 import { Telegraf } from 'telegraf'
 
 import config from '$/config'
+import { checkEnvironment } from '$/config/check'
 
 import { Game } from '$/game/Game'
 import { GoogleTable } from '$/game/table/GoogleTable'
@@ -15,7 +16,14 @@ export const commandsInMenu = commands.filter(
 )
 
 export const initBot = async (): Promise<Telegraf<GameContext>> => {
-  const table = new GoogleTable(config.GOOGLE_SPREADSHEET_ID, config.GOOGLE_API_KEY)
+  await checkEnvironment()
+
+  const table = new GoogleTable({
+    spreadsheetId: config.GOOGLE_SPREADSHEET_ID,
+    email: config.GOOGLE_SERVICE_ACCOUNT_EMAIL,
+    privateKey: config.GOOGLE_PRIVATE_KEY
+  })
+
   const game = new Game(table)
   const bot = new Telegraf<GameContext>(config.BOT_TOKEN)
 

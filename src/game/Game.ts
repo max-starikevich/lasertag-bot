@@ -13,15 +13,15 @@ const {
   COUNT_COLUMN,
   RENT_COLUMN,
   COMMENT_COLUMN,
-  LEVEL_COLUMN,
+  RATING_COLUMN,
   START_FROM_ROW,
   MAX_ROW_NUMBER,
   PLACE_AND_TIME_CELLS,
-  DEFAULT_PLAYER_LEVEL
+  DEFAULT_RATING_LEVEL
 } = config
 
 export class Game implements BaseGame {
-  constructor (protected table: BaseTable) { }
+  constructor (protected table: BaseTable) {}
 
   refreshData = async ({ logger }: { logger: BaseLogger }): Promise<void> => {
     await this.table.refreshData({ logger })
@@ -40,7 +40,7 @@ export class Game implements BaseGame {
         count: +count.replace('?', '') ?? 0,
         rentCount: +this.table.get(RENT_COLUMN + row) ?? 0,
         comment: this.table.get(COMMENT_COLUMN + row),
-        level: +this.table.get(LEVEL_COLUMN + row) ?? DEFAULT_PLAYER_LEVEL,
+        level: +this.table.get(RATING_COLUMN + row) ?? DEFAULT_RATING_LEVEL,
         isQuestionable: count.includes('?'),
         isCompanion: false,
         combinedName: name
@@ -62,7 +62,7 @@ export class Game implements BaseGame {
             count: 1,
             rentCount: rentCount > 0 ? 1 : 0,
             comment: '',
-            level: DEFAULT_PLAYER_LEVEL,
+            level: DEFAULT_RATING_LEVEL,
             isCompanion: true
           })
 
