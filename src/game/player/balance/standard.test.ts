@@ -26,7 +26,7 @@ describe('balance/standard.ts', () => {
           isCompanion: false,
           level: randomLevel,
           teamName: 'random-team',
-          isInTeam: true
+          isTeamMember: true
         }))
 
         const balancedTeams = getBalancedTeams(players)
