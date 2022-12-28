@@ -46,7 +46,7 @@ export class Game implements BaseGame {
         level: +this.table.get(RATING_COLUMN + row) ?? DEFAULT_RATING_LEVEL,
         isQuestionable: count.includes('?'),
         isCompanion: false,
-        isInTeam: teamName.length > 0,
+        isTeamMember: teamName.length > 0,
         combinedName: name,
         teamName
       }

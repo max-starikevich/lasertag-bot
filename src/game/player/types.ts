@@ -8,7 +8,7 @@ export interface Player {
   level: number
   isQuestionable: boolean
   isCompanion: boolean
-  isInTeam: boolean
+  isTeamMember: boolean
 }
 
 export type Teams = [Player[], Player[]]

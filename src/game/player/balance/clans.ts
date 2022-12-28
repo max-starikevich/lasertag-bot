@@ -4,7 +4,7 @@ import { getTeamsLevels, sortTeamsByRatings } from './utils'
 
 export const getBalancedTeamsWithClans = (players: Player[]): Teams => {
   const ratedPlayers = orderBy(players, ({ level }) => level, 'desc')
-  const [clanPlayers, noClanPlayers] = partition(ratedPlayers, ({ isInTeam }) => isInTeam)
+  const [clanPlayers, noClanPlayers] = partition(ratedPlayers, ({ isTeamMember }) => isTeamMember)
 
   const clans = orderBy(Object.entries(groupBy(clanPlayers, ({ teamName }) => teamName)), ([, players]) => players.length, 'desc')
 
@@ -83,33 +83,33 @@ const balanceTeams = (teams: Teams): Teams => {
   return teams
 }
 
-const shiftBalanceByOne = (team1: Player[], team2: Player[]): Teams => {
-  let player1Index = 0
-  let player2Index = 0
+const shiftBalanceByOne = (weakTeam: Player[], strongTeam: Player[]): Teams => {
+  let weakerPlayerIndex = 0
+  let strongerPlayerIndex = 0
 
-  for (; player2Index < team2.length; player2Index++) {
-    const player2 = team2[player2Index]
+  for (; strongerPlayerIndex < strongTeam.length; strongerPlayerIndex++) {
+    const strongerPlayer = strongTeam[strongerPlayerIndex]
 
-    if (player2.isInTeam) {
+    if (strongerPlayer.isTeamMember) {
       continue
     }
 
-    player1Index = team1.findIndex(({ level }) => !player2.isInTeam && player2.level - level === 1)
+    weakerPlayerIndex = weakTeam.findIndex(({ level, isTeamMember }) => !isTeamMember && strongerPlayer.level - level === 1)
 
-    if (player1Index !== -1) {
+    if (weakerPlayerIndex !== -1) {
       break
     }
   }
 
-  const player2: Player | undefined = team2[player2Index]
-  const player1: Player | undefined = team1[player1Index]
+  const strongerPlayer: Player | undefined = strongTeam[strongerPlayerIndex]
+  const weakerPlayer: Player | undefined = weakTeam[weakerPlayerIndex]
 
-  if (player2 === undefined || player1 === undefined) {
-    return [team2, team1]
+  if (strongerPlayer === undefined || weakerPlayer === undefined) {
+    return [strongTeam, weakTeam]
   }
 
-  team2[player2Index] = player1
-  team1[player1Index] = player2
+  strongTeam[strongerPlayerIndex] = weakerPlayer
+  weakTeam[weakerPlayerIndex] = strongerPlayer
 
-  return sortTeamsByRatings([team2, team1])
+  return sortTeamsByRatings([strongTeam, weakTeam])
 }
