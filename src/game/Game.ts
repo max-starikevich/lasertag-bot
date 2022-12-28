@@ -3,17 +3,19 @@ import { shuffle, times } from 'lodash'
 import config from '$/config'
 import { BaseLogger } from '$/logger/types'
 
+import { BaseTable } from './table/types'
 import { BaseGame } from './types'
 import { Player, Teams } from './player/types'
-import { BaseTable } from './table/types'
-import { getBalancedTeams } from './player/balance'
+import { getBalancedTeams } from './player/balance/standard'
+import { getBalancedTeamsWithClans } from './player/balance/clans'
 
 const {
   NAME_COLUMN,
+  RATING_COLUMN,
+  TEAM_COLUMN,
   COUNT_COLUMN,
   RENT_COLUMN,
   COMMENT_COLUMN,
-  RATING_COLUMN,
   START_FROM_ROW,
   MAX_ROW_NUMBER,
   PLACE_AND_TIME_CELLS,
@@ -34,6 +36,7 @@ export class Game implements BaseGame {
       const row = rowNumber.toString()
       const count = this.table.get(COUNT_COLUMN + row)
       const name = this.table.get(NAME_COLUMN + row)
+      const teamName = this.table.get(TEAM_COLUMN + row)
 
       const player: Player = {
         name,
@@ -43,7 +46,9 @@ export class Game implements BaseGame {
         level: +this.table.get(RATING_COLUMN + row) ?? DEFAULT_RATING_LEVEL,
         isQuestionable: count.includes('?'),
         isCompanion: false,
-        combinedName: name
+        isInTeam: teamName.length > 0,
+        combinedName: name,
+        teamName
       }
 
       if (player.count === 1) {
@@ -97,6 +102,20 @@ export class Game implements BaseGame {
     )
 
     const [team1, team2] = getBalancedTeams(playersToDivide)
+      .map(team => shuffle(team))
+
+    return [team1, team2]
+  }
+
+  getTeamsWithClans = async (): Promise<Teams> => {
+    const players = await this.getPlayers()
+    const activePlayers = players.filter(({ count }) => count > 0)
+
+    const playersToDivide = activePlayers.filter(
+      ({ isQuestionable, isCompanion }) => !isQuestionable && !isCompanion
+    )
+
+    const [team1, team2] = getBalancedTeamsWithClans(playersToDivide)
       .map(team => shuffle(team))
 
     return [team1, team2]

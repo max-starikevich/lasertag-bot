@@ -1,9 +1,11 @@
 import { times } from 'lodash'
 
-import { getRandomArray } from '../../utils.dev'
-import { getBalancedTeams, getTeamsLevels } from './balance'
+import { getRandomArray } from '../../../utils.dev'
+import { getBalancedTeams } from './standard'
+import { Player } from '../types'
+import { getTeamsLevels } from './utils'
 
-describe('balance.ts', () => {
+describe('balance/standard.ts', () => {
   describe('getBalancedTeams()', () => {
     const numberOfTries = 10000
     const playerCount = 13
@@ -14,7 +16,7 @@ describe('balance.ts', () => {
       const successTries = times(numberOfTries).reduce((successTries) => {
         const levels = getRandomArray(playerCount, maxLevel)
 
-        const players = levels.map(randomLevel => ({
+        const players: Player[] = levels.map(randomLevel => ({
           name: 'random-player',
           combinedName: 'random-player',
           count: 1,
@@ -22,7 +24,9 @@ describe('balance.ts', () => {
           comment: '',
           isQuestionable: false,
           isCompanion: false,
-          level: randomLevel
+          level: randomLevel,
+          teamName: 'random-team',
+          isInTeam: true
         }))
 
         const balancedTeams = getBalancedTeams(players)

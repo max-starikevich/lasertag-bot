@@ -11,6 +11,7 @@ import { BaseTable } from './types'
 const PLAYER_DATA_RANGES = [
   config.NAME_COLUMN,
   config.RATING_COLUMN,
+  config.TEAM_COLUMN,
   config.COUNT_COLUMN,
   config.RENT_COLUMN,
   config.COMMENT_COLUMN
