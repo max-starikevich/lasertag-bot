@@ -2,18 +2,12 @@ import dedent from 'dedent-js'
 
 import { Command, CommandHandler } from '../types'
 
-import { MIN_PLAYERS_FOR_BALANCE_ADJUST } from '$/game/player/balance'
-
 const handler: CommandHandler = async (ctx) => {
   const { game, logger } = ctx
 
   await game.refreshData({ logger })
 
   const [redPlayers, bluePlayers] = await game.getTeams()
-
-  if (redPlayers.length < MIN_PLAYERS_FOR_BALANCE_ADJUST || bluePlayers.length < MIN_PLAYERS_FOR_BALANCE_ADJUST) {
-    return await ctx.replyWithHTML(`🤷 Недостаточно записано игроков для этой функции. Должно быть минимум ${MIN_PLAYERS_FOR_BALANCE_ADJUST}x${MIN_PLAYERS_FOR_BALANCE_ADJUST}`)
-  }
 
   const placeAndTime = await game.getPlaceAndTime()
 
@@ -39,6 +33,6 @@ const handler: CommandHandler = async (ctx) => {
 export const teams: Command = {
   name: 'teams',
   handler,
-  description: 'Создать команды на базе файла записи',
+  description: 'Создать команды',
   showInMenu: true
 }

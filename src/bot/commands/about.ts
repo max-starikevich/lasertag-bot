@@ -20,6 +20,6 @@ const handler: CommandHandler = async (ctx) => {
 export const about: Command = {
   name: 'about',
   handler,
-  description: 'Информация о боте',
+  description: 'Информация о боте и авторе',
   showInMenu: true
 }
