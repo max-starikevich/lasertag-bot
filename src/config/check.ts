@@ -38,10 +38,11 @@ const requiredRuntimeVariables: EnvironmentToCheck = {
 
   GOOGLE_SPREADSHEET_ID: async () => isValidString(config.GOOGLE_SPREADSHEET_ID),
   NAME_COLUMN: async () => isCapitalLetter(config.NAME_COLUMN),
+  RATING_COLUMN: async () => isCapitalLetter(config.RATING_COLUMN),
+  TEAM_COLUMN: async () => isCapitalLetter(config.TEAM_COLUMN),
   COUNT_COLUMN: async () => isCapitalLetter(config.COUNT_COLUMN),
   RENT_COLUMN: async () => isCapitalLetter(config.RENT_COLUMN),
   COMMENT_COLUMN: async () => isCapitalLetter(config.COMMENT_COLUMN),
-  RATING_COLUMN: async () => isCapitalLetter(config.RATING_COLUMN),
   PLACE_AND_TIME_CELLS: async () => {
     const failedCells = config.PLACE_AND_TIME_CELLS.filter(
       (cell) => cell.length < 2 || !isCapitalLetter(cell[0])
