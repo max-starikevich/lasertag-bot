@@ -12,8 +12,8 @@ const handler: CommandHandler = async (ctx) => {
 
   const placeAndTime = await game.getPlaceAndTime()
 
-  const redGroups = orderBy(Object.entries(groupBy(redPlayers, ({ isInTeam, teamName }) => isInTeam ? teamName : '-')), ([, players]) => players.length, 'desc')
-  const blueGroups = orderBy(Object.entries(groupBy(bluePlayers, ({ isInTeam, teamName }) => isInTeam ? teamName : '-')), ([, players]) => players.length, 'desc')
+  const redGroups = orderBy(Object.entries(groupBy(redPlayers, ({ isTeamMember, teamName }) => isTeamMember ? teamName : '-')), ([, players]) => players.length, 'asc')
+  const blueGroups = orderBy(Object.entries(groupBy(bluePlayers, ({ isTeamMember, teamName }) => isTeamMember ? teamName : '-')), ([, players]) => players.length, 'asc')
 
   const teams = dedent`
     📅 <b>${placeAndTime}</b>
@@ -22,13 +22,13 @@ const handler: CommandHandler = async (ctx) => {
 
     ${redGroups
       .map(([teamName, players]) =>
-        (teamName === '-' ? '' : `<b>${teamName}:</b>\n`) + players.map(({ name }) => `🔴 ${name}`).join('\n')
+        (teamName === '-' ? '' : `<b>${teamName}</b>\n`) + players.map(({ name }) => `🔴 ${name}`).join('\n')
       )
       .join('\n\n')}
 
     ${blueGroups
       .map(([teamName, players]) =>
-        (teamName === '-' ? '' : `<b>${teamName}:</b>\n`) + players.map(({ name }) => `🔵 ${name}`).join('\n')
+        (teamName === '-' ? '' : `<b>${teamName}</b>\n`) + players.map(({ name }) => `🔵 ${name}`).join('\n')
       )
       .join('\n\n')}
 
