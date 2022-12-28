@@ -56,29 +56,29 @@ const balanceTeams = (teams: Teams): Teams => {
   return teams
 }
 
-const shiftBalanceByOne = (team1: Player[], team2: Player[]): Teams => {
-  let player1Index = 0
-  let player2Index = 0
+const shiftBalanceByOne = (weakTeam: Player[], strongTeam: Player[]): Teams => {
+  let weakerPlayerIndex = 0
+  let strongerPlayerIndex = 0
 
-  for (; player2Index < team2.length; player2Index++) {
-    const player2 = team2[player2Index]
+  for (; strongerPlayerIndex < strongTeam.length; strongerPlayerIndex++) {
+    const strongerPlayer = strongTeam[strongerPlayerIndex]
 
-    player1Index = team1.findIndex(({ level }) => player2.level - level === 1)
+    weakerPlayerIndex = weakTeam.findIndex(({ level }) => strongerPlayer.level - level === 1)
 
-    if (player1Index !== -1) {
+    if (weakerPlayerIndex !== -1) {
       break
     }
   }
 
-  const player2: Player | undefined = team2[player2Index]
-  const player1: Player | undefined = team1[player1Index]
+  const strongerPlayer: Player | undefined = strongTeam[strongerPlayerIndex]
+  const weakerPlayer: Player | undefined = weakTeam[weakerPlayerIndex]
 
-  if (player2 === undefined || player1 === undefined) {
-    return [team2, team1]
+  if (strongerPlayer === undefined || weakerPlayer === undefined) {
+    return [strongTeam, weakTeam]
   }
 
-  team2[player2Index] = player1
-  team1[player1Index] = player2
+  strongTeam[strongerPlayerIndex] = weakerPlayer
+  weakTeam[weakerPlayerIndex] = strongerPlayer
 
-  return sortTeamsByRatings([team1, team2])
+  return sortTeamsByRatings([strongTeam, weakTeam])
 }
