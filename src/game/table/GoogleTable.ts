@@ -10,21 +10,36 @@ import { BaseTable } from './types'
 
 const PLAYER_DATA_RANGES = [
   config.NAME_COLUMN,
-  config.USERNAME_COLUMN,
+  config.RATING_COLUMN,
+  config.TEAM_COLUMN,
   config.COUNT_COLUMN,
   config.RENT_COLUMN,
-  config.COMMENT_COLUMN,
-  config.LEVEL_COLUMN
+  config.COMMENT_COLUMN
 ]
+
   .map((column) => `${column}${config.START_FROM_ROW}:${column}${config.MAX_ROW_NUMBER}`)
 
 const ALL_RANGES_TO_LOAD = [...PLAYER_DATA_RANGES, ...config.PLACE_AND_TIME_CELLS]
 
-export class GoogleTable implements BaseTable {
-  constructor (protected spreadsheetId: string, protected apiKey: string) { }
+interface GoogleTableConstructorParams {
+  spreadsheetId: string
+  privateKey: string
+  email: string
+}
 
+export class GoogleTable implements BaseTable {
   protected document?: GoogleSpreadsheet
   protected sheets?: GoogleSpreadsheetWorksheet
+
+  protected spreadsheetId: string
+  protected privateKey: string
+  protected email: string
+
+  constructor ({ spreadsheetId, privateKey, email }: GoogleTableConstructorParams) {
+    this.spreadsheetId = spreadsheetId
+    this.privateKey = privateKey
+    this.email = email
+  }
 
   refreshData = async ({ logger }: { logger: BaseLogger }): Promise<void> => {
     if (this.sheets === undefined) {
@@ -32,7 +47,12 @@ export class GoogleTable implements BaseTable {
         const startMs = performance.now()
 
         const document = new GoogleSpreadsheet(this.spreadsheetId)
-        document.useApiKey(this.apiKey)
+
+        await document.useServiceAccountAuth({
+          client_email: this.email,
+          private_key: this.privateKey
+        })
+
         await document.loadInfo()
 
         const timeElapsedMs = Math.round(performance.now() - startMs)
@@ -79,5 +99,20 @@ export class GoogleTable implements BaseTable {
     }
 
     return ''
+  }
+
+  set = async (
+    a1: string,
+    value: string
+  ): Promise<void> => {
+    if (this.sheets == null) {
+      throw new NoSheetsError()
+    }
+
+    const cell = this.sheets.getCellByA1(a1)
+
+    cell.value = value
+
+    return await cell.save()
   }
 }

@@ -1,15 +1,7 @@
 import { chunk, orderBy } from 'lodash'
 
-import { Player, Teams } from './types'
-
-export const MIN_PLAYERS_FOR_BALANCE_ADJUST = 5
-
-export const getTeamsLevels = ([team1, team2]: Teams): [number, number] => {
-  const level1 = team1.reduce((result, { level }) => result + level, 0)
-  const level2 = team2.reduce((result, { level }) => result + level, 0)
-
-  return [level1, level2]
-}
+import { Player, Teams } from '../types'
+import { getTeamsLevels, sortTeamsByRatings } from './utils'
 
 export const getBalancedTeams = (players: Player[]): Teams => {
   const ratedPlayers = orderBy(players, ({ level }) => level, 'desc')
@@ -27,14 +19,6 @@ export const getBalancedTeams = (players: Player[]): Teams => {
 }
 
 const balanceTeamsNTimes = (teams: Teams, attemptAmount: number): Teams => {
-  if (teams[0].length < MIN_PLAYERS_FOR_BALANCE_ADJUST) {
-    return teams
-  }
-
-  if (teams[1].length < MIN_PLAYERS_FOR_BALANCE_ADJUST) {
-    return teams
-  }
-
   let currentTeams = teams
 
   for (let n = 1; n <= attemptAmount; n++) {
@@ -61,22 +45,18 @@ const balanceTeams = (teams: Teams): Teams => {
 
   // team 1 is stronger
   if (levelDifference > 0) {
-    return strengthenWeakTeam(team2, team1, levelDifference)
+    return shiftBalanceByOne(team2, team1)
   }
 
   // team 2 is stronger
   if (levelDifference < 0) {
-    return strengthenWeakTeam(team1, team2, Math.abs(levelDifference))
+    return shiftBalanceByOne(team1, team2)
   }
 
   return teams
 }
 
-const strengthenWeakTeam = (weakTeam: Player[], strongTeam: Player[], levelDifference: number): Teams => {
-  if (levelDifference <= 1) {
-    return [strongTeam, weakTeam]
-  }
-
+const shiftBalanceByOne = (weakTeam: Player[], strongTeam: Player[]): Teams => {
   let weakerPlayerIndex = 0
   let strongerPlayerIndex = 0
 
@@ -100,8 +80,5 @@ const strengthenWeakTeam = (weakTeam: Player[], strongTeam: Player[], levelDiffe
   strongTeam[strongerPlayerIndex] = weakerPlayer
   weakTeam[weakerPlayerIndex] = strongerPlayer
 
-  return [
-    orderBy(strongTeam, ({ level }) => level, 'desc'),
-    orderBy(weakTeam, ({ level }) => level, 'desc')
-  ]
+  return sortTeamsByRatings([strongTeam, weakTeam])
 }

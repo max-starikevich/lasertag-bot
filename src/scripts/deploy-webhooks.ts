@@ -6,7 +6,8 @@ import { version } from '../../package.json'
 
 dotenv.config({ path: '.env.production' })
 
-import config, { checkEnvironment } from '$/config'
+import config from '$/config'
+import { checkEnvironment } from '$/config/check'
 import { updateWebhook } from '$/bot/webhooks'
 import { GameContext } from '$/bot/types'
 import { makeLogger } from '$/logger'
