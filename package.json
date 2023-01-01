@@ -63,8 +63,7 @@
   },
   "ts-standard": {
     "ignore": [
-      "*.js",
-      "src/scripts"
+      "*.js"
     ]
   }
 }

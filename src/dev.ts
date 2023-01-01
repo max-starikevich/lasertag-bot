@@ -7,7 +7,7 @@ import Router from 'koa-router'
 
 import config from '$/config'
 import { handler, botPromise } from '$/lambda'
-import { updateWebhook } from '$/bot/webhooks'
+import { updateBotCommands, updateWebhook } from '$/bot/webhooks'
 import { makeLogger } from '$/logger'
 
 const dev = async (): Promise<void> => {
@@ -21,6 +21,7 @@ const dev = async (): Promise<void> => {
     }
 
     await updateWebhook(bot)
+    await updateBotCommands(bot)
 
     const app = new Koa()
     const router = new Router()
