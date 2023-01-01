@@ -9,8 +9,8 @@ import { Command } from '../types'
 export const commands: Command[] = [
   start,
   players,
-  teams,
   clans,
-  help,
-  about
+  teams,
+  about,
+  help
 ]

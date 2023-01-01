@@ -52,6 +52,6 @@ const handler: CommandHandler = async (ctx) => {
 export const clans: Command = {
   name: 'clans',
   handler,
-  description: 'Создать команды с кланами',
+  description: 'Создать сбалансированные команды с кланами',
   showInMenu: true
 }
