@@ -1,3 +1,4 @@
+/* eslint-disable */
 import 'module-alias/register'
 import dotenv from 'dotenv'
 import { Telegraf } from 'telegraf'
@@ -11,6 +12,7 @@ import { checkEnvironment } from '$/config/check'
 import { updateBotCommands, updateWebhook } from '$/bot/webhooks'
 import { GameContext } from '$/bot/types'
 import { makeLogger } from '$/logger'
+/* eslint-enable */
 
 async function run (): Promise<void> {
   const logger = makeLogger()
@@ -19,7 +21,7 @@ async function run (): Promise<void> {
     await checkEnvironment()
 
     const bot = new Telegraf<GameContext>(config.BOT_TOKEN)
-    
+
     await updateWebhook(bot)
     await updateBotCommands(bot)
 
