@@ -35,6 +35,11 @@ export const initBot = async (): Promise<Telegraf<GameContext>> => {
 
   setBotMiddlewares(bot)
 
+  await bot.telegram.setMyCommands(commandsInMenu.map(({ name, description }) => ({
+    command: name,
+    description
+  })))
+
   process.on('uncaughtException', e => reportException(e))
   process.on('unhandledRejection', e => reportException(e))
 
