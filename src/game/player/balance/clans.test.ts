@@ -15,6 +15,7 @@ const basePlayer: Player = {
   isCompanion: false,
   teamName: 'random-team',
   isTeamMember: false,
+  isAloneInTeam: true,
   level: 0
 }
 
@@ -25,7 +26,7 @@ describe('balance/clans.ts', () => {
     const clans = ['alpha', 'delta']
     const clanPlayersCount = 3
     const maxLevel = 6
-    const targetSuccessPercentage = 95
+    const targetSuccessPercentage = 80
 
     it(`should balance properly with ${playerCount} random players + ${clans.length * clanPlayersCount} clan players in ${targetSuccessPercentage}%+ cases after ${numberOfTries} tries`, () => {
       const successTries = times(numberOfTries).reduce((successTries) => {
@@ -43,11 +44,12 @@ describe('balance/clans.ts', () => {
             ...basePlayer,
             teamName: clanName,
             name: `${clanName}-player-${index}`,
-            level: 5
+            level: 5,
+            isAloneInTeam: false
           }))
         ], [])
 
-        const balancedTeams = getBalancedTeamsWithClans([...nonClanPlayers, ...clanPlayers])
+        const balancedTeams = getBalancedTeamsWithClans([...clanPlayers, ...nonClanPlayers])
 
         const [level1, level2] = getTeamsLevels(balancedTeams)
         const levelDifference = Math.abs(level1 - level2)

@@ -1,4 +1,4 @@
-import { shuffle, times } from 'lodash'
+import { groupBy, shuffle, times } from 'lodash'
 
 import config from '$/config'
 import { BaseLogger } from '$/logger/types'
@@ -30,25 +30,36 @@ export class Game implements BaseGame {
   }
 
   getPlayers = async (): Promise<Player[]> => {
-    return times(MAX_ROW_NUMBER - START_FROM_ROW)
+    const players = times(MAX_ROW_NUMBER - START_FROM_ROW)
       .map(n => n + START_FROM_ROW)
       .reduce<Player[]>((players, rowNumber) => {
       const row = rowNumber.toString()
-      const count = this.table.get(COUNT_COLUMN + row)
+
       const name = this.table.get(NAME_COLUMN + row)
+
+      if (name === undefined) {
+        return players
+      }
+
+      const rawCount = (this.table.get(COUNT_COLUMN + row) ?? '0')
+      const count = +(rawCount.replace('?', ''))
+      const rentCount = +(this.table.get(RENT_COLUMN + row) ?? '0')
+      const level = +(this.table.get(RATING_COLUMN + row) ?? `${DEFAULT_RATING_LEVEL}`)
+      const comment = this.table.get(COMMENT_COLUMN + row) ?? ''
       const teamName = this.table.get(TEAM_COLUMN + row)
 
       const player: Player = {
         name,
-        count: +count.replace('?', '') ?? 0,
-        rentCount: +this.table.get(RENT_COLUMN + row) ?? 0,
-        comment: this.table.get(COMMENT_COLUMN + row),
-        level: +this.table.get(RATING_COLUMN + row) ?? DEFAULT_RATING_LEVEL,
-        isQuestionable: count.includes('?'),
+        count,
+        rentCount,
+        comment,
+        level,
+        isQuestionable: rawCount.includes('?'),
         isCompanion: false,
-        isTeamMember: teamName.length > 0,
         combinedName: name,
-        teamName
+        teamName,
+        isTeamMember: teamName !== undefined,
+        isAloneInTeam: true
       }
 
       if (player.count === 1) {
@@ -91,6 +102,16 @@ export class Game implements BaseGame {
 
       return players
     }, [])
+
+    const clans = groupBy(
+      players.filter(({ isTeamMember }) => isTeamMember),
+      ({ teamName }) => teamName
+    )
+
+    return players.map(p => ({
+      ...p,
+      isAloneInTeam: p.teamName === undefined || clans[p.teamName].length < 2
+    }))
   }
 
   getTeams = async (): Promise<Teams> => {
