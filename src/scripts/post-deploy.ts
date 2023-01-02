@@ -1,3 +1,4 @@
+/* eslint-disable */
 import 'module-alias/register'
 import dotenv from 'dotenv'
 import { Telegraf } from 'telegraf'
@@ -8,17 +9,21 @@ dotenv.config({ path: '.env.production' })
 
 import config from '$/config'
 import { checkEnvironment } from '$/config/check'
-import { updateWebhook } from '$/bot/webhooks'
+import { updateBotCommands, updateBotWebhook } from '$/bot/webhooks'
 import { GameContext } from '$/bot/types'
 import { makeLogger } from '$/logger'
+/* eslint-enable */
 
 async function run (): Promise<void> {
   const logger = makeLogger()
 
   try {
     await checkEnvironment()
+
     const bot = new Telegraf<GameContext>(config.BOT_TOKEN)
-    await updateWebhook(bot)
+
+    await updateBotWebhook(bot)
+    await updateBotCommands(bot)
 
     const sentryWebhook = process.env.SENTRY_DEPLOY_WEBHOOK
 

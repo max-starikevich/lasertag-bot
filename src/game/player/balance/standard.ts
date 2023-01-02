@@ -39,7 +39,7 @@ const balanceTeams = (teams: Teams): Teams => {
 
   const levelDifference = level1 - level2
 
-  if (levelDifference <= 1) {
+  if (Math.abs(levelDifference) <= 1) {
     return teams
   }
 

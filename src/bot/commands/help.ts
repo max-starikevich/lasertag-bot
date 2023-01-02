@@ -29,6 +29,6 @@ export const start: Command = {
 export const help: Command = {
   name: 'help',
   handler,
-  description: 'Помощь',
+  description: 'Список команд',
   showInMenu: true
 }

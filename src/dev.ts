@@ -7,7 +7,7 @@ import Router from 'koa-router'
 
 import config from '$/config'
 import { handler, botPromise } from '$/lambda'
-import { updateWebhook } from '$/bot/webhooks'
+import { updateBotCommands, updateBotWebhook } from '$/bot/webhooks'
 import { makeLogger } from '$/logger'
 
 const dev = async (): Promise<void> => {
@@ -20,7 +20,8 @@ const dev = async (): Promise<void> => {
       throw new Error('The instance is unavailable')
     }
 
-    await updateWebhook(bot)
+    await updateBotWebhook(bot)
+    await updateBotCommands(bot)
 
     const app = new Koa()
     const router = new Router()

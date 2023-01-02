@@ -12,8 +12,19 @@ const handler: CommandHandler = async (ctx) => {
 
   const placeAndTime = await game.getPlaceAndTime()
 
-  const redGroups = orderBy(Object.entries(groupBy(redPlayers, ({ isTeamMember, teamName }) => isTeamMember ? teamName : '-')), ([, players]) => players.length, 'asc')
-  const blueGroups = orderBy(Object.entries(groupBy(bluePlayers, ({ isTeamMember, teamName }) => isTeamMember ? teamName : '-')), ([, players]) => players.length, 'asc')
+  const redGroups = orderBy(
+    Object.entries(
+      groupBy(redPlayers, ({ teamName, isAloneInTeam }) => isAloneInTeam ? 'Красные' : teamName)
+    ),
+    ([, players]) => players.length, 'desc'
+  )
+
+  const blueGroups = orderBy(
+    Object.entries(
+      groupBy(bluePlayers, ({ teamName, isAloneInTeam }) => isAloneInTeam ? 'Синие' : teamName)
+    ),
+    ([, players]) => players.length, 'desc'
+  )
 
   const teams = dedent`
     📅 <b>${placeAndTime}</b>
@@ -22,13 +33,13 @@ const handler: CommandHandler = async (ctx) => {
 
     ${redGroups
       .map(([teamName, players]) =>
-        (teamName === '-' ? '' : `<b>${teamName}</b>\n`) + players.map(({ name }) => `🔴 ${name}`).join('\n')
+        `<b>${teamName}</b>\n` + players.map(({ name }) => `🔴 ${name}`).join('\n')
       )
       .join('\n\n')}
 
     ${blueGroups
       .map(([teamName, players]) =>
-        (teamName === '-' ? '' : `<b>${teamName}</b>\n`) + players.map(({ name }) => `🔵 ${name}`).join('\n')
+        `<b>${teamName}</b>\n` + players.map(({ name }) => `🔵 ${name}`).join('\n')
       )
       .join('\n\n')}
 
@@ -41,6 +52,6 @@ const handler: CommandHandler = async (ctx) => {
 export const clans: Command = {
   name: 'clans',
   handler,
-  description: 'Создать команды с кланами',
+  description: 'Поделить игроков на команды с кланами',
   showInMenu: true
 }

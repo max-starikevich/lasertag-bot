@@ -83,14 +83,14 @@ export class GoogleTable implements BaseTable {
 
   get = (
     a1: string
-  ): string => {
+  ): string | undefined => {
     if (this.sheets == null) {
       throw new NoSheetsError()
     }
 
     const value = this.sheets.getCellByA1(a1).value
 
-    if (typeof value === 'string') {
+    if (typeof value === 'string' && value.length > 0) {
       return escapeHtml(value)
     }
 
@@ -98,7 +98,7 @@ export class GoogleTable implements BaseTable {
       return escapeHtml(value.toString())
     }
 
-    return ''
+    return undefined
   }
 
   set = async (

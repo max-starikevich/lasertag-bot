@@ -1,6 +1,6 @@
 {
   "name": "lasertag-bot",
-  "version": "5.7.0",
+  "version": "5.8.0",
   "repository": "https://github.com/max-starikevich/lasertag-bot",
   "author": "Max Starikevich <maxim.starikevich@gmail.com>",
   "license": "MIT",
@@ -63,8 +63,7 @@
   },
   "ts-standard": {
     "ignore": [
-      "*.js",
-      "src/scripts"
+      "*.js"
     ]
   }
 }
