@@ -67,6 +67,6 @@ const handler: CommandHandler = async (ctx) => {
 export const players: Command = {
   name: 'players',
   handler,
-  description: 'Выдержка из файла записи',
+  description: 'Список игроков',
   showInMenu: true
 }

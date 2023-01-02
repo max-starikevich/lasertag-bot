@@ -33,6 +33,6 @@ const handler: CommandHandler = async (ctx) => {
 export const teams: Command = {
   name: 'teams',
   handler,
-  description: 'Создать сбалансированные команды',
+  description: 'Поделить игроков на команды',
   showInMenu: true
 }
