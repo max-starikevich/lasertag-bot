@@ -1,6 +1,6 @@
 {
   "name": "lasertag-bot",
-  "version": "5.8.0",
+  "version": "5.8.1",
   "repository": "https://github.com/max-starikevich/lasertag-bot",
   "author": "Max Starikevich <maxim.starikevich@gmail.com>",
   "license": "MIT",
@@ -56,7 +56,7 @@
     "deploy:all": "pnpm deploy:check-image && pnpm deploy:aws && pnpm deploy:webhooks",
     "deploy:check-image": "docker image build -t lasertag-bot .",
     "deploy:aws": "serverless deploy --verbose --stage production",
-    "deploy:webhooks": "node --enable-source-maps dist/src/scripts/deploy-webhooks.js"
+    "deploy:webhooks": "node --enable-source-maps dist/src/scripts/post-deploy.js"
   },
   "_moduleAliases": {
     "$": "./dist/src"
