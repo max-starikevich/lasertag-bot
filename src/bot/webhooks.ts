@@ -6,7 +6,7 @@ import { GameContext } from './types'
 import { makeLogger } from '$/logger'
 import { commandsInMenu } from '.'
 
-export const updateWebhook = async (bot: Telegraf<GameContext>): Promise<void> => {
+export const updateBotWebhook = async (bot: Telegraf<GameContext>): Promise<void> => {
   const logger = makeLogger()
 
   const { url: savedWebhook } = await bot.telegram.getWebhookInfo()
