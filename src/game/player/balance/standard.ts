@@ -1,9 +1,9 @@
 import { chunk, orderBy } from 'lodash'
 
-import { Player, Teams } from '../types'
+import { Player, Teams, TeamsWithLevelDifference } from '../types'
 import { getTeamsLevels, sortTeamsByRatings } from './utils'
 
-export const getBalancedTeams = (players: Player[]): Teams => {
+export const getBalancedTeams = (players: Player[]): TeamsWithLevelDifference => {
   const ratedPlayers = orderBy(players, ({ level }) => level, 'desc')
 
   const dividedTeams = chunk(ratedPlayers, 2)
@@ -15,7 +15,10 @@ export const getBalancedTeams = (players: Player[]): Teams => {
     return [[...team1, player1], [...team2, player2]]
   }, [[], []])
 
-  return balanceTeamsNTimes(dividedTeams, 100)
+  const [team1, team2] = balanceTeamsNTimes(dividedTeams, 100)
+  const [level1, level2] = getTeamsLevels([team1, team2])
+
+  return [team1, team2, level1 - level2]
 }
 
 const balanceTeamsNTimes = (teams: Teams, attemptAmount: number): Teams => {
