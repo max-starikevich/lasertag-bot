@@ -1,6 +1,7 @@
 import dedent from 'dedent-js'
-import { groupBy, orderBy } from 'lodash'
+import { groupBy, orderBy, shuffle } from 'lodash'
 
+import { MIN_TEAM_SIZE_FOR_BALANCING } from '../constants'
 import { Command, CommandHandler } from '../types'
 
 const handler: CommandHandler = async (ctx) => {
@@ -8,7 +9,11 @@ const handler: CommandHandler = async (ctx) => {
 
   await game.refreshData({ logger })
 
-  const [redPlayers, bluePlayers] = await game.getTeamsWithClans()
+  const [redPlayers, bluePlayers, levelDifference] = await game.getTeamsWithClans()
+
+  if (redPlayers.length < MIN_TEAM_SIZE_FOR_BALANCING || bluePlayers.length < MIN_TEAM_SIZE_FOR_BALANCING) {
+    return await ctx.replyWithHTML(`🤷 В записи недостаточно игроков для этой функции. Нужно минимум ${MIN_TEAM_SIZE_FOR_BALANCING}x${MIN_TEAM_SIZE_FOR_BALANCING}`)
+  }
 
   const placeAndTime = await game.getPlaceAndTime()
 
@@ -33,20 +38,22 @@ const handler: CommandHandler = async (ctx) => {
 
     ${redGroups
       .map(([teamName, players]) =>
-        `<b>${teamName}</b>\n` + players.map(({ name }) => `🔴 ${name}`).join('\n')
+        `<b>${teamName}</b>\n` + shuffle(players).map(({ name }) => `🔴 ${name}`).join('\n')
       )
       .join('\n\n')}
 
     ${blueGroups
       .map(([teamName, players]) =>
-        `<b>${teamName}</b>\n` + players.map(({ name }) => `🔵 ${name}`).join('\n')
+        `<b>${teamName}</b>\n` + shuffle(players).map(({ name }) => `🔵 ${name}`).join('\n')
       )
       .join('\n\n')}
-
-    Баланс: 🔴 ${redPlayers.reduce((result, { level }) => result + level, 0)} 🔵 ${bluePlayers.reduce((sum, player) => sum + player.level, 0)}
   `
 
-  return await ctx.replyWithHTML(teams)
+  const balance = levelDifference > 1 || levelDifference < -1
+    ? `\n\n⚠️ Перевес в сторону ${levelDifference > 0 ? 'красных' : 'синих'}: ${Math.abs(levelDifference)}`
+    : '\n\n👌 Полный баланс'
+
+  return await ctx.replyWithHTML(teams + balance)
 }
 
 export const clans: Command = {

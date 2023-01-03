@@ -1,11 +1,11 @@
-import { groupBy, shuffle, times } from 'lodash'
+import { groupBy, times } from 'lodash'
 
 import config from '$/config'
 import { BaseLogger } from '$/logger/types'
 
 import { BaseTable } from './table/types'
 import { BaseGame } from './types'
-import { Player, Teams } from './player/types'
+import { Player, TeamsWithLevelDifference } from './player/types'
 import { getBalancedTeams } from './player/balance/standard'
 import { getBalancedTeamsWithClans } from './player/balance/clans'
 
@@ -114,7 +114,7 @@ export class Game implements BaseGame {
     }))
   }
 
-  getTeams = async (): Promise<Teams> => {
+  getTeams = async (): Promise<TeamsWithLevelDifference> => {
     const players = await this.getPlayers()
     const activePlayers = players.filter(({ count }) => count > 0)
 
@@ -122,13 +122,10 @@ export class Game implements BaseGame {
       ({ isQuestionable, isCompanion }) => !isQuestionable && !isCompanion
     )
 
-    const [team1, team2] = getBalancedTeams(playersToDivide)
-      .map(team => shuffle(team))
-
-    return [team1, team2]
+    return getBalancedTeams(playersToDivide)
   }
 
-  getTeamsWithClans = async (): Promise<Teams> => {
+  getTeamsWithClans = async (): Promise<TeamsWithLevelDifference> => {
     const players = await this.getPlayers()
     const activePlayers = players.filter(({ count }) => count > 0)
 
@@ -136,10 +133,7 @@ export class Game implements BaseGame {
       ({ isQuestionable, isCompanion }) => !isQuestionable && !isCompanion
     )
 
-    const [team1, team2] = getBalancedTeamsWithClans(playersToDivide)
-      .map(team => shuffle(team))
-
-    return [team1, team2]
+    return getBalancedTeamsWithClans(playersToDivide)
   }
 
   getPlaceAndTime = async (): Promise<string> => {

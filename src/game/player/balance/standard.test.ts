@@ -30,9 +30,9 @@ describe('balance/standard.ts', () => {
           isAloneInTeam: true
         }))
 
-        const balancedTeams = getBalancedTeams(players)
+        const [team1, team2] = getBalancedTeams(players)
+        const [level1, level2] = getTeamsLevels([team1, team2])
 
-        const [level1, level2] = getTeamsLevels(balancedTeams)
         const levelDifference = Math.abs(level1 - level2)
 
         if (levelDifference > 1) {

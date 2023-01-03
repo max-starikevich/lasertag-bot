@@ -49,9 +49,9 @@ describe('balance/clans.ts', () => {
           }))
         ], [])
 
-        const balancedTeams = getBalancedTeamsWithClans([...clanPlayers, ...nonClanPlayers])
+        const [team1, team2] = getBalancedTeamsWithClans([...clanPlayers, ...nonClanPlayers])
 
-        const [level1, level2] = getTeamsLevels(balancedTeams)
+        const [level1, level2] = getTeamsLevels([team1, team2])
         const levelDifference = Math.abs(level1 - level2)
 
         if (levelDifference > 1) {

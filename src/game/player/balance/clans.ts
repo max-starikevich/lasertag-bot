@@ -1,8 +1,8 @@
 import { orderBy, groupBy, partition } from 'lodash'
-import { Player, Teams } from '../types'
+import { Player, Teams, TeamsWithLevelDifference } from '../types'
 import { getTeamsLevels, sortTeamsByRatings } from './utils'
 
-export const getBalancedTeamsWithClans = (players: Player[]): Teams => {
+export const getBalancedTeamsWithClans = (players: Player[]): TeamsWithLevelDifference => {
   const ratedPlayers = orderBy(players, ({ level }) => level, 'desc')
   const [clanPlayers, noClanPlayers] = partition(ratedPlayers, ({ isTeamMember, isAloneInTeam }) => isTeamMember && !isAloneInTeam)
 
@@ -23,7 +23,7 @@ export const getBalancedTeamsWithClans = (players: Player[]): Teams => {
     }
   }, [[], []])
 
-  const [team1, team2] = noClanPlayers.reduce<Teams>(([team1, team2], player) => {
+  const teamsWithAllPlayers = noClanPlayers.reduce<Teams>(([team1, team2], player) => {
     if (team1.length > team2.length) {
       return [
         team1,
@@ -37,10 +37,10 @@ export const getBalancedTeamsWithClans = (players: Player[]): Teams => {
     }
   }, teamsWithClans)
 
-  return balanceTeamsNTimes(
-    sortTeamsByRatings([team1, team2]),
-    100
-  )
+  const [team1, team2] = balanceTeamsNTimes(teamsWithAllPlayers, 100)
+  const [level1, level2] = getTeamsLevels([team1, team2])
+
+  return [team1, team2, level1 - level2]
 }
 
 const balanceTeamsNTimes = (teams: Teams, attemptAmount: number): Teams => {
