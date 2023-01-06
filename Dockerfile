@@ -1,5 +1,5 @@
 # BUILDER
-FROM public.ecr.aws/lambda/nodejs:16-arm64 as builder
+FROM public.ecr.aws/lambda/nodejs:18-arm64 as builder
 RUN npm i pnpm -g
 COPY package.json pnpm-lock.yaml ./
 
@@ -13,7 +13,7 @@ COPY tsconfig.json tsconfig.prod.json ./
 RUN pnpm build
 
 # RUNTIME
-FROM public.ecr.aws/lambda/nodejs:16-arm64 as runtime
+FROM public.ecr.aws/lambda/nodejs:18-arm64 as runtime
 RUN npm i pnpm -g
 COPY package.json pnpm-lock.yaml ./
 
