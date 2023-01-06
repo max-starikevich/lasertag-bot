@@ -50,13 +50,13 @@
     "test": "jest --setupFiles dotenv/config",
     "test:watch": "jest --setupFiles dotenv/config --watch",
     "prepare": "husky install",
-    "pre-push": "pnpm lint && pnpm test && pnpm deploy:check-image",
+    "pre-push": "pnpm lint && pnpm test && pnpm deploy:build-image",
     "ngrok": "ngrok http 4000",
     "build": "tsc -p tsconfig.prod.json",
-    "deploy:all": "pnpm deploy:check-image && pnpm deploy:aws && pnpm deploy:webhooks",
-    "deploy:check-image": "docker image build -t lasertag-bot .",
+    "deploy:all": "pnpm deploy:build-image && pnpm deploy:aws && pnpm deploy:post-deploy",
+    "deploy:build-image": "docker image build -t lasertag-bot .",
     "deploy:aws": "serverless deploy --verbose --stage production",
-    "deploy:webhooks": "node --enable-source-maps dist/src/scripts/post-deploy.js"
+    "deploy:post-deploy": "node --enable-source-maps dist/src/scripts/post-deploy.js"
   },
   "_moduleAliases": {
     "$": "./dist/src"
