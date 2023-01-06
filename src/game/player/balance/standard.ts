@@ -1,24 +1,33 @@
 import { chunk, orderBy } from 'lodash'
 
-import { Player, Teams, TeamsWithLevelDifference } from '../types'
+import { Player, Teams } from '../types'
 import { getTeamsLevels, sortTeamsByRatings } from './utils'
 
-export const getBalancedTeams = (players: Player[]): TeamsWithLevelDifference => {
+export const getBalancedTeams = (players: Player[]): Teams => {
   const ratedPlayers = orderBy(players, ({ level }) => level, 'desc')
 
   const dividedTeams = chunk(ratedPlayers, 2)
     .reduce<Teams>(([team1, team2], [player1, player2]) => {
     if (player2 === undefined) {
-      return [[...team1, player1], team2]
+      const [level1, level2] = getTeamsLevels([team1, team2])
+
+      if (level1 > level2) {
+        return [
+          team1,
+          [...team2, player1]
+        ]
+      } else {
+        return [
+          [...team1, player1],
+          team2
+        ]
+      }
     }
 
     return [[...team1, player1], [...team2, player2]]
   }, [[], []])
 
-  const [team1, team2] = balanceTeamsNTimes(dividedTeams, 100)
-  const [level1, level2] = getTeamsLevels([team1, team2])
-
-  return [team1, team2, level1 - level2]
+  return balanceTeamsNTimes(dividedTeams, 100)
 }
 
 const balanceTeamsNTimes = (teams: Teams, attemptAmount: number): Teams => {

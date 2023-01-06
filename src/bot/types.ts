@@ -11,7 +11,7 @@ export interface GameContext extends Context {
   isCreator: boolean
 }
 
-export type CommandHandler = (ctx: NarrowedContext<GameContext, Update.MessageUpdate<Message.TextMessage>>) => Promise<Message.TextMessage>
+export type CommandHandler = (ctx: NarrowedContext<GameContext, Update.MessageUpdate<Message.TextMessage>>) => Promise<any>
 
 export interface Command {
   name: string

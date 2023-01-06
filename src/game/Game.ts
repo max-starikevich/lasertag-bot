@@ -5,7 +5,7 @@ import { BaseLogger } from '$/logger/types'
 
 import { BaseTable } from './table/types'
 import { BaseGame } from './types'
-import { Player, TeamsWithLevelDifference } from './player/types'
+import { Player, Teams } from './player/types'
 import { getBalancedTeams } from './player/balance/standard'
 import { getBalancedTeamsWithClans } from './player/balance/clans'
 
@@ -114,7 +114,7 @@ export class Game implements BaseGame {
     }))
   }
 
-  getTeams = async (): Promise<TeamsWithLevelDifference> => {
+  getTeams = async (): Promise<Teams> => {
     const players = await this.getPlayers()
     const activePlayers = players.filter(({ count }) => count > 0)
 
@@ -125,7 +125,7 @@ export class Game implements BaseGame {
     return getBalancedTeams(playersToDivide)
   }
 
-  getTeamsWithClans = async (): Promise<TeamsWithLevelDifference> => {
+  getTeamsWithClans = async (): Promise<Teams> => {
     const players = await this.getPlayers()
     const activePlayers = players.filter(({ count }) => count > 0)
 

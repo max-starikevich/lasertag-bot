@@ -1,34 +1,49 @@
 import { orderBy, groupBy, partition } from 'lodash'
-import { Player, Teams, TeamsWithLevelDifference } from '../types'
+import { Player, Teams } from '../types'
 import { getTeamsLevels, sortTeamsByRatings } from './utils'
 
-export const getBalancedTeamsWithClans = (players: Player[]): TeamsWithLevelDifference => {
+export const getBalancedTeamsWithClans = (players: Player[]): Teams => {
   const ratedPlayers = orderBy(players, ({ level }) => level, 'desc')
   const [clanPlayers, noClanPlayers] = partition(ratedPlayers, ({ isTeamMember, isAloneInTeam }) => isTeamMember && !isAloneInTeam)
 
   const clans = orderBy(Object.entries(groupBy(clanPlayers, ({ teamName }) => teamName)), ([, players]) => players.length, 'desc')
 
-  const teamsWithClans = clans.reduce<Teams>(([team1, team2], [, players]) => {
-    if (team1.length > team2.length) {
+  const teamsWithClans = clans.reduce<Teams>(([team1, team2], [, clanPlayers]) => {
+    const [level1, level2] = getTeamsLevels([team1, team2])
+
+    if (level1 > level2) {
       return [
         team1,
-        [...team2, ...players]
-
+        [...team2, ...clanPlayers]
       ]
     } else {
       return [
-        [...team1, ...players],
+        [...team1, ...clanPlayers],
         team2
       ]
     }
   }, [[], []])
 
-  const teamsWithAllPlayers = noClanPlayers.reduce<Teams>(([team1, team2], player) => {
+  const dividedTeams = noClanPlayers.reduce<Teams>(([team1, team2], player) => {
     if (team1.length > team2.length) {
       return [
         team1,
         [...team2, player]
       ]
+    } else if (team1.length === team2.length) {
+      const [level1, level2] = getTeamsLevels([team1, team2])
+
+      if (level1 > level2) {
+        return [
+          team1,
+          [...team2, player]
+        ]
+      } else {
+        return [
+          [...team1, player],
+          team2
+        ]
+      }
     } else {
       return [
         [...team1, player],
@@ -37,10 +52,7 @@ export const getBalancedTeamsWithClans = (players: Player[]): TeamsWithLevelDiff
     }
   }, teamsWithClans)
 
-  const [team1, team2] = balanceTeamsNTimes(teamsWithAllPlayers, 100)
-  const [level1, level2] = getTeamsLevels([team1, team2])
-
-  return [team1, team2, level1 - level2]
+  return balanceTeamsNTimes(dividedTeams, 100)
 }
 
 const balanceTeamsNTimes = (teams: Teams, attemptAmount: number): Teams => {
@@ -88,7 +100,7 @@ const shiftBalanceByOne = (weakTeam: Player[], strongTeam: Player[]): Teams => {
   for (; strongerPlayerIndex < strongTeam.length; strongerPlayerIndex++) {
     const strongerPlayer = strongTeam[strongerPlayerIndex]
 
-    if (strongerPlayer.isTeamMember) {
+    if (!strongerPlayer.isAloneInTeam) {
       continue
     }
 

@@ -13,5 +13,3 @@ export interface Player {
 }
 
 export type Teams = [Player[], Player[]]
-
-export type TeamsWithLevelDifference = [Player[], Player[], number]
