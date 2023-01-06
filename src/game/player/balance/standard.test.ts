@@ -9,8 +9,8 @@ describe('balance/standard.ts', () => {
   describe('getBalancedTeams()', () => {
     const numberOfTries = 10000
     const playerCount = 13
-    const maxLevel = 6
-    const targetSuccessPercentage = 99
+    const maxLevel = 14
+    const targetSuccessPercentage = 100
 
     it(`should balance properly with ${playerCount} random players in ${targetSuccessPercentage}%+ cases after ${numberOfTries} tries`, () => {
       const successTries = times(numberOfTries).reduce((successTries) => {

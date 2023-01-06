@@ -8,16 +8,17 @@ export const getBalancedTeamsWithClans = (players: Player[]): Teams => {
 
   const clans = orderBy(Object.entries(groupBy(clanPlayers, ({ teamName }) => teamName)), ([, players]) => players.length, 'desc')
 
-  const teamsWithClans = clans.reduce<Teams>(([team1, team2], [, players]) => {
-    if (team1.length > team2.length) {
+  const teamsWithClans = clans.reduce<Teams>(([team1, team2], [, clanPlayers]) => {
+    const [level1, level2] = getTeamsLevels([team1, team2])
+
+    if (level1 > level2) {
       return [
         team1,
-        [...team2, ...players]
-
+        [...team2, ...clanPlayers]
       ]
     } else {
       return [
-        [...team1, ...players],
+        [...team1, ...clanPlayers],
         team2
       ]
     }
