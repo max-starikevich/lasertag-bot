@@ -22,11 +22,11 @@ const basePlayer: Player = {
 describe('balance/clans.ts', () => {
   describe('getBalancedTeamsWithClans()', () => {
     const numberOfTries = 10000
-    const playerCount = 7
-    const clans = ['alpha', 'delta']
-    const clanPlayersCount = 3
+    const playerCount = 9
+    const clans: Array<[string, number]> = [['alpha', 5], ['delta', 3]]
+    const clanPlayersCount = clans.reduce((count, [,clanPlayersCount]) => count + clanPlayersCount, 0)
     const maxLevel = 6
-    const targetSuccessPercentage = 80
+    const targetSuccessPercentage = 90
 
     it(`should balance properly with ${playerCount} random players + ${clans.length * clanPlayersCount} clan players in ${targetSuccessPercentage}%+ cases after ${numberOfTries} tries`, () => {
       const successTries = times(numberOfTries).reduce((successTries) => {
@@ -38,9 +38,9 @@ describe('balance/clans.ts', () => {
           level: randomLevel
         }))
 
-        const clanPlayers = clans.reduce<Player[]>((players, clanName) => [
+        const clanPlayers = clans.reduce<Player[]>((players, [clanName, clanPlayersCount]) => [
           ...players,
-          ...times(3, (index) => ({
+          ...times(clanPlayersCount, (index) => ({
             ...basePlayer,
             teamName: clanName,
             name: `${clanName}-player-${index}`,
