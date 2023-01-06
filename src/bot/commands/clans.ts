@@ -4,12 +4,14 @@ import { groupBy, orderBy, shuffle } from 'lodash'
 import { MIN_TEAM_SIZE_FOR_BALANCING } from '../constants'
 import { Command, CommandHandler } from '../types'
 
+import { getTeamsLevels } from '$/game/player/balance/utils'
+
 const handler: CommandHandler = async (ctx) => {
   const { game, logger } = ctx
 
   await game.refreshData({ logger })
 
-  const [redPlayers, bluePlayers, levelDifference] = await game.getTeamsWithClans()
+  const [redPlayers, bluePlayers] = await game.getTeamsWithClans()
 
   if (redPlayers.length < MIN_TEAM_SIZE_FOR_BALANCING || bluePlayers.length < MIN_TEAM_SIZE_FOR_BALANCING) {
     return await ctx.replyWithHTML(`🤷 В записи недостаточно игроков для этой функции. Нужно минимум ${MIN_TEAM_SIZE_FOR_BALANCING}x${MIN_TEAM_SIZE_FOR_BALANCING}`)
@@ -31,7 +33,7 @@ const handler: CommandHandler = async (ctx) => {
     ([, players]) => players.length, 'desc'
   )
 
-  const teams = dedent`
+  await ctx.replyWithHTML(dedent`
     📅 <b>${placeAndTime}</b>
 
     🔴 ${redPlayers.length} vs. ${bluePlayers.length} 🔵
@@ -47,13 +49,15 @@ const handler: CommandHandler = async (ctx) => {
         `<b>${teamName}</b>\n` + shuffle(players).map(({ name }) => `🔵 ${name}`).join('\n')
       )
       .join('\n\n')}
-  `
+  `)
 
-  const balance = levelDifference > 1 || levelDifference < -1
-    ? `\n\n⚠️ Перевес в сторону ${levelDifference > 0 ? 'красных' : 'синих'}: ${Math.abs(levelDifference)}`
-    : '\n\n👌 Полный баланс'
+  if (ctx.isAdmin) {
+    const [redLevel, blueLevel] = getTeamsLevels([redPlayers, bluePlayers])
 
-  return await ctx.replyWithHTML(teams + balance)
+    return await ctx.replyWithHTML(dedent`
+      ⚖️ Баланс: 🔴 ${redLevel} 🔵 ${blueLevel}
+    `)
+  }
 }
 
 export const clans: Command = {
