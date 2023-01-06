@@ -29,6 +29,20 @@ export const getBalancedTeamsWithClans = (players: Player[]): Teams => {
         team1,
         [...team2, player]
       ]
+    } else if (team1.length === team2.length) {
+      const [level1, level2] = getTeamsLevels([team1, team2])
+
+      if (level1 > level2) {
+        return [
+          team1,
+          [...team2, player]
+        ]
+      } else {
+        return [
+          [...team1, player],
+          team2
+        ]
+      }
     } else {
       return [
         [...team1, player],
