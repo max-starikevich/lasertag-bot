@@ -1,11 +1,11 @@
 import { times } from 'lodash'
 
 import { getRandomArray } from '../../../utils.dev'
-import { getBalancedTeams } from './standard'
+import { getBalancedTeams } from './classic'
 import { Player } from '../types'
 import { getTeamsLevels } from './utils'
 
-describe('balance/standard.ts', () => {
+describe('balance/classic.ts', () => {
   describe('getBalancedTeams()', () => {
     const numberOfTries = 10000
     const playerCount = 20

@@ -32,7 +32,7 @@ const handler: CommandHandler = async (ctx) => {
     await ctx.replyWithHTML(dedent`
       ${readyPlayers
         .filter(({ isCompanion }) => !isCompanion)
-        .map(({ combinedName, teamEmoji }) => `✔ ${combinedName} ${teamEmoji ?? ''}`)
+        .map(({ combinedName, teamEmoji }) => `✔️ ${combinedName} ${teamEmoji ?? ''}`)
         .join('\n')}
     `)
   }
@@ -41,7 +41,7 @@ const handler: CommandHandler = async (ctx) => {
     await ctx.replyWithHTML(dedent`
       ${questionablePlayers
         .filter(({ isCompanion }) => !isCompanion)
-        .map(({ combinedName }) => `❓ ${combinedName}`)
+        .map(({ combinedName, teamEmoji }) => `❓ ${combinedName} ${teamEmoji ?? ''}`)
         .join('\n')}
     `)
   }

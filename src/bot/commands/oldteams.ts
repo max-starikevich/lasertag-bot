@@ -16,13 +16,17 @@ const handler: CommandHandler = async (ctx) => {
     📅 <b>${placeAndTime}</b>
 
     🔴 ${redPlayers.length} vs. ${bluePlayers.length} 🔵
+  `)
 
+  await ctx.replyWithHTML(dedent`
     ${shuffle(redPlayers)
-      .map((player) => `🔴 ${player.name}`)
+      .map(({ name, teamEmoji }) => `🔴 ${name} ${teamEmoji ?? ''}`)
       .join('\n')}
+  `)
 
+  await ctx.replyWithHTML(dedent`
     ${shuffle(bluePlayers)
-      .map((player) => `🔵 ${player.name}`)
+      .map(({ name, teamEmoji }) => `🔵 ${name} ${teamEmoji ?? ''}`)
       .join('\n')}
   `)
 
@@ -35,9 +39,9 @@ const handler: CommandHandler = async (ctx) => {
   }
 }
 
-export const teamsOld: Command = {
-  name: 'teamsOld',
+export const oldTeams: Command = {
+  name: 'oldteams',
   handler,
-  description: 'Поделить игроков на команды (устаревшее)',
-  showInMenu: false
+  description: 'Поделить игроков на команды без кланов',
+  showInMenu: true
 }

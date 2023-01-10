@@ -6,7 +6,7 @@ import { BaseLogger } from '$/logger/types'
 import { BaseTable } from './table/types'
 import { BaseGame } from './types'
 import { Player, Teams } from './player/types'
-import { getBalancedTeams } from './player/balance/standard'
+import { getBalancedTeams } from './player/balance/classic'
 import { getBalancedTeamsWithClans } from './player/balance/clans'
 import { sortTeamsByClans } from './player/balance/utils'
 
@@ -56,12 +56,12 @@ export class Game implements BaseGame {
         comment,
         level,
         isQuestionable: rawCount.includes('?'),
-        isCompanion: false,
+        isCompanion: false, // will be overriden later
         combinedName: name,
         teamName,
         teamEmoji: teamName?.match(/\p{Emoji}+/gu)?.[0],
         isTeamMember: teamName !== undefined,
-        isAloneInTeam: true
+        isAloneInTeam: true // will be overriden later
       }
 
       if (player.count > 1) {
