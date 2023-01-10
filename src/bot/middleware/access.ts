@@ -5,18 +5,23 @@ import { BotMiddleware } from '.'
 
 export const accessMiddleware: BotMiddleware = async (ctx, next) => {
   try {
+    ctx.isGroupChat = ctx.chat.type === 'supergroup' || ctx.chat.type === 'group'
+    ctx.isPrivateChat = ctx.chat.type === 'private'
+
     const { status } = await ctx.telegram.getChatMember(config.TELEGRAM_HOME_CHAT_ID, ctx.from.id)
 
+    ctx.memberStatus = status
+
     if (!['creator', 'member', 'administrator'].includes(status)) {
-      throw new NoHomeChatAccessError('This member isn\'t a member of the group')
+      throw new NoHomeChatAccessError()
     }
 
-    if (['creator'].includes(status)) {
+    if (status === 'creator') {
       ctx.isCreator = true
       ctx.isAdmin = true
     }
 
-    if (['administrator'].includes(status)) {
+    if (status === 'administrator') {
       ctx.isAdmin = true
     }
   } catch (error) {

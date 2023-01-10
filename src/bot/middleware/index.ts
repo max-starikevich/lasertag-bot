@@ -12,7 +12,7 @@ import { analyticsMiddleware } from './analytics'
 export type BotMiddleware = MiddlewareFn<NarrowedContext<GameContext, Update.MessageUpdate>>
 
 export const setBotMiddlewares = (bot: Telegraf<GameContext>): void => {
-  bot.on('message', loggingMiddleware, analyticsMiddleware, accessMiddleware)
+  bot.on('text', loggingMiddleware, analyticsMiddleware, accessMiddleware)
 
   commands.map((command) => bot.command('/' + command.name, async (ctx) => await command.handler(ctx)))
 
