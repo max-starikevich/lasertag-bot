@@ -34,8 +34,6 @@ const handler: CommandHandler = async (ctx) => {
         .filter(({ isCompanion }) => !isCompanion)
         .map(({ combinedName, teamEmoji }) => `✔ ${combinedName} ${teamEmoji ?? ''}`)
         .join('\n')}
-
-
     `)
   }
 
