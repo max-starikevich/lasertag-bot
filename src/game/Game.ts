@@ -8,6 +8,7 @@ import { BaseGame } from './types'
 import { Player, Teams } from './player/types'
 import { getBalancedTeams } from './player/balance/standard'
 import { getBalancedTeamsWithClans } from './player/balance/clans'
+import { sortTeamsByClans } from './player/balance/utils'
 
 const {
   NAME_COLUMN,
@@ -58,12 +59,9 @@ export class Game implements BaseGame {
         isCompanion: false,
         combinedName: name,
         teamName,
+        teamEmoji: teamName?.match(/\p{Emoji}+/gu)?.[0],
         isTeamMember: teamName !== undefined,
         isAloneInTeam: true
-      }
-
-      if (player.count === 1) {
-        players.push(player)
       }
 
       if (player.count > 1) {
@@ -94,9 +92,7 @@ export class Game implements BaseGame {
           },
           ...companions
         )
-      }
-
-      if (player.count === 0 && player.comment.length > 0) {
+      } else {
         players.push(player)
       }
 
@@ -104,7 +100,7 @@ export class Game implements BaseGame {
     }, [])
 
     const clans = groupBy(
-      players.filter(({ isTeamMember }) => isTeamMember),
+      players.filter(({ isTeamMember, count }) => isTeamMember && count > 0),
       ({ teamName }) => teamName
     )
 
@@ -116,7 +112,7 @@ export class Game implements BaseGame {
 
   getTeams = async (): Promise<Teams> => {
     const players = await this.getPlayers()
-    const activePlayers = players.filter(({ count }) => count > 0)
+    const activePlayers = players.filter(({ count, level }) => count > 0 && level > 0)
 
     const playersToDivide = activePlayers.filter(
       ({ isQuestionable, isCompanion }) => !isQuestionable && !isCompanion
@@ -127,13 +123,15 @@ export class Game implements BaseGame {
 
   getTeamsWithClans = async (): Promise<Teams> => {
     const players = await this.getPlayers()
-    const activePlayers = players.filter(({ count }) => count > 0)
+    const activePlayers = players.filter(({ count, level }) => count > 0 && level > 0)
 
     const playersToDivide = activePlayers.filter(
       ({ isQuestionable, isCompanion }) => !isQuestionable && !isCompanion
     )
 
-    return getBalancedTeamsWithClans(playersToDivide)
+    const [team1, team2] = getBalancedTeamsWithClans(playersToDivide)
+
+    return sortTeamsByClans([team1, team2])
   }
 
   getPlaceAndTime = async (): Promise<string> => {

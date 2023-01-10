@@ -8,6 +8,7 @@ export interface Player {
   isQuestionable: boolean
   isCompanion: boolean
   teamName?: string
+  teamEmoji?: string
   isTeamMember: boolean
   isAloneInTeam: boolean
 }
