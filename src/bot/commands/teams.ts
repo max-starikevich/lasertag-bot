@@ -33,7 +33,7 @@ const handler: CommandHandler = async (ctx) => {
   await ctx.replyWithHTML(dedent`
     ${redGroups
       .map(([teamName, players]) =>
-        `<b>${teamName}</b>\n` + shuffle(players).map(({ name }) => `🔴 ${name}`).join('\n')
+        `<b>${teamName}</b>\n` + shuffle(players).map(({ name, teamEmoji }) => `🔴 ${name} ${teamEmoji ?? ''}`).join('\n')
       )
       .join('\n\n')}
   `)
@@ -41,7 +41,7 @@ const handler: CommandHandler = async (ctx) => {
   await ctx.replyWithHTML(dedent`
     ${blueGroups
       .map(([teamName, players]) =>
-        `<b>${teamName}</b>\n` + shuffle(players).map(({ name }) => `🔵 ${name}`).join('\n')
+        `<b>${teamName}</b>\n` + shuffle(players).map(({ name, teamEmoji }) => `🔵 ${name} ${teamEmoji ?? ''}`).join('\n')
       )
       .join('\n\n')}
   `)
