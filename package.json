@@ -48,7 +48,7 @@
     "start": "curl http://localhost:4040/api/tunnels && WEBHOOK_BASE=$(curl http://localhost:4040/api/tunnels | jq -r '.tunnels[0].public_url') pnpm dev",
     "lint": "ts-standard",
     "test": "jest --setupFiles dotenv/config",
-    "test:watch": "jest --setupFiles dotenv/config --watch",
+    "test:watch": "jest --setupFiles dotenv/config --watch --verbose",
     "prepare": "husky install",
     "pre-push": "pnpm lint && pnpm test && pnpm deploy:build-image",
     "ngrok": "ngrok http 4000",
