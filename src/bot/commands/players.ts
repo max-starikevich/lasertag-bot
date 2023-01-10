@@ -19,49 +19,42 @@ const handler: CommandHandler = async (ctx) => {
     ({ comment }) => comment.length > 0
   )
 
-  const messageHeader = dedent`
+  await ctx.replyWithHTML(dedent`
     📅 <b>${placeAndTime}</b>
 
     Записано: ${readyPlayers.length}
     Прокат: ${players.reduce(
-    (rentSum, { rentCount }) => rentSum + rentCount,
-    0
-  )}
+      (rentSum, { rentCount }) => rentSum + rentCount,
+    0)}
+  `)
 
-
-  `
-
-  const playersMessage = players.length > 0
-    ? dedent`
+  if (players.length > 0) {
+    await ctx.replyWithHTML(dedent`
       ${readyPlayers
         .filter(({ isCompanion }) => !isCompanion)
-        .map(({ combinedName }) => `✔️ ${combinedName}`)
+        .map(({ combinedName, teamEmoji }) => `✔ ${combinedName} ${teamEmoji ?? ''}`)
         .join('\n')}
 
 
-      `
-    : ''
+    `)
+  }
 
-  const questionableMessage = questionablePlayers.length > 0
-    ? dedent`
+  if (questionablePlayers.length > 0) {
+    await ctx.replyWithHTML(dedent`
       ${questionablePlayers
         .filter(({ isCompanion }) => !isCompanion)
         .map(({ combinedName }) => `❓ ${combinedName}`)
         .join('\n')}
+    `)
+  }
 
-
-      `
-    : ''
-
-  const commentsMessage = playersWithComments.length > 0
-    ? dedent`
+  if (playersWithComments.length > 0) {
+    await ctx.replyWithHTML(dedent`
       ${playersWithComments
-        .map(({ name, comment }) => `💬 ${name} «${comment.trim()}»`)
+        .map(({ name, comment }) => `💬 ${name}: «<i>${comment.trim()}</i>»`)
         .join('\n')}
-      `
-    : ''
-
-  return await ctx.replyWithHTML(messageHeader + playersMessage + questionableMessage + commentsMessage)
+    `)
+  }
 }
 
 export const players: Command = {

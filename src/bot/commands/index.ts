@@ -1,7 +1,7 @@
 import { start, help } from './help'
 import { players } from './players'
+import { teamsOld } from './teamsOld'
 import { teams } from './teams'
-import { clans } from './clans'
 import { about } from './about'
 
 import { Command } from '../types'
@@ -9,8 +9,8 @@ import { Command } from '../types'
 export const commands: Command[] = [
   start,
   players,
-  clans,
   teams,
   about,
-  help
+  help,
+  teamsOld
 ]
