@@ -4,9 +4,9 @@ import { getTeamsLevels, sortTeamsByRatings } from './utils'
 
 export const getBalancedTeamsWithClans = (players: Player[]): Teams => {
   const ratedPlayers = orderBy(players, ({ level }) => level, 'desc')
-  const [clanPlayers, noClanPlayers] = partition(ratedPlayers, ({ isTeamMember, isAloneInTeam }) => isTeamMember && !isAloneInTeam)
+  const [clanPlayers, noClanPlayers] = partition(ratedPlayers, ({ isClanMember, isAloneInClan }) => isClanMember && !isAloneInClan)
 
-  const clans = orderBy(Object.entries(groupBy(clanPlayers, ({ teamName }) => teamName)), ([, players]) => players.length, 'desc')
+  const clans = orderBy(Object.entries(groupBy(clanPlayers, ({ clanName }) => clanName)), ([, players]) => players.length, 'desc')
 
   const teamsWithClans = clans.reduce<Teams>(([team1, team2], [, clanPlayers]) => {
     const [level1, level2] = getTeamsLevels([team1, team2])
@@ -100,11 +100,11 @@ const shiftBalanceByOne = (weakTeam: Player[], strongTeam: Player[]): Teams => {
   for (; strongerPlayerIndex < strongTeam.length; strongerPlayerIndex++) {
     const strongerPlayer = strongTeam[strongerPlayerIndex]
 
-    if (!strongerPlayer.isAloneInTeam) {
+    if (!strongerPlayer.isAloneInClan) {
       continue
     }
 
-    weakerPlayerIndex = weakTeam.findIndex(({ level, isAloneInTeam }) => isAloneInTeam && strongerPlayer.level - level === 1)
+    weakerPlayerIndex = weakTeam.findIndex(({ level, isAloneInClan }) => isAloneInClan && strongerPlayer.level - level === 1)
 
     if (weakerPlayerIndex !== -1) {
       break

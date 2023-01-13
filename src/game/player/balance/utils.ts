@@ -11,7 +11,7 @@ export const sortTeamsByRatings = ([team1, team2]: Teams): Teams => {
   ]
 }
 
-const sortTeamByClans = (team: Player[]): Player[] => orderBy(team, ({ teamName }) => teamName, 'asc')
+const sortTeamByClans = (team: Player[]): Player[] => orderBy(team, ({ clanName }) => clanName, 'asc')
 
 export const sortTeamsByClans = ([team1, team2]: Teams): Teams => {
   return [

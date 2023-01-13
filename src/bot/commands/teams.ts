@@ -14,34 +14,42 @@ const handler: CommandHandler = async (ctx) => {
 
   const redGroups = orderBy(
     Object.entries(
-      groupBy(redPlayers, ({ teamName, isAloneInTeam }) => isAloneInTeam ? 'Красные' : teamName)
+      groupBy(redPlayers, ({ clanName }) => clanName ?? '-')
     ),
-    ([, players]) => players.length, 'desc'
+    [
+      ([clanName]) => clanName === '-' ? 0 : 1,
+      ([, players]) => players.length
+    ]
   )
 
   const blueGroups = orderBy(
     Object.entries(
-      groupBy(bluePlayers, ({ teamName, isAloneInTeam }) => isAloneInTeam ? 'Синие' : teamName)
+      groupBy(bluePlayers, ({ clanName }) => clanName ?? '-')
     ),
-    ([, players]) => players.length, 'desc'
+    [
+      ([clanName]) => clanName === '-' ? 0 : 1,
+      ([, players]) => players.length
+    ]
   )
 
   await ctx.replyWithHTML(dedent`
     📅 <b>${placeAndTime}</b>
+
+    🔴 ${redPlayers.length} vs. ${bluePlayers.length} 🔵
   `)
 
   await ctx.replyWithHTML(dedent`
     ${redGroups
-      .map(([teamName, players]) =>
-        `<b>${teamName}</b>\n` + shuffle(players).map(({ name, teamEmoji }) => `🔴 ${name} ${teamEmoji ?? ''}`).join('\n')
+      .map(([clanName, players]) =>
+        (clanName !== '-' ? `<b>${clanName}</b>\n` : '') + shuffle(players).map(({ name }) => `🔴 ${name}`).join('\n')
       )
       .join('\n\n')}
   `)
 
   await ctx.replyWithHTML(dedent`
     ${blueGroups
-      .map(([teamName, players]) =>
-        `<b>${teamName}</b>\n` + shuffle(players).map(({ name, teamEmoji }) => `🔵 ${name} ${teamEmoji ?? ''}`).join('\n')
+      .map(([clanName, players]) =>
+        (clanName !== '-' ? `<b>${clanName}</b>\n` : '') + shuffle(players).map(({ name }) => `🔵 ${name}`).join('\n')
       )
       .join('\n\n')}
   `)

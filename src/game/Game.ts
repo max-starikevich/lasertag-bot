@@ -5,7 +5,7 @@ import { BaseLogger } from '$/logger/types'
 
 import { BaseTable } from './table/types'
 import { BaseGame } from './types'
-import { Player, Teams } from './player/types'
+import { ClanPlayer, Player, Teams } from './player/types'
 import { getBalancedTeams } from './player/balance/classic'
 import { getBalancedTeamsWithClans } from './player/balance/clans'
 import { sortTeamsByClans } from './player/balance/utils'
@@ -13,7 +13,7 @@ import { sortTeamsByClans } from './player/balance/utils'
 const {
   NAME_COLUMN,
   RATING_COLUMN,
-  TEAM_COLUMN,
+  CLAN_COLUMN,
   COUNT_COLUMN,
   RENT_COLUMN,
   COMMENT_COLUMN,
@@ -47,7 +47,7 @@ export class Game implements BaseGame {
       const rentCount = +(this.table.get(RENT_COLUMN + row) ?? '0')
       const level = +(this.table.get(RATING_COLUMN + row) ?? `${DEFAULT_RATING_LEVEL}`)
       const comment = this.table.get(COMMENT_COLUMN + row) ?? ''
-      const teamName = this.table.get(TEAM_COLUMN + row)
+      const clanName = this.table.get(CLAN_COLUMN + row)
 
       const player: Player = {
         name,
@@ -58,10 +58,10 @@ export class Game implements BaseGame {
         isQuestionable: rawCount.includes('?'),
         isCompanion: false, // will be overriden later
         combinedName: name,
-        teamName,
-        teamEmoji: teamName?.match(/\p{Emoji}+/gu)?.[0],
-        isTeamMember: teamName !== undefined,
-        isAloneInTeam: true // will be overriden later
+        clanName,
+        clanEmoji: clanName?.match(/\p{Emoji}+/gu)?.[0],
+        isClanMember: clanName !== undefined,
+        isAloneInClan: true // will be overriden later
       }
 
       if (player.count > 1) {
@@ -100,14 +100,19 @@ export class Game implements BaseGame {
     }, [])
 
     const clans = groupBy(
-      players.filter(({ isTeamMember, count }) => isTeamMember && count > 0),
-      ({ teamName }) => teamName
+      players.filter(({ isClanMember, count }) => isClanMember && count > 0),
+      ({ clanName }) => clanName
     )
 
     return players.map(p => ({
       ...p,
-      isAloneInTeam: p.teamName === undefined || clans[p.teamName].length < 2
+      isAloneInClan: p.clanName === undefined || clans[p.clanName].length < 2
     }))
+  }
+
+  getClanPlayers = async (): Promise<ClanPlayer[]> => {
+    const players = await this.getPlayers()
+    return players.filter((player): player is ClanPlayer => player.clanName != null)
   }
 
   getTeams = async (): Promise<Teams> => {

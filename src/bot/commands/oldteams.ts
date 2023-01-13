@@ -20,13 +20,13 @@ const handler: CommandHandler = async (ctx) => {
 
   await ctx.replyWithHTML(dedent`
     ${shuffle(redPlayers)
-      .map(({ name, teamEmoji }) => `🔴 ${name} ${teamEmoji ?? ''}`)
+      .map(({ name, clanEmoji }) => `🔴 ${name} ${clanEmoji ?? ''}`)
       .join('\n')}
   `)
 
   await ctx.replyWithHTML(dedent`
     ${shuffle(bluePlayers)
-      .map(({ name, teamEmoji }) => `🔵 ${name} ${teamEmoji ?? ''}`)
+      .map(({ name, clanEmoji }) => `🔵 ${name} ${clanEmoji ?? ''}`)
       .join('\n')}
   `)
 

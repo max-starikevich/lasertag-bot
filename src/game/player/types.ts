@@ -7,10 +7,14 @@ export interface Player {
   level: number
   isQuestionable: boolean
   isCompanion: boolean
-  teamName?: string
-  teamEmoji?: string
-  isTeamMember: boolean
-  isAloneInTeam: boolean
+  clanName?: string
+  clanEmoji?: string
+  isClanMember: boolean
+  isAloneInClan: boolean
+}
+
+export interface ClanPlayer extends Player {
+  clanName: string
 }
 
 export type Teams = [Player[], Player[]]
