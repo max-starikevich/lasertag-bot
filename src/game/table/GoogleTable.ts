@@ -1,30 +1,16 @@
 import { GoogleSpreadsheet, GoogleSpreadsheetWorksheet } from 'google-spreadsheet'
 
-import config from '$/config'
-
 import { escapeHtml } from '$/utils'
 import { BaseLogger } from '$/logger/types'
 import { NoSheetsError } from '$/errors/NoSheetsError'
 
 import { BaseTable } from './types'
 
-const PLAYER_DATA_RANGES = [
-  config.NAME_COLUMN,
-  config.RATING_COLUMN,
-  config.TEAM_COLUMN,
-  config.COUNT_COLUMN,
-  config.RENT_COLUMN,
-  config.COMMENT_COLUMN
-]
-
-  .map((column) => `${column}${config.START_FROM_ROW}:${column}${config.MAX_ROW_NUMBER}`)
-
-const ALL_RANGES_TO_LOAD = [...PLAYER_DATA_RANGES, ...config.PLACE_AND_TIME_CELLS]
-
 interface GoogleTableConstructorParams {
   spreadsheetId: string
   privateKey: string
   email: string
+  rangesToLoad: string[]
 }
 
 export class GoogleTable implements BaseTable {
@@ -34,11 +20,13 @@ export class GoogleTable implements BaseTable {
   protected spreadsheetId: string
   protected privateKey: string
   protected email: string
+  protected rangesToLoad: string[]
 
-  constructor ({ spreadsheetId, privateKey, email }: GoogleTableConstructorParams) {
+  constructor ({ spreadsheetId, privateKey, email, rangesToLoad }: GoogleTableConstructorParams) {
     this.spreadsheetId = spreadsheetId
     this.privateKey = privateKey
     this.email = email
+    this.rangesToLoad = rangesToLoad
   }
 
   refreshData = async ({ logger }: { logger: BaseLogger }): Promise<void> => {
@@ -72,7 +60,7 @@ export class GoogleTable implements BaseTable {
 
     const startMs = performance.now()
 
-    await this.sheets.loadCells(ALL_RANGES_TO_LOAD)
+    await this.sheets.loadCells(this.rangesToLoad)
 
     const timeElapsedMs = Math.round(performance.now() - startMs)
 

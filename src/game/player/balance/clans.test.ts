@@ -1,7 +1,7 @@
 import { times } from 'lodash'
 
 import { getRandomArray } from '../../../utils.dev'
-import { Player } from '../types'
+import { ClanPlayer, Player } from '../types'
 import { getTeamsLevels } from './utils'
 import { getBalancedTeamsWithClans } from './clans'
 
@@ -13,9 +13,9 @@ const basePlayer: Player = {
   comment: '',
   isQuestionable: false,
   isCompanion: false,
-  teamName: 'random-team',
-  isTeamMember: false,
-  isAloneInTeam: true,
+  clanName: undefined,
+  isClanMember: false,
+  isAloneInClan: true,
   level: 0
 }
 
@@ -38,15 +38,15 @@ describe('balance/clans.ts', () => {
           level: randomLevel
         }))
 
-        const clanPlayers = clans.reduce<Player[]>((players, [clanName, clanPlayersCount]) => [
+        const clanPlayers = clans.reduce<ClanPlayer[]>((players, [clanName, clanPlayersCount]) => [
           ...players,
           ...times(clanPlayersCount, (index) => ({
             ...basePlayer,
-            teamName: clanName,
+            clanName,
             name: `${clanName}-player-${index}`,
             level: 5,
-            isAloneInTeam: false,
-            isTeamMember: true
+            isAloneInClan: false,
+            isClanMember: true
           }))
         ], [])
 

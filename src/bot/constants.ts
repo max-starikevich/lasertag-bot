@@ -1,1 +1,0 @@
-export const MIN_TEAM_SIZE_FOR_BALANCING = 5

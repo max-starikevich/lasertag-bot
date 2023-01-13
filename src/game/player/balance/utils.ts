@@ -2,12 +2,21 @@ import { orderBy } from 'lodash'
 
 import { Player, Teams } from '../types'
 
-export const sortTeamByRating = (team: Player[]): Player[] => orderBy(team, ({ level }) => level, 'desc')
+const sortTeamByRating = (team: Player[]): Player[] => orderBy(team, ({ level }) => level, 'desc')
 
 export const sortTeamsByRatings = ([team1, team2]: Teams): Teams => {
   return [
     sortTeamByRating(team1),
     sortTeamByRating(team2)
+  ]
+}
+
+const sortTeamByClans = (team: Player[]): Player[] => orderBy(team, ({ clanName }) => clanName, 'asc')
+
+export const sortTeamsByClans = ([team1, team2]: Teams): Teams => {
+  return [
+    sortTeamByClans(team1),
+    sortTeamByClans(team2)
   ]
 }
 

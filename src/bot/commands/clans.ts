@@ -1,61 +1,31 @@
 import dedent from 'dedent-js'
-import { groupBy, orderBy, shuffle } from 'lodash'
+import { groupBy, orderBy } from 'lodash'
 
-import { MIN_TEAM_SIZE_FOR_BALANCING } from '../constants'
 import { Command, CommandHandler } from '../types'
-
-import { getTeamsLevels } from '$/game/player/balance/utils'
 
 const handler: CommandHandler = async (ctx) => {
   const { game, logger } = ctx
 
   await game.refreshData({ logger })
 
-  const [redPlayers, bluePlayers] = await game.getTeamsWithClans()
+  const clanPlayers = await game.getClanPlayers()
 
-  if (redPlayers.length < MIN_TEAM_SIZE_FOR_BALANCING || bluePlayers.length < MIN_TEAM_SIZE_FOR_BALANCING) {
-    return await ctx.replyWithHTML(`🤷 В записи недостаточно игроков для этой функции. Нужно минимум ${MIN_TEAM_SIZE_FOR_BALANCING}x${MIN_TEAM_SIZE_FOR_BALANCING}`)
-  }
-
-  const placeAndTime = await game.getPlaceAndTime()
-
-  const redGroups = orderBy(
+  const clans = orderBy(
     Object.entries(
-      groupBy(redPlayers, ({ teamName, isAloneInTeam }) => isAloneInTeam ? 'Красные' : teamName)
+      groupBy(clanPlayers, ({ clanName }) => clanName)
     ),
     ([, players]) => players.length, 'desc'
   )
 
-  const blueGroups = orderBy(
-    Object.entries(
-      groupBy(bluePlayers, ({ teamName, isAloneInTeam }) => isAloneInTeam ? 'Синие' : teamName)
-    ),
-    ([, players]) => players.length, 'desc'
-  )
+  for (const [clanName, players] of clans) {
+    await ctx.replyWithHTML(dedent`
+      <b>${clanName}</b>
 
-  await ctx.replyWithHTML(dedent`
-    📅 <b>${placeAndTime}</b>
-
-    🔴 ${redPlayers.length} vs. ${bluePlayers.length} 🔵
-
-    ${redGroups
-      .map(([teamName, players]) =>
-        `<b>${teamName}</b>\n` + shuffle(players).map(({ name }) => `🔴 ${name}`).join('\n')
-      )
-      .join('\n\n')}
-
-    ${blueGroups
-      .map(([teamName, players]) =>
-        `<b>${teamName}</b>\n` + shuffle(players).map(({ name }) => `🔵 ${name}`).join('\n')
-      )
-      .join('\n\n')}
-  `)
-
-  if (ctx.isAdmin) {
-    const [redLevel, blueLevel] = getTeamsLevels([redPlayers, bluePlayers])
-
-    return await ctx.replyWithHTML(dedent`
-      ⚖️ Баланс: 🔴 ${redLevel} 🔵 ${blueLevel}
+      ${players
+        .map(player =>
+          `${player.count > 0 ? '✔️' : '➖'} ${player.name}`
+        ).join('\n')
+      }
     `)
   }
 }
@@ -63,6 +33,6 @@ const handler: CommandHandler = async (ctx) => {
 export const clans: Command = {
   name: 'clans',
   handler,
-  description: 'Поделить игроков на команды с кланами',
+  description: lang => lang.CLANS_COMMAND_DESCRIPTION(),
   showInMenu: true
 }

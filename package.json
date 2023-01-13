@@ -1,6 +1,6 @@
 {
   "name": "lasertag-bot",
-  "version": "5.9.0",
+  "version": "6.0.0",
   "repository": "https://github.com/max-starikevich/lasertag-bot",
   "author": "Max Starikevich <maxim.starikevich@gmail.com>",
   "license": "MIT",
@@ -10,8 +10,8 @@
     "pnpm": "^7"
   },
   "dependencies": {
-    "@sentry/node": "^7.29.0",
-    "@sentry/tracing": "^7.29.0",
+    "@sentry/node": "^7.30.0",
+    "@sentry/tracing": "^7.30.0",
     "axios": "^1.2.2",
     "dedent-js": "^1.0.1",
     "google-spreadsheet": "^3.3.0",
@@ -19,6 +19,7 @@
     "logform": "^2.4.2",
     "module-alias": "^2.2.2",
     "telegraf": "^4.11.2",
+    "typesafe-i18n": "^5.18.1",
     "winston": "^3.8.2"
   },
   "devDependencies": {
@@ -38,7 +39,7 @@
     "koa-bodyparser": "^4.3.0",
     "koa-router": "^12.0.0",
     "serverless": "^3.26.0",
-    "ts-jest": "^29.0.3",
+    "ts-jest": "^29.0.5",
     "ts-standard": "^12.0.2",
     "tsc-watch": "^6.0.0",
     "typescript": "^4.9.4"
@@ -48,7 +49,8 @@
     "start": "curl http://localhost:4040/api/tunnels && WEBHOOK_BASE=$(curl http://localhost:4040/api/tunnels | jq -r '.tunnels[0].public_url') pnpm dev",
     "lint": "ts-standard",
     "test": "jest --setupFiles dotenv/config",
-    "test:watch": "jest --setupFiles dotenv/config --watch",
+    "test:watch": "jest --setupFiles dotenv/config --watch --verbose",
+    "lang:watch": "typesafe-i18n",
     "prepare": "husky install",
     "pre-push": "pnpm lint && pnpm test && pnpm deploy:build-image",
     "ngrok": "ngrok http 4000",
@@ -56,7 +58,8 @@
     "deploy:all": "pnpm deploy:build-image && pnpm deploy:aws && pnpm deploy:post-deploy",
     "deploy:build-image": "docker image build -t lasertag-bot .",
     "deploy:aws": "serverless deploy --verbose --stage production",
-    "deploy:post-deploy": "node --enable-source-maps dist/src/scripts/post-deploy.js"
+    "deploy:post-deploy": "node --enable-source-maps dist/src/scripts/post-deploy.js",
+    "typesafe-i18n": "typesafe-i18n"
   },
   "_moduleAliases": {
     "$": "./dist/src"

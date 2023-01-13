@@ -14,15 +14,17 @@ export const loggingMiddleware: BotMiddleware = async (ctx, next) => {
     logger.info({
       update: ctx.update,
       timeElapsedMs,
-      status: 'OK'
+      status: 'OK',
+      memberStatus: ctx.memberStatus
     })
   } catch (e) {
     const timeElapsedMs = Math.round(performance.now() - startMs)
 
-    logger.info({
+    logger.error({
       update: ctx.update,
       timeElapsedMs,
-      status: 'ERROR'
+      status: 'ERROR',
+      memberStatus: ctx.memberStatus
     })
 
     throw e
