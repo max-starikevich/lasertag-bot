@@ -6,6 +6,9 @@ import { GameContext } from './types'
 import { makeLogger } from '$/logger'
 import { commandsInMenu } from '.'
 
+import { baseLocale } from '../lang/i18n-util'
+import L from '../lang/i18n-node'
+
 export const updateBotWebhook = async (bot: Telegraf<GameContext>): Promise<void> => {
   const logger = makeLogger()
 
@@ -22,7 +25,7 @@ export const updateBotCommands = async (bot: Telegraf<GameContext>): Promise<voi
 
   await bot.telegram.setMyCommands(commandsInMenu.map(({ name, description }) => ({
     command: name,
-    description
+    description: description(L[baseLocale])
   })))
 
   logger.info('✅ Updated bot commands')

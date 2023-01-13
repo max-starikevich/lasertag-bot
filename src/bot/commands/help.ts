@@ -7,12 +7,12 @@ import { Command, CommandHandler } from '../types'
 const handler: CommandHandler = async (ctx) => {
   return await ctx.replyWithHTML(
     dedent`
-      <b>Доступные команды</b>:
+      <b>${ctx.lang.HELP_TITLE()}</b>:
 
       ${commandsInMenu
         .map(
           ({ name, description }) =>
-            `/${name} - ${description.toLowerCase()}`
+            `/${name} - ${description(ctx.lang).toLowerCase()}`
         )
         .join('\n\n')}
       `
@@ -22,13 +22,13 @@ const handler: CommandHandler = async (ctx) => {
 export const start: Command = {
   name: 'start',
   handler,
-  description: 'Начало работы с ботом',
+  description: lang => lang.HELP_COMMAND_DESCRIPTION(),
   showInMenu: false
 }
 
 export const help: Command = {
   name: 'help',
   handler,
-  description: 'Список команд',
+  description: lang => lang.HELP_COMMAND_DESCRIPTION(),
   showInMenu: true
 }

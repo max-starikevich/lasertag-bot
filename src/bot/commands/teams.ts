@@ -58,7 +58,7 @@ const handler: CommandHandler = async (ctx) => {
     const [redLevel, blueLevel] = getTeamsLevels([redPlayers, bluePlayers])
 
     return await ctx.replyWithHTML(dedent`
-      ⚖️ Баланс: 🔴 ${redLevel} 🔵 ${blueLevel}
+      ⚖️ ${ctx.lang.TEAMS_BALANCE()}: 🔴 ${redLevel} 🔵 ${blueLevel}
     `)
   }
 }
@@ -66,6 +66,6 @@ const handler: CommandHandler = async (ctx) => {
 export const teams: Command = {
   name: 'teams',
   handler,
-  description: 'Поделить игроков на команды с кланами',
+  description: lang => lang.TEAMS_COMMAND_DESCRIPTION(),
   showInMenu: true
 }

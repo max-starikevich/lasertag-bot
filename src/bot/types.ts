@@ -3,6 +3,7 @@ import { ChatMember, Message, Update } from 'telegraf/typings/core/types/typegra
 
 import { BaseGame } from '$/game/types'
 import { BaseLogger } from '$/logger/types'
+import { TranslationFunctions } from '../lang/i18n-types'
 
 export interface GameContext extends Context {
   game: BaseGame
@@ -15,6 +16,8 @@ export interface GameContext extends Context {
   isGroupChat: boolean
 
   memberStatus: ChatMember['status']
+
+  lang: TranslationFunctions
 }
 
 export type CommandHandler = (ctx: NarrowedContext<GameContext, Update.MessageUpdate<Message.TextMessage>>) => Promise<any>
@@ -22,6 +25,6 @@ export type CommandHandler = (ctx: NarrowedContext<GameContext, Update.MessageUp
 export interface Command {
   name: string
   handler: CommandHandler
-  description: string
+  description: (lang: TranslationFunctions) => string
   showInMenu: boolean
 }

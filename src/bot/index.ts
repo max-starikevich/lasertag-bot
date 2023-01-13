@@ -11,6 +11,8 @@ import { commands } from '$/bot/commands'
 import { setBotMiddlewares } from '$/bot/middleware'
 import { reportException } from '$/errors'
 
+import L from '$/lang/i18n-node'
+
 const PLAYER_DATA_TABLE_RANGES = [
   config.NAME_COLUMN,
   config.RATING_COLUMN,
@@ -46,6 +48,8 @@ export const initBot = async (): Promise<Telegraf<GameContext>> => {
   bot.context.isCreator = false
   bot.context.isGroupChat = false
   bot.context.isPrivateChat = false
+
+  bot.context.lang = L.ru
 
   setBotMiddlewares(bot)
 

@@ -7,19 +7,19 @@ import { Command, CommandHandler } from '../types'
 
 const handler: CommandHandler = async (ctx) => {
   return await ctx.replyWithHTML(dedent`
-    <b>Telegram-бот для лазертага</b>
+    <b>${ctx.lang.ABOUT_PROJECT_NAME()}</b>
 
-    Версия: ${version}
+    ${ctx.lang.ABOUT_VERSION()}: ${version}
     
-    Автор: ${escapeHtml(author)}
+    ${ctx.lang.ABOUT_AUTHOR()}: ${escapeHtml(author)}
     
-    Исходный код: ${repository}
+    ${ctx.lang.ABOUT_SOURCE_CODE()}: ${repository}
   `)
 }
 
 export const about: Command = {
   name: 'about',
   handler,
-  description: 'Информация о боте',
+  description: lang => lang.ABOUT_COMMAND_DESCRIPTION(),
   showInMenu: true
 }

@@ -33,6 +33,6 @@ const handler: CommandHandler = async (ctx) => {
 export const clans: Command = {
   name: 'clans',
   handler,
-  description: 'Показать все кланы и их участников',
+  description: lang => lang.CLANS_COMMAND_DESCRIPTION(),
   showInMenu: true
 }
