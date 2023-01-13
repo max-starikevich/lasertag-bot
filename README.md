@@ -14,16 +14,24 @@ To contribute to this project, you need to have:
 - Bot account created by BotFather: https://core.telegram.org/bots#3-how-do-i-create-a-bot
 - A new Google Cloud project with Sheets API permission: https://cloud.google.com/resource-manager/docs/creating-managing-projects
 
-Next, open two separate terminal windows and run:
+Next, open 4 separate terminal windows and run:
 
 ```console
-$ ngrok http 4000
+$ pnpm ngrok
 ```
 
 ```console
 $ pnpm i
 $ cp .env.example .env # use the data BotFather and Google Cloud console
 $ pnpm start
+```
+
+```console
+$ pnpm test:watch
+```
+
+```console
+$ pnpm lang:watch
 ```
 
 Have fun!
