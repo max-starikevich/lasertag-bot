@@ -1,6 +1,6 @@
 {
   "name": "lasertag-bot",
-  "version": "5.10.0",
+  "version": "6.0.0",
   "repository": "https://github.com/max-starikevich/lasertag-bot",
   "author": "Max Starikevich <maxim.starikevich@gmail.com>",
   "license": "MIT",
@@ -19,6 +19,7 @@
     "logform": "^2.4.2",
     "module-alias": "^2.2.2",
     "telegraf": "^4.11.2",
+    "typesafe-i18n": "^5.18.1",
     "winston": "^3.8.2"
   },
   "devDependencies": {
@@ -56,7 +57,8 @@
     "deploy:all": "pnpm deploy:build-image && pnpm deploy:aws && pnpm deploy:post-deploy",
     "deploy:build-image": "docker image build -t lasertag-bot .",
     "deploy:aws": "serverless deploy --verbose --stage production",
-    "deploy:post-deploy": "node --enable-source-maps dist/src/scripts/post-deploy.js"
+    "deploy:post-deploy": "node --enable-source-maps dist/src/scripts/post-deploy.js",
+    "typesafe-i18n": "typesafe-i18n"
   },
   "_moduleAliases": {
     "$": "./dist/src"
