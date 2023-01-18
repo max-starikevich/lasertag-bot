@@ -104,10 +104,20 @@ export class Game implements BaseGame {
       ({ clanName }) => clanName
     )
 
-    return players.map(p => ({
-      ...p,
-      isAloneInClan: p.clanName === undefined || clans[p.clanName].length < 2
-    }))
+    return players.map(p => {
+      if (
+        p.clanName === undefined ||
+        clans[p.clanName] === undefined ||
+        clans[p.clanName].length < 2
+      ) {
+        return p
+      }
+
+      return {
+        ...p,
+        isAloneInClan: false
+      }
+    })
   }
 
   getClanPlayers = async (): Promise<ClanPlayer[]> => {
