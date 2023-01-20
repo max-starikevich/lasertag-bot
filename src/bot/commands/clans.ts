@@ -23,7 +23,7 @@ const handler: CommandHandler = async (ctx) => {
 
       ${players
         .map(player =>
-          `${player.count > 0 ? '✔️' : '➖'} ${player.name}`
+          `${player.count > 0 && !player.isQuestionable ? '✔️' : '➖'} ${player.name}`
         ).join('\n')
       }
     `)
