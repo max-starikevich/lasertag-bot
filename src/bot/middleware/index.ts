@@ -8,12 +8,14 @@ import { accessMiddleware } from './access'
 import { errorMiddleware } from './error'
 import { loggingMiddleware } from './logging'
 import { analyticsMiddleware } from './analytics'
+import { groupChatMiddleware } from './group-chat'
+
 import { help } from '../commands/help'
 
 export type BotMiddleware = MiddlewareFn<NarrowedContext<GameContext, Update.MessageUpdate>>
 
 export const setBotMiddlewares = (bot: Telegraf<GameContext>): void => {
-  bot.on('text', loggingMiddleware, analyticsMiddleware, accessMiddleware)
+  bot.on('text', loggingMiddleware, analyticsMiddleware, accessMiddleware, groupChatMiddleware)
 
   commands.map((command) => bot.command('/' + command.name, async (ctx) => await command.handler(ctx)))
 
