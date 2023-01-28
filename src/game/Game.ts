@@ -77,7 +77,11 @@ export class Game implements BaseGame {
             rentCount: rentCount > 0 ? 1 : 0,
             comment: '',
             level: DEFAULT_RATING_LEVEL,
-            isCompanion: true
+            isCompanion: true,
+            isAloneInClan: true,
+            isClanMember: false,
+            clanEmoji: undefined,
+            clanName: undefined
           })
 
           return companions
