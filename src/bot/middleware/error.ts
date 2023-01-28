@@ -1,6 +1,5 @@
 import { reportException as reportError } from '$/errors'
 import { CustomError } from '$/errors/CustomError'
-import { GroupChatForbiddenError } from '../../errors/GroupChatForbiddenError'
 
 import { GameContext } from '../types'
 
@@ -42,13 +41,7 @@ const handleCustomError = async (error: CustomError, ctx: GameContext): Promise<
     })
   }
 
-  if (error instanceof GroupChatForbiddenError) {
-    void ctx.reply(error.replyMessage(ctx.lang), {
-      reply_to_message_id: ctx.message?.message_id
-    })
-
-    return
-  }
-
-  void ctx.reply(`⚠️ ${error.replyMessage(ctx.lang)}`)
+  void ctx.reply(`⚠️ ${error.replyMessage(ctx.lang)}`, {
+    reply_to_message_id: ctx.message?.message_id
+  })
 }

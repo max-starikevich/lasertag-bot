@@ -79,7 +79,7 @@ type RootTranslation = {
 	 */
 	UNKNOWN_COMMAND: RequiredParams<'helpCommandName'>
 	/**
-	 * Ч​т​о​-​т​о​ ​н​е​ ​т​а​к​ ​с​ ​в​а​ш​и​м​и​ ​п​р​а​в​а​м​и​ ​�​�
+	 * Н​е​т​ ​д​о​с​т​у​п​а
 	 */
 	NO_HOME_CHAT_ACCESS_MESSAGE: string
 	/**
@@ -87,7 +87,7 @@ type RootTranslation = {
 	 */
 	DOCUMENT_UNAVAILABLE_FOR_USER: string
 	/**
-	 * Д​а​в​а​й​ ​в​ ​л​и​ч​к​у​.
+	 * ✍​️​ ​П​и​ш​и​т​е​ ​м​н​е​ ​в​ ​л​и​ч​к​у
 	 */
 	GROUP_CHAT_WARNING: string
 }
@@ -158,7 +158,7 @@ export type TranslationFunctions = {
 	 */
 	UNKNOWN_COMMAND: (arg: { helpCommandName: string }) => LocalizedString
 	/**
-	 * Что-то не так с вашими правами 🤷
+	 * Нет доступа
 	 */
 	NO_HOME_CHAT_ACCESS_MESSAGE: () => LocalizedString
 	/**
@@ -166,7 +166,7 @@ export type TranslationFunctions = {
 	 */
 	DOCUMENT_UNAVAILABLE_FOR_USER: () => LocalizedString
 	/**
-	 * Давай в личку.
+	 * ✍️ Пишите мне в личку
 	 */
 	GROUP_CHAT_WARNING: () => LocalizedString
 }
