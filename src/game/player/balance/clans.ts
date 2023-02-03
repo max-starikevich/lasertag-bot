@@ -1,12 +1,12 @@
 import { orderBy, groupBy, partition } from 'lodash'
 import { Player, Teams } from '../types'
-import { getTeamsLevels, sortTeamsByRatings } from './utils'
+import { getTeamLevel, getTeamsLevels, sortTeamsByRatings } from './utils'
 
 export const getBalancedTeamsWithClans = (players: Player[]): Teams => {
   const ratedPlayers = orderBy(players, ({ level }) => level, 'desc')
-  const [clanPlayers, noClanPlayers] = partition(ratedPlayers, ({ isClanMember, isAloneInClan }) => isClanMember && !isAloneInClan)
+  const [clanPlayers, noClanPlayers] = partition(ratedPlayers, ({ isClanMember }) => isClanMember)
 
-  const clans = orderBy(Object.entries(groupBy(clanPlayers, ({ clanName }) => clanName)), ([, players]) => players.length, 'desc')
+  const clans = orderBy(Object.entries(groupBy(clanPlayers, ({ clanName }) => clanName)), ([, team]) => getTeamLevel(team), 'desc')
 
   const teamsWithClans = clans.reduce<Teams>(([team1, team2], [, clanPlayers]) => {
     const [level1, level2] = getTeamsLevels([team1, team2])
@@ -25,25 +25,13 @@ export const getBalancedTeamsWithClans = (players: Player[]): Teams => {
   }, [[], []])
 
   const dividedTeams = noClanPlayers.reduce<Teams>(([team1, team2], player) => {
-    if (team1.length > team2.length) {
+    const [level1, level2] = getTeamsLevels([team1, team2])
+
+    if (level1 > level2) {
       return [
         team1,
         [...team2, player]
       ]
-    } else if (team1.length === team2.length) {
-      const [level1, level2] = getTeamsLevels([team1, team2])
-
-      if (level1 > level2) {
-        return [
-          team1,
-          [...team2, player]
-        ]
-      } else {
-        return [
-          [...team1, player],
-          team2
-        ]
-      }
     } else {
       return [
         [...team1, player],
