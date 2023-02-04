@@ -32,5 +32,5 @@ export const getTeamLevel = (team: Player[]): number => {
 }
 
 export const getAverageTeamLevel = (team: Player[]): number => {
-  return team.reduce((sum, player) => sum + player.level, 0) / team.length
+  return getTeamLevel(team) / team.length
 }
