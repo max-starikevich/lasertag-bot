@@ -21,8 +21,16 @@ export const sortTeamsByClans = ([team1, team2]: Teams): Teams => {
 }
 
 export const getTeamsLevels = ([team1, team2]: Teams): [number, number] => {
-  const level1 = team1.reduce((result, { level }) => result + level, 0)
-  const level2 = team2.reduce((result, { level }) => result + level, 0)
+  const level1 = getTeamLevel(team1)
+  const level2 = getTeamLevel(team2)
 
   return [level1, level2]
+}
+
+export const getTeamLevel = (team: Player[]): number => {
+  return team.reduce((result, { level }) => result + level, 0)
+}
+
+export const getAverageTeamLevel = (team: Player[]): number => {
+  return getTeamLevel(team) / team.length
 }
