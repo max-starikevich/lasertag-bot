@@ -30,3 +30,7 @@ export const getTeamsLevels = ([team1, team2]: Teams): [number, number] => {
 export const getTeamLevel = (team: Player[]): number => {
   return team.reduce((result, { level }) => result + level, 0)
 }
+
+export const getAverageLevel = (team: Player[]): number => {
+  return team.reduce((sum, player) => sum + player.level, 0) / team.length
+}

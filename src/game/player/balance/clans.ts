@@ -1,12 +1,12 @@
 import { orderBy, groupBy, partition } from 'lodash'
 import { Player, Teams } from '../types'
-import { getTeamLevel, getTeamsLevels, sortTeamsByRatings } from './utils'
+import { getAverageLevel, getTeamsLevels, sortTeamsByRatings } from './utils'
 
 export const getBalancedTeamsWithClans = (players: Player[]): Teams => {
   const ratedPlayers = orderBy(players, ({ level }) => level, 'desc')
   const [clanPlayers, noClanPlayers] = partition(ratedPlayers, ({ isClanMember }) => isClanMember)
 
-  const clans = orderBy(Object.entries(groupBy(clanPlayers, ({ clanName }) => clanName)), ([, team]) => getTeamLevel(team), 'desc')
+  const clans = orderBy(Object.entries(groupBy(clanPlayers, ({ clanName }) => clanName)), ([, team]) => getAverageLevel(team), 'desc')
 
   const teamsWithClans = clans.reduce<Teams>(([team1, team2], [, clanPlayers]) => {
     const [level1, level2] = getTeamsLevels([team1, team2])
@@ -24,7 +24,7 @@ export const getBalancedTeamsWithClans = (players: Player[]): Teams => {
     }
   }, [[], []])
 
-  const dividedTeams = noClanPlayers.reduce<Teams>(([team1, team2], player) => {
+  const teamsWithAll = noClanPlayers.reduce<Teams>(([team1, team2], player) => {
     const [level1, level2] = getTeamsLevels([team1, team2])
 
     if (level1 > level2) {
@@ -40,7 +40,7 @@ export const getBalancedTeamsWithClans = (players: Player[]): Teams => {
     }
   }, teamsWithClans)
 
-  return balanceTeamsNTimes(dividedTeams, 100)
+  return balanceTeamsNTimes(teamsWithAll, 100)
 }
 
 const balanceTeamsNTimes = (teams: Teams, attemptAmount: number): Teams => {
@@ -70,18 +70,18 @@ const balanceTeams = (teams: Teams): Teams => {
 
   // team 1 is stronger
   if (levelDifference > 0) {
-    return shiftBalanceByOne(team2, team1)
+    return shiftBalance(team2, team1)
   }
 
   // team 2 is stronger
   if (levelDifference < 0) {
-    return shiftBalanceByOne(team1, team2)
+    return shiftBalance(team1, team2)
   }
 
   return teams
 }
 
-const shiftBalanceByOne = (weakTeam: Player[], strongTeam: Player[]): Teams => {
+const shiftBalance = (weakTeam: Player[], strongTeam: Player[]): Teams => {
   let weakerPlayerIndex = 0
   let strongerPlayerIndex = 0
 
