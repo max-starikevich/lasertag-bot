@@ -38,21 +38,25 @@ const handler: CommandHandler = async (ctx) => {
     🔴 ${redPlayers.length} vs. ${bluePlayers.length} 🔵
   `)
 
-  await ctx.replyWithHTML(dedent`
-    ${redGroups
-      .map(([clanName, players]) =>
-        (clanName !== '-' ? `<b>${clanName}</b>\n` : '') + shuffle(players).map(({ name }) => `🔴 ${name}`).join('\n')
-      )
-      .join('\n\n')}
-  `)
+  if (redGroups.length > 0) {
+    await ctx.replyWithHTML(dedent`
+      ${redGroups
+        .map(([clanName, players]) =>
+          (clanName !== '-' ? `<b>${clanName}</b>\n` : '') + shuffle(players).map(({ name }) => `🔴 ${name}`).join('\n')
+        )
+        .join('\n\n')}
+    `)
+  }
 
-  await ctx.replyWithHTML(dedent`
-    ${blueGroups
-      .map(([clanName, players]) =>
-        (clanName !== '-' ? `<b>${clanName}</b>\n` : '') + shuffle(players).map(({ name }) => `🔵 ${name}`).join('\n')
-      )
-      .join('\n\n')}
-  `)
+  if (blueGroups.length > 0) {
+    await ctx.replyWithHTML(dedent`
+      ${blueGroups
+        .map(([clanName, players]) =>
+          (clanName !== '-' ? `<b>${clanName}</b>\n` : '') + shuffle(players).map(({ name }) => `🔵 ${name}`).join('\n')
+        )
+        .join('\n\n')}
+    `)
+  }
 
   if (ctx.isAdmin && ctx.isPrivateChat) {
     const [redLevel, blueLevel] = getTeamsLevels([redPlayers, bluePlayers])
