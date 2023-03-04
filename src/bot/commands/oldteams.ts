@@ -18,17 +18,21 @@ const handler: CommandHandler = async (ctx) => {
     🔴 ${redPlayers.length} vs. ${bluePlayers.length} 🔵
   `)
 
-  await ctx.replyWithHTML(dedent`
-    ${shuffle(redPlayers)
-      .map(({ name, clanEmoji }) => `🔴 ${name} ${clanEmoji ?? ''}`)
-      .join('\n')}
-  `)
+  if (redPlayers.length > 0) {
+    await ctx.replyWithHTML(dedent`
+      ${shuffle(redPlayers)
+        .map(({ name, clanEmoji }) => `🔴 ${name} ${clanEmoji ?? ''}`)
+        .join('\n')}
+    `)
+  }
 
-  await ctx.replyWithHTML(dedent`
-    ${shuffle(bluePlayers)
-      .map(({ name, clanEmoji }) => `🔵 ${name} ${clanEmoji ?? ''}`)
-      .join('\n')}
-  `)
+  if (bluePlayers.length > 0) {
+    await ctx.replyWithHTML(dedent`
+      ${shuffle(bluePlayers)
+        .map(({ name, clanEmoji }) => `🔵 ${name} ${clanEmoji ?? ''}`)
+        .join('\n')}
+    `)
+  }
 
   if (ctx.isAdmin && ctx.isPrivateChat) {
     const [redLevel, blueLevel] = getTeamsLevels([redPlayers, bluePlayers])
