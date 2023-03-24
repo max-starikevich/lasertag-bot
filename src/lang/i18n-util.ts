@@ -10,6 +10,7 @@ import type { Formatters, Locales, Translations, TranslationFunctions } from './
 export const baseLocale: Locales = 'ru'
 
 export const locales: Locales[] = [
+	'by',
 	'ru'
 ]
 
