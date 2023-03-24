@@ -33,6 +33,7 @@ export const requiredConfigInput = {
   COUNT_COLUMN: process.env.COUNT_COLUMN as string,
   RENT_COLUMN: process.env.RENT_COLUMN as string,
   COMMENT_COLUMN: process.env.COMMENT_COLUMN as string,
+  TELEGRAM_USER_ID_COLUMN: process.env.TELEGRAM_USER_ID_COLUMN as string,
   DEFAULT_RATING_LEVEL: parseInt(process.env.DEFAULT_RATING_LEVEL ?? '0'),
   PLACE_AND_TIME_CELLS: (process.env.PLACE_AND_TIME_CELLS ?? '').split(
     ','

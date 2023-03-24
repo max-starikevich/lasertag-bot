@@ -89,18 +89,22 @@ export class GoogleTable implements BaseTable {
     return undefined
   }
 
-  set = async (
+  set = (
     a1: string,
     value: string
-  ): Promise<void> => {
+  ): void => {
     if (this.sheets == null) {
       throw new NoSheetsError()
     }
 
-    const cell = this.sheets.getCellByA1(a1)
+    this.sheets.getCellByA1(a1).value = value
+  }
 
-    cell.value = value
+  save = async (): Promise<void> => {
+    if (this.sheets == null) {
+      throw new NoSheetsError()
+    }
 
-    return await cell.save()
+    return await this.sheets.saveUpdatedCells()
   }
 }

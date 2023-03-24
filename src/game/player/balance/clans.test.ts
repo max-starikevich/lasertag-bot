@@ -6,6 +6,7 @@ import { getTeamsLevels } from './utils'
 import { getBalancedTeamsWithClans } from './clans'
 
 const basePlayer: Player = {
+  tableRow: 0,
   name: 'random-player',
   combinedName: 'random-player',
   count: 1,

@@ -20,7 +20,8 @@ const {
   START_FROM_ROW,
   MAX_ROW_NUMBER,
   PLACE_AND_TIME_CELLS,
-  DEFAULT_RATING_LEVEL
+  DEFAULT_RATING_LEVEL,
+  TELEGRAM_USER_ID_COLUMN
 } = config
 
 export class Game implements BaseGame {
@@ -28,6 +29,10 @@ export class Game implements BaseGame {
 
   refreshData = async ({ logger }: { logger: BaseLogger }): Promise<void> => {
     await this.table.refreshData({ logger })
+  }
+
+  saveData = async (): Promise<void> => {
+    await this.table.save()
   }
 
   getPlayers = async (): Promise<Player[]> => {
@@ -48,8 +53,11 @@ export class Game implements BaseGame {
       const level = +(this.table.get(RATING_COLUMN + row) ?? `${DEFAULT_RATING_LEVEL}`)
       const comment = this.table.get(COMMENT_COLUMN + row) ?? ''
       const clanName = this.table.get(CLAN_COLUMN + row)
+      const telegramUserId = this.table.get(TELEGRAM_USER_ID_COLUMN + row)
 
       const player: Player = {
+        tableRow: rowNumber,
+        telegramUserId: telegramUserId !== undefined ? +(telegramUserId) : undefined,
         name,
         count,
         rentCount,
@@ -158,5 +166,20 @@ export class Game implements BaseGame {
       this.table.get(cell)).join(
       ', '
     )
+  }
+
+  registerPlayer = async (tableRow: number, userId: number): Promise<Player> => {
+    const playerA1 = `${TELEGRAM_USER_ID_COLUMN}${tableRow}`
+
+    this.table.set(playerA1, `${userId}`)
+    await this.table.save()
+
+    const player = (await this.getPlayers()).find(({ telegramUserId }) => telegramUserId !== undefined && telegramUserId === userId)
+
+    if (player === undefined) {
+      throw new Error('Registered player isn\'t in the table')
+    }
+
+    return player
   }
 }

@@ -17,6 +17,7 @@ describe('balance/classic.ts', () => {
         const levels = getRandomArray(playerCount, maxLevel)
 
         const players: Player[] = levels.map(randomLevel => ({
+          tableRow: 0,
           name: 'random-player',
           combinedName: 'random-player',
           count: 1,

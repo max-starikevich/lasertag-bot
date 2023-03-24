@@ -43,6 +43,7 @@ const requiredRuntimeVariables: EnvironmentToCheck = {
   COUNT_COLUMN: async () => isCapitalLetter(config.COUNT_COLUMN),
   RENT_COLUMN: async () => isCapitalLetter(config.RENT_COLUMN),
   COMMENT_COLUMN: async () => isCapitalLetter(config.COMMENT_COLUMN),
+  TELEGRAM_USER_ID_COLUMN: async () => isCapitalLetter(config.TELEGRAM_USER_ID_COLUMN),
   PLACE_AND_TIME_CELLS: async () => {
     const failedCells = config.PLACE_AND_TIME_CELLS.filter(
       (cell) => cell.length < 2 || !isCapitalLetter(cell[0])

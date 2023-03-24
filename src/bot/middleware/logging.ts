@@ -1,7 +1,9 @@
-import { BotMiddleware } from '.'
-import { makeLogger } from '../../logger'
+import { MiddlewareFn } from 'telegraf'
 
-export const loggingMiddleware: BotMiddleware = async (ctx, next) => {
+import { makeLogger } from '../../logger'
+import { GameContext } from '../types'
+
+export const loggingMiddleware: MiddlewareFn<GameContext> = async (ctx, next) => {
   const startMs = performance.now()
   const logger = makeLogger(ctx.update.update_id.toString())
 

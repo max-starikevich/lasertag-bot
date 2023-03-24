@@ -8,10 +8,11 @@ import { GoogleTable } from '$/game/table/GoogleTable'
 
 import { GameContext } from '$/bot/types'
 import { commands } from '$/bot/commands'
-import { setBotMiddlewares } from '$/bot/middleware'
+import { setBotActions, setBotMiddlewares } from '$/bot/middleware'
 import { reportException } from '$/errors'
 
 import L from '$/lang/i18n-node'
+import { errorMiddleware } from './middleware/error'
 
 const PLAYER_DATA_TABLE_RANGES = [
   config.NAME_COLUMN,
@@ -19,7 +20,8 @@ const PLAYER_DATA_TABLE_RANGES = [
   config.CLAN_COLUMN,
   config.COUNT_COLUMN,
   config.RENT_COLUMN,
-  config.COMMENT_COLUMN
+  config.COMMENT_COLUMN,
+  config.TELEGRAM_USER_ID_COLUMN
 ].map((column) => `${column}${config.START_FROM_ROW}:${column}${config.MAX_ROW_NUMBER}`)
 
 const ALL_TABLE_RANGES_TO_LOAD = [...PLAYER_DATA_TABLE_RANGES, ...config.PLACE_AND_TIME_CELLS]
@@ -49,9 +51,12 @@ export const initBot = async (): Promise<Telegraf<GameContext>> => {
   bot.context.isGroupChat = false
   bot.context.isPrivateChat = false
 
-  bot.context.lang = L.ru
+  bot.context.lang = L.by
 
   setBotMiddlewares(bot)
+  setBotActions(bot)
+
+  bot.catch(errorMiddleware)
 
   process.on('uncaughtException', e => reportException(e))
   process.on('unhandledRejection', e => reportException(e))

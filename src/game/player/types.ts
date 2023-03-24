@@ -1,4 +1,6 @@
 export interface Player {
+  telegramUserId?: number
+  tableRow: number
   name: string
   combinedName: string
   count: number

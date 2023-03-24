@@ -28,3 +28,15 @@ export interface Command {
   description: (lang: TranslationFunctions) => string
   showInMenu: boolean
 }
+
+export type ActionHandler = (ctx: NarrowedContext<GameContext & {
+  match: RegExpExecArray
+}, Update.CallbackQueryUpdate>) => Promise<any>
+
+export type ActionInitializer = (ctx: NarrowedContext<GameContext, Update.MessageUpdate<Message.TextMessage>>) => Promise<any>
+
+export interface Action {
+  name: RegExp
+  initializer: ActionInitializer
+  handler: ActionHandler
+}
