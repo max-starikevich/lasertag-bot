@@ -50,7 +50,7 @@ const handler: CommandHandler = async (ctx) => {
     await ctx.replyWithHTML(dedent`
       ${playersWithComments
         .map(({ name, comment }) => `💬 ${name}: «<i>${comment.trim()}</i>»`)
-        .join('\n')}
+        .join('\n\n')}
     `)
   }
 }
