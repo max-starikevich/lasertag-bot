@@ -6,10 +6,12 @@ import type { Locales, Translations } from './i18n-types'
 import { loadedFormatters, loadedLocales, locales } from './i18n-util'
 
 import by from './by'
+import en from './en'
 import ru from './ru'
 
 const localeTranslations = {
 	by,
+	en,
 	ru,
 }
 

@@ -7,10 +7,11 @@ import type { LocaleTranslationFunctions, TranslateByString } from 'typesafe-i18
 import { detectLocale as detectLocaleFn } from 'typesafe-i18n/detectors'
 import type { Formatters, Locales, Translations, TranslationFunctions } from './i18n-types'
 
-export const baseLocale: Locales = 'ru'
+export const baseLocale: Locales = 'en'
 
 export const locales: Locales[] = [
 	'by',
+	'en',
 	'ru'
 ]
 

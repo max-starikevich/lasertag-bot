@@ -3,10 +3,11 @@
 import type { BaseTranslation as BaseTranslationType, LocalizedString, RequiredParams } from 'typesafe-i18n'
 
 export type BaseTranslation = BaseTranslationType
-export type BaseLocale = 'ru'
+export type BaseLocale = 'en'
 
 export type Locales =
 	| 'by'
+	| 'en'
 	| 'ru'
 
 export type Translation = RootTranslation
@@ -15,159 +16,167 @@ export type Translations = RootTranslation
 
 type RootTranslation = {
 	/**
-	 * Т​е​л​е​г​р​а​м​-​б​о​т​ ​д​л​я​ ​л​а​з​е​р​т​а​г​а
+	 * T​e​l​e​g​r​a​m​ ​b​o​t​ ​f​o​r​ ​l​a​s​e​r​t​a​g
 	 */
 	ABOUT_PROJECT_NAME: string
 	/**
-	 * В​е​р​с​и​я
+	 * V​e​r​s​i​o​n
 	 */
 	ABOUT_VERSION: string
 	/**
-	 * А​в​т​о​р
+	 * A​u​t​h​o​r
 	 */
 	ABOUT_AUTHOR: string
 	/**
-	 * И​с​х​о​д​н​ы​й​ ​к​о​д
+	 * S​o​u​r​c​e​ ​c​o​d​e
 	 */
 	ABOUT_SOURCE_CODE: string
 	/**
-	 * И​н​ф​о​р​м​а​ц​и​я​ ​о​ ​б​о​т​е
+	 * B​o​t​ ​i​n​f​o​r​m​a​t​i​o​n
 	 */
 	ABOUT_COMMAND_DESCRIPTION: string
 	/**
-	 * И​н​ф​о​р​м​а​ц​и​я​ ​о​ ​к​л​а​н​а​х
+	 * C​l​a​n​ ​i​n​f​o​r​m​a​t​i​o​n
 	 */
 	CLANS_COMMAND_DESCRIPTION: string
 	/**
-	 * П​о​к​а​з​а​т​ь​ ​д​о​с​т​у​п​н​ы​е​ ​к​о​м​а​н​д​ы
+	 * S​h​o​w​ ​a​v​a​i​l​a​b​l​e​ ​c​o​m​m​a​n​d​s
 	 */
 	HELP_COMMAND_DESCRIPTION: string
 	/**
-	 * Д​о​с​т​у​п​н​ы​е​ ​к​о​м​а​н​д​ы
+	 * A​v​a​i​l​a​b​l​e​ ​c​o​m​m​a​n​d​s
 	 */
 	HELP_TITLE: string
 	/**
-	 * С​о​з​д​а​т​ь​ ​к​о​м​а​н​д​ы​ ​б​е​з​ ​к​л​а​н​о​в
-	 */
-	OLD_TEAMS_COMMAND_DESCRIPTION: string
-	/**
-	 * С​п​и​с​о​к​ ​з​а​п​и​с​а​в​ш​и​х​с​я​ ​и​г​р​о​к​о​в
+	 * P​l​a​y​e​r​s​ ​i​n​ ​t​h​e​ ​r​e​c​o​r​d
 	 */
 	PLAYERS_COMMAND_DESCRIPTION: string
 	/**
-	 * С​о​з​д​а​т​ь​ ​к​о​м​а​н​д​ы​ ​с​ ​к​л​а​н​а​м​и
+	 * C​r​e​a​t​e​ ​t​e​a​m​s​ ​w​i​t​h​o​u​t​ ​c​l​a​n​s
+	 */
+	OLD_TEAMS_COMMAND_DESCRIPTION: string
+	/**
+	 * C​r​e​a​t​e​ ​t​e​a​m​s​ ​w​i​t​h​ ​c​l​a​n​s
 	 */
 	TEAMS_COMMAND_DESCRIPTION: string
 	/**
-	 * Б​а​л​а​н​с
+	 * R​e​g​i​s​t​e​r
+	 */
+	REGISTER_COMMAND_DESCRIPTION: string
+	/**
+	 * B​a​l​a​n​c​e
 	 */
 	TEAMS_BALANCE: string
 	/**
-	 * З​а​п​и​с​а​н​о
+	 * R​e​c​o​r​d​e​d
 	 */
 	RECORDED: string
 	/**
-	 * П​р​о​к​а​т
+	 * R​e​n​t
 	 */
 	RENT_NEEDED: string
 	/**
-	 * Н​е​о​ж​и​д​а​н​н​а​я​ ​о​ш​и​б​к​а​.​ ​П​о​в​т​о​р​и​т​е​ ​з​а​п​р​о​с​ ​п​о​з​ж​е​.
+	 * U​n​e​x​p​e​c​t​e​d​ ​e​r​r​o​r​.​ ​T​r​y​ ​a​g​a​i​n​ ​l​a​t​e​r
 	 */
 	UNEXPECTED_ERROR_FOR_USER: string
 	/**
-	 * Н​е​ ​у​д​а​л​о​с​ь​ ​р​а​с​п​о​з​н​а​т​ь​ ​к​о​м​а​н​д​у​.​ ​И​с​п​о​л​ь​з​у​й​т​е​ ​м​е​н​ю​ ​и​л​и​ ​к​о​м​а​н​д​у​ ​/​{​h​e​l​p​C​o​m​m​a​n​d​N​a​m​e​}
+	 * U​n​k​n​o​w​n​ ​c​o​m​m​a​n​d​.​ ​U​s​e​ ​m​e​n​u​ ​o​r​ ​c​o​m​m​a​n​d​ ​/​{​h​e​l​p​C​o​m​m​a​n​d​N​a​m​e​}
 	 * @param {string} helpCommandName
 	 */
 	UNKNOWN_COMMAND: RequiredParams<'helpCommandName'>
 	/**
-	 * Н​е​т​ ​д​о​с​т​у​п​а
+	 * A​c​c​e​s​s​ ​d​e​n​i​e​d
 	 */
 	NO_HOME_CHAT_ACCESS_MESSAGE: string
 	/**
-	 * Д​о​к​у​м​е​н​т​ ​н​е​д​о​с​т​у​п​е​н​.​ ​П​о​в​т​о​р​и​т​е​ ​з​а​п​р​о​с​ ​п​о​з​ж​е​.
+	 * D​o​c​u​m​e​n​t​ ​i​s​ ​u​n​a​v​a​i​l​a​b​l​e​.​ ​T​r​y​ ​a​g​a​i​n​ ​l​a​t​e​r
 	 */
 	DOCUMENT_UNAVAILABLE_FOR_USER: string
 	/**
-	 * ✍​️​ ​П​и​ш​и​т​е​ ​м​н​е​ ​в​ ​л​и​ч​к​у
+	 * ✍​️​ ​S​e​n​d​ ​m​e​ ​a​ ​p​r​i​v​a​t​e​ ​m​e​s​s​a​g​e​,​ ​p​l​e​a​s​e
 	 */
 	GROUP_CHAT_WARNING: string
 }
 
 export type TranslationFunctions = {
 	/**
-	 * Телеграм-бот для лазертага
+	 * Telegram bot for lasertag
 	 */
 	ABOUT_PROJECT_NAME: () => LocalizedString
 	/**
-	 * Версия
+	 * Version
 	 */
 	ABOUT_VERSION: () => LocalizedString
 	/**
-	 * Автор
+	 * Author
 	 */
 	ABOUT_AUTHOR: () => LocalizedString
 	/**
-	 * Исходный код
+	 * Source code
 	 */
 	ABOUT_SOURCE_CODE: () => LocalizedString
 	/**
-	 * Информация о боте
+	 * Bot information
 	 */
 	ABOUT_COMMAND_DESCRIPTION: () => LocalizedString
 	/**
-	 * Информация о кланах
+	 * Clan information
 	 */
 	CLANS_COMMAND_DESCRIPTION: () => LocalizedString
 	/**
-	 * Показать доступные команды
+	 * Show available commands
 	 */
 	HELP_COMMAND_DESCRIPTION: () => LocalizedString
 	/**
-	 * Доступные команды
+	 * Available commands
 	 */
 	HELP_TITLE: () => LocalizedString
 	/**
-	 * Создать команды без кланов
-	 */
-	OLD_TEAMS_COMMAND_DESCRIPTION: () => LocalizedString
-	/**
-	 * Список записавшихся игроков
+	 * Players in the record
 	 */
 	PLAYERS_COMMAND_DESCRIPTION: () => LocalizedString
 	/**
-	 * Создать команды с кланами
+	 * Create teams without clans
+	 */
+	OLD_TEAMS_COMMAND_DESCRIPTION: () => LocalizedString
+	/**
+	 * Create teams with clans
 	 */
 	TEAMS_COMMAND_DESCRIPTION: () => LocalizedString
 	/**
-	 * Баланс
+	 * Register
+	 */
+	REGISTER_COMMAND_DESCRIPTION: () => LocalizedString
+	/**
+	 * Balance
 	 */
 	TEAMS_BALANCE: () => LocalizedString
 	/**
-	 * Записано
+	 * Recorded
 	 */
 	RECORDED: () => LocalizedString
 	/**
-	 * Прокат
+	 * Rent
 	 */
 	RENT_NEEDED: () => LocalizedString
 	/**
-	 * Неожиданная ошибка. Повторите запрос позже.
+	 * Unexpected error. Try again later
 	 */
 	UNEXPECTED_ERROR_FOR_USER: () => LocalizedString
 	/**
-	 * Не удалось распознать команду. Используйте меню или команду /{helpCommandName}
+	 * Unknown command. Use menu or command /{helpCommandName}
 	 */
 	UNKNOWN_COMMAND: (arg: { helpCommandName: string }) => LocalizedString
 	/**
-	 * Нет доступа
+	 * Access denied
 	 */
 	NO_HOME_CHAT_ACCESS_MESSAGE: () => LocalizedString
 	/**
-	 * Документ недоступен. Повторите запрос позже.
+	 * Document is unavailable. Try again later
 	 */
 	DOCUMENT_UNAVAILABLE_FOR_USER: () => LocalizedString
 	/**
-	 * ✍️ Пишите мне в личку
+	 * ✍️ Send me a private message, please
 	 */
 	GROUP_CHAT_WARNING: () => LocalizedString
 }

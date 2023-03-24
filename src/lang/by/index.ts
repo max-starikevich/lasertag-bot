@@ -1,32 +1,34 @@
-import type { BaseTranslation } from '../i18n-types'
+import type { MappedTranslation } from '../i18n-custom'
 
-const ru: BaseTranslation = {
+const by: MappedTranslation = {
   ABOUT_PROJECT_NAME: 'Тэлеграм-бот для лазертага',
   ABOUT_VERSION: 'Версія',
   ABOUT_AUTHOR: 'Аўтар',
   ABOUT_SOURCE_CODE: 'Зыходны код',
   ABOUT_COMMAND_DESCRIPTION: 'Інфармацыя аб боце',
 
-  CLANS_COMMAND_DESCRIPTION: 'Информация о кланах',
+  CLANS_COMMAND_DESCRIPTION: 'Информация аб кланах',
 
-  HELP_COMMAND_DESCRIPTION: 'Інфармацыя аб кланах',
+  HELP_COMMAND_DESCRIPTION: 'Паказаць даступныя каманды',
   HELP_TITLE: 'Даступныя каманды',
+
+  PLAYERS_COMMAND_DESCRIPTION: 'Спіс гульцоў, якія запісаліся',
 
   OLD_TEAMS_COMMAND_DESCRIPTION: 'Стварыць каманды без кланаў',
 
-  PLAYERS_COMMAND_DESCRIPTION: 'Список записавшихся игроков',
+  TEAMS_COMMAND_DESCRIPTION: 'Стварыць каманды з кланамі',
 
-  TEAMS_COMMAND_DESCRIPTION: 'Спіс гульцоў, якія запісаліся',
+  REGISTER_COMMAND_DESCRIPTION: 'Зарэгістравацца',
 
   TEAMS_BALANCE: 'Баланс',
   RECORDED: 'Запісана',
-  RENT_NEEDED: 'Пракат',
+  RENT_NEEDED: 'Патрэбны пракат',
 
-  UNEXPECTED_ERROR_FOR_USER: 'Нечаканая памылка. Паўтарыце запыт пазней.',
+  UNEXPECTED_ERROR_FOR_USER: 'Нечаканая памылка. Паўтарыце запыт пазьней',
   UNKNOWN_COMMAND: 'Не ўдалося распазнаць каманду. Выкарыстоўвайце меню ці каманду /{helpCommandName:string}',
   NO_HOME_CHAT_ACCESS_MESSAGE: 'Няма доступу',
-  DOCUMENT_UNAVAILABLE_FOR_USER: 'Дакумент недаступны. Паўтарыце запыт пазней.',
-  GROUP_CHAT_WARNING: '✍️ Пішыце мне ў прыват'
+  DOCUMENT_UNAVAILABLE_FOR_USER: 'Дакумент недаступны. Паўтарыце запыт пазьней',
+  GROUP_CHAT_WARNING: '✍️ Пішыце мне ў прыват, калі ласка'
 }
 
-export default ru
+export default by
