@@ -96,6 +96,15 @@ type RootTranslation = {
 	 * ✍​️​ ​S​e​n​d​ ​m​e​ ​a​ ​p​r​i​v​a​t​e​ ​m​e​s​s​a​g​e​,​ ​p​l​e​a​s​e
 	 */
 	GROUP_CHAT_WARNING: string
+	/**
+	 * C​h​o​o​s​e​ ​y​o​u​r​ ​n​a​m​e​ ​f​r​o​m​ ​t​h​e​ ​l​i​s​t
+	 */
+	REGISTER_CHOOSE_YOURSELF: string
+	/**
+	 * {​n​a​m​e​}​,​ ​y​o​u​ ​h​a​v​e​ ​b​e​e​n​ ​r​e​g​i​s​t​e​r​e​d​ ​s​u​c​c​e​s​s​f​u​l​l​y​!
+	 * @param {string} name
+	 */
+	REGISTER_SUCCESS: RequiredParams<'name'>
 }
 
 export type TranslationFunctions = {
@@ -179,6 +188,14 @@ export type TranslationFunctions = {
 	 * ✍️ Send me a private message, please
 	 */
 	GROUP_CHAT_WARNING: () => LocalizedString
+	/**
+	 * Choose your name from the list
+	 */
+	REGISTER_CHOOSE_YOURSELF: () => LocalizedString
+	/**
+	 * {name}, you have been registered successfully!
+	 */
+	REGISTER_SUCCESS: (arg: { name: string }) => LocalizedString
 }
 
 export type Formatters = {}

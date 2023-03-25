@@ -10,13 +10,12 @@ const initializer: ActionInitializer = async ctx => {
   await game.refreshData({ logger })
 
   const players = (await game.getPlayers()).filter(({ isCompanion }) => !isCompanion)
+  const chunkedPlayers = chunk(players, 1)
 
-  const chunkedPlayers = chunk(players, 2)
-
-  await ctx.replyWithHTML('Make register action', {
+  await ctx.replyWithHTML(ctx.lang.REGISTER_CHOOSE_YOURSELF(), {
     reply_markup: {
       inline_keyboard: chunkedPlayers.map(players => [
-        ...players.map(player => ({ text: player.name, callback_data: `register-${player.tableRow}` }))
+        ...players.map(player => ({ text: `${player.name} ${player.clanEmoji ?? ''}`, callback_data: `register-${player.tableRow}` }))
       ])
     }
   })
@@ -27,9 +26,9 @@ const handler: ActionHandler = async ctx => {
 
   const tableRow = ctx.match[1]
 
-  await game.registerPlayer(+tableRow, ctx.callbackQuery.from.id)
+  const player = await game.registerPlayer(+tableRow, ctx.callbackQuery.from.id)
 
-  return await ctx.reply('OK')
+  return await ctx.reply(ctx.lang.REGISTER_SUCCESS({ name: player.name }))
 }
 
 export const register: Action = {

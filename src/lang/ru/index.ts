@@ -28,7 +28,10 @@ const ru: MappedTranslation = {
   UNKNOWN_COMMAND: 'Не удалось распознать команду. Используйте меню или команду /{helpCommandName:string}',
   NO_HOME_CHAT_ACCESS_MESSAGE: 'Нет доступа',
   DOCUMENT_UNAVAILABLE_FOR_USER: 'Документ недоступен. Повторите запрос позже',
-  GROUP_CHAT_WARNING: '✍️ Пишите мне в личку, пожалуйста'
+  GROUP_CHAT_WARNING: '✍️ Пишите мне в личку, пожалуйста',
+
+  REGISTER_CHOOSE_YOURSELF: 'Выберите свое имя из списка',
+  REGISTER_SUCCESS: '{name:string}, вы успешно зарегистрированы!'
 }
 
 export default ru

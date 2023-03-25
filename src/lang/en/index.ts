@@ -28,7 +28,10 @@ const en: BaseTranslation = {
   UNKNOWN_COMMAND: 'Unknown command. Use menu or command /{helpCommandName:string}',
   NO_HOME_CHAT_ACCESS_MESSAGE: 'Access denied',
   DOCUMENT_UNAVAILABLE_FOR_USER: 'Document is unavailable. Try again later',
-  GROUP_CHAT_WARNING: '✍️ Send me a private message, please'
+  GROUP_CHAT_WARNING: '✍️ Send me a private message, please',
+
+  REGISTER_CHOOSE_YOURSELF: 'Choose your name from the list',
+  REGISTER_SUCCESS: '{name:string}, you have been registered successfully!'
 }
 
 export default en
