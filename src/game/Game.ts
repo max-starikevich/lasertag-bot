@@ -1,4 +1,5 @@
 import { groupBy, times } from 'lodash'
+import { decode } from 'html-entities'
 
 import config from '$/config'
 import { BaseLogger } from '$/logger/types'
@@ -41,9 +42,9 @@ export class Game implements BaseGame {
       .reduce<Player[]>((players, rowNumber) => {
       const row = rowNumber.toString()
 
-      const name = this.table.get(NAME_COLUMN + row)
+      const name = decode(this.table.get(NAME_COLUMN + row))
 
-      if (name === undefined) {
+      if (name.length === 0) {
         return players
       }
 
@@ -72,15 +73,15 @@ export class Game implements BaseGame {
         isAloneInClan: true // will be overriden later
       }
 
-      if (player.count > 1) {
-        const companions = times(player.count - 1)
+      if (count > 1) {
+        const companions = times(count - 1)
           .map(n => n + 1)
           .reduce<Player[]>((companions, num) => {
           const rentCount = player.rentCount - num
 
           companions.push({
             ...player,
-            name: `${player.name} (${num + 1})`,
+            name: `${name} (${num + 1})`,
             count: 1,
             rentCount: rentCount > 0 ? 1 : 0,
             comment: '',
@@ -98,8 +99,8 @@ export class Game implements BaseGame {
         players.push(
           {
             ...player,
-            rentCount: player.rentCount > 0 ? 1 : 0,
-            combinedName: `${player.name} ${companions.length > 0 ? `(${companions.length + 1})` : ''
+            rentCount: rentCount > 0 ? 1 : 0,
+            combinedName: `${name} ${companions.length > 0 ? `(${companions.length + 1})` : ''
                 }`
           },
           ...companions

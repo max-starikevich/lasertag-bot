@@ -16,6 +16,7 @@ specifiers:
   dotenv: ^16.0.3
   eslint: ^8.31.0
   google-spreadsheet: ^3.3.0
+  html-entities: ^2.3.3
   husky: ^8.0.3
   jest: ^29.3.1
   koa: ^2.14.1
@@ -39,6 +40,7 @@ dependencies:
   axios: 1.2.2
   dedent-js: 1.0.1
   google-spreadsheet: 3.3.0
+  html-entities: 2.3.3
   lodash: 4.17.21
   logform: 2.4.2
   module-alias: 2.2.2
@@ -3562,6 +3564,10 @@ packages:
     resolution: {integrity: sha512-QFLV0taWQOZtvIRIAdBChesmogZrtuXvVWsFHZTk2SU+anspqZ2vMnoLg7IE1+Uk16N19APic1BuF8bC8c2m5g==}
     engines: {node: '>=8'}
     dev: true
+
+  /html-entities/2.3.3:
+    resolution: {integrity: sha512-DV5Ln36z34NNTDgnz0EWGBLZENelNAtkiFA4kyNOG2tDI6Mz1uSWiq1wAKdyjnJwyDiDO7Fa2SO1CTxPXL8VxA==}
+    dev: false
 
   /html-escaper/2.0.2:
     resolution: {integrity: sha512-H2iMtd0I4Mt5eYiapRdIDjp+XzelXQ0tFE4JS7YFwFevXXMmOp9myNrUvCg0D6ws8iqkRPBfKHgbwig1SmlLfg==}

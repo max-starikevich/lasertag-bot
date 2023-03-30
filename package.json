@@ -15,6 +15,7 @@
     "axios": "^1.2.2",
     "dedent-js": "^1.0.1",
     "google-spreadsheet": "^3.3.0",
+    "html-entities": "^2.3.3",
     "lodash": "^4.17.21",
     "logform": "^2.4.2",
     "module-alias": "^2.2.2",
