@@ -10,11 +10,11 @@ import { Command } from '../types'
 
 export const commands: Command[] = [
   start,
-  register,
+  players,
   teams,
   oldTeams,
-  players,
   clans,
+  register,
   about,
   help
 ]

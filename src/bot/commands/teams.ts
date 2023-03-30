@@ -12,6 +12,10 @@ const handler: CommandHandler = async (ctx) => {
 
   const [[redPlayers, bluePlayers], placeAndTime] = await Promise.all([game.getTeamsWithClans(), game.getPlaceAndTime()])
 
+  if (redPlayers.length === 0 || bluePlayers.length === 0) {
+    return await ctx.reply(ctx.lang.NOT_ENOUGH_PLAYERS_ENROLLED())
+  }
+
   const redGroups = orderBy(
     Object.entries(
       groupBy(redPlayers, ({ clanName }) => clanName ?? '-')

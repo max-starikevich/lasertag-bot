@@ -19,6 +19,10 @@ const handler: CommandHandler = async (ctx) => {
     ({ comment }) => comment.length > 0
   )
 
+  if (activePlayers.length === 0) {
+    return await ctx.reply(ctx.lang.NOT_ENOUGH_PLAYERS_ENROLLED())
+  }
+
   await ctx.replyWithHTML(dedent`
     📅 <b>${placeAndTime}</b>
 
