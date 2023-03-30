@@ -31,7 +31,10 @@ const by: MappedTranslation = {
   GROUP_CHAT_WARNING: '✍️ Пішыце мне ў прыват, калі ласка',
 
   REGISTER_CHOOSE_YOURSELF: 'Выберыце сваё імя са спісу',
-  REGISTER_SUCCESS: '{name:string}, вы паспяхова зарэгістраваны!'
+  REGISTER_SUCCESS: '{name:string}, вы паспяхова зарэгістраваны',
+  REGISTER_ALREADY_REGISTERED: 'Вы ўжо зарэгістраваны',
+
+  NOT_ENOUGH_PLAYERS_ENROLLED: 'Записана недастаткова гульцоў дзеля гэтай функцыі'
 }
 
 export default by

@@ -31,7 +31,10 @@ const en: BaseTranslation = {
   GROUP_CHAT_WARNING: '✍️ Send me a private message, please',
 
   REGISTER_CHOOSE_YOURSELF: 'Choose your name from the list',
-  REGISTER_SUCCESS: '{name:string}, you have been registered successfully!'
+  REGISTER_SUCCESS: '{name:string}, you have been registered successfully',
+  REGISTER_ALREADY_REGISTERED: 'You are already registered',
+
+  NOT_ENOUGH_PLAYERS_ENROLLED: 'Not enough players enrolled for this function'
 }
 
 export default en

@@ -101,10 +101,18 @@ type RootTranslation = {
 	 */
 	REGISTER_CHOOSE_YOURSELF: string
 	/**
-	 * {​n​a​m​e​}​,​ ​y​o​u​ ​h​a​v​e​ ​b​e​e​n​ ​r​e​g​i​s​t​e​r​e​d​ ​s​u​c​c​e​s​s​f​u​l​l​y​!
+	 * {​n​a​m​e​}​,​ ​y​o​u​ ​h​a​v​e​ ​b​e​e​n​ ​r​e​g​i​s​t​e​r​e​d​ ​s​u​c​c​e​s​s​f​u​l​l​y
 	 * @param {string} name
 	 */
 	REGISTER_SUCCESS: RequiredParams<'name'>
+	/**
+	 * Y​o​u​ ​a​r​e​ ​a​l​r​e​a​d​y​ ​r​e​g​i​s​t​e​r​e​d
+	 */
+	REGISTER_ALREADY_REGISTERED: string
+	/**
+	 * N​o​t​ ​e​n​o​u​g​h​ ​p​l​a​y​e​r​s​ ​e​n​r​o​l​l​e​d​ ​f​o​r​ ​t​h​i​s​ ​f​u​n​c​t​i​o​n
+	 */
+	NOT_ENOUGH_PLAYERS_ENROLLED: string
 }
 
 export type TranslationFunctions = {
@@ -193,9 +201,17 @@ export type TranslationFunctions = {
 	 */
 	REGISTER_CHOOSE_YOURSELF: () => LocalizedString
 	/**
-	 * {name}, you have been registered successfully!
+	 * {name}, you have been registered successfully
 	 */
 	REGISTER_SUCCESS: (arg: { name: string }) => LocalizedString
+	/**
+	 * You are already registered
+	 */
+	REGISTER_ALREADY_REGISTERED: () => LocalizedString
+	/**
+	 * Not enough players enrolled for this function
+	 */
+	NOT_ENOUGH_PLAYERS_ENROLLED: () => LocalizedString
 }
 
 export type Formatters = {}
