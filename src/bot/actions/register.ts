@@ -10,12 +10,23 @@ const initializer: ActionInitializer = async ctx => {
   await game.refreshData({ logger })
 
   const players = (await game.getPlayers()).filter(({ isCompanion }) => !isCompanion)
-  const chunkedPlayers = chunk(players, 1)
 
-  await ctx.replyWithHTML(ctx.lang.REGISTER_CHOOSE_YOURSELF(), {
+  if (players.length === 0) {
+    return await ctx.replyWithHTML('No players.')
+  }
+
+  const alreadyRegisteredPlayer = players.find(({ telegramUserId }) => telegramUserId !== undefined && telegramUserId === ctx.from.id)
+
+  if (alreadyRegisteredPlayer !== undefined) {
+    return await ctx.reply(ctx.lang.REGISTER_ALREADY_REGISTERED())
+  }
+
+  const chunkedPlayers = chunk(players, 2)
+
+  await ctx.reply(ctx.lang.REGISTER_CHOOSE_YOURSELF(), {
     reply_markup: {
       inline_keyboard: chunkedPlayers.map(players => [
-        ...players.map(player => ({ text: `${player.name} ${player.clanEmoji ?? ''}`, callback_data: `register-${player.tableRow}` }))
+        ...players.filter(({ telegramUserId }) => telegramUserId === undefined).map(player => ({ text: `${player.name} ${player.clanEmoji ?? ''}`, callback_data: `register-${player.tableRow}` }))
       ])
     }
   })
@@ -24,9 +35,13 @@ const initializer: ActionInitializer = async ctx => {
 const handler: ActionHandler = async ctx => {
   const { game } = ctx
 
-  const tableRow = ctx.match[1]
+  const tableRow = parseInt(ctx.match[1])
 
-  const player = await game.registerPlayer(+tableRow, ctx.callbackQuery.from.id)
+  if (Number.isNaN(tableRow)) {
+    throw new Error('Register handler data is wrong.')
+  }
+
+  const player = await game.registerPlayer(tableRow, ctx.callbackQuery.from.id)
 
   return await ctx.reply(ctx.lang.REGISTER_SUCCESS({ name: player.name }))
 }
