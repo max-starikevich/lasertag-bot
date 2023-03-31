@@ -34,7 +34,7 @@ const ru: MappedTranslation = {
   REGISTER_SUCCESS: '{name:string}, вы успешно зарегистрированы',
   REGISTER_ALREADY_REGISTERED: 'Вы уже зарегистрированы',
 
-  NOT_ENOUGH_PLAYERS_ENROLLED: 'Записано недостаточно игроков для этой функции'
+  NOT_ENOUGH_PLAYERS_ENROLLED: '🤷 Записано недостаточно игроков для этой функции'
 }
 
 export default ru

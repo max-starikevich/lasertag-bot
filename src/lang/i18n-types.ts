@@ -110,7 +110,7 @@ type RootTranslation = {
 	 */
 	REGISTER_ALREADY_REGISTERED: string
 	/**
-	 * N​o​t​ ​e​n​o​u​g​h​ ​p​l​a​y​e​r​s​ ​e​n​r​o​l​l​e​d​ ​f​o​r​ ​t​h​i​s​ ​f​u​n​c​t​i​o​n
+	 * �​�​ ​N​o​t​ ​e​n​o​u​g​h​ ​p​l​a​y​e​r​s​ ​e​n​r​o​l​l​e​d​ ​f​o​r​ ​t​h​i​s​ ​f​u​n​c​t​i​o​n
 	 */
 	NOT_ENOUGH_PLAYERS_ENROLLED: string
 }
@@ -209,7 +209,7 @@ export type TranslationFunctions = {
 	 */
 	REGISTER_ALREADY_REGISTERED: () => LocalizedString
 	/**
-	 * Not enough players enrolled for this function
+	 * 🤷 Not enough players enrolled for this function
 	 */
 	NOT_ENOUGH_PLAYERS_ENROLLED: () => LocalizedString
 }

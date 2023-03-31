@@ -34,7 +34,7 @@ const en: BaseTranslation = {
   REGISTER_SUCCESS: '{name:string}, you have been registered successfully',
   REGISTER_ALREADY_REGISTERED: 'You are already registered',
 
-  NOT_ENOUGH_PLAYERS_ENROLLED: 'Not enough players enrolled for this function'
+  NOT_ENOUGH_PLAYERS_ENROLLED: '🤷 Not enough players enrolled for this function'
 }
 
 export default en

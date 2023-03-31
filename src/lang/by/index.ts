@@ -34,7 +34,7 @@ const by: MappedTranslation = {
   REGISTER_SUCCESS: '{name:string}, вы паспяхова зарэгістраваны',
   REGISTER_ALREADY_REGISTERED: 'Вы ўжо зарэгістраваны',
 
-  NOT_ENOUGH_PLAYERS_ENROLLED: 'Записана недастаткова гульцоў дзеля гэтай функцыі'
+  NOT_ENOUGH_PLAYERS_ENROLLED: '🤷 Записана недастаткова гульцоў дзеля гэтай функцыі'
 }
 
 export default by
