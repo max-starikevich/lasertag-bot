@@ -16,6 +16,10 @@ export const parseJsonSafe = (json: string): any => {
 }
 
 export const extractString = (data: any): string | undefined => {
+  if (data == null) {
+    return undefined
+  }
+
   const str = (String(data)).trim()
 
   if (str.length === 0) {

@@ -27,7 +27,7 @@ export class Game implements IGame {
 
   getClanPlayers = async (): Promise<ClanPlayer[]> => {
     const players = await this.getPlayers()
-    return players.filter((player): player is ClanPlayer => player.clanName != null)
+    return players.filter((player): player is ClanPlayer => player.clanName !== undefined)
   }
 
   getTeams = async (): Promise<Teams> => {
