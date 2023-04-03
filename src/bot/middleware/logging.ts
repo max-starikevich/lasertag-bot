@@ -1,6 +1,7 @@
 import { MiddlewareFn } from 'telegraf'
 
-import { makeLogger } from '../../logger'
+import { makeLogger } from '$/logger'
+
 import { GameContext } from '../types'
 
 export const loggingMiddleware: MiddlewareFn<GameContext> = async (ctx, next) => {
