@@ -64,7 +64,7 @@ type RootTranslation = {
 	 */
 	REGISTER_COMMAND_DESCRIPTION: string
 	/**
-	 * B​a​l​a​n​c​e
+	 * T​e​a​m​ ​b​a​l​a​n​c​e
 	 */
 	TEAMS_BALANCE: string
 	/**
@@ -109,6 +109,10 @@ type RootTranslation = {
 	 * Y​o​u​ ​a​r​e​ ​a​l​r​e​a​d​y​ ​r​e​g​i​s​t​e​r​e​d
 	 */
 	REGISTER_ALREADY_REGISTERED: string
+	/**
+	 * W​r​o​n​g​ ​d​a​t​a​ ​p​r​o​v​i​d​e​d
+	 */
+	REGISTER_HANDLER_WRONG_DATA: string
 	/**
 	 * �​�​ ​N​o​t​ ​e​n​o​u​g​h​ ​p​l​a​y​e​r​s​ ​e​n​r​o​l​l​e​d​ ​f​o​r​ ​t​h​i​s​ ​f​u​n​c​t​i​o​n
 	 */
@@ -165,7 +169,7 @@ export type TranslationFunctions = {
 	 */
 	REGISTER_COMMAND_DESCRIPTION: () => LocalizedString
 	/**
-	 * Balance
+	 * Team balance
 	 */
 	TEAMS_BALANCE: () => LocalizedString
 	/**
@@ -208,6 +212,10 @@ export type TranslationFunctions = {
 	 * You are already registered
 	 */
 	REGISTER_ALREADY_REGISTERED: () => LocalizedString
+	/**
+	 * Wrong data provided
+	 */
+	REGISTER_HANDLER_WRONG_DATA: () => LocalizedString
 	/**
 	 * 🤷 Not enough players enrolled for this function
 	 */

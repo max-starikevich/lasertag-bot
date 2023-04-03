@@ -7,7 +7,7 @@ const by: MappedTranslation = {
   ABOUT_SOURCE_CODE: 'Зыходны код',
   ABOUT_COMMAND_DESCRIPTION: 'Інфармацыя аб боце',
 
-  CLANS_COMMAND_DESCRIPTION: 'Информация аб кланах',
+  CLANS_COMMAND_DESCRIPTION: 'Інфармацыя аб кланах',
 
   HELP_COMMAND_DESCRIPTION: 'Паказаць даступныя каманды',
   HELP_TITLE: 'Даступныя каманды',
@@ -20,7 +20,7 @@ const by: MappedTranslation = {
 
   REGISTER_COMMAND_DESCRIPTION: 'Зарэгістравацца',
 
-  TEAMS_BALANCE: 'Баланс',
+  TEAMS_BALANCE: 'Баланс каманд',
   RECORDED: 'Запісана',
   RENT_NEEDED: 'Патрэбны пракат',
 
@@ -33,6 +33,7 @@ const by: MappedTranslation = {
   REGISTER_CHOOSE_YOURSELF: 'Выберыце сваё імя са спісу',
   REGISTER_SUCCESS: '{name:string}, вы паспяхова зарэгістраваны',
   REGISTER_ALREADY_REGISTERED: 'Вы ўжо зарэгістраваны',
+  REGISTER_HANDLER_WRONG_DATA: 'Уведзены няправільныя дадзеныя',
 
   NOT_ENOUGH_PLAYERS_ENROLLED: '🤷 Записана недастаткова гульцоў дзеля гэтай функцыі'
 }

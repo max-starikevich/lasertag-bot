@@ -20,7 +20,7 @@ const en: BaseTranslation = {
 
   REGISTER_COMMAND_DESCRIPTION: 'Register',
 
-  TEAMS_BALANCE: 'Balance',
+  TEAMS_BALANCE: 'Team balance',
   RECORDED: 'Recorded',
   RENT_NEEDED: 'Rent',
 
@@ -33,6 +33,7 @@ const en: BaseTranslation = {
   REGISTER_CHOOSE_YOURSELF: 'Choose your name from the list',
   REGISTER_SUCCESS: '{name:string}, you have been registered successfully',
   REGISTER_ALREADY_REGISTERED: 'You are already registered',
+  REGISTER_HANDLER_WRONG_DATA: 'Wrong data provided',
 
   NOT_ENOUGH_PLAYERS_ENROLLED: '🤷 Not enough players enrolled for this function'
 }
