@@ -4,10 +4,9 @@ import { partition } from 'lodash'
 import { Command, CommandHandler } from '../types'
 
 const handler: CommandHandler = async (ctx) => {
-  const { game, logger } = ctx
+  const { game, lang, locale } = ctx
 
-  await game.refreshData({ logger })
-  const [allPlayers, placeAndTime] = await Promise.all([game.getPlayers(), game.getPlaceAndTime()])
+  const [allPlayers, placeAndTime] = await Promise.all([game.getPlayers(), game.getPlaceAndTime(locale)])
   const activePlayers = allPlayers.filter(({ count }) => count > 0)
 
   const [readyPlayers, questionablePlayers] = partition(
@@ -16,18 +15,19 @@ const handler: CommandHandler = async (ctx) => {
   )
 
   const playersWithComments = allPlayers.filter(
-    ({ comment }) => comment.length > 0
+    ({ comment }) => comment !== undefined && comment.length > 0
   )
 
   if (activePlayers.length === 0) {
-    return await ctx.reply(ctx.lang.NOT_ENOUGH_PLAYERS_ENROLLED())
+    return await ctx.reply(lang.NOT_ENOUGH_PLAYERS_ENROLLED())
   }
 
   await ctx.replyWithHTML(dedent`
-    📅 <b>${placeAndTime}</b>
+    📍 <b>${placeAndTime.location}</b>
+    📅 <b>${placeAndTime.date}</b>
 
-    ${ctx.lang.RECORDED()}: ${readyPlayers.length}
-    ${ctx.lang.RENT_NEEDED()}: ${allPlayers.reduce(
+    ${lang.RECORDED()}: ${readyPlayers.length}
+    ${lang.RENT_NEEDED()}: ${allPlayers.reduce(
         (rentSum, { rentCount }) => rentSum + rentCount,
       0)}
   `)

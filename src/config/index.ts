@@ -25,19 +25,10 @@ export const requiredConfigInput = {
   GOOGLE_PRIVATE_KEY: process.env.GOOGLE_PRIVATE_KEY as string,
   GOOGLE_SPREADSHEET_ID: process.env.GOOGLE_SPREADSHEET_ID as string,
 
-  START_FROM_ROW: parseInt(process.env.START_FROM_ROW ?? '1'),
-  MAX_ROW_NUMBER: parseInt(process.env.MAX_ROW_NUMBER ?? '100'),
-  NAME_COLUMN: process.env.NAME_COLUMN as string,
-  RATING_COLUMN: process.env.RATING_COLUMN as string,
-  CLAN_COLUMN: process.env.CLAN_COLUMN as string,
-  COUNT_COLUMN: process.env.COUNT_COLUMN as string,
-  RENT_COLUMN: process.env.RENT_COLUMN as string,
-  COMMENT_COLUMN: process.env.COMMENT_COLUMN as string,
-  TELEGRAM_USER_ID_COLUMN: process.env.TELEGRAM_USER_ID_COLUMN as string,
-  DEFAULT_RATING_LEVEL: parseInt(process.env.DEFAULT_RATING_LEVEL ?? '0'),
-  PLACE_AND_TIME_CELLS: (process.env.PLACE_AND_TIME_CELLS ?? '').split(
-    ','
-  )
+  PLAYERS_SHEETS_ID: process.env.PLAYERS_SHEETS_ID as string,
+  GAME_SHEETS_ID: process.env.GAME_SHEETS_ID as string,
+
+  DEFAULT_RATING_LEVEL: parseInt(process.env.DEFAULT_RATING_LEVEL ?? '0')
 }
 
 const config = { ...defaultConfig, ...requiredConfigInput }
