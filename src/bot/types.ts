@@ -1,12 +1,14 @@
 import { Context, NarrowedContext } from 'telegraf'
 import { ChatMember, Message, Update } from 'telegraf/typings/core/types/typegram'
 
-import { IGame } from '$/game/types'
+import { BaseGame } from '$/game/types'
+import { Player } from '$/game/player/types'
+
 import { BaseLogger } from '$/logger/types'
 import { Locales, TranslationFunctions } from '$/lang/i18n-types'
 
 export interface GameContext extends Context {
-  game: IGame
+  game: BaseGame
   logger: BaseLogger
 
   isAdmin: boolean
@@ -19,6 +21,8 @@ export interface GameContext extends Context {
 
   lang: TranslationFunctions
   locale: Locales
+
+  currentPlayer: Player | undefined
 }
 
 export type CommandHandler = (ctx: NarrowedContext<GameContext, Update.MessageUpdate<Message.TextMessage>>) => Promise<any>

@@ -11,13 +11,14 @@ import { groupChatMiddleware } from './group-chat'
 
 import { help } from '../commands/help'
 import { actions } from '../actions'
+import { playerMiddleware } from './player'
 
 export type BotMiddleware = MiddlewareFn<NarrowedContext<GameContext, Update.MessageUpdate>>
 export type BotCallbackMiddleware = MiddlewareFn<NarrowedContext<GameContext, Update.CallbackQueryUpdate>>
 
 export const setBotMiddlewares = (bot: Telegraf<GameContext>): void => {
   bot.on('callback_query', loggingMiddleware)
-  bot.on('message', loggingMiddleware, analyticsMiddleware, accessMiddleware, groupChatMiddleware)
+  bot.on('message', loggingMiddleware, analyticsMiddleware, accessMiddleware, groupChatMiddleware, playerMiddleware)
 
   commands.map((command) => bot.command('/' + command.name, async (ctx) => await command.handler(ctx)))
 

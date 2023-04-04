@@ -13,6 +13,7 @@ export interface Player {
   clanEmoji?: string
   isClanMember: boolean
   isAloneInClan: boolean
+  locale?: string
 }
 
 export interface ClanPlayer extends Player {
