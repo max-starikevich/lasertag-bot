@@ -10,7 +10,7 @@ const initializer: ActionInitializer = async ctx => {
   const players = (await game.getPlayers()).filter(({ isCompanion }) => !isCompanion)
 
   if (players.length === 0) {
-    return await ctx.replyWithHTML(lang.NOT_ENOUGH_PLAYERS_ENROLLED())
+    return await ctx.replyWithHTML(lang.NOT_ENOUGH_PLAYERS())
   }
 
   const alreadyRegisteredPlayer = players.find(({ telegramUserId }) => telegramUserId !== undefined && telegramUserId === ctx.from.id)
@@ -36,7 +36,7 @@ const handler: ActionHandler = async ctx => {
   const tableRow = parseInt(ctx.match[1])
 
   if (Number.isNaN(tableRow)) {
-    throw new Error(lang.REGISTER_HANDLER_WRONG_DATA())
+    throw new Error(lang.ACTION_HANDLER_WRONG_DATA())
   }
 
   const player = await game.registerPlayer(tableRow, ctx.callbackQuery.from.id)

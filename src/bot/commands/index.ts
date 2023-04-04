@@ -7,6 +7,7 @@ import { register } from './register'
 import { about } from './about'
 
 import { Command } from '../types'
+import { language } from './language'
 
 export const commands: Command[] = [
   start,
@@ -15,6 +16,7 @@ export const commands: Command[] = [
   oldTeams,
   clans,
   register,
+  language,
   about,
   help
 ]
