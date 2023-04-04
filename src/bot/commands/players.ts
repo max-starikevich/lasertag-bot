@@ -19,7 +19,7 @@ const handler: CommandHandler = async (ctx) => {
   )
 
   if (activePlayers.length === 0) {
-    return await ctx.reply(lang.NOT_ENOUGH_PLAYERS_ENROLLED())
+    return await ctx.reply(lang.NOT_ENOUGH_PLAYERS())
   }
 
   await ctx.replyWithHTML(dedent`

@@ -2,7 +2,7 @@ import { Locales } from '$/lang/i18n-types'
 
 import { ClanPlayer, Player, Teams } from './player/types'
 
-export interface IGame {
+export interface BaseGame {
   getPlayers: () => Promise<Player[]>
   getPlaceAndTime: (lang: Locales) => Promise<GameLocation>
 

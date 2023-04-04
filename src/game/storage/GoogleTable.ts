@@ -8,7 +8,7 @@ import { Locales } from '$/lang/i18n-types'
 import { extractString } from '$/utils'
 import { NoSheetsError } from '$/errors/NoSheetsError'
 
-import { IGameStorage } from './types'
+import { GameStorage } from './types'
 import { Player } from '../player/types'
 import { GameLocation } from '../types'
 
@@ -25,7 +25,7 @@ interface GoogleTableConstructorParams {
   gameSheetsId: string
 }
 
-export class GoogleTableGameStorage implements IGameStorage {
+export class GoogleTableGameStorage implements GameStorage {
   protected spreadsheetId: string
   protected privateKey: string
   protected email: string
@@ -101,6 +101,7 @@ export class GoogleTableGameStorage implements IGameStorage {
       const comment = row.comment
       const clanName = extractString(row.clanName)
       const telegramUserId = row.telegramUserId
+      const lang = extractString(row.lang)
 
       const player: Player = {
         tableRow: row.rowIndex,
@@ -116,7 +117,8 @@ export class GoogleTableGameStorage implements IGameStorage {
         clanName,
         clanEmoji: clanName?.match(/\p{Emoji}+/gu)?.[0],
         isClanMember: clanName !== undefined,
-        isAloneInClan: true // will be overriden later
+        isAloneInClan: true, // will be overriden later
+        locale: lang
       }
 
       if (count > 1) {

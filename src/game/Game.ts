@@ -1,5 +1,5 @@
-import { IGameStorage } from './storage/types'
-import { GameLocation, IGame } from './types'
+import { GameStorage } from './storage/types'
+import { GameLocation, BaseGame } from './types'
 import { ClanPlayer, Player, Teams } from './player/types'
 import { getBalancedTeams } from './player/balance/classic'
 import { getBalancedTeamsWithClans } from './player/balance/clans'
@@ -7,11 +7,11 @@ import { sortTeamsByClans } from './player/balance/utils'
 import { Locales } from '$/lang/i18n-types'
 
 interface GameConstructorParams {
-  storage: IGameStorage
+  storage: GameStorage
 }
 
-export class Game implements IGame {
-  protected storage: IGameStorage
+export class Game implements BaseGame {
+  protected storage: GameStorage
 
   constructor ({ storage }: GameConstructorParams) {
     this.storage = storage
