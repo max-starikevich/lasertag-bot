@@ -64,6 +64,10 @@ type RootTranslation = {
 	 */
 	REGISTER_COMMAND_DESCRIPTION: string
 	/**
+	 * C​h​o​o​s​e​ ​l​a​n​g​u​a​g​e
+	 */
+	LANGUAGE_COMMAND_DESCRIPTION: string
+	/**
 	 * T​e​a​m​ ​b​a​l​a​n​c​e
 	 */
 	TEAMS_BALANCE: string
@@ -112,11 +116,19 @@ type RootTranslation = {
 	/**
 	 * W​r​o​n​g​ ​d​a​t​a​ ​p​r​o​v​i​d​e​d
 	 */
-	REGISTER_HANDLER_WRONG_DATA: string
+	ACTION_HANDLER_WRONG_DATA: string
 	/**
-	 * �​�​ ​N​o​t​ ​e​n​o​u​g​h​ ​p​l​a​y​e​r​s​ ​e​n​r​o​l​l​e​d​ ​f​o​r​ ​t​h​i​s​ ​f​u​n​c​t​i​o​n
+	 * �​�​ ​N​o​t​ ​e​n​o​u​g​h​ ​p​l​a​y​e​r​s​ ​f​o​r​ ​t​h​i​s​ ​f​u​n​c​t​i​o​n
 	 */
-	NOT_ENOUGH_PLAYERS_ENROLLED: string
+	NOT_ENOUGH_PLAYERS: string
+	/**
+	 * C​h​o​o​s​e​ ​l​a​n​g​u​a​g​e
+	 */
+	LANGUAGE_CHOOSE: string
+	/**
+	 * L​a​n​g​u​a​g​e​ ​h​a​s​ ​b​e​e​n​ ​s​e​t​ ​s​u​c​c​e​s​s​f​u​l​l​y
+	 */
+	LANGUAGE_CHOOSE_SUCCESS: string
 }
 
 export type TranslationFunctions = {
@@ -169,6 +181,10 @@ export type TranslationFunctions = {
 	 */
 	REGISTER_COMMAND_DESCRIPTION: () => LocalizedString
 	/**
+	 * Choose language
+	 */
+	LANGUAGE_COMMAND_DESCRIPTION: () => LocalizedString
+	/**
 	 * Team balance
 	 */
 	TEAMS_BALANCE: () => LocalizedString
@@ -215,11 +231,19 @@ export type TranslationFunctions = {
 	/**
 	 * Wrong data provided
 	 */
-	REGISTER_HANDLER_WRONG_DATA: () => LocalizedString
+	ACTION_HANDLER_WRONG_DATA: () => LocalizedString
 	/**
-	 * 🤷 Not enough players enrolled for this function
+	 * 🤷 Not enough players for this function
 	 */
-	NOT_ENOUGH_PLAYERS_ENROLLED: () => LocalizedString
+	NOT_ENOUGH_PLAYERS: () => LocalizedString
+	/**
+	 * Choose language
+	 */
+	LANGUAGE_CHOOSE: () => LocalizedString
+	/**
+	 * Language has been set successfully
+	 */
+	LANGUAGE_CHOOSE_SUCCESS: () => LocalizedString
 }
 
 export type Formatters = {}

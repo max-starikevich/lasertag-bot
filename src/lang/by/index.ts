@@ -20,6 +20,8 @@ const by: MappedTranslation = {
 
   REGISTER_COMMAND_DESCRIPTION: 'Зарэгістравацца',
 
+  LANGUAGE_COMMAND_DESCRIPTION: 'Выбярыце мову',
+
   TEAMS_BALANCE: 'Баланс каманд',
   RECORDED: 'Запісана',
   RENT_NEEDED: 'Патрэбны пракат',
@@ -33,9 +35,12 @@ const by: MappedTranslation = {
   REGISTER_CHOOSE_YOURSELF: 'Выберыце сваё імя са спісу',
   REGISTER_SUCCESS: '{name:string}, вы паспяхова зарэгістраваны',
   REGISTER_ALREADY_REGISTERED: 'Вы ўжо зарэгістраваны',
-  REGISTER_HANDLER_WRONG_DATA: 'Уведзены няправільныя дадзеныя',
+  ACTION_HANDLER_WRONG_DATA: 'Уведзены няправільныя дадзеныя',
 
-  NOT_ENOUGH_PLAYERS_ENROLLED: '🤷 Записана недастаткова гульцоў дзеля гэтай функцыі'
+  NOT_ENOUGH_PLAYERS: '🤷 Недастаткова гульцоў дзеля гэтай функцыі',
+
+  LANGUAGE_CHOOSE: 'Выбярыце мову',
+  LANGUAGE_CHOOSE_SUCCESS: 'Мова выбрана пасьпяхова'
 }
 
 export default by
