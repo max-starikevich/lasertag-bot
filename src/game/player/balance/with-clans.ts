@@ -48,7 +48,7 @@ const balanceTeamsNTimes = (teams: Teams, attemptAmount: number): Teams => {
   let currentTeams = teams
 
   for (let n = 1; n <= attemptAmount; n++) {
-    currentTeams = balanceTeams(currentTeams)
+    currentTeams = sortTeamsByRatings(balanceBySwap(balanceByMove(currentTeams)))
     const [level1, level2] = getTeamsLevels(currentTeams)
 
     if (Math.abs(level1 - level2) <= 1) {
@@ -57,22 +57,6 @@ const balanceTeamsNTimes = (teams: Teams, attemptAmount: number): Teams => {
   }
 
   return currentTeams
-}
-
-const balanceTeams = (teams: Teams): Teams => {
-  const [level1, level2] = getTeamsLevels(teams)
-
-  const levelDifference = level1 - level2
-
-  if (Math.abs(levelDifference) <= 1) {
-    return teams
-  }
-
-  return shiftBalance(teams)
-}
-
-const shiftBalance = (teams: Teams): Teams => {
-  return sortTeamsByRatings(balanceBySwap(balanceByMove(teams)))
 }
 
 interface MoveCandidate {
@@ -135,7 +119,7 @@ const balanceBySwap = ([team1, team2]: Teams): Teams => {
 
       const playerDifference = strongerPlayer.level - weakerPlayer.level
 
-      if (playerDifference > 0 && playerDifference <= levelDifference) {
+      if (playerDifference > 0 && playerDifference <= levelDifference / 2) {
         swapCandidatesRaw.push({
           strongerPlayerIndex,
           weakerPlayerIndex,
