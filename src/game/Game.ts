@@ -1,8 +1,8 @@
 import { GameStorage } from './storage/types'
 import { GameLocation, BaseGame } from './types'
 import { ClanPlayer, Player, Teams } from './player/types'
-import { getBalancedTeams } from './player/balance/classic'
-import { getBalancedTeamsWithClans } from './player/balance/clans'
+import { getBalancedTeams } from './player/balance/no-clans'
+import { getBalancedTeamsWithClans } from './player/balance/with-clans'
 import { sortTeamsByClans } from './player/balance/utils'
 import { Locales } from '$/lang/i18n-types'
 

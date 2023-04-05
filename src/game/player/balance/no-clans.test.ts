@@ -1,15 +1,15 @@
 import { times } from 'lodash'
 
 import { getRandomArray } from '../../../utils.dev'
-import { getBalancedTeams } from './classic'
+import { getBalancedTeams } from './no-clans'
 import { Player } from '../types'
 import { getTeamsLevels } from './utils'
 
-describe('balance/classic.ts', () => {
+describe('balance/no-clans.ts', () => {
   describe('getBalancedTeams()', () => {
     const numberOfTries = 10000
-    const playerCount = 20
-    const maxLevel = 14
+    const playerCount = 16
+    const maxLevel = 10
     const targetSuccessPercentage = 97
 
     it(`should balance properly with ${playerCount} random players in ${targetSuccessPercentage}%+ cases after ${numberOfTries} tries`, () => {
