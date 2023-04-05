@@ -67,13 +67,13 @@ interface MoveCandidate {
   level: number
 }
 
+// move one player between teams to correct the balance
 const balanceByMove = ([team1, team2]: Teams): Teams => {
   const [level1, level2] = getTeamsLevels([team1, team2])
   const teamLevelDifference = Math.abs(level1 - level2)
   const strongTeam = level1 > level2 ? team1 : team2
   const weakTeam = level1 > level2 ? team2 : team1
 
-  // trying to find a candidate to move from a weak team to a strong one
   const moveCandidates = strongTeam.reduce<MoveCandidate[]>((candidates, strongPlayer, index) => {
     if (strongPlayer.level <= teamLevelDifference) {
       return [...candidates, { index, level: strongPlayer.level }]
@@ -103,6 +103,7 @@ interface SwapCandidate {
   playerDifference: number
 }
 
+// swap two players to correct the balance
 const balanceBySwap = ([team1, team2]: Teams): Teams => {
   const [level1, level2] = getTeamsLevels([team1, team2])
   const levelDifference = Math.abs(level1 - level2)
