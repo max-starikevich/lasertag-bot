@@ -5,18 +5,16 @@ import { Action, ActionHandler, ActionInitializer } from '../types'
 const actionName = /^register-(\d+)$/
 
 const initializer: ActionInitializer = async ctx => {
-  const { game, lang } = ctx
+  const { game, lang, currentPlayer } = ctx
+
+  if (currentPlayer !== undefined) {
+    return await ctx.reply(lang.REGISTER_ALREADY_REGISTERED())
+  }
 
   const players = (await game.getPlayers()).filter(({ isCompanion }) => !isCompanion)
 
   if (players.length === 0) {
     return await ctx.replyWithHTML(lang.NOT_ENOUGH_PLAYERS())
-  }
-
-  const alreadyRegisteredPlayer = players.find(({ telegramUserId }) => telegramUserId !== undefined && telegramUserId === ctx.from.id)
-
-  if (alreadyRegisteredPlayer !== undefined) {
-    return await ctx.reply(lang.REGISTER_ALREADY_REGISTERED())
   }
 
   const chunkedPlayers = chunk(players, 2)
@@ -35,13 +33,21 @@ const handler: ActionHandler = async ctx => {
 
   const tableRow = parseInt(ctx.match[1])
 
-  if (Number.isNaN(tableRow)) {
-    throw new Error(lang.ACTION_HANDLER_WRONG_DATA())
+  if (ctx.from === undefined || Number.isNaN(tableRow)) {
+    return await ctx.reply(lang.ACTION_HANDLER_WRONG_DATA())
   }
 
-  const player = await game.registerPlayer(tableRow, ctx.callbackQuery.from.id)
+  const players = await game.getPlayers()
+  const targetPlayer = players.find(player => player.tableRow === tableRow)
 
-  return await ctx.reply(lang.REGISTER_SUCCESS({ name: player.name }))
+  if (targetPlayer === undefined) {
+    return await ctx.reply(lang.ACTION_HANDLER_WRONG_DATA())
+  }
+
+  targetPlayer.telegramUserId = ctx.from.id
+  await game.savePlayer(targetPlayer)
+
+  return await ctx.reply(lang.REGISTER_SUCCESS({ name: targetPlayer.name }))
 }
 
 export const register: Action = {

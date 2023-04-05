@@ -6,13 +6,14 @@ import { checkEnvironment } from '$/config/check'
 import { GameContext } from '$/bot/types'
 import { commands } from '$/bot/commands'
 import { setBotActions, setBotMiddlewares } from '$/bot/middleware'
-import { reportException } from '$/errors'
 
+import { Game } from '$/game/Game'
+import { GoogleTableGameStorage } from '$/game/storage/google-table'
+import { reportException } from '$/errors'
 import L from '$/lang/i18n-node'
 import { defaultLocale } from '$/lang/i18n-custom'
+
 import { errorMiddleware } from './middleware/error'
-import { Game } from '../game/Game'
-import { GoogleTableGameStorage } from '../game/storage/GoogleTable'
 
 export const commandsInMenu = commands.filter(
   ({ showInMenu }) => showInMenu
