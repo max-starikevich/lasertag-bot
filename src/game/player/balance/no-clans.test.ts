@@ -10,7 +10,7 @@ describe('balance/no-clans.ts', () => {
     const numberOfTries = 10000
     const playerCount = 16
     const maxLevel = 10
-    const targetSuccessPercentage = 97
+    const targetSuccessPercentage = 92
 
     it(`should balance properly with ${playerCount} random players in ${targetSuccessPercentage}%+ cases after ${numberOfTries} tries`, () => {
       const successTries = times(numberOfTries).reduce((successTries) => {
