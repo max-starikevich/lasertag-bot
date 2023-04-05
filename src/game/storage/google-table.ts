@@ -9,8 +9,9 @@ import { extractString } from '$/utils'
 import { NoSheetsError } from '$/errors/NoSheetsError'
 
 import { GameStorage } from './types'
-import { Player } from '../player/types'
+import { EditablePlayerFields, Player } from '../player/types'
 import { GameLocation } from '../types'
+import { getCellsMapByRow } from './utils'
 
 const {
   DEFAULT_RATING_LEVEL
@@ -100,8 +101,8 @@ export class GoogleTableGameStorage implements GameStorage {
       const level = +(row.level ?? `${DEFAULT_RATING_LEVEL}`)
       const comment = row.comment
       const clanName = extractString(row.clanName)
-      const telegramUserId = row.telegramUserId
-      const lang = extractString(row.lang)
+      const telegramUserId = extractString(row.telegramUserId)
+      const locale = extractString(row.locale)
 
       const player: Player = {
         tableRow: row.rowIndex,
@@ -118,7 +119,7 @@ export class GoogleTableGameStorage implements GameStorage {
         clanEmoji: clanName?.match(/\p{Emoji}+/gu)?.[0],
         isClanMember: clanName !== undefined,
         isAloneInClan: true, // will be overriden later
-        locale: lang
+        locale
       }
 
       if (count > 1) {
@@ -202,5 +203,47 @@ export class GoogleTableGameStorage implements GameStorage {
       location: gamePlaceRow.location,
       date: gamePlaceRow.date
     }
+  }
+
+  savePlayer = async (player: Player): Promise<Player> => {
+    if (this.playerSheets === undefined) {
+      await this.init()
+    }
+
+    if (this.playerSheets === undefined) {
+      throw new NoSheetsError()
+    }
+
+    const rows = await this.playerSheets.getRows()
+    const targetRow = rows.find(row => row.rowIndex === player.tableRow)
+
+    if (targetRow === undefined) {
+      throw new Error()
+    }
+
+    const cellsMap = await getCellsMapByRow(targetRow)
+
+    for (const fieldName of EditablePlayerFields) {
+      const nextValue = player[fieldName]
+
+      if (nextValue === undefined) {
+        continue
+      }
+
+      const cell = cellsMap[fieldName]
+
+      if (cell === undefined) {
+        continue
+      }
+
+      if (nextValue === cell.value) {
+        continue
+      }
+
+      cell.value = nextValue
+      await cell.save()
+    }
+
+    return player
   }
 }

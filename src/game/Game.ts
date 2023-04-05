@@ -54,15 +54,7 @@ export class Game implements BaseGame {
     return sortTeamsByClans([team1, team2])
   }
 
-  registerPlayer = async (tableRow: number, userId: number): Promise<Player> => {
-    const players = await this.storage.getPlayers()
-
-    const targetPlayer = players.find(({ telegramUserId }) => telegramUserId === userId)
-
-    if (targetPlayer == null) {
-      throw new Error()
-    }
-
-    return targetPlayer
+  savePlayer = async (player: Player): Promise<Player> => {
+    return await this.storage.savePlayer(player)
   }
 }

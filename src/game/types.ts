@@ -10,7 +10,7 @@ export interface BaseGame {
   getTeams: () => Promise<Teams>
   getTeamsWithClans: () => Promise<Teams>
 
-  registerPlayer: (tableRow: number, telegramUserId: number) => Promise<Player>
+  savePlayer: (player: Player) => Promise<Player>
 }
 
 export interface GameLocation {

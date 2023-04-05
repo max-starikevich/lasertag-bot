@@ -6,4 +6,5 @@ import { GameLocation } from '../types'
 export interface GameStorage {
   getPlayers: () => Promise<Player[]>
   getPlaceAndTime: (lang: Locales) => Promise<GameLocation>
+  savePlayer: (player: Player) => Promise<Player>
 }
