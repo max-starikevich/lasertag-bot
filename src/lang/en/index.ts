@@ -35,6 +35,8 @@ const en: BaseTranslation = {
   REGISTER_CHOOSE_YOURSELF: 'Choose your name from the list',
   REGISTER_SUCCESS: '{name:string}, you have been registered successfully',
   REGISTER_ALREADY_REGISTERED: 'You are already registered',
+  REGISTER_REQUIRED: 'Registration is required for this functionality. Use /{registerCommandName:string} to proceed.',
+
   ACTION_HANDLER_WRONG_DATA: 'Wrong data provided',
 
   NOT_ENOUGH_PLAYERS: '🤷 Not enough players for this function',

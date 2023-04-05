@@ -114,6 +114,11 @@ type RootTranslation = {
 	 */
 	REGISTER_ALREADY_REGISTERED: string
 	/**
+	 * R​e​g​i​s​t​r​a​t​i​o​n​ ​i​s​ ​r​e​q​u​i​r​e​d​ ​f​o​r​ ​t​h​i​s​ ​f​u​n​c​t​i​o​n​a​l​i​t​y​.​ ​U​s​e​ ​/​{​r​e​g​i​s​t​e​r​C​o​m​m​a​n​d​N​a​m​e​}​ ​t​o​ ​p​r​o​c​e​e​d​.
+	 * @param {string} registerCommandName
+	 */
+	REGISTER_REQUIRED: RequiredParams<'registerCommandName'>
+	/**
 	 * W​r​o​n​g​ ​d​a​t​a​ ​p​r​o​v​i​d​e​d
 	 */
 	ACTION_HANDLER_WRONG_DATA: string
@@ -228,6 +233,10 @@ export type TranslationFunctions = {
 	 * You are already registered
 	 */
 	REGISTER_ALREADY_REGISTERED: () => LocalizedString
+	/**
+	 * Registration is required for this functionality. Use /{registerCommandName} to proceed.
+	 */
+	REGISTER_REQUIRED: (arg: { registerCommandName: string }) => LocalizedString
 	/**
 	 * Wrong data provided
 	 */
