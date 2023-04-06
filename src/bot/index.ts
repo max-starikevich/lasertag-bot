@@ -7,7 +7,7 @@ import { GameContext } from '$/bot/types'
 import { commands } from '$/bot/commands'
 import { setBotActions, setBotMiddlewares } from '$/bot/middleware'
 
-import { Game } from '$/game/Game'
+import { Game } from '$/game'
 import { GoogleTableGameStorage } from '$/game/storage/google-table'
 import { reportException } from '$/errors'
 import L from '$/lang/i18n-node'
