@@ -34,7 +34,7 @@ const balanceByMove = ([team1, team2]: Teams, withClans: boolean): Teams => {
   const weakTeam = level1 > level2 ? team2 : team1
 
   const moveCandidates = strongTeam.reduce<MoveCandidate[]>((candidates, strongPlayer, index) => {
-    if (withClans && strongPlayer.isAloneInClan) {
+    if (withClans && !strongPlayer.isAlone) {
       return candidates
     }
 
@@ -80,7 +80,7 @@ const balanceBySwap = ([team1, team2]: Teams, withClans: boolean): Teams => {
       const strongerPlayer = strongTeam[strongerPlayerIndex]
       const weakerPlayer = weakTeam[weakerPlayerIndex]
 
-      if (withClans && (!strongerPlayer.isAloneInClan || !weakerPlayer.isAloneInClan)) {
+      if (withClans && (!strongerPlayer.isAlone || !weakerPlayer.isAlone)) {
         continue
       }
 

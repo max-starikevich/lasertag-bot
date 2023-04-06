@@ -12,7 +12,7 @@ export interface Player {
   clanName?: string
   clanEmoji?: string
   isClanMember: boolean
-  isAloneInClan: boolean
+  isAlone: boolean
 
   locale?: string
   telegramUserId?: number

@@ -118,7 +118,7 @@ export class GoogleTableGameStorage implements GameStorage {
         clanName,
         clanEmoji: clanName?.match(/\p{Emoji}+/gu)?.[0],
         isClanMember: clanName !== undefined,
-        isAloneInClan: true, // will be overriden later
+        isAlone: true, // will be overriden later
         locale
       }
 
@@ -136,7 +136,7 @@ export class GoogleTableGameStorage implements GameStorage {
             comment: '',
             level: DEFAULT_RATING_LEVEL,
             isCompanion: true,
-            isAloneInClan: true,
+            isAlone: true,
             isClanMember: false,
             clanEmoji: undefined,
             clanName: undefined
@@ -177,7 +177,7 @@ export class GoogleTableGameStorage implements GameStorage {
 
       return {
         ...p,
-        isAloneInClan: false
+        isAlone: false
       }
     })
   }

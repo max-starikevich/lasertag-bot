@@ -8,7 +8,7 @@ import { getTeamsLevels } from './utils'
 describe('balance/no-clans.ts', () => {
   describe('getBalancedTeams()', () => {
     const numberOfTries = 10000
-    const playerCount = 12
+    const playerCount = 13
     const maxLevel = 10
     const targetSuccessPercentage = 99
 
@@ -28,7 +28,7 @@ describe('balance/no-clans.ts', () => {
           level: randomLevel,
           clanName: 'random-team',
           isClanMember: true,
-          isAloneInClan: true
+          isAlone: true
         }))
 
         const [team1, team2] = getBalancedTeams(players)
