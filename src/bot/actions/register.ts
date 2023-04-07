@@ -1,5 +1,7 @@
 import { chunk } from 'lodash'
 
+import { NotEnoughPlayersError } from '$/errors/NotEnoughPlayersError'
+
 import { Action, ActionHandler, ActionInitializer } from '../types'
 
 const actionName = /^register-(\d+)$/
@@ -14,7 +16,7 @@ const initializer: ActionInitializer = async ctx => {
   const players = (await game.getPlayers()).filter(({ isCompanion }) => !isCompanion)
 
   if (players.length === 0) {
-    return await ctx.replyWithHTML(lang.NOT_ENOUGH_PLAYERS())
+    throw new NotEnoughPlayersError()
   }
 
   const chunkedPlayers = chunk(players, 2)
@@ -42,6 +44,12 @@ const handler: ActionHandler = async ctx => {
 
   if (targetPlayer === undefined) {
     return await ctx.reply(lang.ACTION_HANDLER_WRONG_DATA())
+  }
+
+  const alreadyRegisteredPlayer = players.find(({ telegramUserId }) => telegramUserId === ctx.from?.id)
+
+  if (alreadyRegisteredPlayer !== undefined) {
+    return await ctx.reply(lang.REGISTER_ALREADY_REGISTERED())
   }
 
   targetPlayer.telegramUserId = ctx.from.id

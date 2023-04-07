@@ -1,8 +1,7 @@
 import { isLocaleName, localeNames } from '$/lang/i18n-custom'
 import { Locales } from '$/lang/i18n-types'
 import L from '$/lang/i18n-node'
-
-import { register } from '$/bot/commands/register'
+import { RegisterRequiredError } from '$/errors/RegisterRequiredError'
 
 import { Action, ActionHandler, ActionInitializer } from '../types'
 
@@ -12,7 +11,7 @@ const initializer: ActionInitializer = async ctx => {
   const { lang, currentPlayer } = ctx
 
   if (currentPlayer === undefined) {
-    return await ctx.reply(ctx.lang.REGISTER_REQUIRED({ registerCommandName: register.name }))
+    throw new RegisterRequiredError()
   }
 
   await ctx.reply(lang.LANGUAGE_CHOOSE(), {
@@ -31,7 +30,7 @@ const handler: ActionHandler = async ctx => {
   const { game, currentPlayer } = ctx
 
   if (currentPlayer === undefined) {
-    return await ctx.reply(ctx.lang.REGISTER_REQUIRED({ registerCommandName: register.name }))
+    throw new RegisterRequiredError()
   }
 
   const localeToSet = ctx.match[1] as Locales

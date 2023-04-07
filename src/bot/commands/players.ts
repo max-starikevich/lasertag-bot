@@ -1,6 +1,8 @@
 import dedent from 'dedent-js'
 import { partition } from 'lodash'
 
+import { NotEnoughPlayersError } from '$/errors/NotEnoughPlayersError'
+
 import { Command, CommandHandler } from '../types'
 
 const handler: CommandHandler = async (ctx) => {
@@ -19,7 +21,7 @@ const handler: CommandHandler = async (ctx) => {
   )
 
   if (activePlayers.length === 0) {
-    return await ctx.reply(lang.NOT_ENOUGH_PLAYERS())
+    throw new NotEnoughPlayersError()
   }
 
   await ctx.replyWithHTML(dedent`

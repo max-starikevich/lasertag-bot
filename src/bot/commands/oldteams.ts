@@ -1,9 +1,10 @@
 import dedent from 'dedent-js'
 import { shuffle } from 'lodash'
 
-import { Command, CommandHandler } from '../types'
-
 import { getTeamsLevels } from '$/game/player/balance/utils'
+import { NotEnoughPlayersError } from '$/errors/NotEnoughPlayersError'
+
+import { Command, CommandHandler } from '../types'
 
 const handler: CommandHandler = async (ctx) => {
   const { game, lang, locale } = ctx
@@ -11,7 +12,7 @@ const handler: CommandHandler = async (ctx) => {
   const [[redPlayers, bluePlayers], placeAndTime] = await Promise.all([game.getTeams(), game.getPlaceAndTime(locale)])
 
   if (redPlayers.length === 0 || bluePlayers.length === 0) {
-    return await ctx.reply(lang.NOT_ENOUGH_PLAYERS())
+    throw new NotEnoughPlayersError()
   }
 
   await ctx.replyWithHTML(dedent`
