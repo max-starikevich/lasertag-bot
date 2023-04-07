@@ -3,26 +3,17 @@ import { Telegraf } from 'telegraf'
 import config from '$/config'
 import { checkEnvironment } from '$/config/check'
 
-import { Game } from '$/game/Game'
-import { GoogleTable } from '$/game/table/GoogleTable'
-
 import { GameContext } from '$/bot/types'
 import { commands } from '$/bot/commands'
-import { setBotMiddlewares } from '$/bot/middleware'
+import { setBotActions, setBotMiddlewares } from '$/bot/middleware'
+
+import { Game } from '$/game'
+import { GoogleTableGameStorage } from '$/game/storage/google-table'
 import { reportException } from '$/errors'
-
 import L from '$/lang/i18n-node'
+import { defaultLocale } from '$/lang/i18n-custom'
 
-const PLAYER_DATA_TABLE_RANGES = [
-  config.NAME_COLUMN,
-  config.RATING_COLUMN,
-  config.CLAN_COLUMN,
-  config.COUNT_COLUMN,
-  config.RENT_COLUMN,
-  config.COMMENT_COLUMN
-].map((column) => `${column}${config.START_FROM_ROW}:${column}${config.MAX_ROW_NUMBER}`)
-
-const ALL_TABLE_RANGES_TO_LOAD = [...PLAYER_DATA_TABLE_RANGES, ...config.PLACE_AND_TIME_CELLS]
+import { errorMiddleware } from './middleware/error'
 
 export const commandsInMenu = commands.filter(
   ({ showInMenu }) => showInMenu
@@ -31,14 +22,15 @@ export const commandsInMenu = commands.filter(
 export const initBot = async (): Promise<Telegraf<GameContext>> => {
   await checkEnvironment()
 
-  const table = new GoogleTable({
+  const storage = new GoogleTableGameStorage({
     spreadsheetId: config.GOOGLE_SPREADSHEET_ID,
     email: config.GOOGLE_SERVICE_ACCOUNT_EMAIL,
     privateKey: config.GOOGLE_PRIVATE_KEY,
-    rangesToLoad: ALL_TABLE_RANGES_TO_LOAD
+    playerSheetsId: config.PLAYERS_SHEETS_ID,
+    gameSheetsId: config.GAME_SHEETS_ID
   })
 
-  const game = new Game(table)
+  const game = new Game({ storage })
   const bot = new Telegraf<GameContext>(config.BOT_TOKEN)
 
   bot.context.game = game
@@ -49,9 +41,13 @@ export const initBot = async (): Promise<Telegraf<GameContext>> => {
   bot.context.isGroupChat = false
   bot.context.isPrivateChat = false
 
-  bot.context.lang = L.ru
+  bot.context.lang = L[defaultLocale]
+  bot.context.locale = defaultLocale
 
   setBotMiddlewares(bot)
+  setBotActions(bot)
+
+  bot.catch(errorMiddleware)
 
   process.on('uncaughtException', e => reportException(e))
   process.on('unhandledRejection', e => reportException(e))

@@ -6,14 +6,16 @@ import { author, version, repository } from '../../../package.json'
 import { Command, CommandHandler } from '../types'
 
 const handler: CommandHandler = async (ctx) => {
-  return await ctx.replyWithHTML(dedent`
-    <b>${ctx.lang.ABOUT_PROJECT_NAME()}</b>
+  const { lang } = ctx
 
-    ${ctx.lang.ABOUT_VERSION()}: ${version}
+  return await ctx.replyWithHTML(dedent`
+    <b>${lang.ABOUT_PROJECT_NAME()}</b>
+
+    ${lang.ABOUT_VERSION()}: ${version}
     
-    ${ctx.lang.ABOUT_AUTHOR()}: ${escapeHtml(author)}
+    ${lang.ABOUT_AUTHOR()}: ${escapeHtml(author)}
     
-    ${ctx.lang.ABOUT_SOURCE_CODE()}: ${repository}
+    ${lang.ABOUT_SOURCE_CODE()}: ${repository}
   `)
 }
 

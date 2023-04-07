@@ -1,16 +1,19 @@
 import dedent from 'dedent-js'
 import { groupBy, orderBy, shuffle } from 'lodash'
 
+import { getTeamsLevels } from '$/game/player/balance/utils'
+import { NotEnoughPlayersError } from '$/errors/NotEnoughPlayersError'
+
 import { Command, CommandHandler } from '../types'
 
-import { getTeamsLevels } from '$/game/player/balance/utils'
-
 const handler: CommandHandler = async (ctx) => {
-  const { game, logger } = ctx
+  const { game, lang, locale } = ctx
 
-  await game.refreshData({ logger })
+  const [[redPlayers, bluePlayers], placeAndTime] = await Promise.all([game.getTeamsWithClans(), game.getPlaceAndTime(locale)])
 
-  const [[redPlayers, bluePlayers], placeAndTime] = await Promise.all([game.getTeamsWithClans(), game.getPlaceAndTime()])
+  if (redPlayers.length === 0 || bluePlayers.length === 0) {
+    throw new NotEnoughPlayersError()
+  }
 
   const redGroups = orderBy(
     Object.entries(
@@ -33,7 +36,8 @@ const handler: CommandHandler = async (ctx) => {
   )
 
   await ctx.replyWithHTML(dedent`
-    📅 <b>${placeAndTime}</b>
+    📅 <b>${placeAndTime.date}</b>
+    📍 <b>${placeAndTime.location}</b>
 
     🔴 ${redPlayers.length} vs. ${bluePlayers.length} 🔵
   `)
@@ -62,7 +66,7 @@ const handler: CommandHandler = async (ctx) => {
     const [redLevel, blueLevel] = getTeamsLevels([redPlayers, bluePlayers])
 
     return await ctx.replyWithHTML(dedent`
-      ⚖️ ${ctx.lang.TEAMS_BALANCE()}: 🔴 ${redLevel} 🔵 ${blueLevel}
+      ⚖️ ${lang.TEAMS_BALANCE()}: 🔴 ${Math.trunc(redLevel)} 🔵 ${Math.trunc(blueLevel)}
     `)
   }
 }

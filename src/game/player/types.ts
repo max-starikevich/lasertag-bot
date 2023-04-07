@@ -1,4 +1,6 @@
 export interface Player {
+  tableRow: number
+
   name: string
   combinedName: string
   count: number
@@ -10,7 +12,10 @@ export interface Player {
   clanName?: string
   clanEmoji?: string
   isClanMember: boolean
-  isAloneInClan: boolean
+  isAlone: boolean
+
+  locale?: string
+  telegramUserId?: number
 }
 
 export interface ClanPlayer extends Player {
@@ -18,3 +23,5 @@ export interface ClanPlayer extends Player {
 }
 
 export type Teams = [Player[], Player[]]
+
+export const EditablePlayerFields: Array<keyof Player> = ['telegramUserId', 'locale']

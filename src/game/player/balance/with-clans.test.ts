@@ -1,11 +1,12 @@
-import { times } from 'lodash'
+import { intersection, times } from 'lodash'
 
 import { getRandomArray, getRandomNumber } from '../../../utils.dev'
 import { ClanPlayer, Player } from '../types'
 import { getTeamsLevels } from './utils'
-import { getBalancedTeamsWithClans } from './clans'
+import { getBalancedTeamsWithClans } from './with-clans'
 
 const basePlayer: Player = {
+  tableRow: 0,
   name: 'random-player',
   combinedName: 'random-player',
   count: 1,
@@ -15,18 +16,19 @@ const basePlayer: Player = {
   isCompanion: false,
   clanName: undefined,
   isClanMember: false,
-  isAloneInClan: true,
+  isAlone: true,
   level: 0
 }
 
-describe('balance/clans.ts', () => {
+describe('balance/with-clans.ts', () => {
   describe('getBalancedTeamsWithClans()', () => {
-    const numberOfTries = 10000
-    const playerCount = 20
-    const clans: Array<[string, number]> = [['alpha', 3], ['bravo', 2], ['delta', 1]]
+    const numberOfTries = 1000
+    const playerCount = 13
+    const maxLevel = 10
+    const targetSuccessPercentage = 91
+
+    const clans: Array<[string, number]> = [['alpha', 3], ['bravo', 2], ['delta', 1], ['charlie', 1], ['foxtrot', 1]]
     const noClanPlayersCount = clans.reduce((count, [, clanPlayersCount]) => count - clanPlayersCount, playerCount)
-    const maxLevel = 14
-    const targetSuccessPercentage = 70
 
     it(`should balance properly with ${playerCount} random players with ${clans.length} clans in ${targetSuccessPercentage}%+ cases after ${numberOfTries} tries`, () => {
       const successTries = times(numberOfTries).reduce((successTries) => {
@@ -40,17 +42,37 @@ describe('balance/clans.ts', () => {
 
         const clanPlayers = clans.reduce<ClanPlayer[]>((players, [clanName, clanPlayersCount]) => [
           ...players,
-          ...times(clanPlayersCount, (index) => ({
+          ...times<ClanPlayer>(clanPlayersCount, (index) => ({
             ...basePlayer,
             clanName,
             name: `${clanName}-player-${index}`,
             level: getRandomNumber(maxLevel),
-            isAloneInClan: false,
+            isAlone: clanPlayersCount === 1,
             isClanMember: true
           }))
         ], [])
 
         const [team1, team2] = getBalancedTeamsWithClans([...clanPlayers, ...nonClanPlayers])
+
+        const team1ClanNames = [
+          ...new Set(team1
+            .filter(({ clanName }) => clanName !== undefined)
+            .reduce<string[]>((clanNames, player) => [...clanNames, player.clanName as string], [])
+          )
+        ]
+
+        const team2ClanNames = [
+          ...new Set(team2
+            .filter(({ clanName }) => clanName !== undefined)
+            .reduce<string[]>((clanNames, player) => [...clanNames, player.clanName as string], [])
+          )
+        ]
+
+        const sameClansInBothTeams = intersection(team1ClanNames, team2ClanNames)
+
+        if (sameClansInBothTeams.length > 0) {
+          throw new Error('The same clan name occured in two teams after getBalancedTeamsWithClans()')
+        }
 
         const [level1, level2] = getTeamsLevels([team1, team2])
         const levelDifference = Math.abs(level1 - level2)

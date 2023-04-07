@@ -4,9 +4,7 @@ import { groupBy, orderBy } from 'lodash'
 import { Command, CommandHandler } from '../types'
 
 const handler: CommandHandler = async (ctx) => {
-  const { game, logger } = ctx
-
-  await game.refreshData({ logger })
+  const { game } = ctx
 
   const clanPlayers = await game.getClanPlayers()
 

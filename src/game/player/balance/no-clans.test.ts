@@ -1,22 +1,23 @@
 import { times } from 'lodash'
 
 import { getRandomArray } from '../../../utils.dev'
-import { getBalancedTeams } from './classic'
+import { getBalancedTeams } from './no-clans'
 import { Player } from '../types'
 import { getTeamsLevels } from './utils'
 
-describe('balance/classic.ts', () => {
+describe('balance/no-clans.ts', () => {
   describe('getBalancedTeams()', () => {
-    const numberOfTries = 10000
-    const playerCount = 20
-    const maxLevel = 14
-    const targetSuccessPercentage = 97
+    const numberOfTries = 1000
+    const playerCount = 13
+    const maxLevel = 10
+    const targetSuccessPercentage = 99
 
     it(`should balance properly with ${playerCount} random players in ${targetSuccessPercentage}%+ cases after ${numberOfTries} tries`, () => {
       const successTries = times(numberOfTries).reduce((successTries) => {
         const levels = getRandomArray(playerCount, maxLevel)
 
         const players: Player[] = levels.map(randomLevel => ({
+          tableRow: 0,
           name: 'random-player',
           combinedName: 'random-player',
           count: 1,
@@ -27,7 +28,7 @@ describe('balance/classic.ts', () => {
           level: randomLevel,
           clanName: 'random-team',
           isClanMember: true,
-          isAloneInClan: true
+          isAlone: true
         }))
 
         const [team1, team2] = getBalancedTeams(players)

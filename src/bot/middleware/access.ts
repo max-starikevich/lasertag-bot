@@ -5,6 +5,10 @@ import { BotMiddleware } from '.'
 
 export const accessMiddleware: BotMiddleware = async (ctx, next) => {
   try {
+    if ((ctx.chat == null) || (ctx.from == null)) {
+      return await next()
+    }
+
     ctx.isGroupChat = ctx.chat.type === 'supergroup' || ctx.chat.type === 'group'
     ctx.isPrivateChat = ctx.chat.type === 'private'
 

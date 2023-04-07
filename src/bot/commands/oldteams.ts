@@ -1,19 +1,23 @@
 import dedent from 'dedent-js'
 import { shuffle } from 'lodash'
 
+import { getTeamsLevels } from '$/game/player/balance/utils'
+import { NotEnoughPlayersError } from '$/errors/NotEnoughPlayersError'
+
 import { Command, CommandHandler } from '../types'
 
-import { getTeamsLevels } from '$/game/player/balance/utils'
-
 const handler: CommandHandler = async (ctx) => {
-  const { game, logger } = ctx
+  const { game, lang, locale } = ctx
 
-  await game.refreshData({ logger })
+  const [[redPlayers, bluePlayers], placeAndTime] = await Promise.all([game.getTeams(), game.getPlaceAndTime(locale)])
 
-  const [[redPlayers, bluePlayers], placeAndTime] = await Promise.all([game.getTeams(), game.getPlaceAndTime()])
+  if (redPlayers.length === 0 || bluePlayers.length === 0) {
+    throw new NotEnoughPlayersError()
+  }
 
   await ctx.replyWithHTML(dedent`
-    📅 <b>${placeAndTime}</b>
+    📍 <b>${placeAndTime.location}</b>
+    📅 <b>${placeAndTime.date}</b>
 
     🔴 ${redPlayers.length} vs. ${bluePlayers.length} 🔵
   `)
@@ -38,7 +42,7 @@ const handler: CommandHandler = async (ctx) => {
     const [redLevel, blueLevel] = getTeamsLevels([redPlayers, bluePlayers])
 
     return await ctx.replyWithHTML(dedent`
-      ⚖️ ${ctx.lang.TEAMS_BALANCE()}: 🔴 ${redLevel} 🔵 ${blueLevel}
+      ⚖️ ${lang.TEAMS_BALANCE()}: 🔴 ${Math.trunc(redLevel)} 🔵 ${Math.trunc(blueLevel)}
     `)
   }
 }

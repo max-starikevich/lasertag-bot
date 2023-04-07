@@ -1,13 +1,14 @@
 import dedent from 'dedent-js'
 import { partition } from 'lodash'
 
+import { NotEnoughPlayersError } from '$/errors/NotEnoughPlayersError'
+
 import { Command, CommandHandler } from '../types'
 
 const handler: CommandHandler = async (ctx) => {
-  const { game, logger } = ctx
+  const { game, lang, locale } = ctx
 
-  await game.refreshData({ logger })
-  const [allPlayers, placeAndTime] = await Promise.all([game.getPlayers(), game.getPlaceAndTime()])
+  const [allPlayers, placeAndTime] = await Promise.all([game.getPlayers(), game.getPlaceAndTime(locale)])
   const activePlayers = allPlayers.filter(({ count }) => count > 0)
 
   const [readyPlayers, questionablePlayers] = partition(
@@ -16,14 +17,19 @@ const handler: CommandHandler = async (ctx) => {
   )
 
   const playersWithComments = allPlayers.filter(
-    ({ comment }) => comment.length > 0
+    ({ comment }) => comment !== undefined && comment.length > 0
   )
 
-  await ctx.replyWithHTML(dedent`
-    📅 <b>${placeAndTime}</b>
+  if (activePlayers.length === 0) {
+    throw new NotEnoughPlayersError()
+  }
 
-    ${ctx.lang.RECORDED()}: ${readyPlayers.length}
-    ${ctx.lang.RENT_NEEDED()}: ${allPlayers.reduce(
+  await ctx.replyWithHTML(dedent`
+    📍 <b>${placeAndTime.location}</b>
+    📅 <b>${placeAndTime.date}</b>
+
+    ${lang.RECORDED()}: ${readyPlayers.length}
+    ${lang.RENT_NEEDED()}: ${allPlayers.reduce(
         (rentSum, { rentCount }) => rentSum + rentCount,
       0)}
   `)
@@ -50,7 +56,7 @@ const handler: CommandHandler = async (ctx) => {
     await ctx.replyWithHTML(dedent`
       ${playersWithComments
         .map(({ name, comment }) => `💬 ${name}: «<i>${comment.trim()}</i>»`)
-        .join('\n')}
+        .join('\n\n')}
     `)
   }
 }

@@ -1,5 +1,6 @@
 export const escapeHtml = (unsafeString = ''): string =>
   unsafeString
+    .trim()
     .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;')
@@ -12,4 +13,18 @@ export const parseJsonSafe = (json: string): any => {
   } catch (e) {
     return null
   }
+}
+
+export const extractString = (data: any): string | undefined => {
+  if (data == null) {
+    return undefined
+  }
+
+  const str = (String(data)).trim()
+
+  if (str.length === 0) {
+    return undefined
+  }
+
+  return str
 }
