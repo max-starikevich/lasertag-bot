@@ -224,17 +224,13 @@ export class GoogleTableGameStorage implements GameStorage {
     const cellsMap = await getCellsMapByRow(targetRow)
 
     for (const fieldName of EditablePlayerFields) {
-      const nextValue = player[fieldName]
-
-      if (nextValue === undefined) {
-        continue
-      }
-
       const cell = cellsMap[fieldName]
 
       if (cell === undefined) {
         continue
       }
+
+      const nextValue = player[fieldName] ?? ''
 
       if (nextValue === cell.value) {
         continue
