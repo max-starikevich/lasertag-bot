@@ -18,9 +18,18 @@ const en: BaseTranslation = {
 
   TEAMS_COMMAND_DESCRIPTION: 'Create teams with clans',
 
-  REGISTER_COMMAND_DESCRIPTION: 'Register',
+  REGISTER_COMMAND_DESCRIPTION: 'Add yourself to the bot\'s database',
+  REGISTER_CHOOSE_YOURSELF: 'Choose your name from the list',
+  REGISTER_SUCCESS: '{name:string}, you have been registered successfully',
+  REGISTER_ALREADY_REGISTERED: 'You are already registered',
+  REGISTER_REQUIRED: 'Registration is required for this functionality. Use /{registerCommandName:string} to proceed.',
 
   LANGUAGE_COMMAND_DESCRIPTION: 'Choose language',
+  LANGUAGE_CHOOSE: 'Choose language',
+  LANGUAGE_CHOOSE_SUCCESS: 'Language has been set successfully',
+
+  UNREGISTER_COMMAND_DESCRIPTION: 'Remove yourself from bot\'s database',
+  UNREGISTER_SUCCESS: 'You have been removed from the database successfully',
 
   TEAMS_BALANCE: 'Team balance',
   RECORDED: 'Recorded',
@@ -32,17 +41,9 @@ const en: BaseTranslation = {
   DOCUMENT_UNAVAILABLE_FOR_USER: 'Document is unavailable. Try again later',
   GROUP_CHAT_WARNING: '✍️ Send me a private message, please',
 
-  REGISTER_CHOOSE_YOURSELF: 'Choose your name from the list',
-  REGISTER_SUCCESS: '{name:string}, you have been registered successfully',
-  REGISTER_ALREADY_REGISTERED: 'You are already registered',
-  REGISTER_REQUIRED: 'Registration is required for this functionality. Use /{registerCommandName:string} to proceed.',
-
   ACTION_HANDLER_WRONG_DATA: 'Wrong data provided',
 
-  NOT_ENOUGH_PLAYERS: '🤷 Not enough players for this function',
-
-  LANGUAGE_CHOOSE: 'Choose language',
-  LANGUAGE_CHOOSE_SUCCESS: 'Language has been set successfully'
+  NOT_ENOUGH_PLAYERS: '🤷 Not enough players for this function'
 }
 
 export default en

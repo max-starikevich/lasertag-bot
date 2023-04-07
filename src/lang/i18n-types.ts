@@ -60,13 +60,47 @@ type RootTranslation = {
 	 */
 	TEAMS_COMMAND_DESCRIPTION: string
 	/**
-	 * R​e​g​i​s​t​e​r
+	 * A​d​d​ ​y​o​u​r​s​e​l​f​ ​t​o​ ​t​h​e​ ​b​o​t​'​s​ ​d​a​t​a​b​a​s​e
 	 */
 	REGISTER_COMMAND_DESCRIPTION: string
+	/**
+	 * C​h​o​o​s​e​ ​y​o​u​r​ ​n​a​m​e​ ​f​r​o​m​ ​t​h​e​ ​l​i​s​t
+	 */
+	REGISTER_CHOOSE_YOURSELF: string
+	/**
+	 * {​n​a​m​e​}​,​ ​y​o​u​ ​h​a​v​e​ ​b​e​e​n​ ​r​e​g​i​s​t​e​r​e​d​ ​s​u​c​c​e​s​s​f​u​l​l​y
+	 * @param {string} name
+	 */
+	REGISTER_SUCCESS: RequiredParams<'name'>
+	/**
+	 * Y​o​u​ ​a​r​e​ ​a​l​r​e​a​d​y​ ​r​e​g​i​s​t​e​r​e​d
+	 */
+	REGISTER_ALREADY_REGISTERED: string
+	/**
+	 * R​e​g​i​s​t​r​a​t​i​o​n​ ​i​s​ ​r​e​q​u​i​r​e​d​ ​f​o​r​ ​t​h​i​s​ ​f​u​n​c​t​i​o​n​a​l​i​t​y​.​ ​U​s​e​ ​/​{​r​e​g​i​s​t​e​r​C​o​m​m​a​n​d​N​a​m​e​}​ ​t​o​ ​p​r​o​c​e​e​d​.
+	 * @param {string} registerCommandName
+	 */
+	REGISTER_REQUIRED: RequiredParams<'registerCommandName'>
 	/**
 	 * C​h​o​o​s​e​ ​l​a​n​g​u​a​g​e
 	 */
 	LANGUAGE_COMMAND_DESCRIPTION: string
+	/**
+	 * C​h​o​o​s​e​ ​l​a​n​g​u​a​g​e
+	 */
+	LANGUAGE_CHOOSE: string
+	/**
+	 * L​a​n​g​u​a​g​e​ ​h​a​s​ ​b​e​e​n​ ​s​e​t​ ​s​u​c​c​e​s​s​f​u​l​l​y
+	 */
+	LANGUAGE_CHOOSE_SUCCESS: string
+	/**
+	 * R​e​m​o​v​e​ ​y​o​u​r​s​e​l​f​ ​f​r​o​m​ ​b​o​t​'​s​ ​d​a​t​a​b​a​s​e
+	 */
+	UNREGISTER_COMMAND_DESCRIPTION: string
+	/**
+	 * Y​o​u​ ​h​a​v​e​ ​b​e​e​n​ ​r​e​m​o​v​e​d​ ​f​r​o​m​ ​t​h​e​ ​d​a​t​a​b​a​s​e​ ​s​u​c​c​e​s​s​f​u​l​l​y
+	 */
+	UNREGISTER_SUCCESS: string
 	/**
 	 * T​e​a​m​ ​b​a​l​a​n​c​e
 	 */
@@ -101,24 +135,6 @@ type RootTranslation = {
 	 */
 	GROUP_CHAT_WARNING: string
 	/**
-	 * C​h​o​o​s​e​ ​y​o​u​r​ ​n​a​m​e​ ​f​r​o​m​ ​t​h​e​ ​l​i​s​t
-	 */
-	REGISTER_CHOOSE_YOURSELF: string
-	/**
-	 * {​n​a​m​e​}​,​ ​y​o​u​ ​h​a​v​e​ ​b​e​e​n​ ​r​e​g​i​s​t​e​r​e​d​ ​s​u​c​c​e​s​s​f​u​l​l​y
-	 * @param {string} name
-	 */
-	REGISTER_SUCCESS: RequiredParams<'name'>
-	/**
-	 * Y​o​u​ ​a​r​e​ ​a​l​r​e​a​d​y​ ​r​e​g​i​s​t​e​r​e​d
-	 */
-	REGISTER_ALREADY_REGISTERED: string
-	/**
-	 * R​e​g​i​s​t​r​a​t​i​o​n​ ​i​s​ ​r​e​q​u​i​r​e​d​ ​f​o​r​ ​t​h​i​s​ ​f​u​n​c​t​i​o​n​a​l​i​t​y​.​ ​U​s​e​ ​/​{​r​e​g​i​s​t​e​r​C​o​m​m​a​n​d​N​a​m​e​}​ ​t​o​ ​p​r​o​c​e​e​d​.
-	 * @param {string} registerCommandName
-	 */
-	REGISTER_REQUIRED: RequiredParams<'registerCommandName'>
-	/**
 	 * W​r​o​n​g​ ​d​a​t​a​ ​p​r​o​v​i​d​e​d
 	 */
 	ACTION_HANDLER_WRONG_DATA: string
@@ -126,14 +142,6 @@ type RootTranslation = {
 	 * �​�​ ​N​o​t​ ​e​n​o​u​g​h​ ​p​l​a​y​e​r​s​ ​f​o​r​ ​t​h​i​s​ ​f​u​n​c​t​i​o​n
 	 */
 	NOT_ENOUGH_PLAYERS: string
-	/**
-	 * C​h​o​o​s​e​ ​l​a​n​g​u​a​g​e
-	 */
-	LANGUAGE_CHOOSE: string
-	/**
-	 * L​a​n​g​u​a​g​e​ ​h​a​s​ ​b​e​e​n​ ​s​e​t​ ​s​u​c​c​e​s​s​f​u​l​l​y
-	 */
-	LANGUAGE_CHOOSE_SUCCESS: string
 }
 
 export type TranslationFunctions = {
@@ -182,13 +190,45 @@ export type TranslationFunctions = {
 	 */
 	TEAMS_COMMAND_DESCRIPTION: () => LocalizedString
 	/**
-	 * Register
+	 * Add yourself to the bot's database
 	 */
 	REGISTER_COMMAND_DESCRIPTION: () => LocalizedString
+	/**
+	 * Choose your name from the list
+	 */
+	REGISTER_CHOOSE_YOURSELF: () => LocalizedString
+	/**
+	 * {name}, you have been registered successfully
+	 */
+	REGISTER_SUCCESS: (arg: { name: string }) => LocalizedString
+	/**
+	 * You are already registered
+	 */
+	REGISTER_ALREADY_REGISTERED: () => LocalizedString
+	/**
+	 * Registration is required for this functionality. Use /{registerCommandName} to proceed.
+	 */
+	REGISTER_REQUIRED: (arg: { registerCommandName: string }) => LocalizedString
 	/**
 	 * Choose language
 	 */
 	LANGUAGE_COMMAND_DESCRIPTION: () => LocalizedString
+	/**
+	 * Choose language
+	 */
+	LANGUAGE_CHOOSE: () => LocalizedString
+	/**
+	 * Language has been set successfully
+	 */
+	LANGUAGE_CHOOSE_SUCCESS: () => LocalizedString
+	/**
+	 * Remove yourself from bot's database
+	 */
+	UNREGISTER_COMMAND_DESCRIPTION: () => LocalizedString
+	/**
+	 * You have been removed from the database successfully
+	 */
+	UNREGISTER_SUCCESS: () => LocalizedString
 	/**
 	 * Team balance
 	 */
@@ -222,22 +262,6 @@ export type TranslationFunctions = {
 	 */
 	GROUP_CHAT_WARNING: () => LocalizedString
 	/**
-	 * Choose your name from the list
-	 */
-	REGISTER_CHOOSE_YOURSELF: () => LocalizedString
-	/**
-	 * {name}, you have been registered successfully
-	 */
-	REGISTER_SUCCESS: (arg: { name: string }) => LocalizedString
-	/**
-	 * You are already registered
-	 */
-	REGISTER_ALREADY_REGISTERED: () => LocalizedString
-	/**
-	 * Registration is required for this functionality. Use /{registerCommandName} to proceed.
-	 */
-	REGISTER_REQUIRED: (arg: { registerCommandName: string }) => LocalizedString
-	/**
 	 * Wrong data provided
 	 */
 	ACTION_HANDLER_WRONG_DATA: () => LocalizedString
@@ -245,14 +269,6 @@ export type TranslationFunctions = {
 	 * 🤷 Not enough players for this function
 	 */
 	NOT_ENOUGH_PLAYERS: () => LocalizedString
-	/**
-	 * Choose language
-	 */
-	LANGUAGE_CHOOSE: () => LocalizedString
-	/**
-	 * Language has been set successfully
-	 */
-	LANGUAGE_CHOOSE_SUCCESS: () => LocalizedString
 }
 
 export type Formatters = {}
