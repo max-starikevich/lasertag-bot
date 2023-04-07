@@ -19,7 +19,7 @@ export const setBotMiddlewares = (bot: Telegraf<GameContext>): void => {
   bot.on('callback_query', loggingMiddleware, analyticsMiddleware, accessMiddleware, playerMiddleware, groupChatMiddleware)
   bot.on('message', loggingMiddleware, analyticsMiddleware, accessMiddleware, playerMiddleware, groupChatMiddleware)
 
-  commands.map((command) => bot.command('/' + command.name, async (ctx) => await command.handler(ctx)))
+  commands.map((command) => bot.command(command.name, async (ctx) => await command.handler(ctx)))
 
   bot.hears(/^\/[a-z0-9]+$/i, async (ctx) => {
     await ctx.reply(
