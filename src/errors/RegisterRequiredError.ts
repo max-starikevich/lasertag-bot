@@ -1,5 +1,6 @@
 import { register } from '$/bot/commands/register'
 import { TranslationFunctions } from '$/lang/i18n-types'
+
 import { CustomError } from './CustomError'
 
 export class RegisterRequiredError extends CustomError {
