@@ -20,12 +20,12 @@ const by: MappedTranslation = {
 
   REGISTER_COMMAND_DESCRIPTION: 'Дадаць сябе ў базу дадзеных бота',
   REGISTER_CHOOSE_YOURSELF: 'Выберыце сваё імя са спісу',
-  REGISTER_SUCCESS: '{name:string}, вы паспяхова зарэгістраваны',
+  REGISTER_SUCCESS: '{name:string}, вы пасьпяхова зарэгістраваны',
   REGISTER_ALREADY_REGISTERED: 'Вы ўжо зарэгістраваны',
   REGISTER_REQUIRED: 'Для гэтай функцыі патрабуецца рэгістрацыя. Выкарыстоўвайце /{registerCommandName:string}, каб працягнуць.',
 
   LANGUAGE_COMMAND_DESCRIPTION: 'Выбраць мову',
-  LANGUAGE_CHOOSE: 'Выбярыце мову',
+  LANGUAGE_CHOOSE: 'Выберыце мову',
   LANGUAGE_CHOOSE_SUCCESS: 'Мова выбрана пасьпяхова',
 
   UNREGISTER_COMMAND_DESCRIPTION: 'Выдаліць сябе з базы дадзеных боту',
