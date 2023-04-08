@@ -4,6 +4,7 @@ import L from '$/lang/i18n-node'
 import { RegisterRequiredError } from '$/errors/RegisterRequiredError'
 
 import { Action, ActionHandler, ActionInitializer } from '../types'
+import { commandsInMenu } from '..'
 
 const actionName = /^set-language-(\w+)$/
 
@@ -35,7 +36,7 @@ const handler: ActionHandler = async ctx => {
 
   const localeToSet = ctx.match[1] as Locales
 
-  if (ctx.from === undefined || isLocaleName(localeToSet) !== true) {
+  if (ctx.chat === undefined || ctx.from === undefined || isLocaleName(localeToSet) !== true) {
     return await ctx.reply(ctx.lang.ACTION_HANDLER_WRONG_DATA())
   }
 
@@ -45,6 +46,11 @@ const handler: ActionHandler = async ctx => {
 
   ctx.locale = localeToSet
   ctx.lang = L[ctx.locale]
+
+  await ctx.telegram.setMyCommands(commandsInMenu.map(({ name, description }) => ({
+    command: name,
+    description: description(L[ctx.locale])
+  })), { scope: { type: 'chat', chat_id: ctx.chat.id } })
 
   await ctx.reply(ctx.lang.LANGUAGE_CHOOSE_SUCCESS())
 }
