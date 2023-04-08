@@ -13,18 +13,23 @@ const initializer: ActionInitializer = async ctx => {
     return await ctx.reply(lang.REGISTER_ALREADY_REGISTERED())
   }
 
-  const players = (await game.getPlayers()).filter(({ isCompanion }) => !isCompanion)
+  const nonRegisteredPlayers = (await game.getPlayers()).filter(({ telegramUserId }) => telegramUserId === undefined)
 
-  if (players.length === 0) {
+  if (nonRegisteredPlayers.length === 0) {
     throw new NotEnoughPlayersError()
   }
 
-  const chunkedPlayers = chunk(players, 2)
+  const chunkedPlayers = chunk(nonRegisteredPlayers, 2)
 
   await ctx.reply(lang.REGISTER_CHOOSE_YOURSELF(), {
     reply_markup: {
       inline_keyboard: chunkedPlayers.map(players => [
-        ...players.filter(({ telegramUserId }) => telegramUserId === undefined).map(player => ({ text: `${player.name} ${player.clanEmoji ?? ''}`, callback_data: `register-${player.tableRow}` }))
+        ...players.map(player =>
+          ({
+            text: `${player.name} ${player.clanEmoji ?? ''}`,
+            callback_data: `register-${player.tableRow}`
+          })
+        )
       ])
     }
   })

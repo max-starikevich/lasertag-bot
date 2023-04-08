@@ -1,6 +1,6 @@
 import { GoogleSpreadsheet, GoogleSpreadsheetWorksheet } from 'google-spreadsheet'
 import { decode } from 'html-entities'
-import { times, groupBy } from 'lodash'
+import { groupBy } from 'lodash'
 
 import { Locales } from '$/lang/i18n-types'
 
@@ -108,8 +108,7 @@ export class GoogleTableGameStorage implements GameStorage {
         comment,
         level,
         isQuestionable: rawCount.includes('?'),
-        isCompanion: false, // will be overriden later
-        combinedName: name,
+        combinedName: count > 1 ? `${name} (${count})` : name,
         clanName,
         clanEmoji: clanName?.match(/\p{Emoji}+/gu)?.[0],
         isClanMember: clanName !== undefined,
@@ -117,43 +116,7 @@ export class GoogleTableGameStorage implements GameStorage {
         locale
       }
 
-      if (count > 1) {
-        const companions = times(count - 1)
-          .map(n => n + 1)
-          .reduce<Player[]>((companions, num) => {
-          const rentCount = player.rentCount - num
-
-          companions.push({
-            ...player,
-            name: `${name} (${num + 1})`,
-            count: 1,
-            rentCount: rentCount > 0 ? 1 : 0,
-            comment: '',
-            level: 0,
-            isCompanion: true,
-            isAlone: true,
-            isClanMember: false,
-            clanEmoji: undefined,
-            clanName: undefined
-          })
-
-          return companions
-        }, [])
-
-        players.push(
-          {
-            ...player,
-            rentCount: rentCount > 0 ? 1 : 0,
-            combinedName: `${name} ${companions.length > 0 ? `(${companions.length + 1})` : ''
-                }`
-          },
-          ...companions
-        )
-      } else {
-        players.push(player)
-      }
-
-      return players
+      return [...players, player]
     }, [])
 
     const clans = groupBy(
@@ -187,11 +150,17 @@ export class GoogleTableGameStorage implements GameStorage {
     }
 
     const rows = await this.gameSheets.getRows()
-
     const gamePlaceRow = rows.find(row => row.lang === lang)
 
     if (gamePlaceRow === undefined) {
       throw new Error('Missing game place row in the table.')
+    }
+
+    const location = String(gamePlaceRow.location)
+    const date = String(gamePlaceRow.date)
+
+    if (location.length === 0 || date.length === 0) {
+      throw new Error('Missing game place data in the row.')
     }
 
     return {

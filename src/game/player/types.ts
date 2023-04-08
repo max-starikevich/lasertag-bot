@@ -8,7 +8,6 @@ export interface Player {
   comment: string
   level: number
   isQuestionable: boolean
-  isCompanion: boolean
   clanName?: string
   clanEmoji?: string
   isClanMember: boolean

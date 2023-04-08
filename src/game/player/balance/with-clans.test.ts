@@ -13,7 +13,6 @@ const basePlayer: Player = {
   rentCount: 0,
   comment: '',
   isQuestionable: false,
-  isCompanion: false,
   clanName: undefined,
   isClanMember: false,
   isAlone: true,

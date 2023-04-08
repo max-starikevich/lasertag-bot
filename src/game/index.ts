@@ -32,26 +32,16 @@ export class Game implements BaseGame {
 
   getTeams = async (): Promise<Teams> => {
     const players = await this.getPlayers()
-    const activePlayers = players.filter(({ count, level }) => count > 0 && level > 0)
+    const activePlayers = players.filter(({ count, level, isQuestionable }) => count > 0 && level > 0 && !isQuestionable)
 
-    const playersToDivide = activePlayers.filter(
-      ({ isQuestionable, isCompanion }) => !isQuestionable && !isCompanion
-    )
-
-    return getBalancedTeams(playersToDivide)
+    return getBalancedTeams(activePlayers)
   }
 
   getTeamsWithClans = async (): Promise<Teams> => {
     const players = await this.getPlayers()
-    const activePlayers = players.filter(({ count, level }) => count > 0 && level > 0)
+    const activePlayers = players.filter(({ count, level, isQuestionable }) => count > 0 && level > 0 && !isQuestionable)
 
-    const playersToDivide = activePlayers.filter(
-      ({ isQuestionable, isCompanion }) => !isQuestionable && !isCompanion
-    )
-
-    const [team1, team2] = getBalancedTeamsWithClans(playersToDivide)
-
-    return sortTeamsByClans([team1, team2])
+    return sortTeamsByClans(getBalancedTeamsWithClans(activePlayers))
   }
 
   savePlayer = async (player: Player): Promise<Player> => {

@@ -4,9 +4,9 @@ import { ClanPlayer, Player, Teams } from './player/types'
 
 export interface BaseGame {
   getPlayers: () => Promise<Player[]>
+  getClanPlayers: () => Promise<ClanPlayer[]>
   getPlaceAndTime: (lang: Locales) => Promise<GameLocation>
 
-  getClanPlayers: () => Promise<ClanPlayer[]>
   getTeams: () => Promise<Teams>
   getTeamsWithClans: () => Promise<Teams>
 
