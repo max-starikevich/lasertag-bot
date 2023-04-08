@@ -2,7 +2,6 @@ import { GoogleSpreadsheet, GoogleSpreadsheetWorksheet } from 'google-spreadshee
 import { decode } from 'html-entities'
 import { times, groupBy } from 'lodash'
 
-import config from '$/config'
 import { Locales } from '$/lang/i18n-types'
 
 import { extractString } from '$/utils'
@@ -12,10 +11,6 @@ import { GameStorage } from './types'
 import { EditablePlayerFields, Player } from '../player/types'
 import { GameLocation } from '../types'
 import { getCellsMapByRow } from './utils'
-
-const {
-  DEFAULT_RATING_LEVEL
-} = config
 
 interface GoogleTableConstructorParams {
   spreadsheetId: string
@@ -98,7 +93,7 @@ export class GoogleTableGameStorage implements GameStorage {
       const rawCount = (row.count ?? '0')
       const count = +(rawCount.replace('?', ''))
       const rentCount = +(row.rentCount ?? '0')
-      const level = +(row.level ?? `${DEFAULT_RATING_LEVEL}`)
+      const level = +(row.level ?? '0')
       const comment = row.comment
       const clanName = extractString(row.clanName)
       const telegramUserId = extractString(row.telegramUserId)
@@ -134,7 +129,7 @@ export class GoogleTableGameStorage implements GameStorage {
             count: 1,
             rentCount: rentCount > 0 ? 1 : 0,
             comment: '',
-            level: DEFAULT_RATING_LEVEL,
+            level: 0,
             isCompanion: true,
             isAlone: true,
             isClanMember: false,
