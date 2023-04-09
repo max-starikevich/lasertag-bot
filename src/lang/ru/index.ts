@@ -39,7 +39,7 @@ const ru: MappedTranslation = {
   UNKNOWN_COMMAND: 'Не удалось распознать команду. Используйте меню или команду /{helpCommandName:string}',
   NO_HOME_CHAT_ACCESS_MESSAGE: 'Нет доступа',
   DOCUMENT_UNAVAILABLE_FOR_USER: 'Документ недоступен. Повторите запрос позже',
-  GROUP_CHAT_WARNING: '✍️ Пишите мне в личку, пожалуйста',
+  GROUP_CHAT_WARNING: '✍️ Пишите мне в личку тут: @{botUsername:string}.\n\nСпасибо!',
 
   ACTION_HANDLER_WRONG_DATA: 'Указаны неверные данные',
 

@@ -39,7 +39,7 @@ const en: BaseTranslation = {
   UNKNOWN_COMMAND: 'Unknown command. Use menu or command /{helpCommandName:string}',
   NO_HOME_CHAT_ACCESS_MESSAGE: 'Access denied',
   DOCUMENT_UNAVAILABLE_FOR_USER: 'Document is unavailable. Try again later',
-  GROUP_CHAT_WARNING: '✍️ Send me a private message, please',
+  GROUP_CHAT_WARNING: '✍️ Send me a private message here: @{botUsername:string}.\n\nThanks!',
 
   ACTION_HANDLER_WRONG_DATA: 'Wrong data provided',
 

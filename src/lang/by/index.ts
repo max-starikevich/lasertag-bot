@@ -39,7 +39,7 @@ const by: MappedTranslation = {
   UNKNOWN_COMMAND: 'Не ўдалося распазнаць каманду. Выкарыстоўвайце меню ці каманду /{helpCommandName:string}',
   NO_HOME_CHAT_ACCESS_MESSAGE: 'Няма доступу',
   DOCUMENT_UNAVAILABLE_FOR_USER: 'Дакумент недаступны. Паўтарыце запыт пазьней',
-  GROUP_CHAT_WARNING: '✍️ Пішыце мне ў прыват, калі ласка',
+  GROUP_CHAT_WARNING: '✍️ Пішыце мне ў прыват сюды: @{botUsername:string}.\n\nДзякуй вялікі!',
 
   ACTION_HANDLER_WRONG_DATA: 'Уведзены няправільныя дадзеныя',
 

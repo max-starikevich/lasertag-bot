@@ -131,9 +131,12 @@ type RootTranslation = {
 	 */
 	DOCUMENT_UNAVAILABLE_FOR_USER: string
 	/**
-	 * ✍​️​ ​S​e​n​d​ ​m​e​ ​a​ ​p​r​i​v​a​t​e​ ​m​e​s​s​a​g​e​,​ ​p​l​e​a​s​e
+	 * ✍​️​ ​S​e​n​d​ ​m​e​ ​a​ ​p​r​i​v​a​t​e​ ​m​e​s​s​a​g​e​ ​h​e​r​e​:​ ​@​{​b​o​t​U​s​e​r​n​a​m​e​}​.​
+​
+​T​h​a​n​k​s​!
+	 * @param {string} botUsername
 	 */
-	GROUP_CHAT_WARNING: string
+	GROUP_CHAT_WARNING: RequiredParams<'botUsername'>
 	/**
 	 * W​r​o​n​g​ ​d​a​t​a​ ​p​r​o​v​i​d​e​d
 	 */
@@ -258,9 +261,11 @@ export type TranslationFunctions = {
 	 */
 	DOCUMENT_UNAVAILABLE_FOR_USER: () => LocalizedString
 	/**
-	 * ✍️ Send me a private message, please
+	 * ✍️ Send me a private message here: @{botUsername}.
+
+Thanks!
 	 */
-	GROUP_CHAT_WARNING: () => LocalizedString
+	GROUP_CHAT_WARNING: (arg: { botUsername: string }) => LocalizedString
 	/**
 	 * Wrong data provided
 	 */
