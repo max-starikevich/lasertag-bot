@@ -12,6 +12,7 @@ import { checkEnvironment } from '$/config/check'
 import { updateBotCommands, updateBotWebhook } from '$/bot/webhooks'
 import { GameContext } from '$/bot/types'
 import { makeLogger } from '$/logger'
+import { defaultLocale } from '$/lang/i18n-custom'
 /* eslint-enable */
 
 async function run (): Promise<void> {
@@ -22,8 +23,15 @@ async function run (): Promise<void> {
 
     const bot = new Telegraf<GameContext>(config.BOT_TOKEN)
 
-    await updateBotWebhook(bot)
-    await updateBotCommands(bot)
+    await updateBotWebhook({
+      telegram: bot.telegram,
+      logger
+    })
+
+    await updateBotCommands({
+      telegram: bot.telegram,
+      locale: defaultLocale
+    })
 
     const sentryWebhook = process.env.SENTRY_DEPLOY_WEBHOOK
 

@@ -4,7 +4,7 @@ import L from '$/lang/i18n-node'
 import { RegisterRequiredError } from '$/errors/RegisterRequiredError'
 
 import { Action, ActionHandler, ActionInitializer } from '../types'
-import { commandsInMenu } from '..'
+import { updateBotCommands } from '$/bot/webhooks'
 
 const actionName = /^set-language-(\w+)$/
 
@@ -41,16 +41,12 @@ const handler: ActionHandler = async ctx => {
   }
 
   currentPlayer.locale = localeToSet
-
   await game.savePlayer(currentPlayer)
 
   ctx.locale = localeToSet
   ctx.lang = L[ctx.locale]
 
-  await ctx.telegram.setMyCommands(commandsInMenu.map(({ name, description }) => ({
-    command: name,
-    description: description(L[ctx.locale])
-  })), { scope: { type: 'chat', chat_id: ctx.chat.id } })
+  await updateBotCommands(ctx, { type: 'chat', chat_id: ctx.chat.id })
 
   await ctx.reply(ctx.lang.LANGUAGE_CHOOSE_SUCCESS())
 }
