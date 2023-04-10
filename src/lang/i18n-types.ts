@@ -102,6 +102,10 @@ type RootTranslation = {
 	 */
 	UNREGISTER_SUCCESS: string
 	/**
+	 * S​h​o​w​ ​u​s​e​f​u​l​ ​l​i​n​k​s
+	 */
+	LINKS_COMMAND_DESCRIPTION: string
+	/**
 	 * T​e​a​m​ ​b​a​l​a​n​c​e
 	 */
 	TEAMS_BALANCE: string
@@ -232,6 +236,10 @@ export type TranslationFunctions = {
 	 * You have been removed from the database successfully
 	 */
 	UNREGISTER_SUCCESS: () => LocalizedString
+	/**
+	 * Show useful links
+	 */
+	LINKS_COMMAND_DESCRIPTION: () => LocalizedString
 	/**
 	 * Team balance
 	 */

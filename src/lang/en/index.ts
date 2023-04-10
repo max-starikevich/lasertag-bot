@@ -31,6 +31,8 @@ const en: BaseTranslation = {
   UNREGISTER_COMMAND_DESCRIPTION: 'Remove yourself from bot\'s database',
   UNREGISTER_SUCCESS: 'You have been removed from the database successfully',
 
+  LINKS_COMMAND_DESCRIPTION: 'Show useful links',
+
   TEAMS_BALANCE: 'Team balance',
   RECORDED: 'Recorded',
   RENT_NEEDED: 'Rent',

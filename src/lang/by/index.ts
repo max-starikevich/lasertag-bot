@@ -31,6 +31,8 @@ const by: MappedTranslation = {
   UNREGISTER_COMMAND_DESCRIPTION: 'Выдаліць сябе з базы дадзеных боту',
   UNREGISTER_SUCCESS: 'Вы пасьпяхова выдалены з базы боту',
 
+  LINKS_COMMAND_DESCRIPTION: 'Карысныя спасылкі',
+
   TEAMS_BALANCE: 'Баланс каманд',
   RECORDED: 'Запісана',
   RENT_NEEDED: 'Патрэбны пракат',

@@ -31,6 +31,8 @@ const ru: MappedTranslation = {
   UNREGISTER_COMMAND_DESCRIPTION: 'Удалить себя из базы данных бота',
   UNREGISTER_SUCCESS: 'Вы успешно удалены из базы бота',
 
+  LINKS_COMMAND_DESCRIPTION: 'Полезные ссылки',
+
   TEAMS_BALANCE: 'Баланс команд',
   RECORDED: 'Записано',
   RENT_NEEDED: 'Прокат',
