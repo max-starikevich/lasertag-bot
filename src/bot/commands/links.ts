@@ -7,7 +7,7 @@ const handler: CommandHandler = async (ctx) => {
   const langLinks = links.filter(link => link.lang === ctx.locale)
 
   for (const { url, description } of langLinks) {
-    await ctx.reply(`❗ ${description}\n\n🔗 ${url}`)
+    await ctx.replyWithHTML(`ℹ️ <b>${description}</b>\n\n🔗 ${url}`)
   }
 }
 

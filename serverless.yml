@@ -25,6 +25,7 @@ functions:
       TELEGRAM_HOME_CHAT_ID: ${env:TELEGRAM_HOME_CHAT_ID}
       PLAYERS_SHEETS_ID: ${env:PLAYERS_SHEETS_ID}
       GAME_SHEETS_ID: ${env:GAME_SHEETS_ID}
+      LINKS_SHEETS_ID: ${env:LINKS_SHEETS_ID}
     events:
       - http:
           path: /webhook/${env:BOT_TOKEN}

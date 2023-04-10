@@ -9,10 +9,11 @@ dotenv.config({ path: '.env.production' })
 
 import config from '$/config'
 import { checkEnvironment } from '$/config/check'
-import { updateBotCommands, updateBotWebhook } from '$/bot/webhooks'
+import { updateBotCommands, updateBotCommandsForPlayers, updateBotWebhook } from '$/bot/webhooks'
 import { GameContext } from '$/bot/types'
 import { makeLogger } from '$/logger'
 import { defaultLocale } from '$/lang/i18n-custom'
+import { BaseGame } from '$/game/types'
 /* eslint-enable */
 
 async function run (): Promise<void> {
@@ -33,6 +34,14 @@ async function run (): Promise<void> {
       logger,
       locale: defaultLocale
     })
+
+    const game = bot.context.game as BaseGame
+    const players = await game.getPlayers()
+
+    await updateBotCommandsForPlayers({
+      telegram: bot.telegram,
+      logger
+    }, players)
 
     const sentryWebhook = process.env.SENTRY_DEPLOY_WEBHOOK
 

@@ -4,12 +4,12 @@ import { groupBy } from 'lodash'
 
 import { extractString } from '$/utils'
 import { NoSheetsError } from '$/errors/NoSheetsError'
+import { getLocaleByName } from '$/lang/i18n-custom'
 
 import { GameStorage } from './types'
 import { EditablePlayerFields, Player } from '../player/types'
 import { GameLink, GameLocation } from '../types'
 import { getCellsMapByRow } from './utils'
-import { localeNames } from '../../lang/i18n-custom'
 
 interface GoogleTableConstructorParams {
   spreadsheetId: string
@@ -143,7 +143,7 @@ export class GoogleTableGameStorage implements GameStorage {
     const rows = await this.gameSheets.getRows()
 
     return rows.reduce<GameLocation[]>((result, row) => {
-      const lang = localeNames.find(localeName => localeName === row.lang)
+      const lang = getLocaleByName(row.lang)
 
       if (lang === undefined) {
         return result
@@ -164,7 +164,7 @@ export class GoogleTableGameStorage implements GameStorage {
     const rows = await this.linksSheets.getRows()
 
     return rows.reduce<GameLink[]>((result, row) => {
-      const lang = localeNames.find(localeName => localeName === row.lang)
+      const lang = getLocaleByName(row.lang)
 
       if (lang === undefined) {
         return result
