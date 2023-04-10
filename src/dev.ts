@@ -28,6 +28,7 @@ const dev = async (): Promise<void> => {
 
     await updateBotCommands({
       telegram: bot.telegram,
+      logger,
       locale: defaultLocale
     })
 

@@ -2,15 +2,14 @@ import { GoogleSpreadsheet, GoogleSpreadsheetWorksheet } from 'google-spreadshee
 import { decode } from 'html-entities'
 import { groupBy } from 'lodash'
 
-import { Locales } from '$/lang/i18n-types'
-
 import { extractString } from '$/utils'
 import { NoSheetsError } from '$/errors/NoSheetsError'
 
 import { GameStorage } from './types'
 import { EditablePlayerFields, Player } from '../player/types'
-import { GameLocation } from '../types'
+import { GameLink, GameLocation } from '../types'
 import { getCellsMapByRow } from './utils'
+import { localeNames } from '../../lang/i18n-custom'
 
 interface GoogleTableConstructorParams {
   spreadsheetId: string
@@ -19,6 +18,7 @@ interface GoogleTableConstructorParams {
 
   playerSheetsId: string
   gameSheetsId: string
+  linksSheetsId: string
 }
 
 export class GoogleTableGameStorage implements GameStorage {
@@ -34,50 +34,45 @@ export class GoogleTableGameStorage implements GameStorage {
   protected gameSheetsId: string
   protected gameSheets?: GoogleSpreadsheetWorksheet
 
-  constructor ({ spreadsheetId, privateKey, email, playerSheetsId, gameSheetsId }: GoogleTableConstructorParams) {
+  protected linksSheetsId: string
+  protected linksSheets?: GoogleSpreadsheetWorksheet
+
+  constructor ({ spreadsheetId, privateKey, email, playerSheetsId, gameSheetsId, linksSheetsId }: GoogleTableConstructorParams) {
     this.spreadsheetId = spreadsheetId
     this.privateKey = privateKey
     this.email = email
 
     this.playerSheetsId = playerSheetsId
     this.gameSheetsId = gameSheetsId
+    this.linksSheetsId = linksSheetsId
   }
 
   init = async (): Promise<void> => {
-    if (this.playerSheets === undefined || this.gameSheets === undefined) {
-      try {
-        const document = new GoogleSpreadsheet(this.spreadsheetId)
+    try {
+      const document = new GoogleSpreadsheet(this.spreadsheetId)
 
-        await document.useServiceAccountAuth({
-          client_email: this.email,
-          private_key: this.privateKey
-        })
+      await document.useServiceAccountAuth({
+        client_email: this.email,
+        private_key: this.privateKey
+      })
 
-        await document.loadInfo()
+      await document.loadInfo()
 
-        this.playerSheets = document.sheetsById[this.playerSheetsId]
-        this.gameSheets = document.sheetsById[this.gameSheetsId]
+      this.playerSheets = document.sheetsById[this.playerSheetsId]
+      this.gameSheets = document.sheetsById[this.gameSheetsId]
+      this.linksSheets = document.sheetsById[this.linksSheetsId]
 
-        if (this.playerSheets === undefined || this.gameSheets === undefined) {
-          throw new NoSheetsError()
-        }
-
-        this.document = document
-      } catch (e) {
-        if (e instanceof NoSheetsError) {
-          throw e
-        }
-
-        throw new NoSheetsError(e)
+      this.document = document
+    } catch (e) {
+      if (e instanceof NoSheetsError) {
+        throw e
       }
+
+      throw new NoSheetsError(e)
     }
   }
 
   getPlayers = async (): Promise<Player[]> => {
-    if (this.playerSheets === undefined) {
-      await this.init()
-    }
-
     if (this.playerSheets === undefined) {
       throw new NoSheetsError()
     }
@@ -140,33 +135,46 @@ export class GoogleTableGameStorage implements GameStorage {
     })
   }
 
-  getPlaceAndTime = async (lang: Locales): Promise<GameLocation> => {
-    if (this.gameSheets === undefined) {
-      await this.init()
-    }
-
+  getPlaceAndTime = async (): Promise<GameLocation[]> => {
     if (this.gameSheets === undefined) {
       throw new NoSheetsError()
     }
 
     const rows = await this.gameSheets.getRows()
-    const gamePlaceRow = rows.find(row => row.lang === lang)
 
-    if (gamePlaceRow === undefined) {
-      throw new Error('Missing game place row in the table.')
+    return rows.reduce<GameLocation[]>((result, row) => {
+      const lang = localeNames.find(localeName => localeName === row.lang)
+
+      if (lang === undefined) {
+        return result
+      }
+
+      const location = String(row.location)
+      const date = String(row.date)
+
+      return [...result, { location, date, lang }]
+    }, [])
+  }
+
+  getLinks = async (): Promise<GameLink[]> => {
+    if (this.linksSheets === undefined) {
+      throw new NoSheetsError()
     }
 
-    const location = String(gamePlaceRow.location)
-    const date = String(gamePlaceRow.date)
+    const rows = await this.linksSheets.getRows()
 
-    if (location.length === 0 || date.length === 0) {
-      throw new Error('Missing game place data in the row.')
-    }
+    return rows.reduce<GameLink[]>((result, row) => {
+      const lang = localeNames.find(localeName => localeName === row.lang)
 
-    return {
-      location: gamePlaceRow.location,
-      date: gamePlaceRow.date
-    }
+      if (lang === undefined) {
+        return result
+      }
+
+      const url = String(row.url)
+      const description = String(row.description)
+
+      return [...result, { url, description, lang }]
+    }, [])
   }
 
   savePlayer = async (player: Player): Promise<Player> => {

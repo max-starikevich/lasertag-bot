@@ -2,7 +2,7 @@ import { BotMiddleware } from '.'
 
 import { isLocaleName } from '$/lang/i18n-custom'
 import { Locales } from '$/lang/i18n-types'
-import L from '../../lang/i18n-node'
+import L from '$/lang/i18n-node'
 
 export const playerMiddleware: BotMiddleware = async (ctx, next) => {
   if (ctx.from == null) {

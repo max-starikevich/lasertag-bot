@@ -1,10 +1,9 @@
-import { Locales } from '$/lang/i18n-types'
-
 import { Player } from '../player/types'
-import { GameLocation } from '../types'
+import { GameLink, GameLocation } from '../types'
 
 export interface GameStorage {
   getPlayers: () => Promise<Player[]>
-  getPlaceAndTime: (lang: Locales) => Promise<GameLocation>
+  getPlaceAndTime: () => Promise<GameLocation[]>
+  getLinks: () => Promise<GameLink[]>
   savePlayer: (player: Player) => Promise<Player>
 }

@@ -30,6 +30,7 @@ async function run (): Promise<void> {
 
     await updateBotCommands({
       telegram: bot.telegram,
+      logger,
       locale: defaultLocale
     })
 

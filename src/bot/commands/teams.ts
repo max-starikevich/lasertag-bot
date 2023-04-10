@@ -7,9 +7,14 @@ import { NotEnoughPlayersError } from '$/errors/NotEnoughPlayersError'
 import { Command, CommandHandler } from '../types'
 
 const handler: CommandHandler = async (ctx) => {
-  const { game, lang, locale } = ctx
+  const { game, lang } = ctx
 
-  const [[redPlayers, bluePlayers], placeAndTime] = await Promise.all([game.getTeamsWithClans(), game.getPlaceAndTime(locale)])
+  const [[redPlayers, bluePlayers], placeAndTimeData] = await Promise.all([game.getTeamsWithClans(), game.getPlaceAndTime()])
+  const placeAndTime = placeAndTimeData.find(data => data.lang === ctx.locale)
+
+  if (placeAndTime === undefined) {
+    throw new Error(`Missing game data for locale ${ctx.locale}`)
+  }
 
   if (redPlayers.length === 0 || bluePlayers.length === 0) {
     throw new NotEnoughPlayersError()

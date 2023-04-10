@@ -28,7 +28,7 @@ export const errorMiddleware = async (error: any, ctx: GameContext): Promise<voi
 
 const handleCustomError = async (error: CustomError, ctx: GameContext): Promise<void> => {
   if (error.shouldBeReported) {
-    reportError(error.cause)
+    reportException(error.cause)
 
     const { logger } = ctx
 
