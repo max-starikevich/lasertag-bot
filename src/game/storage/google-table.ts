@@ -179,10 +179,6 @@ export class GoogleTableGameStorage implements GameStorage {
 
   savePlayer = async (player: Player): Promise<Player> => {
     if (this.playerSheets === undefined) {
-      await this.init()
-    }
-
-    if (this.playerSheets === undefined) {
       throw new NoSheetsError()
     }
 
