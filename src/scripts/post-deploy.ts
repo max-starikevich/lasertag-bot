@@ -6,7 +6,6 @@ import { version } from '../../package.json'
 
 dotenv.config({ path: '.env.production' })
 
-import { checkEnvironment } from '$/config/check'
 import { updateBotCommands, updateBotCommandsForPlayers, updateBotWebhook } from '$/bot/webhooks'
 import { makeLogger } from '$/logger'
 import { defaultLocale } from '$/lang/i18n-custom'
@@ -18,7 +17,6 @@ async function run (): Promise<void> {
   const logger = makeLogger()
 
   try {
-    await checkEnvironment()
     const bot = await initBot()
 
     await updateBotWebhook({
