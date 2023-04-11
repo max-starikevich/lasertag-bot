@@ -4,17 +4,14 @@ import { partition } from 'lodash'
 import { NotEnoughPlayersError } from '$/errors/NotEnoughPlayersError'
 
 import { Command, CommandHandler } from '../types'
+import { replyWithPlaceAndTime } from '.'
 
 const handler: CommandHandler = async (ctx) => {
+  await replyWithPlaceAndTime(ctx)
+
   const { game, lang } = ctx
 
-  const [players, placeAndTimeData] = await Promise.all([game.getPlayers(), game.getPlaceAndTime()])
-  const placeAndTime = placeAndTimeData.find(data => data.lang === ctx.locale)
-
-  if (placeAndTime === undefined) {
-    throw new Error(`Missing game data for locale ${ctx.locale}`)
-  }
-
+  const players = await game.getPlayers()
   const enrolledPlayers = players.filter(({ count }) => count > 0)
 
   if (enrolledPlayers.length === 0) {
@@ -31,13 +28,10 @@ const handler: CommandHandler = async (ctx) => {
   )
 
   await ctx.replyWithHTML(dedent`
-    📍 <b>${placeAndTime.location}</b>
-    📅 <b>${placeAndTime.date}</b>
-
     ${lang.RECORDED()}: ${readyPlayers.reduce((sum, { count }) => sum + count, 0)}
     ${lang.RENT_NEEDED()}: ${players.reduce(
-        (sum, { rentCount }) => sum + rentCount,
-      0)}
+      (sum, { rentCount }) => sum + rentCount,
+    0)}
   `)
 
   if (readyPlayers.length > 0) {

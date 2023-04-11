@@ -1,31 +1,23 @@
 import dedent from 'dedent-js'
 import { shuffle } from 'lodash'
 
-import { getTeamsLevels } from '$/game/player/balance/utils'
 import { NotEnoughPlayersError } from '$/errors/NotEnoughPlayersError'
 
 import { Command, CommandHandler } from '../types'
+import { replyWithPlaceAndTime, replyWithTeamBalance, replyWithTeamCount } from '.'
 
 const handler: CommandHandler = async (ctx) => {
-  const { game, lang } = ctx
+  await replyWithPlaceAndTime(ctx)
 
-  const [[redPlayers, bluePlayers], placeAndTimeData] = await Promise.all([game.getTeams(), game.getPlaceAndTime()])
-  const placeAndTime = placeAndTimeData.find(data => data.lang === ctx.locale)
+  const { game } = ctx
 
-  if (placeAndTime === undefined) {
-    throw new Error(`Missing game data for locale ${ctx.locale}`)
-  }
+  const [redPlayers, bluePlayers] = await game.getTeams()
 
   if (redPlayers.length === 0 || bluePlayers.length === 0) {
     throw new NotEnoughPlayersError()
   }
 
-  await ctx.replyWithHTML(dedent`
-    📍 <b>${placeAndTime.location}</b>
-    📅 <b>${placeAndTime.date}</b>
-
-    🔴 ${redPlayers.length} vs. ${bluePlayers.length} 🔵
-  `)
+  await replyWithTeamCount(ctx, [redPlayers, bluePlayers])
 
   if (redPlayers.length > 0) {
     await ctx.replyWithHTML(dedent`
@@ -43,13 +35,7 @@ const handler: CommandHandler = async (ctx) => {
     `)
   }
 
-  if (ctx.isAdmin && ctx.isPrivateChat) {
-    const [redLevel, blueLevel] = getTeamsLevels([redPlayers, bluePlayers])
-
-    return await ctx.replyWithHTML(dedent`
-      ⚖️ ${lang.TEAMS_BALANCE()}: 🔴 ${Math.trunc(redLevel)} 🔵 ${Math.trunc(blueLevel)}
-    `)
-  }
+  await replyWithTeamBalance(ctx, [redPlayers, bluePlayers])
 }
 
 export const oldTeams: Command = {
