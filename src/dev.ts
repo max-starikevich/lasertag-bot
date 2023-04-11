@@ -7,8 +7,10 @@ import Router from 'koa-router'
 
 import config from '$/config'
 import { handler, botPromise } from '$/lambda'
-import { updateBotCommands, updateBotWebhook } from '$/bot/webhooks'
+import { updateBotCommands, updateBotCommandsForPlayers, updateBotWebhook } from '$/bot/webhooks'
 import { makeLogger } from '$/logger'
+import { defaultLocale } from './lang/i18n-custom'
+import { BaseGame } from '$/game/types'
 
 const dev = async (): Promise<void> => {
   const logger = makeLogger()
@@ -20,8 +22,24 @@ const dev = async (): Promise<void> => {
       throw new Error('The instance is unavailable')
     }
 
-    await updateBotWebhook(bot)
-    await updateBotCommands(bot)
+    await updateBotWebhook({
+      telegram: bot.telegram,
+      logger
+    })
+
+    await updateBotCommands({
+      telegram: bot.telegram,
+      logger,
+      locale: defaultLocale
+    })
+
+    const game = bot.context.game as BaseGame
+    const players = await game.getPlayers()
+
+    await updateBotCommandsForPlayers({
+      telegram: bot.telegram,
+      logger
+    }, players)
 
     const app = new Koa()
     const router = new Router()

@@ -27,8 +27,11 @@ export const initBot = async (): Promise<Telegraf<GameContext>> => {
     email: config.GOOGLE_SERVICE_ACCOUNT_EMAIL,
     privateKey: config.GOOGLE_PRIVATE_KEY,
     playerSheetsId: config.PLAYERS_SHEETS_ID,
-    gameSheetsId: config.GAME_SHEETS_ID
+    gameSheetsId: config.GAME_SHEETS_ID,
+    linksSheetsId: config.LINKS_SHEETS_ID
   })
+
+  await storage.init()
 
   const game = new Game({ storage })
   const bot = new Telegraf<GameContext>(config.BOT_TOKEN)

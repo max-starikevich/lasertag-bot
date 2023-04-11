@@ -1,15 +1,6 @@
 import { requiredConfigInput as config } from './index'
 
-const isValidNumber = (n?: number): boolean => {
-  if (n === undefined) {
-    return false
-  }
-
-  return !Number.isNaN(n)
-}
-
 const isValidString = (s?: string): boolean => (s ?? '').length > 0
-
 const isValidEmail = (s?: string): boolean => /\S+@\S+\.\S+/.test(s ?? '')
 
 type EnvironmentValidator = () => Promise<boolean>
@@ -27,12 +18,11 @@ const requiredRuntimeVariables: EnvironmentToCheck = {
 
   PLAYERS_SHEETS_ID: async () => isValidString(config.PLAYERS_SHEETS_ID),
   GAME_SHEETS_ID: async () => isValidString(config.GAME_SHEETS_ID),
+  LINKS_SHEETS_ID: async () => isValidString(config.LINKS_SHEETS_ID),
 
   TELEGRAM_HOME_CHAT_ID: async () => isValidString(config.TELEGRAM_HOME_CHAT_ID),
 
-  WEBHOOK_BASE: async () => isValidString(config.WEBHOOK_BASE),
-
-  DEFAULT_RATING_LEVEL: async () => isValidNumber(config.DEFAULT_RATING_LEVEL)
+  WEBHOOK_BASE: async () => isValidString(config.WEBHOOK_BASE)
 }
 
 export const checkEnvironment = async (): Promise<void> => {

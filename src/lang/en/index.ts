@@ -31,6 +31,8 @@ const en: BaseTranslation = {
   UNREGISTER_COMMAND_DESCRIPTION: 'Remove yourself from bot\'s database',
   UNREGISTER_SUCCESS: 'You have been removed from the database successfully',
 
+  LINKS_COMMAND_DESCRIPTION: 'Show useful links',
+
   TEAMS_BALANCE: 'Team balance',
   RECORDED: 'Recorded',
   RENT_NEEDED: 'Rent',
@@ -39,7 +41,7 @@ const en: BaseTranslation = {
   UNKNOWN_COMMAND: 'Unknown command. Use menu or command /{helpCommandName:string}',
   NO_HOME_CHAT_ACCESS_MESSAGE: 'Access denied',
   DOCUMENT_UNAVAILABLE_FOR_USER: 'Document is unavailable. Try again later',
-  GROUP_CHAT_WARNING: '✍️ Send me a private message, please',
+  GROUP_CHAT_WARNING: '✍️ Send me a private message here: @{botUsername:string}.\n\nThanks!',
 
   ACTION_HANDLER_WRONG_DATA: 'Wrong data provided',
 

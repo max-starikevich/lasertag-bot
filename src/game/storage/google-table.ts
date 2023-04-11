@@ -1,21 +1,15 @@
 import { GoogleSpreadsheet, GoogleSpreadsheetWorksheet } from 'google-spreadsheet'
 import { decode } from 'html-entities'
-import { times, groupBy } from 'lodash'
-
-import config from '$/config'
-import { Locales } from '$/lang/i18n-types'
+import { groupBy } from 'lodash'
 
 import { extractString } from '$/utils'
 import { NoSheetsError } from '$/errors/NoSheetsError'
+import { getLocaleByName } from '$/lang/i18n-custom'
 
 import { GameStorage } from './types'
 import { EditablePlayerFields, Player } from '../player/types'
-import { GameLocation } from '../types'
+import { GameLink, GameLocation } from '../types'
 import { getCellsMapByRow } from './utils'
-
-const {
-  DEFAULT_RATING_LEVEL
-} = config
 
 interface GoogleTableConstructorParams {
   spreadsheetId: string
@@ -24,6 +18,7 @@ interface GoogleTableConstructorParams {
 
   playerSheetsId: string
   gameSheetsId: string
+  linksSheetsId: string
 }
 
 export class GoogleTableGameStorage implements GameStorage {
@@ -39,50 +34,45 @@ export class GoogleTableGameStorage implements GameStorage {
   protected gameSheetsId: string
   protected gameSheets?: GoogleSpreadsheetWorksheet
 
-  constructor ({ spreadsheetId, privateKey, email, playerSheetsId, gameSheetsId }: GoogleTableConstructorParams) {
+  protected linksSheetsId: string
+  protected linksSheets?: GoogleSpreadsheetWorksheet
+
+  constructor ({ spreadsheetId, privateKey, email, playerSheetsId, gameSheetsId, linksSheetsId }: GoogleTableConstructorParams) {
     this.spreadsheetId = spreadsheetId
     this.privateKey = privateKey
     this.email = email
 
     this.playerSheetsId = playerSheetsId
     this.gameSheetsId = gameSheetsId
+    this.linksSheetsId = linksSheetsId
   }
 
   init = async (): Promise<void> => {
-    if (this.playerSheets === undefined || this.gameSheets === undefined) {
-      try {
-        const document = new GoogleSpreadsheet(this.spreadsheetId)
+    try {
+      const document = new GoogleSpreadsheet(this.spreadsheetId)
 
-        await document.useServiceAccountAuth({
-          client_email: this.email,
-          private_key: this.privateKey
-        })
+      await document.useServiceAccountAuth({
+        client_email: this.email,
+        private_key: this.privateKey
+      })
 
-        await document.loadInfo()
+      await document.loadInfo()
 
-        this.playerSheets = document.sheetsById[this.playerSheetsId]
-        this.gameSheets = document.sheetsById[this.gameSheetsId]
+      this.playerSheets = document.sheetsById[this.playerSheetsId]
+      this.gameSheets = document.sheetsById[this.gameSheetsId]
+      this.linksSheets = document.sheetsById[this.linksSheetsId]
 
-        if (this.playerSheets === undefined || this.gameSheets === undefined) {
-          throw new NoSheetsError()
-        }
-
-        this.document = document
-      } catch (e) {
-        if (e instanceof NoSheetsError) {
-          throw e
-        }
-
-        throw new NoSheetsError(e)
+      this.document = document
+    } catch (e) {
+      if (e instanceof NoSheetsError) {
+        throw e
       }
+
+      throw new NoSheetsError(e)
     }
   }
 
   getPlayers = async (): Promise<Player[]> => {
-    if (this.playerSheets === undefined) {
-      await this.init()
-    }
-
     if (this.playerSheets === undefined) {
       throw new NoSheetsError()
     }
@@ -98,7 +88,7 @@ export class GoogleTableGameStorage implements GameStorage {
       const rawCount = (row.count ?? '0')
       const count = +(rawCount.replace('?', ''))
       const rentCount = +(row.rentCount ?? '0')
-      const level = +(row.level ?? `${DEFAULT_RATING_LEVEL}`)
+      const level = +(row.level ?? '0')
       const comment = row.comment
       const clanName = extractString(row.clanName)
       const telegramUserId = extractString(row.telegramUserId)
@@ -113,8 +103,7 @@ export class GoogleTableGameStorage implements GameStorage {
         comment,
         level,
         isQuestionable: rawCount.includes('?'),
-        isCompanion: false, // will be overriden later
-        combinedName: name,
+        combinedName: count > 1 ? `${name} (${count})` : name,
         clanName,
         clanEmoji: clanName?.match(/\p{Emoji}+/gu)?.[0],
         isClanMember: clanName !== undefined,
@@ -122,43 +111,7 @@ export class GoogleTableGameStorage implements GameStorage {
         locale
       }
 
-      if (count > 1) {
-        const companions = times(count - 1)
-          .map(n => n + 1)
-          .reduce<Player[]>((companions, num) => {
-          const rentCount = player.rentCount - num
-
-          companions.push({
-            ...player,
-            name: `${name} (${num + 1})`,
-            count: 1,
-            rentCount: rentCount > 0 ? 1 : 0,
-            comment: '',
-            level: DEFAULT_RATING_LEVEL,
-            isCompanion: true,
-            isAlone: true,
-            isClanMember: false,
-            clanEmoji: undefined,
-            clanName: undefined
-          })
-
-          return companions
-        }, [])
-
-        players.push(
-          {
-            ...player,
-            rentCount: rentCount > 0 ? 1 : 0,
-            combinedName: `${name} ${companions.length > 0 ? `(${companions.length + 1})` : ''
-                }`
-          },
-          ...companions
-        )
-      } else {
-        players.push(player)
-      }
-
-      return players
+      return [...players, player]
     }, [])
 
     const clans = groupBy(
@@ -182,34 +135,49 @@ export class GoogleTableGameStorage implements GameStorage {
     })
   }
 
-  getPlaceAndTime = async (lang: Locales): Promise<GameLocation> => {
-    if (this.gameSheets === undefined) {
-      await this.init()
-    }
-
+  getPlaceAndTime = async (): Promise<GameLocation[]> => {
     if (this.gameSheets === undefined) {
       throw new NoSheetsError()
     }
 
     const rows = await this.gameSheets.getRows()
 
-    const gamePlaceRow = rows.find(row => row.lang === lang)
+    return rows.reduce<GameLocation[]>((result, row) => {
+      const lang = getLocaleByName(row.lang)
 
-    if (gamePlaceRow === undefined) {
-      throw new Error('Missing game place row in the table.')
+      if (lang === undefined) {
+        return result
+      }
+
+      const location = String(row.location)
+      const date = String(row.date)
+
+      return [...result, { location, date, lang }]
+    }, [])
+  }
+
+  getLinks = async (): Promise<GameLink[]> => {
+    if (this.linksSheets === undefined) {
+      throw new NoSheetsError()
     }
 
-    return {
-      location: gamePlaceRow.location,
-      date: gamePlaceRow.date
-    }
+    const rows = await this.linksSheets.getRows()
+
+    return rows.reduce<GameLink[]>((result, row) => {
+      const lang = getLocaleByName(row.lang)
+
+      if (lang === undefined) {
+        return result
+      }
+
+      const url = String(row.url)
+      const description = String(row.description)
+
+      return [...result, { url, description, lang }]
+    }, [])
   }
 
   savePlayer = async (player: Player): Promise<Player> => {
-    if (this.playerSheets === undefined) {
-      await this.init()
-    }
-
     if (this.playerSheets === undefined) {
       throw new NoSheetsError()
     }

@@ -6,38 +6,43 @@ import { NotEnoughPlayersError } from '$/errors/NotEnoughPlayersError'
 import { Command, CommandHandler } from '../types'
 
 const handler: CommandHandler = async (ctx) => {
-  const { game, lang, locale } = ctx
+  const { game, lang } = ctx
 
-  const [allPlayers, placeAndTime] = await Promise.all([game.getPlayers(), game.getPlaceAndTime(locale)])
-  const activePlayers = allPlayers.filter(({ count }) => count > 0)
+  const [players, placeAndTimeData] = await Promise.all([game.getPlayers(), game.getPlaceAndTime()])
+  const placeAndTime = placeAndTimeData.find(data => data.lang === ctx.locale)
+
+  if (placeAndTime === undefined) {
+    throw new Error(`Missing game data for locale ${ctx.locale}`)
+  }
+
+  const enrolledPlayers = players.filter(({ count }) => count > 0)
+
+  if (enrolledPlayers.length === 0) {
+    throw new NotEnoughPlayersError()
+  }
 
   const [readyPlayers, questionablePlayers] = partition(
-    activePlayers,
+    enrolledPlayers,
     ({ isQuestionable }) => !isQuestionable
   )
 
-  const playersWithComments = allPlayers.filter(
+  const playersWithComments = players.filter(
     ({ comment }) => comment !== undefined && comment.length > 0
   )
-
-  if (activePlayers.length === 0) {
-    throw new NotEnoughPlayersError()
-  }
 
   await ctx.replyWithHTML(dedent`
     📍 <b>${placeAndTime.location}</b>
     📅 <b>${placeAndTime.date}</b>
 
-    ${lang.RECORDED()}: ${readyPlayers.length}
-    ${lang.RENT_NEEDED()}: ${allPlayers.reduce(
-        (rentSum, { rentCount }) => rentSum + rentCount,
+    ${lang.RECORDED()}: ${readyPlayers.reduce((sum, { count }) => sum + count, 0)}
+    ${lang.RENT_NEEDED()}: ${players.reduce(
+        (sum, { rentCount }) => sum + rentCount,
       0)}
   `)
 
   if (readyPlayers.length > 0) {
     await ctx.replyWithHTML(dedent`
       ${readyPlayers
-        .filter(({ isCompanion }) => !isCompanion)
         .map(({ combinedName, clanEmoji }) => `✔️ ${combinedName} ${clanEmoji ?? ''}`)
         .join('\n')}
     `)
@@ -46,7 +51,6 @@ const handler: CommandHandler = async (ctx) => {
   if (questionablePlayers.length > 0) {
     await ctx.replyWithHTML(dedent`
       ${questionablePlayers
-        .filter(({ isCompanion }) => !isCompanion)
         .map(({ combinedName, clanEmoji }) => `❓ ${combinedName} ${clanEmoji ?? ''}`)
         .join('\n')}
     `)

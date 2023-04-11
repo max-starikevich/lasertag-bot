@@ -1,4 +1,4 @@
-import { reportException as reportError } from '$/errors'
+import { reportException } from '$/errors'
 import { CustomError } from '$/errors/CustomError'
 
 import { GameContext } from '../types'
@@ -15,7 +15,7 @@ export const errorMiddleware = async (error: any, ctx: GameContext): Promise<voi
     return
   }
 
-  reportError(error)
+  reportException(error)
 
   logger.error({
     update: ctx.update,
@@ -28,7 +28,7 @@ export const errorMiddleware = async (error: any, ctx: GameContext): Promise<voi
 
 const handleCustomError = async (error: CustomError, ctx: GameContext): Promise<void> => {
   if (error.shouldBeReported) {
-    reportError(error.cause)
+    reportException(error.cause)
 
     const { logger } = ctx
 

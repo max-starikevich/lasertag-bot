@@ -4,6 +4,7 @@ import L from '$/lang/i18n-node'
 import { RegisterRequiredError } from '$/errors/RegisterRequiredError'
 
 import { Action, ActionHandler, ActionInitializer } from '../types'
+import { updateBotCommands } from '$/bot/webhooks'
 
 const actionName = /^set-language-(\w+)$/
 
@@ -35,16 +36,17 @@ const handler: ActionHandler = async ctx => {
 
   const localeToSet = ctx.match[1] as Locales
 
-  if (ctx.from === undefined || isLocaleName(localeToSet) !== true) {
+  if (ctx.chat === undefined || ctx.from === undefined || isLocaleName(localeToSet) !== true) {
     return await ctx.reply(ctx.lang.ACTION_HANDLER_WRONG_DATA())
   }
 
   currentPlayer.locale = localeToSet
-
   await game.savePlayer(currentPlayer)
 
   ctx.locale = localeToSet
   ctx.lang = L[ctx.locale]
+
+  await updateBotCommands(ctx, { type: 'chat', chat_id: ctx.from.id })
 
   await ctx.reply(ctx.lang.LANGUAGE_CHOOSE_SUCCESS())
 }

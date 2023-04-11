@@ -1,3 +1,5 @@
+import { Command } from '../types'
+
 import { start, help } from './help'
 import { players } from './players'
 import { oldTeams } from './oldteams'
@@ -7,8 +9,7 @@ import { register } from './register'
 import { language } from './language'
 import { unregister } from './unregister'
 import { about } from './about'
-
-import { Command } from '../types'
+import { links } from './links'
 
 export const commands: Command[] = [
   start,
@@ -16,9 +17,10 @@ export const commands: Command[] = [
   teams,
   oldTeams,
   clans,
+  links,
   register,
-  unregister,
   language,
+  unregister,
   about,
   help
 ]
