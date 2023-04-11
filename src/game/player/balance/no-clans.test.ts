@@ -1,4 +1,4 @@
-import { times } from 'lodash'
+import { difference, times } from 'lodash'
 
 import { getRandomArray } from '../../../utils.dev'
 import { getBalancedTeams } from './no-clans'
@@ -16,7 +16,7 @@ describe('balance/no-clans.ts', () => {
       const successTries = times(numberOfTries).reduce((successTries) => {
         const levels = getRandomArray(playerCount, maxLevel)
 
-        const players: Player[] = levels.map(randomLevel => ({
+        const playersToBalance: Player[] = levels.map(randomLevel => ({
           tableRow: 0,
           name: 'random-player',
           combinedName: 'random-player',
@@ -31,7 +31,17 @@ describe('balance/no-clans.ts', () => {
           isAlone: true
         }))
 
-        const [team1, team2] = getBalancedTeams(players)
+        const [team1, team2] = getBalancedTeams(playersToBalance)
+        const playersAfterBalance = [...team1, ...team2]
+
+        if (playersToBalance.length !== playersAfterBalance.length) {
+          throw new Error('Final player list differs from the initial one')
+        }
+
+        if (difference(playersToBalance, playersAfterBalance).length > 0) {
+          throw new Error('Final player list differs from the initial one')
+        }
+
         const [level1, level2] = getTeamsLevels([team1, team2])
 
         const levelDifference = Math.abs(level1 - level2)

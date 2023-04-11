@@ -25,7 +25,8 @@ export interface GameContext extends Context {
   currentPlayer: Player | undefined
 }
 
-export type CommandHandler = (ctx: NarrowedContext<GameContext, Update.MessageUpdate<Message.TextMessage>>) => Promise<any>
+export type CommandContext = NarrowedContext<GameContext, Update.MessageUpdate<Message.TextMessage>>
+export type CommandHandler = (ctx: CommandContext) => Promise<any>
 
 export interface Command {
   name: string

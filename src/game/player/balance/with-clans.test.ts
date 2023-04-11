@@ -1,4 +1,4 @@
-import { intersection, times } from 'lodash'
+import { difference, intersection, times } from 'lodash'
 
 import { getRandomArray, getRandomNumber } from '../../../utils.dev'
 import { ClanPlayer, Player } from '../types'
@@ -51,7 +51,17 @@ describe('balance/with-clans.ts', () => {
           }))
         ], [])
 
-        const [team1, team2] = getBalancedTeamsWithClans([...clanPlayers, ...nonClanPlayers])
+        const playersToBalance = [...clanPlayers, ...nonClanPlayers]
+        const [team1, team2] = getBalancedTeamsWithClans(playersToBalance)
+        const playersAfterBalance = [...team1, ...team2]
+
+        if (playersToBalance.length !== playersAfterBalance.length) {
+          throw new Error('Final player list differs from the initial one')
+        }
+
+        if (difference(playersToBalance, playersAfterBalance).length > 0) {
+          throw new Error('Final player list differs from the initial one')
+        }
 
         const team1ClanNames = [
           ...new Set(team1
@@ -70,7 +80,7 @@ describe('balance/with-clans.ts', () => {
         const sameClansInBothTeams = intersection(team1ClanNames, team2ClanNames)
 
         if (sameClansInBothTeams.length > 0) {
-          throw new Error('The same clan name occured in two teams after getBalancedTeamsWithClans()')
+          throw new Error('The same clan name occured in both teams')
         }
 
         const [level1, level2] = getTeamsLevels([team1, team2])
