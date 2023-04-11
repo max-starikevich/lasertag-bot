@@ -1,19 +1,17 @@
 /* eslint-disable */
 import 'module-alias/register'
 import dotenv from 'dotenv'
-import { Telegraf } from 'telegraf'
 import axios from 'axios'
 import { version } from '../../package.json'
 
 dotenv.config({ path: '.env.production' })
 
-import config from '$/config'
 import { checkEnvironment } from '$/config/check'
 import { updateBotCommands, updateBotCommandsForPlayers, updateBotWebhook } from '$/bot/webhooks'
-import { GameContext } from '$/bot/types'
 import { makeLogger } from '$/logger'
 import { defaultLocale } from '$/lang/i18n-custom'
 import { BaseGame } from '$/game/types'
+import { initBot } from '$/bot'
 /* eslint-enable */
 
 async function run (): Promise<void> {
@@ -21,8 +19,7 @@ async function run (): Promise<void> {
 
   try {
     await checkEnvironment()
-
-    const bot = new Telegraf<GameContext>(config.BOT_TOKEN)
+    const bot = await initBot()
 
     await updateBotWebhook({
       telegram: bot.telegram,
