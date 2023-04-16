@@ -2,7 +2,7 @@ import { difference, intersection, times } from 'lodash'
 
 import { getRandomArray, getRandomNumber } from '../../../utils.dev'
 import { ClanPlayer, Player } from '../types'
-import { getTeamsLevels } from './utils'
+import { getTeamsLevels } from './'
 import { getBalancedTeamsWithClans } from './with-clans'
 
 const basePlayer: Player = {

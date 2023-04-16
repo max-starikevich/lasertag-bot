@@ -1,8 +1,7 @@
 import { orderBy, groupBy, partition } from 'lodash'
 
 import { Player, Teams } from '../types'
-import { getAverageTeamLevel, getTeamsLevels } from './utils'
-import { balanceTeamsNTimes } from '.'
+import { balanceTeamsNTimes, getAverageTeamLevel, getTeamsLevels } from '.'
 
 export const getBalancedTeamsWithClans = (players: Player[]): Teams => {
   const ratedPlayers = orderBy(players, ({ level }) => level, 'desc')

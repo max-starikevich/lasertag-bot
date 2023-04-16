@@ -1,7 +1,6 @@
 import { orderBy } from 'lodash'
 
-import { Teams } from '../types'
-import { getTeamsLevels, sortTeamsByRatings } from './utils'
+import { Player, Teams } from '../types'
 
 export const balanceTeamsNTimes = (teams: Teams, attemptAmount: number, withClans: boolean): Teams => {
   let currentTeams = teams
@@ -111,4 +110,37 @@ const balanceBySwap = ([team1, team2]: Teams, withClans: boolean): Teams => {
   weakTeam[weakerPlayerIndex] = strongerPlayer
 
   return [strongTeam, weakTeam]
+}
+
+const sortTeamByRating = (team: Player[]): Player[] => orderBy(team, ({ level }) => level, 'desc')
+
+const sortTeamsByRatings = ([team1, team2]: Teams): Teams => {
+  return [
+    sortTeamByRating(team1),
+    sortTeamByRating(team2)
+  ]
+}
+
+const sortTeamByClans = (team: Player[]): Player[] => orderBy(team, ({ clanName }) => clanName, 'asc')
+
+export const sortTeamsByClans = ([team1, team2]: Teams): Teams => {
+  return [
+    sortTeamByClans(team1),
+    sortTeamByClans(team2)
+  ]
+}
+
+export const getTeamsLevels = ([team1, team2]: Teams): [number, number] => {
+  const level1 = getTeamLevel(team1)
+  const level2 = getTeamLevel(team2)
+
+  return [level1, level2]
+}
+
+const getTeamLevel = (team: Player[]): number => {
+  return team.reduce((result, { level }) => result + level, 0)
+}
+
+export const getAverageTeamLevel = (team: Player[]): number => {
+  return getTeamLevel(team) / team.length
 }

@@ -1,8 +1,7 @@
 import { chunk, orderBy } from 'lodash'
 
 import { Player, Teams } from '../types'
-import { getTeamsLevels } from './utils'
-import { balanceTeamsNTimes } from '.'
+import { getTeamsLevels, balanceTeamsNTimes } from '.'
 
 export const getBalancedTeams = (players: Player[]): Teams => {
   const ratedPlayers = orderBy(players, ({ level }) => level, 'desc')

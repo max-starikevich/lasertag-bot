@@ -1,6 +1,6 @@
 import dedent from 'dedent-js'
 
-import { getTeamsLevels } from '$/game/player/balance/utils'
+import { getTeamsLevels } from '$/game/player/balance'
 import { Teams } from '$/game/player/types'
 
 import { Command, CommandContext } from '../types'
