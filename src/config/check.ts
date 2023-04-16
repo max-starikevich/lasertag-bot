@@ -1,7 +1,8 @@
 import { requiredConfigInput as config } from './index'
 
-const isValidString = (s?: string): boolean => (s ?? '').length > 0
-const isValidEmail = (s?: string): boolean => /\S+@\S+\.\S+/.test(s ?? '')
+const isValidString = (s?: string): boolean => String(s).length > 0
+const isValidEmail = (s?: string): boolean => /\S+@\S+\.\S+/.test(String(s))
+const isValidNumber = (s?: string): boolean => s === undefined ? false : !isNaN(parseInt(s))
 
 type EnvironmentValidator = () => Promise<boolean>
 
@@ -16,11 +17,11 @@ const requiredRuntimeVariables: EnvironmentToCheck = {
   GOOGLE_PRIVATE_KEY: async () => isValidString(config.GOOGLE_PRIVATE_KEY),
   GOOGLE_SPREADSHEET_ID: async () => isValidString(config.GOOGLE_SPREADSHEET_ID),
 
-  PLAYERS_SHEETS_ID: async () => isValidString(config.PLAYERS_SHEETS_ID),
-  GAME_SHEETS_ID: async () => isValidString(config.GAME_SHEETS_ID),
-  LINKS_SHEETS_ID: async () => isValidString(config.LINKS_SHEETS_ID),
+  PLAYERS_SHEETS_ID: async () => isValidNumber(config.PLAYERS_SHEETS_ID),
+  GAME_SHEETS_ID: async () => isValidNumber(config.GAME_SHEETS_ID),
+  LINKS_SHEETS_ID: async () => isValidNumber(config.LINKS_SHEETS_ID),
 
-  TELEGRAM_HOME_CHAT_ID: async () => isValidString(config.TELEGRAM_HOME_CHAT_ID),
+  TELEGRAM_HOME_CHAT_ID: async () => isValidNumber(config.TELEGRAM_HOME_CHAT_ID),
 
   WEBHOOK_BASE: async () => isValidString(config.WEBHOOK_BASE)
 }
