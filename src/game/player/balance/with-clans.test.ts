@@ -26,8 +26,12 @@ describe('balance/with-clans.ts', () => {
     const maxLevel = 10
     const targetSuccessPercentage = 91
 
-    const clans: Array<[string, number]> = [['alpha', 3], ['bravo', 2], ['delta', 1], ['charlie', 1], ['foxtrot', 1]]
+    const clans: Array<[string, number]> = [['test1', 3], ['test2', 2], ['test3', 1], ['test4', 1], ['test5', 1]]
     const noClanPlayersCount = clans.reduce((count, [, clanPlayersCount]) => count - clanPlayersCount, playerCount)
+
+    if (noClanPlayersCount < 0) {
+      throw new Error('Too much of clan players. Reduce their number to fix this.')
+    }
 
     it(`should balance properly with ${playerCount} random players with ${clans.length} clans in ${targetSuccessPercentage}%+ cases after ${numberOfTries} tries`, () => {
       const successTries = times(numberOfTries).reduce((successTries) => {

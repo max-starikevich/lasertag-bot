@@ -6,7 +6,7 @@ import { balanceTeamsNTimes } from '.'
 
 export const getBalancedTeamsWithClans = (players: Player[]): Teams => {
   const ratedPlayers = orderBy(players, ({ level }) => level, 'desc')
-  const [clanPlayers, noClanPlayers] = partition(ratedPlayers, ({ isClanMember }) => isClanMember)
+  const [clanPlayers, noClanPlayers] = partition(ratedPlayers, ({ isAlone }) => !isAlone)
 
   const clans = orderBy(Object.entries(groupBy(clanPlayers, ({ clanName }) => clanName)), ([, team]) => getAverageTeamLevel(team), 'desc')
 
