@@ -6,7 +6,7 @@ import L from '$/lang/i18n-node'
 
 export const playerMiddleware: BotMiddleware = async (ctx, next) => {
   if (ctx.from == null) {
-    return await next()
+    throw new Error('Missing "ctx.from"')
   }
 
   const { game } = ctx

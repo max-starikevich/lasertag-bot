@@ -6,7 +6,7 @@ import { BotMiddleware } from '.'
 export const accessMiddleware: BotMiddleware = async (ctx, next) => {
   try {
     if ((ctx.chat == null) || (ctx.from == null)) {
-      return await next()
+      throw new Error('Missing "ctx.chat" and "ctx.from"')
     }
 
     ctx.isGroupChat = ctx.chat.type === 'supergroup' || ctx.chat.type === 'group'
