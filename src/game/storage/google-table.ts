@@ -186,7 +186,7 @@ export class GoogleTableGameStorage implements GameStorage {
     const targetRow = rows.find(row => row.rowIndex === player.tableRow)
 
     if (targetRow === undefined) {
-      throw new Error()
+      throw new Error('Missing target row in the Google Sheets')
     }
 
     const cellsMap = await getCellsMapByRow(targetRow)
