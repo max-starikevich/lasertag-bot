@@ -15,9 +15,11 @@ import { language } from './language'
 import { unregister } from './unregister'
 import { about } from './about'
 import { links } from './links'
+import { enroll } from './enroll'
 
 export const commands: Command[] = [
   start,
+  enroll,
   players,
   teams,
   oldTeams,

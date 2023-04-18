@@ -106,6 +106,14 @@ type RootTranslation = {
 	 */
 	LINKS_COMMAND_DESCRIPTION: string
 	/**
+	 * A​d​d​ ​y​o​u​r​s​e​l​f​ ​t​o​ ​t​h​e​ ​p​l​a​y​e​r​ ​l​i​s​t
+	 */
+	ENROLL_COMMAND_DESCRIPTION: string
+	/**
+	 * Y​o​u​'​v​e​ ​b​e​e​n​ ​e​n​r​o​l​l​e​d​ ​s​u​c​c​e​s​s​f​u​l​l​y
+	 */
+	ENROLL_COMMAND_SUCCESS: string
+	/**
 	 * T​e​a​m​ ​b​a​l​a​n​c​e
 	 */
 	TEAMS_BALANCE: string
@@ -240,6 +248,14 @@ export type TranslationFunctions = {
 	 * Show useful links
 	 */
 	LINKS_COMMAND_DESCRIPTION: () => LocalizedString
+	/**
+	 * Add yourself to the player list
+	 */
+	ENROLL_COMMAND_DESCRIPTION: () => LocalizedString
+	/**
+	 * You've been enrolled successfully
+	 */
+	ENROLL_COMMAND_SUCCESS: () => LocalizedString
 	/**
 	 * Team balance
 	 */

@@ -33,6 +33,9 @@ const ru: MappedTranslation = {
 
   LINKS_COMMAND_DESCRIPTION: 'Полезные ссылки',
 
+  ENROLL_COMMAND_DESCRIPTION: 'Записаться в файл',
+  ENROLL_COMMAND_SUCCESS: 'Вы записаны успешно',
+
   TEAMS_BALANCE: 'Баланс команд',
   RECORDED: 'Записано',
   RENT_NEEDED: 'Прокат',

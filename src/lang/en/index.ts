@@ -33,6 +33,9 @@ const en: BaseTranslation = {
 
   LINKS_COMMAND_DESCRIPTION: 'Show useful links',
 
+  ENROLL_COMMAND_DESCRIPTION: 'Add yourself to the player list',
+  ENROLL_COMMAND_SUCCESS: "You've been enrolled successfully",
+
   TEAMS_BALANCE: 'Team balance',
   RECORDED: 'Recorded',
   RENT_NEEDED: 'Rent',
