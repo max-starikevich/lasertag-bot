@@ -41,6 +41,10 @@ const ru: MappedTranslation = {
   RENT: 'Прокат',
   COUNT: 'Количество',
 
+  OWN_WEAPON: 'У меня свой',
+  OPTIONAL: 'Необязательно',
+  ABSENT: 'Меня не будет',
+
   UNEXPECTED_ERROR_FOR_USER: 'Неожиданная ошибка. Повторите запрос позже',
   UNKNOWN_COMMAND: 'Не удалось распознать команду. Используйте меню или команду /{helpCommandName:string}',
   NO_HOME_CHAT_ACCESS_MESSAGE: 'Нет доступа',

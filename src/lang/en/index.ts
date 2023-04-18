@@ -41,6 +41,10 @@ const en: BaseTranslation = {
   RENT: 'Rent',
   COUNT: 'Count',
 
+  OWN_WEAPON: 'I have my own',
+  OPTIONAL: 'Optional',
+  ABSENT: "I'll be absent",
+
   UNEXPECTED_ERROR_FOR_USER: 'Unexpected error. Try again later',
   UNKNOWN_COMMAND: 'Unknown command. Use menu or command /{helpCommandName:string}',
   NO_HOME_CHAT_ACCESS_MESSAGE: 'Access denied',

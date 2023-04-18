@@ -130,6 +130,18 @@ type RootTranslation = {
 	 */
 	COUNT: string
 	/**
+	 * I​ ​h​a​v​e​ ​m​y​ ​o​w​n
+	 */
+	OWN_WEAPON: string
+	/**
+	 * O​p​t​i​o​n​a​l
+	 */
+	OPTIONAL: string
+	/**
+	 * I​'​l​l​ ​b​e​ ​a​b​s​e​n​t
+	 */
+	ABSENT: string
+	/**
 	 * U​n​e​x​p​e​c​t​e​d​ ​e​r​r​o​r​.​ ​T​r​y​ ​a​g​a​i​n​ ​l​a​t​e​r
 	 */
 	UNEXPECTED_ERROR_FOR_USER: string
@@ -276,6 +288,18 @@ export type TranslationFunctions = {
 	 * Count
 	 */
 	COUNT: () => LocalizedString
+	/**
+	 * I have my own
+	 */
+	OWN_WEAPON: () => LocalizedString
+	/**
+	 * Optional
+	 */
+	OPTIONAL: () => LocalizedString
+	/**
+	 * I'll be absent
+	 */
+	ABSENT: () => LocalizedString
 	/**
 	 * Unexpected error. Try again later
 	 */
