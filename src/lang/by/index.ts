@@ -38,7 +38,8 @@ const by: MappedTranslation = {
 
   TEAMS_BALANCE: 'Баланс каманд',
   RECORDED: 'Запісана',
-  RENT_NEEDED: 'Патрэбны пракат',
+  RENT: 'Патрэбны пракат',
+  COUNT: 'Колькасць',
 
   UNEXPECTED_ERROR_FOR_USER: 'Нечаканая памылка. Паўтарыце запыт пазьней',
   UNKNOWN_COMMAND: 'Не ўдалося распазнаць каманду. Выкарыстоўвайце меню ці каманду /{helpCommandName:string}',

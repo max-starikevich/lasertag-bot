@@ -124,7 +124,11 @@ type RootTranslation = {
 	/**
 	 * R​e​n​t
 	 */
-	RENT_NEEDED: string
+	RENT: string
+	/**
+	 * C​o​u​n​t
+	 */
+	COUNT: string
 	/**
 	 * U​n​e​x​p​e​c​t​e​d​ ​e​r​r​o​r​.​ ​T​r​y​ ​a​g​a​i​n​ ​l​a​t​e​r
 	 */
@@ -267,7 +271,11 @@ export type TranslationFunctions = {
 	/**
 	 * Rent
 	 */
-	RENT_NEEDED: () => LocalizedString
+	RENT: () => LocalizedString
+	/**
+	 * Count
+	 */
+	COUNT: () => LocalizedString
 	/**
 	 * Unexpected error. Try again later
 	 */

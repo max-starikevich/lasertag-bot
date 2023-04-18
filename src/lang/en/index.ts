@@ -38,7 +38,8 @@ const en: BaseTranslation = {
 
   TEAMS_BALANCE: 'Team balance',
   RECORDED: 'Recorded',
-  RENT_NEEDED: 'Rent',
+  RENT: 'Rent',
+  COUNT: 'Count',
 
   UNEXPECTED_ERROR_FOR_USER: 'Unexpected error. Try again later',
   UNKNOWN_COMMAND: 'Unknown command. Use menu or command /{helpCommandName:string}',
