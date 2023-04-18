@@ -1,15 +1,8 @@
-import { RegisterRequiredError } from '$/errors/RegisterRequiredError'
-
 import { Command, CommandHandler } from '../types'
+import { enroll as enrollAction } from '../actions/enroll'
 
 const handler: CommandHandler = async (ctx) => {
-  const { currentPlayer, lang } = ctx
-
-  if (currentPlayer === undefined) {
-    throw new RegisterRequiredError()
-  }
-
-  await ctx.replyWithHTML(lang.ENROLL_COMMAND_SUCCESS())
+  return await enrollAction.initializer(ctx)
 }
 
 export const enroll: Command = {
