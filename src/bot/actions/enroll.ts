@@ -34,35 +34,43 @@ const initializer: ActionInitializer = async ctx => {
 }
 
 const countHandler: ActionHandler = async ctx => {
-  const { lang } = ctx
+  const { lang, currentPlayer, game } = ctx
 
-  await ctx.editMessageReplyMarkup(undefined)
+  if (currentPlayer === undefined) {
+    throw new RegisterRequiredError()
+  }
 
-  const count = ctx.match[1]
+  const count = parseInt(ctx.match[1])
 
   if (Number.isNaN(count)) {
     return await ctx.reply(lang.ACTION_HANDLER_WRONG_DATA())
   }
 
-  // TODO: call google sheets mutation here
+  currentPlayer.count = count
+
+  await game.savePlayer(currentPlayer)
 
   await ctx.editMessageText(`✅ ${lang.COUNT()}: ${count}`)
 }
 
 const rentHandler: ActionHandler = async ctx => {
-  const { lang } = ctx
+  const { lang, currentPlayer, game } = ctx
 
-  await ctx.editMessageReplyMarkup(undefined)
+  if (currentPlayer === undefined) {
+    throw new RegisterRequiredError()
+  }
 
-  const rent = ctx.match[1]
+  const rentCount = parseInt(ctx.match[1])
 
-  if (Number.isNaN(rent)) {
+  if (Number.isNaN(rentCount)) {
     return await ctx.reply(lang.ACTION_HANDLER_WRONG_DATA())
   }
 
-  // TODO: call google sheets mutation here
+  currentPlayer.rentCount = rentCount
 
-  await ctx.editMessageText(`✅ ${lang.RENT()}: ${rent}`)
+  await game.savePlayer(currentPlayer)
+
+  await ctx.editMessageText(`✅ ${lang.RENT()}: ${rentCount}`)
 }
 
 export const enroll: Action = {
