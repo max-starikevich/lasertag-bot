@@ -42,7 +42,6 @@ export type ActionHandler = (ctx: NarrowedContext<GameContext & {
 export type ActionInitializer = (ctx: NarrowedContext<GameContext, Update.MessageUpdate<Message.TextMessage>>) => Promise<any>
 
 export interface Action {
-  name: RegExp
   initializer: ActionInitializer
-  handler: ActionHandler
+  mapping: { [key: string]: ActionHandler }
 }

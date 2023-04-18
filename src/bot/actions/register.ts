@@ -4,8 +4,6 @@ import { NotEnoughPlayersError } from '$/errors/NotEnoughPlayersError'
 
 import { Action, ActionHandler, ActionInitializer } from '../types'
 
-const actionName = /^register-(\d+)$/
-
 const initializer: ActionInitializer = async ctx => {
   const { game, lang, currentPlayer } = ctx
 
@@ -64,7 +62,8 @@ const handler: ActionHandler = async ctx => {
 }
 
 export const register: Action = {
-  name: actionName,
   initializer,
-  handler
+  mapping: {
+    '^register-(\\d+)$': handler
+  }
 }

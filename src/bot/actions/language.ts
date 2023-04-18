@@ -6,8 +6,6 @@ import { RegisterRequiredError } from '$/errors/RegisterRequiredError'
 import { Action, ActionHandler, ActionInitializer } from '../types'
 import { updateBotCommands } from '$/bot/webhooks'
 
-const actionName = /^set-language-(\w+)$/
-
 const initializer: ActionInitializer = async ctx => {
   const { lang, currentPlayer } = ctx
 
@@ -52,7 +50,8 @@ const handler: ActionHandler = async ctx => {
 }
 
 export const language: Action = {
-  name: actionName,
   initializer,
-  handler
+  mapping: {
+    '^set-language-(\\w+)$': handler
+  }
 }

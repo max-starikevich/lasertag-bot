@@ -29,5 +29,9 @@ export const setBotMiddlewares = (bot: Telegraf<GameContext>): void => {
 }
 
 export const setBotActions = (bot: Telegraf<GameContext>): void => {
-  actions.map(action => bot.action(action.name, action.handler))
+  actions.map(action =>
+    Object.entries(action.mapping).map(([name, handler]) =>
+      bot.action(RegExp(name), handler)
+    )
+  )
 }
