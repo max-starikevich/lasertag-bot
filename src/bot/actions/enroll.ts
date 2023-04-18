@@ -10,24 +10,24 @@ const initializer: ActionInitializer = async ctx => {
     throw new RegisterRequiredError()
   }
 
-  await ctx.reply(lang.COUNT(), {
+  await ctx.reply(`${lang.COUNT()}?`, {
     reply_markup: {
       inline_keyboard: chunk(
         [...range(0, 6).map(n => ({
-          text: `${n}`,
+          text: `${n === 0 ? lang.ABSENT() : n}`,
           callback_data: `enroll-count-${n}`
-        }))], 3
+        }))], 2
       )
     }
   })
 
-  await ctx.reply(lang.RENT(), {
+  await ctx.reply(`${lang.RENT()}? (${lang.OPTIONAL().toLocaleLowerCase()})`, {
     reply_markup: {
       inline_keyboard: chunk(
         [...range(0, 6).map(n => ({
-          text: `${n}`,
+          text: `${n === 0 ? lang.OWN_WEAPON() : n}`,
           callback_data: `enroll-rent-${n}`
-        }))], 3
+        }))], 2
       )
     }
   })
