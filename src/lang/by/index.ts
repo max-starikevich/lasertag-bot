@@ -42,7 +42,6 @@ const by: MappedTranslation = {
   COUNT: 'Колькасць',
 
   OWN_WEAPON: 'У мяне свая зброя',
-  OPTIONAL: 'Неабавязкова',
   ABSENT: 'Мяне не будзе',
 
   UNEXPECTED_ERROR_FOR_USER: 'Нечаканая памылка. Паўтарыце запыт пазьней',

@@ -42,7 +42,6 @@ const ru: MappedTranslation = {
   COUNT: 'Количество',
 
   OWN_WEAPON: 'У меня свой',
-  OPTIONAL: 'Необязательно',
   ABSENT: 'Меня не будет',
 
   UNEXPECTED_ERROR_FOR_USER: 'Неожиданная ошибка. Повторите запрос позже',

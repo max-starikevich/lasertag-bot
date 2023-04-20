@@ -42,7 +42,6 @@ const en: BaseTranslation = {
   COUNT: 'Count',
 
   OWN_WEAPON: 'I have my own',
-  OPTIONAL: 'Optional',
   ABSENT: "I'll be absent",
 
   UNEXPECTED_ERROR_FOR_USER: 'Unexpected error. Try again later',

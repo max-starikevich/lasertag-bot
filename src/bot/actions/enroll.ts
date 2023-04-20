@@ -21,11 +21,11 @@ const initializer: ActionInitializer = async ctx => {
     }
   })
 
-  await ctx.reply(`${lang.RENT()}? (${lang.OPTIONAL().toLocaleLowerCase()})`, {
+  await ctx.reply(`${lang.RENT()}?`, {
     reply_markup: {
       inline_keyboard: chunk(
-        [...range(0, 6).map(n => ({
-          text: `${n === 0 ? lang.OWN_WEAPON() : n}`,
+        [...range(1, 6).map(n => ({
+          text: `${n}`,
           callback_data: `enroll-rent-${n}`
         }))], 2
       )

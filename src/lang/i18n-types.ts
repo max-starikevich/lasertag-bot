@@ -134,10 +134,6 @@ type RootTranslation = {
 	 */
 	OWN_WEAPON: string
 	/**
-	 * O​p​t​i​o​n​a​l
-	 */
-	OPTIONAL: string
-	/**
 	 * I​'​l​l​ ​b​e​ ​a​b​s​e​n​t
 	 */
 	ABSENT: string
@@ -292,10 +288,6 @@ export type TranslationFunctions = {
 	 * I have my own
 	 */
 	OWN_WEAPON: () => LocalizedString
-	/**
-	 * Optional
-	 */
-	OPTIONAL: () => LocalizedString
 	/**
 	 * I'll be absent
 	 */
