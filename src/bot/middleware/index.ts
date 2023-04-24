@@ -17,7 +17,7 @@ export type BotMiddleware = MiddlewareFn<NarrowedContext<GameContext, Update.Mes
 
 export const setBotMiddlewares = (bot: Telegraf<GameContext>): void => {
   bot.on('callback_query', loggingMiddleware, analyticsMiddleware, accessMiddleware, playerMiddleware, groupChatMiddleware)
-  bot.on('message', loggingMiddleware, analyticsMiddleware, accessMiddleware, playerMiddleware, groupChatMiddleware)
+  bot.on('text', loggingMiddleware, analyticsMiddleware, accessMiddleware, playerMiddleware, groupChatMiddleware)
 
   commands.map((command) => bot.command(command.name, async (ctx) => await command.handler(ctx)))
 
