@@ -3,6 +3,7 @@ import { requiredConfigInput as config } from './index'
 const isValidString = (s?: string): boolean => String(s).length > 0
 const isValidEmail = (s?: string): boolean => /\S+@\S+\.\S+/.test(String(s))
 const isValidNumber = (s?: string): boolean => s === undefined ? false : !isNaN(parseInt(s))
+const isValidTableRange = (s?: string): boolean => /^([A-Z]+)(\d+):([A-Z]+)(\d+)$/.test(String(s))
 
 type EnvironmentValidator = () => Promise<boolean>
 
@@ -18,20 +19,20 @@ const requiredRuntimeVariables: EnvironmentToCheck = {
   GOOGLE_SERVICE_ACCOUNT_EMAIL: async () => isValidEmail(config.GOOGLE_SERVICE_ACCOUNT_EMAIL),
   GOOGLE_PRIVATE_KEY: async () => isValidString(config.GOOGLE_PRIVATE_KEY),
 
-  PLAYERS_DOC_ID: async () => isValidNumber(config.PLAYERS_DOC_ID),
+  PLAYERS_DOC_ID: async () => isValidString(config.PLAYERS_DOC_ID),
   PLAYERS_SHEETS_ID: async () => isValidNumber(config.PLAYERS_SHEETS_ID),
 
-  GAME_DOC_ID: async () => isValidNumber(config.GAME_DOC_ID),
+  GAME_DOC_ID: async () => isValidString(config.GAME_DOC_ID),
   GAME_SHEETS_ID: async () => isValidNumber(config.GAME_SHEETS_ID),
 
-  LINKS_DOC_ID: async () => isValidNumber(config.LINKS_DOC_ID),
+  LINKS_DOC_ID: async () => isValidString(config.LINKS_DOC_ID),
   LINKS_SHEETS_ID: async () => isValidNumber(config.LINKS_SHEETS_ID),
 
-  ENROLL_DOC_ID: async () => isValidNumber(config.ENROLL_DOC_ID),
+  ENROLL_DOC_ID: async () => isValidString(config.ENROLL_DOC_ID),
   ENROLL_SHEETS_ID: async () => isValidNumber(config.ENROLL_SHEETS_ID),
-  ENROLL_NAMES_RANGE: async () => isValidNumber(config.ENROLL_NAMES_RANGE),
-  ENROLL_COUNT_RANGE: async () => isValidNumber(config.ENROLL_COUNT_RANGE),
-  ENROLL_RENT_RANGE: async () => isValidNumber(config.ENROLL_RENT_RANGE)
+  ENROLL_NAMES_RANGE: async () => isValidTableRange(config.ENROLL_NAMES_RANGE),
+  ENROLL_COUNT_RANGE: async () => isValidTableRange(config.ENROLL_COUNT_RANGE),
+  ENROLL_RENT_RANGE: async () => isValidTableRange(config.ENROLL_RENT_RANGE)
 }
 
 export const checkEnvironment = async (): Promise<void> => {

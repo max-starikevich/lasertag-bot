@@ -28,3 +28,27 @@ export const extractString = (data: any): string | undefined => {
 
   return str
 }
+
+interface RangeParsed {
+  from: { letter: string, num: number }
+  to: { letter: string, num: number }
+}
+
+export const extractRange = (s?: string): RangeParsed | null => {
+  const regexResult = /^([A-Z]+)(\d+):([A-Z]+)(\d+)$/.exec(String(s))
+
+  if (regexResult === null) {
+    return null
+  }
+
+  return {
+    from: {
+      letter: regexResult[1],
+      num: parseInt(regexResult[2])
+    },
+    to: {
+      letter: regexResult[3],
+      num: parseInt(regexResult[4])
+    }
+  }
+}

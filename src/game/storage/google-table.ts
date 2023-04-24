@@ -1,8 +1,8 @@
 import { GoogleSpreadsheet, GoogleSpreadsheetWorksheet } from 'google-spreadsheet'
 import { decode } from 'html-entities'
-import { groupBy } from 'lodash'
+import { groupBy, range } from 'lodash'
 
-import { extractString } from '$/utils'
+import { extractRange, extractString } from '$/utils'
 import { NoSheetsError } from '$/errors/NoSheetsError'
 import { getLocaleByName } from '$/lang/i18n-custom'
 
@@ -10,8 +10,10 @@ import { GameStorage } from './types'
 import { Player } from '../player/types'
 import { GameLink, GameLocation } from '../types'
 import { getCellsMapByRow } from './utils'
+import config from '../../config'
 
-export const EditablePlayerFields: Array<keyof Player> = ['telegramUserId', 'locale']
+const EditablePlayerFields: Array<keyof Player> = ['telegramUserId', 'locale']
+// const EditableEnrollFields: Array<keyof Player> = ['count', 'rentCount']
 
 interface GoogleTableConstructorParams {
   privateKey: string
@@ -211,7 +213,7 @@ export class GoogleTableGameStorage implements GameStorage {
   }
 
   savePlayer = async (player: Player): Promise<Player> => {
-    if (this.players === undefined) {
+    if (this.players === undefined || this.enroll === undefined) {
       throw new NoSheetsError()
     }
 
@@ -222,10 +224,10 @@ export class GoogleTableGameStorage implements GameStorage {
       throw new Error('Missing target row in the Google Sheets')
     }
 
-    const cellsMap = await getCellsMapByRow(targetRow)
+    const playerCellsMap = await getCellsMapByRow(targetRow)
 
     for (const fieldName of EditablePlayerFields) {
-      const cell = cellsMap[fieldName]
+      const cell = playerCellsMap[fieldName]
 
       if (cell === undefined) {
         continue
@@ -239,6 +241,48 @@ export class GoogleTableGameStorage implements GameStorage {
 
       cell.value = nextValue
     }
+
+    await this.players.saveUpdatedCells()
+
+    await this.enroll.loadCells([
+      config.ENROLL_NAMES_RANGE,
+      config.ENROLL_COUNT_RANGE,
+      config.ENROLL_RENT_RANGE
+    ])
+
+    const namesRange = extractRange(config.ENROLL_NAMES_RANGE)
+    const countRange = extractRange(config.ENROLL_COUNT_RANGE)
+    const rentRange = extractRange(config.ENROLL_RENT_RANGE)
+
+    if (namesRange === null || countRange === null || rentRange === null) {
+      throw new Error('Invalid names range in the enroll sheets.')
+    }
+
+    const targetNameCell = range(namesRange.from.num, namesRange.to.num)
+      .map(n => this.enroll?.getCellByA1(`${namesRange.from.letter}${n}`))
+      .find(cell => {
+        if (cell?.value === player.name) {
+          return true
+        }
+
+        return false
+      })
+
+    if (targetNameCell === undefined) {
+      throw new Error('Can\'t find player\'s name cell in the enroll table')
+    }
+
+    const countCell = this.enroll.getCellByA1(`${countRange.from.letter}${targetNameCell.rowIndex + 1}`)
+    const rentCell = this.enroll.getCellByA1(`${rentRange.from.letter}${targetNameCell.rowIndex + 1}`)
+
+    if (countCell === undefined || rentCell === undefined) {
+      throw new Error('Can\'t find player\'s count/rent cells in the enroll table')
+    }
+
+    countCell.value = player.count
+    rentCell.value = player.rentCount
+
+    await this.enroll.saveUpdatedCells()
 
     return player
   }
