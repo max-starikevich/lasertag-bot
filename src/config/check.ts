@@ -11,20 +11,27 @@ type EnvironmentToCheck = {
 }
 
 const requiredRuntimeVariables: EnvironmentToCheck = {
+  TELEGRAM_HOME_CHAT_ID: async () => isValidNumber(config.TELEGRAM_HOME_CHAT_ID),
+  WEBHOOK_BASE: async () => isValidString(config.WEBHOOK_BASE),
   BOT_TOKEN: async () => isValidString(config.BOT_TOKEN),
 
   GOOGLE_SERVICE_ACCOUNT_EMAIL: async () => isValidEmail(config.GOOGLE_SERVICE_ACCOUNT_EMAIL),
   GOOGLE_PRIVATE_KEY: async () => isValidString(config.GOOGLE_PRIVATE_KEY),
-  GOOGLE_SPREADSHEET_ID: async () => isValidString(config.GOOGLE_SPREADSHEET_ID),
 
+  PLAYERS_DOC_ID: async () => isValidNumber(config.PLAYERS_DOC_ID),
   PLAYERS_SHEETS_ID: async () => isValidNumber(config.PLAYERS_SHEETS_ID),
+
+  GAME_DOC_ID: async () => isValidNumber(config.GAME_DOC_ID),
   GAME_SHEETS_ID: async () => isValidNumber(config.GAME_SHEETS_ID),
+
+  LINKS_DOC_ID: async () => isValidNumber(config.LINKS_DOC_ID),
   LINKS_SHEETS_ID: async () => isValidNumber(config.LINKS_SHEETS_ID),
-  ENROLLMENT_SHEETS_ID: async () => isValidNumber(config.ENROLLMENT_SHEETS_ID),
 
-  TELEGRAM_HOME_CHAT_ID: async () => isValidNumber(config.TELEGRAM_HOME_CHAT_ID),
-
-  WEBHOOK_BASE: async () => isValidString(config.WEBHOOK_BASE)
+  ENROLL_DOC_ID: async () => isValidNumber(config.ENROLL_DOC_ID),
+  ENROLL_SHEETS_ID: async () => isValidNumber(config.ENROLL_SHEETS_ID),
+  ENROLL_NAMES_RANGE: async () => isValidNumber(config.ENROLL_NAMES_RANGE),
+  ENROLL_COUNT_RANGE: async () => isValidNumber(config.ENROLL_COUNT_RANGE),
+  ENROLL_RENT_RANGE: async () => isValidNumber(config.ENROLL_RENT_RANGE)
 }
 
 export const checkEnvironment = async (): Promise<void> => {

@@ -14,63 +14,88 @@ import { getCellsMapByRow } from './utils'
 export const EditablePlayerFields: Array<keyof Player> = ['telegramUserId', 'locale']
 
 interface GoogleTableConstructorParams {
-  spreadsheetId: string
   privateKey: string
   email: string
 
+  playerDocId: string
   playerSheetsId: string
+
+  gameDocId: string
   gameSheetsId: string
+
+  linksDocId: string
   linksSheetsId: string
-  enrollmentSheetsId: string
+
+  enrollDocId: string
+  enrollSheetsId: string
 }
 
 export class GoogleTableGameStorage implements GameStorage {
-  protected spreadsheetId: string
   protected privateKey: string
   protected email: string
 
-  protected document?: GoogleSpreadsheet
-
+  protected playerDocId: string
   protected playerSheetsId: string
   protected players?: GoogleSpreadsheetWorksheet
 
+  protected gameDocId: string
   protected gameSheetsId: string
   protected game?: GoogleSpreadsheetWorksheet
 
+  protected linksDocId: string
   protected linksSheetsId: string
   protected links?: GoogleSpreadsheetWorksheet
 
-  protected enrollmentSheetsId: string
-  protected enrollment?: GoogleSpreadsheetWorksheet
+  protected enrollDocId: string
+  protected enrollSheetsId: string
+  protected enroll?: GoogleSpreadsheetWorksheet
 
-  constructor ({ spreadsheetId, privateKey, email, playerSheetsId, gameSheetsId, linksSheetsId, enrollmentSheetsId }: GoogleTableConstructorParams) {
-    this.spreadsheetId = spreadsheetId
+  constructor ({
+    privateKey, email,
+    playerDocId, playerSheetsId,
+    gameDocId, gameSheetsId,
+    linksDocId, linksSheetsId,
+    enrollDocId, enrollSheetsId
+  }: GoogleTableConstructorParams) {
     this.privateKey = privateKey
     this.email = email
 
+    this.playerDocId = playerDocId
     this.playerSheetsId = playerSheetsId
+
+    this.gameDocId = gameDocId
     this.gameSheetsId = gameSheetsId
+
+    this.linksDocId = linksDocId
     this.linksSheetsId = linksSheetsId
-    this.enrollmentSheetsId = enrollmentSheetsId
+
+    this.enrollDocId = enrollDocId
+    this.enrollSheetsId = enrollSheetsId
   }
 
   init = async (): Promise<void> => {
     try {
-      const document = new GoogleSpreadsheet(this.spreadsheetId)
+      // if some tables are in the same document, then don't do duplicated objects + requests
+      const docSheetMap = {
+        [this.playerDocId]: this.playerSheetsId,
+        [this.gameDocId]: this.gameSheetsId,
+        [this.linksDocId]: this.linksSheetsId,
+        [this.enrollDocId]: this.enrollSheetsId
+      }
 
-      await document.useServiceAccountAuth({
-        client_email: this.email,
-        private_key: this.privateKey
-      })
+      const docs = Object.keys(docSheetMap).map(docId => new GoogleSpreadsheet(docId))
 
-      await document.loadInfo()
+      await Promise.all(docs.map(async doc =>
+        await doc.useServiceAccountAuth({
+          client_email: this.email,
+          private_key: this.privateKey
+        }).then(async () => await doc.loadInfo())
+      ))
 
-      this.players = document.sheetsById[this.playerSheetsId]
-      this.game = document.sheetsById[this.gameSheetsId]
-      this.links = document.sheetsById[this.linksSheetsId]
-      this.enrollment = document.sheetsById[this.enrollmentSheetsId]
-
-      this.document = document
+      this.players = docs.find(doc => doc.spreadsheetId === this.playerDocId)?.sheetsById[this.playerSheetsId]
+      this.game = docs.find(doc => doc.spreadsheetId === this.gameDocId)?.sheetsById[this.gameSheetsId]
+      this.links = docs.find(doc => doc.spreadsheetId === this.linksDocId)?.sheetsById[this.linksSheetsId]
+      this.enroll = docs.find(doc => doc.spreadsheetId === this.enrollDocId)?.sheetsById[this.enrollSheetsId]
     } catch (e) {
       if (e instanceof NoSheetsError) {
         throw e

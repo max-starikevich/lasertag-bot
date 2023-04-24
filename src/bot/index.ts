@@ -23,19 +23,31 @@ export const initBot = async (): Promise<Telegraf<GameContext>> => {
   await checkEnvironment()
 
   const storage = new GoogleTableGameStorage({
-    spreadsheetId: config.GOOGLE_SPREADSHEET_ID,
     email: config.GOOGLE_SERVICE_ACCOUNT_EMAIL,
     privateKey: config.GOOGLE_PRIVATE_KEY,
-    playerSheetsId: config.PLAYERS_SHEETS_ID,
-    gameSheetsId: config.GAME_SHEETS_ID,
-    linksSheetsId: config.LINKS_SHEETS_ID,
-    enrollmentSheetsId: config.ENROLLMENT_SHEETS_ID
-  })
 
-  await storage.init()
+    playerDocId: config.PLAYERS_DOC_ID,
+    playerSheetsId: config.PLAYERS_SHEETS_ID,
+
+    gameDocId: config.GAME_DOC_ID,
+    gameSheetsId: config.GAME_SHEETS_ID,
+
+    linksDocId: config.LINKS_DOC_ID,
+    linksSheetsId: config.LINKS_SHEETS_ID,
+
+    enrollDocId: config.ENROLL_DOC_ID,
+    enrollSheetsId: config.ENROLL_SHEETS_ID
+  })
 
   const game = new Game({ storage })
   const bot = new Telegraf<GameContext>(config.BOT_TOKEN)
+
+  bot.catch(errorMiddleware)
+
+  process.on('uncaughtException', e => reportException(e))
+  process.on('unhandledRejection', e => reportException(e))
+
+  await storage.init()
 
   bot.context.game = game
 
@@ -50,11 +62,6 @@ export const initBot = async (): Promise<Telegraf<GameContext>> => {
 
   setBotMiddlewares(bot)
   setBotActions(bot)
-
-  bot.catch(errorMiddleware)
-
-  process.on('uncaughtException', e => reportException(e))
-  process.on('unhandledRejection', e => reportException(e))
 
   return bot
 }
