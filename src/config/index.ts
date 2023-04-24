@@ -27,7 +27,8 @@ export const requiredConfigInput = {
 
   PLAYERS_SHEETS_ID: process.env.PLAYERS_SHEETS_ID as string,
   GAME_SHEETS_ID: process.env.GAME_SHEETS_ID as string,
-  LINKS_SHEETS_ID: process.env.LINKS_SHEETS_ID as string
+  LINKS_SHEETS_ID: process.env.LINKS_SHEETS_ID as string,
+  ENROLLMENT_SHEETS_ID: process.env.ENROLLMENT_SHEETS_ID as string
 }
 
 const config = { ...defaultConfig, ...requiredConfigInput }

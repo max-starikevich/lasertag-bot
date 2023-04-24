@@ -20,6 +20,7 @@ const requiredRuntimeVariables: EnvironmentToCheck = {
   PLAYERS_SHEETS_ID: async () => isValidNumber(config.PLAYERS_SHEETS_ID),
   GAME_SHEETS_ID: async () => isValidNumber(config.GAME_SHEETS_ID),
   LINKS_SHEETS_ID: async () => isValidNumber(config.LINKS_SHEETS_ID),
+  ENROLLMENT_SHEETS_ID: async () => isValidNumber(config.ENROLLMENT_SHEETS_ID),
 
   TELEGRAM_HOME_CHAT_ID: async () => isValidNumber(config.TELEGRAM_HOME_CHAT_ID),
 

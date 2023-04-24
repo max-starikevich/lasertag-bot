@@ -22,5 +22,3 @@ export interface ClanPlayer extends Player {
 }
 
 export type Teams = [Player[], Player[]]
-
-export const EditablePlayerFields: Array<keyof Player> = ['telegramUserId', 'locale']

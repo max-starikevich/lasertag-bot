@@ -7,9 +7,11 @@ import { NoSheetsError } from '$/errors/NoSheetsError'
 import { getLocaleByName } from '$/lang/i18n-custom'
 
 import { GameStorage } from './types'
-import { EditablePlayerFields, Player } from '../player/types'
+import { Player } from '../player/types'
 import { GameLink, GameLocation } from '../types'
 import { getCellsMapByRow } from './utils'
+
+export const EditablePlayerFields: Array<keyof Player> = ['telegramUserId', 'locale']
 
 interface GoogleTableConstructorParams {
   spreadsheetId: string
@@ -19,6 +21,7 @@ interface GoogleTableConstructorParams {
   playerSheetsId: string
   gameSheetsId: string
   linksSheetsId: string
+  enrollmentSheetsId: string
 }
 
 export class GoogleTableGameStorage implements GameStorage {
@@ -29,15 +32,18 @@ export class GoogleTableGameStorage implements GameStorage {
   protected document?: GoogleSpreadsheet
 
   protected playerSheetsId: string
-  protected playerSheets?: GoogleSpreadsheetWorksheet
+  protected players?: GoogleSpreadsheetWorksheet
 
   protected gameSheetsId: string
-  protected gameSheets?: GoogleSpreadsheetWorksheet
+  protected game?: GoogleSpreadsheetWorksheet
 
   protected linksSheetsId: string
-  protected linksSheets?: GoogleSpreadsheetWorksheet
+  protected links?: GoogleSpreadsheetWorksheet
 
-  constructor ({ spreadsheetId, privateKey, email, playerSheetsId, gameSheetsId, linksSheetsId }: GoogleTableConstructorParams) {
+  protected enrollmentSheetsId: string
+  protected enrollment?: GoogleSpreadsheetWorksheet
+
+  constructor ({ spreadsheetId, privateKey, email, playerSheetsId, gameSheetsId, linksSheetsId, enrollmentSheetsId }: GoogleTableConstructorParams) {
     this.spreadsheetId = spreadsheetId
     this.privateKey = privateKey
     this.email = email
@@ -45,6 +51,7 @@ export class GoogleTableGameStorage implements GameStorage {
     this.playerSheetsId = playerSheetsId
     this.gameSheetsId = gameSheetsId
     this.linksSheetsId = linksSheetsId
+    this.enrollmentSheetsId = enrollmentSheetsId
   }
 
   init = async (): Promise<void> => {
@@ -58,9 +65,10 @@ export class GoogleTableGameStorage implements GameStorage {
 
       await document.loadInfo()
 
-      this.playerSheets = document.sheetsById[this.playerSheetsId]
-      this.gameSheets = document.sheetsById[this.gameSheetsId]
-      this.linksSheets = document.sheetsById[this.linksSheetsId]
+      this.players = document.sheetsById[this.playerSheetsId]
+      this.game = document.sheetsById[this.gameSheetsId]
+      this.links = document.sheetsById[this.linksSheetsId]
+      this.enrollment = document.sheetsById[this.enrollmentSheetsId]
 
       this.document = document
     } catch (e) {
@@ -73,11 +81,11 @@ export class GoogleTableGameStorage implements GameStorage {
   }
 
   getPlayers = async (): Promise<Player[]> => {
-    if (this.playerSheets === undefined) {
+    if (this.players === undefined) {
       throw new NoSheetsError()
     }
 
-    const players = (await this.playerSheets.getRows())
+    const players = (await this.players.getRows())
       .reduce<Player[]>((players, row) => {
       const name = decode(row.name)
 
@@ -136,11 +144,11 @@ export class GoogleTableGameStorage implements GameStorage {
   }
 
   getPlaceAndTime = async (): Promise<GameLocation[]> => {
-    if (this.gameSheets === undefined) {
+    if (this.game === undefined) {
       throw new NoSheetsError()
     }
 
-    const rows = await this.gameSheets.getRows()
+    const rows = await this.game.getRows()
 
     return rows.reduce<GameLocation[]>((result, row) => {
       const lang = getLocaleByName(row.lang)
@@ -157,11 +165,11 @@ export class GoogleTableGameStorage implements GameStorage {
   }
 
   getLinks = async (): Promise<GameLink[]> => {
-    if (this.linksSheets === undefined) {
+    if (this.links === undefined) {
       throw new NoSheetsError()
     }
 
-    const rows = await this.linksSheets.getRows()
+    const rows = await this.links.getRows()
 
     return rows.reduce<GameLink[]>((result, row) => {
       const lang = getLocaleByName(row.lang)
@@ -178,11 +186,11 @@ export class GoogleTableGameStorage implements GameStorage {
   }
 
   savePlayer = async (player: Player): Promise<Player> => {
-    if (this.playerSheets === undefined) {
+    if (this.players === undefined) {
       throw new NoSheetsError()
     }
 
-    const rows = await this.playerSheets.getRows()
+    const rows = await this.players.getRows()
     const targetRow = rows.find(row => row.rowIndex === player.tableRow)
 
     if (targetRow === undefined) {
@@ -205,7 +213,6 @@ export class GoogleTableGameStorage implements GameStorage {
       }
 
       cell.value = nextValue
-      await cell.save()
     }
 
     return player

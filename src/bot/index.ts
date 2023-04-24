@@ -28,7 +28,8 @@ export const initBot = async (): Promise<Telegraf<GameContext>> => {
     privateKey: config.GOOGLE_PRIVATE_KEY,
     playerSheetsId: config.PLAYERS_SHEETS_ID,
     gameSheetsId: config.GAME_SHEETS_ID,
-    linksSheetsId: config.LINKS_SHEETS_ID
+    linksSheetsId: config.LINKS_SHEETS_ID,
+    enrollmentSheetsId: config.ENROLLMENT_SHEETS_ID
   })
 
   await storage.init()
