@@ -14,17 +14,17 @@ import { getPlayerCells } from './utils'
 export const playerFields: Array<keyof Player> = ['telegramUserId', 'locale']
 export const enrollFields: Array<keyof Player> = ['count', 'rentCount']
 
-export interface PlayersSheets {
+export interface PlayersData {
   docId: string
   sheetsId: string
   sheets?: GoogleSpreadsheetWorksheet
 }
 
-export interface GameSheets extends PlayersSheets {}
+export interface GameData extends PlayersData {}
 
-export interface LinksSheets extends PlayersSheets {}
+export interface LinksData extends PlayersData {}
 
-export interface EnrollSheets extends PlayersSheets {
+export interface EnrollData extends PlayersData {
   namesRange: RangeParsed
   countRange: RangeParsed
   rentRange: RangeParsed
@@ -35,10 +35,10 @@ export class GoogleTableGameStorage implements GameStorage {
     protected email: string,
     protected privateKey: string,
 
-    protected players: PlayersSheets,
-    protected game: GameSheets,
-    protected links: LinksSheets,
-    protected enroll: EnrollSheets
+    protected players: PlayersData,
+    protected game: GameData,
+    protected links: LinksData,
+    protected enroll: EnrollData
   ) {}
 
   init = async (): Promise<void> => {
