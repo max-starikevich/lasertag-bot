@@ -58,11 +58,6 @@ export const initBot = async (): Promise<Telegraf<GameContext>> => {
   const game = new Game({ storage })
   const bot = new Telegraf<GameContext>(config.BOT_TOKEN)
 
-  bot.catch(errorMiddleware)
-
-  process.on('uncaughtException', e => reportException(e))
-  process.on('unhandledRejection', e => reportException(e))
-
   await storage.init()
 
   bot.context.game = game
@@ -78,6 +73,11 @@ export const initBot = async (): Promise<Telegraf<GameContext>> => {
 
   setBotMiddlewares(bot)
   setBotActions(bot)
+
+  bot.catch(errorMiddleware)
+
+  process.on('uncaughtException', e => reportException(e))
+  process.on('unhandledRejection', e => reportException(e))
 
   return bot
 }
