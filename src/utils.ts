@@ -29,7 +29,7 @@ export const extractString = (data: any): string | undefined => {
   return str
 }
 
-interface RangeParsed {
+export interface RangeParsed {
   from: { letter: string, num: number }
   to: { letter: string, num: number }
 }

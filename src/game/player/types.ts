@@ -14,8 +14,10 @@ export interface Player {
   isAlone: boolean
 
   locale?: string
-  telegramUserId?: number
+  telegramUserId?: number | null
 }
+
+export type UpdatedPlayer = Partial<Player> & Pick<Player, 'name' | 'tableRow'>
 
 export interface ClanPlayer extends Player {
   clanName: string

@@ -1,3 +1,5 @@
+import { pick } from 'lodash'
+
 import { RegisterRequiredError } from '$/errors/RegisterRequiredError'
 
 import { Command, CommandHandler } from '../types'
@@ -9,9 +11,12 @@ const handler: CommandHandler = async (ctx) => {
     throw new RegisterRequiredError()
   }
 
-  currentPlayer.telegramUserId = undefined
+  currentPlayer.telegramUserId = null
 
-  await game.savePlayer(currentPlayer)
+  await game.savePlayer({
+    ...pick(currentPlayer, ['tableRow', 'name']),
+    telegramUserId: null
+  })
 
   return await ctx.reply(lang.UNREGISTER_SUCCESS())
 }

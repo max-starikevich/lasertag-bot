@@ -1,4 +1,4 @@
-import { chunk } from 'lodash'
+import { chunk, pick } from 'lodash'
 
 import { NotEnoughPlayersError } from '$/errors/NotEnoughPlayersError'
 
@@ -55,10 +55,14 @@ const handler: ActionHandler = async ctx => {
     return await ctx.reply(lang.REGISTER_ALREADY_REGISTERED())
   }
 
-  targetPlayer.telegramUserId = ctx.from.id
-  await game.savePlayer(targetPlayer)
+  ctx.currentPlayer = targetPlayer
 
-  return await ctx.reply(lang.REGISTER_SUCCESS({ name: targetPlayer.name }))
+  await game.savePlayer({
+    ...pick(targetPlayer, ['tableRow', 'name']),
+    telegramUserId: ctx.from.id
+  })
+
+  await ctx.editMessageText(`✅ ${lang.REGISTER_SUCCESS({ name: targetPlayer.name })}`)
 }
 
 export const register: Action = {
