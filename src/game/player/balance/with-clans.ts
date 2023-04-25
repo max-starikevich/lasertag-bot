@@ -1,12 +1,11 @@
 import { orderBy, groupBy, partition } from 'lodash'
 
 import { Player, Teams } from '../types'
-import { getAverageTeamLevel, getTeamsLevels } from './utils'
-import { balanceTeamsNTimes } from '.'
+import { balanceTeamsNTimes, getAverageTeamLevel, getTeamsLevels } from '.'
 
 export const getBalancedTeamsWithClans = (players: Player[]): Teams => {
   const ratedPlayers = orderBy(players, ({ level }) => level, 'desc')
-  const [clanPlayers, noClanPlayers] = partition(ratedPlayers, ({ isClanMember }) => isClanMember)
+  const [clanPlayers, noClanPlayers] = partition(ratedPlayers, ({ isAlone }) => !isAlone)
 
   const clans = orderBy(Object.entries(groupBy(clanPlayers, ({ clanName }) => clanName)), ([, team]) => getAverageTeamLevel(team), 'desc')
 

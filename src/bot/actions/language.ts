@@ -1,3 +1,5 @@
+import { pick } from 'lodash'
+
 import { isLocaleName, localeNames } from '$/lang/i18n-custom'
 import { Locales } from '$/lang/i18n-types'
 import L from '$/lang/i18n-node'
@@ -5,8 +7,6 @@ import { RegisterRequiredError } from '$/errors/RegisterRequiredError'
 
 import { Action, ActionHandler, ActionInitializer } from '../types'
 import { updateBotCommands } from '$/bot/webhooks'
-
-const actionName = /^set-language-(\w+)$/
 
 const initializer: ActionInitializer = async ctx => {
   const { lang, currentPlayer } = ctx
@@ -41,18 +41,22 @@ const handler: ActionHandler = async ctx => {
   }
 
   currentPlayer.locale = localeToSet
-  await game.savePlayer(currentPlayer)
+
+  await game.savePlayer({
+    ...pick(currentPlayer, ['tableRow', 'name']),
+    locale: localeToSet
+  })
 
   ctx.locale = localeToSet
   ctx.lang = L[ctx.locale]
 
   await updateBotCommands(ctx, { type: 'chat', chat_id: ctx.from.id })
-
-  await ctx.reply(ctx.lang.LANGUAGE_CHOOSE_SUCCESS())
+  await ctx.editMessageText(`✅ ${ctx.lang.LANGUAGE_CHOOSE_SUCCESS()}`)
 }
 
 export const language: Action = {
-  name: actionName,
   initializer,
-  handler
+  mapping: {
+    '^set-language-(\\w+)$': handler
+  }
 }

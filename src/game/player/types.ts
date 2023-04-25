@@ -14,13 +14,13 @@ export interface Player {
   isAlone: boolean
 
   locale?: string
-  telegramUserId?: number
+  telegramUserId?: number | null
 }
+
+export type UpdatedPlayer = Partial<Player> & Pick<Player, 'name' | 'tableRow'>
 
 export interface ClanPlayer extends Player {
   clanName: string
 }
 
 export type Teams = [Player[], Player[]]
-
-export const EditablePlayerFields: Array<keyof Player> = ['telegramUserId', 'locale']

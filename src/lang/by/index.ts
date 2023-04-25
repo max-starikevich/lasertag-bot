@@ -33,9 +33,16 @@ const by: MappedTranslation = {
 
   LINKS_COMMAND_DESCRIPTION: 'Карысныя спасылкі',
 
+  ENROLL_COMMAND_DESCRIPTION: 'Запісацца ў файл',
+  ENROLL_COMMAND_SUCCESS: 'Вы пасьпяхова запісаны ў файл',
+
   TEAMS_BALANCE: 'Баланс каманд',
   RECORDED: 'Запісана',
-  RENT_NEEDED: 'Патрэбны пракат',
+  RENT: 'Патрэбны пракат',
+  COUNT: 'Колькасць',
+
+  RENT_NOT_NEEDED: 'Не патрэбен',
+  ABSENT: 'Мяне не будзе',
 
   UNEXPECTED_ERROR_FOR_USER: 'Нечаканая памылка. Паўтарыце запыт пазьней',
   UNKNOWN_COMMAND: 'Не ўдалося распазнаць каманду. Выкарыстоўвайце меню ці каманду /{helpCommandName:string}',

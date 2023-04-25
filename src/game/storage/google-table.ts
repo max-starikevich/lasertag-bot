@@ -2,67 +2,67 @@ import { GoogleSpreadsheet, GoogleSpreadsheetWorksheet } from 'google-spreadshee
 import { decode } from 'html-entities'
 import { groupBy } from 'lodash'
 
-import { extractString } from '$/utils'
+import { RangeParsed, extractString } from '$/utils'
 import { NoSheetsError } from '$/errors/NoSheetsError'
 import { getLocaleByName } from '$/lang/i18n-custom'
 
 import { GameStorage } from './types'
-import { EditablePlayerFields, Player } from '../player/types'
+import { Player, UpdatedPlayer } from '../player/types'
 import { GameLink, GameLocation } from '../types'
-import { getCellsMapByRow } from './utils'
+import { getPlayerCells } from './utils'
 
-interface GoogleTableConstructorParams {
-  spreadsheetId: string
-  privateKey: string
-  email: string
+export const playerFields: Array<keyof Player> = ['telegramUserId', 'locale']
+export const enrollFields: Array<keyof Player> = ['count', 'rentCount']
 
-  playerSheetsId: string
-  gameSheetsId: string
-  linksSheetsId: string
+export interface PlayersData {
+  docId: string
+  sheetsId: string
+  sheets?: GoogleSpreadsheetWorksheet
+}
+
+export interface GameData extends PlayersData {}
+
+export interface LinksData extends PlayersData {}
+
+export interface EnrollData extends PlayersData {
+  namesRange: RangeParsed
+  countRange: RangeParsed
+  rentRange: RangeParsed
 }
 
 export class GoogleTableGameStorage implements GameStorage {
-  protected spreadsheetId: string
-  protected privateKey: string
-  protected email: string
+  constructor (
+    protected email: string,
+    protected privateKey: string,
 
-  protected document?: GoogleSpreadsheet
-
-  protected playerSheetsId: string
-  protected playerSheets?: GoogleSpreadsheetWorksheet
-
-  protected gameSheetsId: string
-  protected gameSheets?: GoogleSpreadsheetWorksheet
-
-  protected linksSheetsId: string
-  protected linksSheets?: GoogleSpreadsheetWorksheet
-
-  constructor ({ spreadsheetId, privateKey, email, playerSheetsId, gameSheetsId, linksSheetsId }: GoogleTableConstructorParams) {
-    this.spreadsheetId = spreadsheetId
-    this.privateKey = privateKey
-    this.email = email
-
-    this.playerSheetsId = playerSheetsId
-    this.gameSheetsId = gameSheetsId
-    this.linksSheetsId = linksSheetsId
-  }
+    protected players: PlayersData,
+    protected game: GameData,
+    protected links: LinksData,
+    protected enroll: EnrollData
+  ) {}
 
   init = async (): Promise<void> => {
     try {
-      const document = new GoogleSpreadsheet(this.spreadsheetId)
+      const docToSheetMap = {
+        [this.players.docId]: this.players.sheetsId,
+        [this.game.docId]: this.game.sheetsId,
+        [this.links.docId]: this.links.sheetsId,
+        [this.enroll.docId]: this.enroll.sheetsId
+      }
 
-      await document.useServiceAccountAuth({
-        client_email: this.email,
-        private_key: this.privateKey
-      })
+      const docs = Object.keys(docToSheetMap).map(docId => new GoogleSpreadsheet(docId))
 
-      await document.loadInfo()
+      await Promise.all(docs.map(async doc =>
+        await doc.useServiceAccountAuth({
+          client_email: this.email,
+          private_key: this.privateKey
+        }).then(async () => await doc.loadInfo())
+      ))
 
-      this.playerSheets = document.sheetsById[this.playerSheetsId]
-      this.gameSheets = document.sheetsById[this.gameSheetsId]
-      this.linksSheets = document.sheetsById[this.linksSheetsId]
-
-      this.document = document
+      this.players.sheets = docs.find(doc => doc.spreadsheetId === this.players.docId)?.sheetsById[this.players.sheetsId]
+      this.game.sheets = docs.find(doc => doc.spreadsheetId === this.game.docId)?.sheetsById[this.game.sheetsId]
+      this.links.sheets = docs.find(doc => doc.spreadsheetId === this.links.docId)?.sheetsById[this.links.sheetsId]
+      this.enroll.sheets = docs.find(doc => doc.spreadsheetId === this.enroll.docId)?.sheetsById[this.enroll.sheetsId]
     } catch (e) {
       if (e instanceof NoSheetsError) {
         throw e
@@ -73,11 +73,11 @@ export class GoogleTableGameStorage implements GameStorage {
   }
 
   getPlayers = async (): Promise<Player[]> => {
-    if (this.playerSheets === undefined) {
+    if (this.players.sheets === undefined) {
       throw new NoSheetsError()
     }
 
-    const players = (await this.playerSheets.getRows())
+    const players = (await this.players.sheets.getRows())
       .reduce<Player[]>((players, row) => {
       const name = decode(row.name)
 
@@ -136,11 +136,11 @@ export class GoogleTableGameStorage implements GameStorage {
   }
 
   getPlaceAndTime = async (): Promise<GameLocation[]> => {
-    if (this.gameSheets === undefined) {
+    if (this.game.sheets === undefined) {
       throw new NoSheetsError()
     }
 
-    const rows = await this.gameSheets.getRows()
+    const rows = await this.game.sheets.getRows()
 
     return rows.reduce<GameLocation[]>((result, row) => {
       const lang = getLocaleByName(row.lang)
@@ -157,11 +157,11 @@ export class GoogleTableGameStorage implements GameStorage {
   }
 
   getLinks = async (): Promise<GameLink[]> => {
-    if (this.linksSheets === undefined) {
+    if (this.links.sheets === undefined) {
       throw new NoSheetsError()
     }
 
-    const rows = await this.linksSheets.getRows()
+    const rows = await this.links.sheets.getRows()
 
     return rows.reduce<GameLink[]>((result, row) => {
       const lang = getLocaleByName(row.lang)
@@ -177,36 +177,34 @@ export class GoogleTableGameStorage implements GameStorage {
     }, [])
   }
 
-  savePlayer = async (player: Player): Promise<Player> => {
-    if (this.playerSheets === undefined) {
+  savePlayer = async (player: UpdatedPlayer): Promise<UpdatedPlayer> => {
+    if (this.players.sheets === undefined || this.enroll.sheets === undefined) {
       throw new NoSheetsError()
     }
 
-    const rows = await this.playerSheets.getRows()
-    const targetRow = rows.find(row => row.rowIndex === player.tableRow)
+    const map = await getPlayerCells(player, this.players, this.enroll)
 
-    if (targetRow === undefined) {
-      throw new Error()
-    }
-
-    const cellsMap = await getCellsMapByRow(targetRow)
-
-    for (const fieldName of EditablePlayerFields) {
-      const cell = cellsMap[fieldName]
+    for (const playerField of Object.keys(player)) {
+      const fieldName = playerField as keyof Player
+      const cell = map[fieldName]
 
       if (cell === undefined) {
         continue
       }
 
-      const nextValue = player[fieldName] ?? ''
+      const nextValue = player[fieldName]
 
-      if (nextValue === cell.value) {
+      if (nextValue === undefined || nextValue === cell.value) {
         continue
       }
 
-      cell.value = nextValue
-      await cell.save()
+      cell.value = nextValue ?? ''
     }
+
+    await Promise.all([
+      this.players.sheets.saveUpdatedCells(),
+      this.enroll.sheets.saveUpdatedCells()
+    ])
 
     return player
   }

@@ -1,6 +1,6 @@
 import dedent from 'dedent-js'
 
-import { getTeamsLevels } from '$/game/player/balance/utils'
+import { getTeamsLevels } from '$/game/player/balance'
 import { Teams } from '$/game/player/types'
 
 import { Command, CommandContext } from '../types'
@@ -15,9 +15,11 @@ import { language } from './language'
 import { unregister } from './unregister'
 import { about } from './about'
 import { links } from './links'
+import { enroll } from './enroll'
 
 export const commands: Command[] = [
   start,
+  enroll,
   players,
   teams,
   oldTeams,

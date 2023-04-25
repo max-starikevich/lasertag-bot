@@ -1,9 +1,9 @@
 import { GameStorage } from './storage/types'
 import { GameLocation, BaseGame, GameLink } from './types'
-import { ClanPlayer, Player, Teams } from './player/types'
+import { ClanPlayer, Player, UpdatedPlayer, Teams } from './player/types'
 import { getBalancedTeams } from './player/balance/no-clans'
 import { getBalancedTeamsWithClans } from './player/balance/with-clans'
-import { sortTeamsByClans } from './player/balance/utils'
+import { sortTeamsByClans } from './player/balance'
 
 interface GameConstructorParams {
   storage: GameStorage
@@ -47,7 +47,7 @@ export class Game implements BaseGame {
     return sortTeamsByClans(getBalancedTeamsWithClans(activePlayers))
   }
 
-  savePlayer = async (player: Player): Promise<Player> => {
+  savePlayer = async (player: UpdatedPlayer): Promise<UpdatedPlayer> => {
     return await this.storage.savePlayer(player)
   }
 }

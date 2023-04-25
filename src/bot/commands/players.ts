@@ -29,7 +29,7 @@ const handler: CommandHandler = async (ctx) => {
 
   await ctx.replyWithHTML(dedent`
     ${lang.RECORDED()}: ${readyPlayers.reduce((sum, { count }) => sum + count, 0)}
-    ${lang.RENT_NEEDED()}: ${players.reduce(
+    ${lang.RENT()}: ${players.reduce(
       (sum, { rentCount }) => sum + rentCount,
     0)}
   `)

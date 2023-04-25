@@ -106,6 +106,14 @@ type RootTranslation = {
 	 */
 	LINKS_COMMAND_DESCRIPTION: string
 	/**
+	 * A​d​d​ ​y​o​u​r​s​e​l​f​ ​t​o​ ​t​h​e​ ​p​l​a​y​e​r​ ​l​i​s​t
+	 */
+	ENROLL_COMMAND_DESCRIPTION: string
+	/**
+	 * Y​o​u​'​v​e​ ​b​e​e​n​ ​e​n​r​o​l​l​e​d​ ​s​u​c​c​e​s​s​f​u​l​l​y
+	 */
+	ENROLL_COMMAND_SUCCESS: string
+	/**
 	 * T​e​a​m​ ​b​a​l​a​n​c​e
 	 */
 	TEAMS_BALANCE: string
@@ -116,7 +124,19 @@ type RootTranslation = {
 	/**
 	 * R​e​n​t
 	 */
-	RENT_NEEDED: string
+	RENT: string
+	/**
+	 * C​o​u​n​t
+	 */
+	COUNT: string
+	/**
+	 * N​o​t​ ​n​e​e​d​e​d
+	 */
+	RENT_NOT_NEEDED: string
+	/**
+	 * I​'​l​l​ ​b​e​ ​a​b​s​e​n​t
+	 */
+	ABSENT: string
 	/**
 	 * U​n​e​x​p​e​c​t​e​d​ ​e​r​r​o​r​.​ ​T​r​y​ ​a​g​a​i​n​ ​l​a​t​e​r
 	 */
@@ -241,6 +261,14 @@ export type TranslationFunctions = {
 	 */
 	LINKS_COMMAND_DESCRIPTION: () => LocalizedString
 	/**
+	 * Add yourself to the player list
+	 */
+	ENROLL_COMMAND_DESCRIPTION: () => LocalizedString
+	/**
+	 * You've been enrolled successfully
+	 */
+	ENROLL_COMMAND_SUCCESS: () => LocalizedString
+	/**
 	 * Team balance
 	 */
 	TEAMS_BALANCE: () => LocalizedString
@@ -251,7 +279,19 @@ export type TranslationFunctions = {
 	/**
 	 * Rent
 	 */
-	RENT_NEEDED: () => LocalizedString
+	RENT: () => LocalizedString
+	/**
+	 * Count
+	 */
+	COUNT: () => LocalizedString
+	/**
+	 * Not needed
+	 */
+	RENT_NOT_NEEDED: () => LocalizedString
+	/**
+	 * I'll be absent
+	 */
+	ABSENT: () => LocalizedString
 	/**
 	 * Unexpected error. Try again later
 	 */

@@ -33,9 +33,16 @@ const ru: MappedTranslation = {
 
   LINKS_COMMAND_DESCRIPTION: 'Полезные ссылки',
 
+  ENROLL_COMMAND_DESCRIPTION: 'Записаться в файл',
+  ENROLL_COMMAND_SUCCESS: 'Вы записаны успешно',
+
   TEAMS_BALANCE: 'Баланс команд',
   RECORDED: 'Записано',
-  RENT_NEEDED: 'Прокат',
+  RENT: 'Прокат',
+  COUNT: 'Количество',
+
+  RENT_NOT_NEEDED: 'Не нужен',
+  ABSENT: 'Меня не будет',
 
   UNEXPECTED_ERROR_FOR_USER: 'Неожиданная ошибка. Повторите запрос позже',
   UNKNOWN_COMMAND: 'Не удалось распознать команду. Используйте меню или команду /{helpCommandName:string}',

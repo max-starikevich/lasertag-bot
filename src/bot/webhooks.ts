@@ -35,7 +35,7 @@ export const updateBotCommandsForPlayers = async (ctx: Pick<GameContext, 'logger
   const { logger, telegram } = ctx
 
   for (const player of players) {
-    if (player.locale === undefined || player.telegramUserId === undefined) {
+    if (player.locale === undefined || player.telegramUserId == null) {
       continue
     }
 

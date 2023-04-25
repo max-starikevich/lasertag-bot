@@ -1,6 +1,6 @@
 import { Locales } from '$/lang/i18n-types'
 
-import { ClanPlayer, Player, Teams } from './player/types'
+import { ClanPlayer, Player, UpdatedPlayer, Teams } from './player/types'
 
 export interface GameLocation {
   location: string
@@ -26,5 +26,5 @@ export interface BaseGame {
   getTeams: () => Promise<Teams>
   getTeamsWithClans: () => Promise<Teams>
 
-  savePlayer: (player: Player) => Promise<Player>
+  savePlayer: (player: UpdatedPlayer) => Promise<UpdatedPlayer>
 }

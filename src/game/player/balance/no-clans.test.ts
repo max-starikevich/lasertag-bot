@@ -3,7 +3,7 @@ import { difference, times } from 'lodash'
 import { getRandomArray } from '../../../utils.dev'
 import { getBalancedTeams } from './no-clans'
 import { Player } from '../types'
-import { getTeamsLevels } from './utils'
+import { getTeamsLevels } from './'
 
 describe('balance/no-clans.ts', () => {
   describe('getBalancedTeams()', () => {
