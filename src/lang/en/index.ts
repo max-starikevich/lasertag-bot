@@ -41,7 +41,7 @@ const en: BaseTranslation = {
   RENT: 'Rent',
   COUNT: 'Count',
 
-  OWN_WEAPON: 'I have my own',
+  RENT_NOT_NEEDED: 'Not needed',
   ABSENT: "I'll be absent",
 
   UNEXPECTED_ERROR_FOR_USER: 'Unexpected error. Try again later',

@@ -41,7 +41,7 @@ const ru: MappedTranslation = {
   RENT: 'Прокат',
   COUNT: 'Количество',
 
-  OWN_WEAPON: 'У меня свой',
+  RENT_NOT_NEEDED: 'Не нужен',
   ABSENT: 'Меня не будет',
 
   UNEXPECTED_ERROR_FOR_USER: 'Неожиданная ошибка. Повторите запрос позже',

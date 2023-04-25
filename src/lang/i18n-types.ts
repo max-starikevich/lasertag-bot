@@ -130,9 +130,9 @@ type RootTranslation = {
 	 */
 	COUNT: string
 	/**
-	 * I​ ​h​a​v​e​ ​m​y​ ​o​w​n
+	 * N​o​t​ ​n​e​e​d​e​d
 	 */
-	OWN_WEAPON: string
+	RENT_NOT_NEEDED: string
 	/**
 	 * I​'​l​l​ ​b​e​ ​a​b​s​e​n​t
 	 */
@@ -285,9 +285,9 @@ export type TranslationFunctions = {
 	 */
 	COUNT: () => LocalizedString
 	/**
-	 * I have my own
+	 * Not needed
 	 */
-	OWN_WEAPON: () => LocalizedString
+	RENT_NOT_NEEDED: () => LocalizedString
 	/**
 	 * I'll be absent
 	 */

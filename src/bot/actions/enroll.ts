@@ -25,7 +25,7 @@ const initializer: ActionInitializer = async ctx => {
     reply_markup: {
       inline_keyboard: chunk(
         [...range(0, 6).map(n => ({
-          text: `${n}`,
+          text: `${n === 0 ? lang.RENT_NOT_NEEDED() : n}`,
           callback_data: `enroll-rent-${n}`
         }))], 2
       )
