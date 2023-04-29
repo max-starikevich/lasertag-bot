@@ -17,8 +17,6 @@ export interface Player {
   telegramUserId?: number | null
 }
 
-export type UpdatedPlayer = Partial<Player> & Pick<Player, 'name' | 'tableRow'>
-
 export interface ClanPlayer extends Player {
   clanName: string
 }

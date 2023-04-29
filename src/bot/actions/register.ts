@@ -1,4 +1,4 @@
-import { chunk, pick } from 'lodash'
+import { chunk } from 'lodash'
 
 import { NotEnoughPlayersError } from '$/errors/NotEnoughPlayersError'
 
@@ -57,8 +57,7 @@ const handler: ActionHandler = async ctx => {
 
   ctx.currentPlayer = targetPlayer
 
-  await game.savePlayer({
-    ...pick(targetPlayer, ['tableRow', 'name']),
+  await game.savePlayer(ctx.currentPlayer.name, {
     telegramUserId: ctx.from.id
   })
 

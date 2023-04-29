@@ -14,7 +14,7 @@ import L from '$/lang/i18n-node'
 import { defaultLocale } from '$/lang/i18n-custom'
 
 import { errorMiddleware } from './middleware/error'
-import { extractRange } from '../utils'
+import { parseRange } from '../utils'
 
 export const commandsInMenu = commands.filter(
   ({ showInMenu }) => showInMenu
@@ -23,9 +23,9 @@ export const commandsInMenu = commands.filter(
 export const initBot = async (): Promise<Telegraf<GameContext>> => {
   await checkEnvironment()
 
-  const enrollNamesRange = extractRange(config.ENROLL_NAMES_RANGE)
-  const enrollCountRange = extractRange(config.ENROLL_COUNT_RANGE)
-  const enrollRentRange = extractRange(config.ENROLL_RENT_RANGE)
+  const enrollNamesRange = parseRange(config.ENROLL_NAMES_RANGE)
+  const enrollCountRange = parseRange(config.ENROLL_COUNT_RANGE)
+  const enrollRentRange = parseRange(config.ENROLL_RENT_RANGE)
 
   if (enrollNamesRange === null || enrollCountRange === null || enrollRentRange === null) {
     throw new Error('Invalid enroll range data')
@@ -49,16 +49,16 @@ export const initBot = async (): Promise<Telegraf<GameContext>> => {
     {
       docId: config.ENROLL_DOC_ID,
       sheetsId: config.ENROLL_SHEETS_ID,
-      namesRange: enrollNamesRange,
-      countRange: enrollCountRange,
-      rentRange: enrollRentRange
+      ranges: {
+        names: enrollNamesRange,
+        count: enrollCountRange,
+        rent: enrollRentRange
+      }
     }
   )
 
   const game = new Game({ storage })
   const bot = new Telegraf<GameContext>(config.BOT_TOKEN)
-
-  await storage.init()
 
   bot.context.game = game
 

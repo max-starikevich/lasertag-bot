@@ -1,7 +1,7 @@
 import { Action, ActionHandler, ActionInitializer } from '../types'
 
 import { RegisterRequiredError } from '$/errors/RegisterRequiredError'
-import { chunk, pick, range } from 'lodash'
+import { chunk, range } from 'lodash'
 
 const initializer: ActionInitializer = async ctx => {
   const { currentPlayer, lang } = ctx
@@ -50,8 +50,7 @@ const countHandler: ActionHandler = async ctx => {
 
   await ctx.editMessageText(`⌛ ${lang.COUNT()}: ${count}`)
 
-  await game.savePlayer({
-    ...pick(currentPlayer, ['tableRow', 'name']),
+  await game.savePlayer(currentPlayer.name, {
     count
   })
 
@@ -75,8 +74,7 @@ const rentHandler: ActionHandler = async ctx => {
 
   await ctx.editMessageText(`⌛ ${lang.RENT()}: ${rentCount}`)
 
-  await game.savePlayer({
-    ...pick(currentPlayer, ['tableRow', 'name']),
+  await game.savePlayer(currentPlayer.name, {
     rentCount
   })
 
