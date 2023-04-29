@@ -1,3 +1,5 @@
+import crypto from 'node:crypto'
+
 export const escapeHtml = (unsafeString = ''): string =>
   unsafeString
     .trim()
@@ -55,3 +57,6 @@ export const parseRange = (s?: string): ParsedRange | null => {
     }
   }
 }
+
+export const hash = (s: string): string =>
+  crypto.createHash('sha1').update(s).digest('hex')
