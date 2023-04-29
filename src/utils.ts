@@ -58,5 +58,5 @@ export const parseRange = (s?: string): ParsedRange | null => {
   }
 }
 
-export const hash = (s: string): string =>
+export const hashString = (s: string): string =>
   crypto.createHash('sha1').update(s).digest('hex')

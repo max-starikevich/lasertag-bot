@@ -1,6 +1,6 @@
 import { chunk } from 'lodash'
 
-import { hash } from '$/utils'
+import { hashString } from '$/utils'
 import { NotEnoughPlayersError } from '$/errors/NotEnoughPlayersError'
 
 import { Action, ActionHandler, ActionInitializer } from '../types'
@@ -26,7 +26,7 @@ const initializer: ActionInitializer = async ctx => {
         ...players.map(player =>
           ({
             text: `${player.name} ${player.clanEmoji ?? ''}`,
-            callback_data: `register-${hash(player.name)}`
+            callback_data: `register-${hashString(player.name)}`
           })
         )
       ])
@@ -39,12 +39,12 @@ const handler: ActionHandler = async ctx => {
 
   const playerHash = String(ctx.match[1])
 
-  if (ctx.from === undefined || hash.length === 0) {
+  if (ctx.from === undefined || playerHash.length === 0) {
     return await ctx.reply(lang.ACTION_HANDLER_WRONG_DATA())
   }
 
   const players = await game.getPlayers()
-  const targetPlayer = players.find(player => hash(player.name) === playerHash)
+  const targetPlayer = players.find(player => hashString(player.name) === playerHash)
 
   if (targetPlayer === undefined) {
     return await ctx.reply(lang.ACTION_HANDLER_WRONG_DATA())
