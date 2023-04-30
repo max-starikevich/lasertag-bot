@@ -1,7 +1,7 @@
 import { Action, ActionHandler, ActionInitializer } from '../types'
 
 import { RegisterRequiredError } from '$/errors/RegisterRequiredError'
-import { chunk, pick, range } from 'lodash'
+import { chunk, range } from 'lodash'
 
 const initializer: ActionInitializer = async ctx => {
   const { currentPlayer, lang } = ctx
@@ -12,23 +12,39 @@ const initializer: ActionInitializer = async ctx => {
 
   await ctx.reply(`${lang.COUNT()}?`, {
     reply_markup: {
-      inline_keyboard: chunk(
-        [...range(0, 6).map(n => ({
-          text: `${n === 0 ? lang.ABSENT() : n}`,
-          callback_data: `enroll-count-${n}`
-        }))], 2
-      )
+      inline_keyboard: [
+        [
+          {
+            text: lang.ABSENT(),
+            callback_data: 'enroll-count-0'
+          }
+        ],
+        ...chunk(
+          [...range(1, 10).map(n => ({
+            text: `${n}`,
+            callback_data: `enroll-count-${n}`
+          }))], 3
+        )
+      ]
     }
   })
 
   await ctx.reply(`${lang.RENT()}?`, {
     reply_markup: {
-      inline_keyboard: chunk(
-        [...range(0, 6).map(n => ({
-          text: `${n === 0 ? lang.RENT_NOT_NEEDED() : n}`,
-          callback_data: `enroll-rent-${n}`
-        }))], 2
-      )
+      inline_keyboard: [
+        [
+          {
+            text: lang.RENT_NOT_NEEDED(),
+            callback_data: 'enroll-rent-0'
+          }
+        ],
+        ...chunk(
+          [...range(1, 10).map(n => ({
+            text: `${n}`,
+            callback_data: `enroll-rent-${n}`
+          }))], 3
+        )
+      ]
     }
   })
 }
@@ -50,8 +66,7 @@ const countHandler: ActionHandler = async ctx => {
 
   await ctx.editMessageText(`⌛ ${lang.COUNT()}: ${count}`)
 
-  await game.savePlayer({
-    ...pick(currentPlayer, ['tableRow', 'name']),
+  await game.savePlayer(currentPlayer.name, {
     count
   })
 
@@ -75,8 +90,7 @@ const rentHandler: ActionHandler = async ctx => {
 
   await ctx.editMessageText(`⌛ ${lang.RENT()}: ${rentCount}`)
 
-  await game.savePlayer({
-    ...pick(currentPlayer, ['tableRow', 'name']),
+  await game.savePlayer(currentPlayer.name, {
     rentCount
   })
 

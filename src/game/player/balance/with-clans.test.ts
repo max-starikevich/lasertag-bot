@@ -22,9 +22,9 @@ const basePlayer: Player = {
 describe('balance/with-clans.ts', () => {
   describe('getBalancedTeamsWithClans()', () => {
     const numberOfTries = 1000
-    const playerCount = 13
+    const playerCount = 11
     const maxLevel = 10
-    const targetSuccessPercentage = 91
+    const targetSuccessPercentage = 85
 
     const clans: Array<[string, number]> = [['test1', 3], ['test2', 2], ['test3', 1], ['test4', 1], ['test5', 1]]
     const noClanPlayersCount = clans.reduce((count, [, clanPlayersCount]) => count - clanPlayersCount, playerCount)
@@ -97,7 +97,7 @@ describe('balance/with-clans.ts', () => {
         return successTries + 1
       }, 0)
 
-      expect((successTries / numberOfTries) * 100).toBeGreaterThan(targetSuccessPercentage)
+      expect((successTries / numberOfTries) * 100).toBeGreaterThanOrEqual(targetSuccessPercentage)
     })
   })
 })

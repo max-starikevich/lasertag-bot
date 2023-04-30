@@ -1,5 +1,6 @@
-import { chunk, pick } from 'lodash'
+import { chunk } from 'lodash'
 
+import { hashString } from '$/utils'
 import { NotEnoughPlayersError } from '$/errors/NotEnoughPlayersError'
 
 import { Action, ActionHandler, ActionInitializer } from '../types'
@@ -25,7 +26,7 @@ const initializer: ActionInitializer = async ctx => {
         ...players.map(player =>
           ({
             text: `${player.name} ${player.clanEmoji ?? ''}`,
-            callback_data: `register-${player.tableRow}`
+            callback_data: `register-${hashString(player.name)}`
           })
         )
       ])
@@ -36,14 +37,14 @@ const initializer: ActionInitializer = async ctx => {
 const handler: ActionHandler = async ctx => {
   const { game, lang } = ctx
 
-  const tableRow = parseInt(ctx.match[1])
+  const playerHash = String(ctx.match[1])
 
-  if (ctx.from === undefined || Number.isNaN(tableRow)) {
+  if (ctx.from === undefined || playerHash.length === 0) {
     return await ctx.reply(lang.ACTION_HANDLER_WRONG_DATA())
   }
 
   const players = await game.getPlayers()
-  const targetPlayer = players.find(player => player.tableRow === tableRow)
+  const targetPlayer = players.find(player => hashString(player.name) === playerHash)
 
   if (targetPlayer === undefined) {
     return await ctx.reply(lang.ACTION_HANDLER_WRONG_DATA())
@@ -57,8 +58,7 @@ const handler: ActionHandler = async ctx => {
 
   ctx.currentPlayer = targetPlayer
 
-  await game.savePlayer({
-    ...pick(targetPlayer, ['tableRow', 'name']),
+  await game.savePlayer(ctx.currentPlayer.name, {
     telegramUserId: ctx.from.id
   })
 
@@ -68,6 +68,6 @@ const handler: ActionHandler = async ctx => {
 export const register: Action = {
   initializer,
   mapping: {
-    '^register-(\\d+)$': handler
+    '^register-(\\w+)$': handler
   }
 }

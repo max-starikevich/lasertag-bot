@@ -1,3 +1,5 @@
+import crypto from 'node:crypto'
+
 export const escapeHtml = (unsafeString = ''): string =>
   unsafeString
     .trim()
@@ -29,13 +31,13 @@ export const extractString = (data: any): string | undefined => {
   return str
 }
 
-export interface RangeParsed {
+export interface ParsedRange {
   raw: string
   from: { letter: string, num: number }
   to: { letter: string, num: number }
 }
 
-export const extractRange = (s?: string): RangeParsed | null => {
+export const parseRange = (s?: string): ParsedRange | null => {
   const input = String(s)
   const regexResult = /^([A-Z]+)(\d+):([A-Z]+)(\d+)$/.exec(input)
 
@@ -55,3 +57,6 @@ export const extractRange = (s?: string): RangeParsed | null => {
     }
   }
 }
+
+export const hashString = (s: string): string =>
+  crypto.createHash('sha1').update(s).digest('hex')

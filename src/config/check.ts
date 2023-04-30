@@ -32,7 +32,8 @@ const requiredRuntimeVariables: EnvironmentToCheck = {
   ENROLL_SHEETS_ID: async () => isValidNumber(config.ENROLL_SHEETS_ID),
   ENROLL_NAMES_RANGE: async () => isValidTableRange(config.ENROLL_NAMES_RANGE),
   ENROLL_COUNT_RANGE: async () => isValidTableRange(config.ENROLL_COUNT_RANGE),
-  ENROLL_RENT_RANGE: async () => isValidTableRange(config.ENROLL_RENT_RANGE)
+  ENROLL_RENT_RANGE: async () => isValidTableRange(config.ENROLL_RENT_RANGE),
+  ENROLL_COMMENT_RANGE: async () => isValidTableRange(config.ENROLL_COMMENT_RANGE)
 }
 
 export const checkEnvironment = async (): Promise<void> => {

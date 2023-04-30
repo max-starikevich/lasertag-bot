@@ -37,7 +37,8 @@ export const requiredConfigInput = {
   ENROLL_SHEETS_ID: process.env.ENROLL_SHEETS_ID as string,
   ENROLL_NAMES_RANGE: process.env.ENROLL_NAMES_RANGE as string,
   ENROLL_COUNT_RANGE: process.env.ENROLL_COUNT_RANGE as string,
-  ENROLL_RENT_RANGE: process.env.ENROLL_RENT_RANGE as string
+  ENROLL_RENT_RANGE: process.env.ENROLL_RENT_RANGE as string,
+  ENROLL_COMMENT_RANGE: process.env.ENROLL_COMMENT_RANGE as string
 }
 
 const config = { ...defaultConfig, ...requiredConfigInput }

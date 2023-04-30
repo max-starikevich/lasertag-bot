@@ -1,5 +1,3 @@
-import { pick } from 'lodash'
-
 import { isLocaleName, localeNames } from '$/lang/i18n-custom'
 import { Locales } from '$/lang/i18n-types'
 import L from '$/lang/i18n-node'
@@ -34,20 +32,19 @@ const handler: ActionHandler = async ctx => {
     throw new RegisterRequiredError()
   }
 
-  const localeToSet = ctx.match[1] as Locales
+  const locale = ctx.match[1] as Locales
 
-  if (ctx.chat === undefined || ctx.from === undefined || isLocaleName(localeToSet) !== true) {
+  if (ctx.chat === undefined || ctx.from === undefined || isLocaleName(locale) !== true) {
     return await ctx.reply(ctx.lang.ACTION_HANDLER_WRONG_DATA())
   }
 
-  currentPlayer.locale = localeToSet
+  currentPlayer.locale = locale
 
-  await game.savePlayer({
-    ...pick(currentPlayer, ['tableRow', 'name']),
-    locale: localeToSet
+  await game.savePlayer(currentPlayer.name, {
+    locale
   })
 
-  ctx.locale = localeToSet
+  ctx.locale = locale
   ctx.lang = L[ctx.locale]
 
   await updateBotCommands(ctx, { type: 'chat', chat_id: ctx.from.id })
