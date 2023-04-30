@@ -12,23 +12,39 @@ const initializer: ActionInitializer = async ctx => {
 
   await ctx.reply(`${lang.COUNT()}?`, {
     reply_markup: {
-      inline_keyboard: chunk(
-        [...range(0, 6).map(n => ({
-          text: `${n === 0 ? lang.ABSENT() : n}`,
-          callback_data: `enroll-count-${n}`
-        }))], 2
-      )
+      inline_keyboard: [
+        [
+          {
+            text: lang.ABSENT(),
+            callback_data: 'enroll-count-0'
+          }
+        ],
+        ...chunk(
+          [...range(1, 10).map(n => ({
+            text: `${n}`,
+            callback_data: `enroll-count-${n}`
+          }))], 3
+        )
+      ]
     }
   })
 
   await ctx.reply(`${lang.RENT()}?`, {
     reply_markup: {
-      inline_keyboard: chunk(
-        [...range(0, 6).map(n => ({
-          text: `${n === 0 ? lang.RENT_NOT_NEEDED() : n}`,
-          callback_data: `enroll-rent-${n}`
-        }))], 2
-      )
+      inline_keyboard: [
+        [
+          {
+            text: lang.RENT_NOT_NEEDED(),
+            callback_data: 'enroll-rent-0'
+          }
+        ],
+        ...chunk(
+          [...range(1, 10).map(n => ({
+            text: `${n}`,
+            callback_data: `enroll-rent-${n}`
+          }))], 3
+        )
+      ]
     }
   })
 }
