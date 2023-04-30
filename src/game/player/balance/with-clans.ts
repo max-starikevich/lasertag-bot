@@ -1,7 +1,7 @@
 import { orderBy, groupBy, partition } from 'lodash'
 
 import { Player, Teams } from '../types'
-import { balanceTeamsNTimes, getAverageTeamLevel, getTeamsLevels } from '.'
+import { balanceTeamsNTimes, getAverageTeamLevel } from '.'
 
 export const getBalancedTeamsWithClans = (players: Player[]): Teams => {
   const ratedPlayers = orderBy(players, ({ level }) => level, 'desc')
@@ -10,9 +10,7 @@ export const getBalancedTeamsWithClans = (players: Player[]): Teams => {
   const clans = orderBy(Object.entries(groupBy(clanPlayers, ({ clanName }) => clanName)), ([, team]) => getAverageTeamLevel(team), 'desc')
 
   const teamsWithClans = clans.reduce<Teams>(([team1, team2], [, clanPlayers]) => {
-    const [level1, level2] = getTeamsLevels([team1, team2])
-
-    if (level1 > level2) {
+    if (team1.length > team2.length) {
       return [
         team1,
         [...team2, ...clanPlayers]
@@ -26,9 +24,7 @@ export const getBalancedTeamsWithClans = (players: Player[]): Teams => {
   }, [[], []])
 
   const teamsWithAll = noClanPlayers.reduce<Teams>(([team1, team2], player) => {
-    const [level1, level2] = getTeamsLevels([team1, team2])
-
-    if (level1 > level2) {
+    if (team1.length > team2.length) {
       return [
         team1,
         [...team2, player]

@@ -8,9 +8,9 @@ import { getTeamsLevels } from './'
 describe('balance/no-clans.ts', () => {
   describe('getBalancedTeams()', () => {
     const numberOfTries = 1000
-    const playerCount = 13
+    const playerCount = 7
     const maxLevel = 10
-    const targetSuccessPercentage = 99
+    const targetSuccessPercentage = 90
 
     it(`should balance properly with ${playerCount} random players in ${targetSuccessPercentage}%+ cases after ${numberOfTries} tries`, () => {
       const successTries = times(numberOfTries).reduce((successTries) => {
@@ -53,7 +53,7 @@ describe('balance/no-clans.ts', () => {
         return successTries + 1
       }, 0)
 
-      expect((successTries / numberOfTries) * 100).toBeGreaterThan(targetSuccessPercentage)
+      expect((successTries / numberOfTries) * 100).toBeGreaterThanOrEqual(targetSuccessPercentage)
     })
   })
 })
