@@ -24,9 +24,9 @@ describe('balance/with-clans.ts', () => {
     const numberOfTries = 1000
     const playerCount = 11
     const maxLevel = 10
-    const targetSuccessPercentage = 85
+    const targetSuccessPercentage = 55
 
-    const clans: Array<[string, number]> = [['test1', 3], ['test2', 2], ['test3', 1], ['test4', 1], ['test5', 1]]
+    const clans: Array<[string, number]> = [['test1', 4], ['test2', 3], ['test3', 1], ['test4', 1], ['test5', 1]]
     const noClanPlayersCount = clans.reduce((count, [, clanPlayersCount]) => count - clanPlayersCount, playerCount)
 
     if (noClanPlayersCount < 0) {
@@ -57,6 +57,11 @@ describe('balance/with-clans.ts', () => {
 
         const playersToBalance = [...clanPlayers, ...nonClanPlayers]
         const [team1, team2] = getBalancedTeamsWithClans(playersToBalance)
+
+        if (Math.abs(team1.length - team2.length) > 1) {
+          throw new Error('Teams are not equal in size')
+        }
+
         const playersAfterBalance = [...team1, ...team2]
 
         if (playersToBalance.length !== playersAfterBalance.length) {
