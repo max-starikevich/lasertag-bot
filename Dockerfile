@@ -1,6 +1,6 @@
 # BUILDER
 FROM public.ecr.aws/lambda/nodejs:18-arm64 as builder
-RUN npm i pnpm -g
+RUN npm i pnpm@7 -g
 COPY package.json pnpm-lock.yaml ./
 
 ENV NODE_ENV=development
@@ -14,7 +14,7 @@ RUN pnpm build
 
 # RUNTIME
 FROM public.ecr.aws/lambda/nodejs:18-arm64 as runtime
-RUN npm i pnpm -g
+RUN npm i pnpm@7 -g
 COPY package.json pnpm-lock.yaml ./
 
 ENV NODE_ENV=production

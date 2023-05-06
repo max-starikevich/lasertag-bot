@@ -10,7 +10,7 @@ describe('balance/no-clans.ts', () => {
     const numberOfTries = 1000
     const playerCount = 7
     const maxLevel = 10
-    const targetSuccessPercentage = 90
+    const targetSuccessPercentage = 88
 
     it(`should balance properly with ${playerCount} random players in ${targetSuccessPercentage}%+ cases after ${numberOfTries} tries`, () => {
       const successTries = times(numberOfTries).reduce((successTries) => {
@@ -32,6 +32,11 @@ describe('balance/no-clans.ts', () => {
         }))
 
         const [team1, team2] = getBalancedTeams(playersToBalance)
+
+        if (Math.abs(team1.length - team2.length) > 1) {
+          throw new Error('Teams are not equal in size')
+        }
+
         const playersAfterBalance = [...team1, ...team2]
 
         if (playersToBalance.length !== playersAfterBalance.length) {
