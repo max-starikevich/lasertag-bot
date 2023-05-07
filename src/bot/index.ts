@@ -14,7 +14,6 @@ import L from '$/lang/i18n-node'
 import { defaultLocale } from '$/lang/i18n-custom'
 
 import { errorMiddleware } from './middleware/error'
-import { parseRange } from '../utils'
 
 export const commandsInMenu = commands.filter(
   ({ showInMenu }) => showInMenu
@@ -23,39 +22,32 @@ export const commandsInMenu = commands.filter(
 export const initBot = async (): Promise<Telegraf<GameContext>> => {
   await checkEnvironment()
 
-  const enrollNamesRange = parseRange(config.ENROLL_NAMES_RANGE)
-  const enrollCountRange = parseRange(config.ENROLL_COUNT_RANGE)
-  const enrollRentRange = parseRange(config.ENROLL_RENT_RANGE)
-
-  if (enrollNamesRange === null || enrollCountRange === null || enrollRentRange === null) {
-    throw new Error('Invalid enroll range data')
-  }
-
-  const storage = new GoogleTableGameStorage(
-    config.GOOGLE_SERVICE_ACCOUNT_EMAIL,
-    config.GOOGLE_PRIVATE_KEY,
-    {
+  const storage = new GoogleTableGameStorage({
+    email: config.GOOGLE_SERVICE_ACCOUNT_EMAIL,
+    privateKey: config.GOOGLE_PRIVATE_KEY,
+    players: {
       docId: config.PLAYERS_DOC_ID,
       sheetsId: config.PLAYERS_SHEETS_ID
     },
-    {
+    game: {
       docId: config.GAME_DOC_ID,
       sheetsId: config.GAME_SHEETS_ID
     },
-    {
+    links: {
       docId: config.LINKS_DOC_ID,
       sheetsId: config.LINKS_SHEETS_ID
     },
-    {
+    enroll: {
       docId: config.ENROLL_DOC_ID,
       sheetsId: config.ENROLL_SHEETS_ID,
       ranges: {
-        names: enrollNamesRange,
-        count: enrollCountRange,
-        rent: enrollRentRange
+        names: config.ENROLL_NAMES_RANGE,
+        count: config.ENROLL_COUNT_RANGE,
+        rent: config.ENROLL_RENT_RANGE,
+        comment: config.ENROLL_COMMENT_RANGE
       }
     }
-  )
+  })
 
   const game = new Game({ storage })
   const bot = new Telegraf<GameContext>(config.BOT_TOKEN)

@@ -37,12 +37,12 @@ export interface ParsedRange {
   to: { letter: string, num: number }
 }
 
-export const parseRange = (s?: string): ParsedRange | null => {
+export const parseRange = (s?: string): ParsedRange => {
   const input = String(s)
   const regexResult = /^([A-Z]+)(\d+):([A-Z]+)(\d+)$/.exec(input)
 
   if (regexResult === null) {
-    return null
+    throw new Error(`Failed to parse range for ${String(s)}`)
   }
 
   return {

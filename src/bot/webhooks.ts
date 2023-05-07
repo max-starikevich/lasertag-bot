@@ -21,11 +21,11 @@ export const updateBotWebhook = async (ctx: Pick<GameContext, 'logger' | 'telegr
 }
 
 export const updateBotCommands = async (ctx: Pick<GameContext, 'logger' | 'telegram' | 'locale'>, scope?: BotCommandScope): Promise<void> => {
-  const { logger, telegram } = ctx
+  const { logger, telegram, locale } = ctx
 
   await telegram.setMyCommands(commandsInMenu.map(({ name, description }) => ({
     command: name,
-    description: description(L[ctx.locale])
+    description: description(L[locale])
   })), { scope })
 
   logger.info(`✅ Updated bot menu: ${commandsInMenu.length} commands in scope: ${JSON.stringify(scope)}, with locale: ${ctx.locale}`)
