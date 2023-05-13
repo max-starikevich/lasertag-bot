@@ -38,6 +38,9 @@ functions:
       ENROLL_COUNT_RANGE: ${env:ENROLL_COUNT_RANGE}
       ENROLL_RENT_RANGE: ${env:ENROLL_RENT_RANGE}
       ENROLL_COMMENT_RANGE: ${env:ENROLL_COMMENT_RANGE}
+
+      STATS_DOC_ID: ${env:STATS_DOC_ID}
+      STATS_SHEETS_ID: ${env:STATS_SHEETS_ID}
     events:
       - http:
           path: /webhook/${env:BOT_TOKEN}
