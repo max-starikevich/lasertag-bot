@@ -8,8 +8,6 @@ export class GameWithCache extends Game {
   protected cache = new NodeCache({ stdTTL: 120 })
 
   async cacheFunction<T>(cacheKey: string | number, getData: () => Promise<T>): Promise<T> {
-    console.log(this.cache.getStats())
-
     const cachedData = this.cache.get<T>(cacheKey)
 
     if (cachedData !== undefined) {
@@ -33,5 +31,10 @@ export class GameWithCache extends Game {
 
   async getLinks (): Promise<GameLink[]> {
     return await this.cacheFunction('getLinks', super.getLinks.bind(this))
+  }
+
+  async savePlayer(name: string, fields: Partial<Player>): Promise<void> {
+    await super.savePlayer(name, fields)
+    this.cache.del('getPlayers')
   }
 }
