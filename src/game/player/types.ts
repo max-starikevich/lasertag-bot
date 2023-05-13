@@ -22,3 +22,5 @@ export interface ClanPlayer extends Player {
 }
 
 export type Teams = [Player[], Player[]]
+
+export type ScoredTeams = Array<{ players: Player[], score: number }>

@@ -7,48 +7,49 @@ import { commandsInMenu } from '.'
 
 import L from '$/lang/i18n-node'
 import { Player } from '$/game/player/types'
-import { getLocaleByName } from '$/lang/i18n-custom'
+import { defaultLocale, getLocaleByName } from '$/lang/i18n-custom'
 
 export const updateBotWebhook = async (ctx: Pick<GameContext, 'logger' | 'telegram'>): Promise<void> => {
   const { logger, telegram } = ctx
 
   const { url: savedWebhook } = await telegram.getWebhookInfo()
 
-  if (config.WEBHOOK_FULL !== savedWebhook) {
-    await telegram.setWebhook(config.WEBHOOK_FULL, { allowed_updates: ['message', 'callback_query'] })
-    logger.info(`✅ The webhook has been updated from "${savedWebhook ?? 'undefined'}" to "${config.WEBHOOK_FULL}"`)
+  if (config.WEBHOOK_FULL === savedWebhook) {
+    return
   }
+
+  await telegram.setWebhook(config.WEBHOOK_FULL, { allowed_updates: ['message', 'callback_query'] })
+
+  logger.info(`✅ The webhook has been updated from "${savedWebhook ?? 'undefined'}" to "${config.WEBHOOK_FULL}"`)
 }
 
 export const updateBotCommands = async (ctx: Pick<GameContext, 'logger' | 'telegram' | 'locale'>, scope?: BotCommandScope): Promise<void> => {
   const { logger, telegram, locale } = ctx
 
-  await telegram.setMyCommands(commandsInMenu.map(({ name, description }) => ({
+  const result = await telegram.setMyCommands(commandsInMenu.map(({ name, description }) => ({
     command: name,
     description: description(L[locale])
   })), { scope })
 
-  logger.info(`✅ Updated bot menu: ${commandsInMenu.length} commands in scope: ${JSON.stringify(scope)}, with locale: ${ctx.locale}`)
+  logger.info(`✅ Set bot menu for scope: ${JSON.stringify(scope)}, locale "${ctx.locale}", result: "${String(result)}"`)
 }
 
 export const updateBotCommandsForPlayers = async (ctx: Pick<GameContext, 'logger' | 'telegram'>, players: Player[]): Promise<void> => {
   const { logger, telegram } = ctx
 
   for (const player of players) {
-    if (player.locale === undefined || player.telegramUserId == null) {
+    if (player.telegramUserId == null || player.locale === undefined) {
       continue
     }
 
     const locale = getLocaleByName(player.locale)
 
-    if (locale === undefined) {
-      continue
-    }
-
     const scope: BotCommandScope = { type: 'chat', chat_id: player.telegramUserId }
 
     await updateBotCommands({
-      logger, telegram, locale
+      logger,
+      telegram,
+      locale: locale !== undefined ? locale : defaultLocale
     }, scope)
   }
 }

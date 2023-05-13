@@ -1,26 +1,28 @@
 import { GoogleSpreadsheet, GoogleSpreadsheetWorksheet } from 'google-spreadsheet'
 import { decode } from 'html-entities'
 import { groupBy, intersection, range } from 'lodash'
+import NodeCache from 'node-cache'
 
 import { extractString, parseRange } from '$/utils'
 import { getLocaleByName } from '$/lang/i18n-custom'
 import { NoSheetsError } from '$/errors/NoSheetsError'
 
-import { EnrollData, GameData, GameStorage, GoogleSpreadsheetCellMap, GoogleTableGameStorageParams, LinksData, PlayersData, SheetsData } from './types'
-import { Player } from '../player/types'
-import { GameLink, GameLocation } from '../types'
-
-const saveblePlayerFields: Array<keyof Player> = ['telegramUserId', 'locale']
-const savebleEnrollFields: Array<keyof Player> = ['count', 'rentCount', 'comment']
+import { EnrollData, GameData, GoogleSpreadsheetCellMap, GoogleTableGameStorageParams, LinksData, PlayersData, SheetsData, StatsData } from './types'
+import { Player, ScoredTeams } from '../../player/types'
+import { GameLink, GameLocation } from '../../types'
+import { GameStorage } from '../types'
 
 export class GoogleTableGameStorage implements GameStorage {
   protected documentMap: { [docId: string]: GoogleSpreadsheet } = {}
+  protected playersCache = new NodeCache({ stdTTL: 120 })
 
   protected email: string
   protected privateKey: string
+
   protected players: PlayersData
   protected game: GameData
   protected links: LinksData
+  protected stats: StatsData
   protected enroll: EnrollData
 
   constructor (params: GoogleTableGameStorageParams) {
@@ -29,6 +31,7 @@ export class GoogleTableGameStorage implements GameStorage {
     this.players = params.players
     this.game = params.game
     this.links = params.links
+    this.stats = params.stats
 
     const { ranges } = params.enroll
 
@@ -68,7 +71,15 @@ export class GoogleTableGameStorage implements GameStorage {
     return sheets
   }
 
-  getPlayers = async (): Promise<Player[]> => {
+  getPlayers = async (updateId?: number): Promise<Player[]> => {
+    if (updateId !== undefined) {
+      const cache = this.playersCache.get<Player[]>(updateId)
+
+      if (cache !== undefined) {
+        return cache
+      }
+    }
+
     const sheets = await this.getSheets(this.players)
 
     const players = (await sheets.getRows())
@@ -113,7 +124,7 @@ export class GoogleTableGameStorage implements GameStorage {
       ({ clanName }) => clanName
     )
 
-    return players.map(p => {
+    const processedPlayers = players.map(p => {
       if (
         p.clanName === undefined ||
         clans[p.clanName] === undefined ||
@@ -127,6 +138,12 @@ export class GoogleTableGameStorage implements GameStorage {
         isAlone: false
       }
     })
+
+    if (updateId !== undefined) {
+      this.playersCache.set<Player[]>(updateId, processedPlayers)
+    }
+
+    return processedPlayers
   }
 
   getPlaceAndTime = async (): Promise<GameLocation[]> => {
@@ -166,11 +183,11 @@ export class GoogleTableGameStorage implements GameStorage {
   }
 
   savePlayer = async (name: string, fieldsToSave: Partial<Player>): Promise<void> => {
-    const map = await this.getPlayerCells(name, fieldsToSave)
+    const cellMap = await this.buildPlayerCellMap(name, fieldsToSave)
 
     for (const playerField of Object.keys(fieldsToSave)) {
       const fieldName = playerField as keyof Player
-      const cell = map[fieldName]
+      const cell = cellMap[fieldName]
 
       if (cell === undefined) {
         continue
@@ -194,13 +211,16 @@ export class GoogleTableGameStorage implements GameStorage {
     ])
   }
 
-  getPlayerCells = async (
+  protected buildPlayerCellMap = async (
     name: string,
     fieldsToSave: Partial<Player>
   ): Promise<GoogleSpreadsheetCellMap> => {
+    const playerFields: Array<keyof Player> = ['telegramUserId', 'locale']
+    const enrollFields: Array<keyof Player> = ['count', 'rentCount', 'comment']
+
     const map: GoogleSpreadsheetCellMap = {}
 
-    if (intersection(Object.keys(fieldsToSave), saveblePlayerFields).length > 0) {
+    if (intersection(Object.keys(fieldsToSave), playerFields).length > 0) {
       const sheets = await this.getSheets(this.players)
       const playerRow = (await sheets.getRows()).find(row => row.name === name)
 
@@ -216,7 +236,7 @@ export class GoogleTableGameStorage implements GameStorage {
       headers.forEach((headerName, columnIndex) => {
         const playerFieldName = headerName as keyof Player
 
-        if (!saveblePlayerFields.includes(playerFieldName)) {
+        if (!playerFields.includes(playerFieldName)) {
           return
         }
 
@@ -224,7 +244,7 @@ export class GoogleTableGameStorage implements GameStorage {
       })
     }
 
-    if (intersection(Object.keys(fieldsToSave), savebleEnrollFields).length > 0) {
+    if (intersection(Object.keys(fieldsToSave), enrollFields).length > 0) {
       const sheets = await this.getSheets(this.enroll)
       const ranges = this.enroll.ranges
 
@@ -249,12 +269,23 @@ export class GoogleTableGameStorage implements GameStorage {
         throw new Error('Can\'t find player\'s name cell in the enroll table')
       }
 
+      const rowNumber = nameCell.rowIndex + 1
+
       map.name = nameCell
-      map.count = sheets.getCellByA1(`${ranges.count.from.letter}${nameCell.rowIndex + 1}`)
-      map.rentCount = sheets.getCellByA1(`${ranges.rent.from.letter}${nameCell.rowIndex + 1}`)
-      map.comment = sheets.getCellByA1(`${ranges.comment.from.letter}${nameCell.rowIndex + 1}`)
+      map.count = sheets.getCellByA1(`${ranges.count.from.letter}${rowNumber}`)
+      map.rentCount = sheets.getCellByA1(`${ranges.rent.from.letter}${rowNumber}`)
+      map.comment = sheets.getCellByA1(`${ranges.comment.from.letter}${rowNumber}`)
     }
 
     return map
+  }
+
+  saveStats = async (teams: ScoredTeams): Promise<void> => {
+    console.log({
+      teams
+    })
+
+    const sheets = await this.getSheets(this.stats)
+    await sheets.saveUpdatedCells()
   }
 }
