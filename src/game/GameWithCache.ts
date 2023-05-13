@@ -33,7 +33,7 @@ export class GameWithCache extends Game {
     return await this.cacheFunction('getLinks', super.getLinks.bind(this))
   }
 
-  async savePlayer(name: string, fields: Partial<Player>): Promise<void> {
+  async savePlayer (name: string, fields: Partial<Player>): Promise<void> {
     await super.savePlayer(name, fields)
     this.cache.del('getPlayers')
   }
