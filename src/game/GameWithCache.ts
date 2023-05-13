@@ -7,15 +7,16 @@ import { Game } from './Game'
 export class GameWithCache extends Game {
   protected cache = new NodeCache({ stdTTL: 120 })
 
-  async cacheFunction<T>(cacheKey: string | number, getData: () => Promise<T>): Promise<T> {
+  async cacheFunction<T>(cacheKey: string | number, getFreshData: () => Promise<T>): Promise<T> {
     const cachedData = this.cache.get<T>(cacheKey)
 
     if (cachedData !== undefined) {
-      void getData().then(players => this.cache.set(cacheKey, players))
+      // microcaching: return cached data and update the cache
+      void getFreshData().then(freshData => this.cache.set(cacheKey, freshData))
       return cachedData
     }
 
-    const freshData = await getData()
+    const freshData = await getFreshData()
     this.cache.set(cacheKey, freshData)
 
     return freshData
