@@ -17,14 +17,13 @@ export interface GameLink {
 }
 
 export interface BaseGame {
-  getPlayers: () => Promise<Player[]>
-  getClanPlayers: () => Promise<ClanPlayer[]>
+  getPlayers: (updateId?: number) => Promise<Player[]>
+  getClanPlayers: (updateId?: number) => Promise<ClanPlayer[]>
+  getTeams: (updateId?: number) => Promise<Teams>
+  getTeamsWithClans: (updateId?: number) => Promise<Teams>
 
   getPlaceAndTime: () => Promise<GameLocation[]>
   getLinks: () => Promise<GameLink[]>
-
-  getTeams: () => Promise<Teams>
-  getTeamsWithClans: () => Promise<Teams>
 
   savePlayer: (name: string, fields: Partial<Player>) => Promise<void>
 }

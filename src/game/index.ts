@@ -16,8 +16,27 @@ export class Game implements BaseGame {
     this.storage = storage
   }
 
-  getPlayers = async (): Promise<Player[]> => {
-    return await this.storage.getPlayers()
+  getPlayers = async (updateId?: number): Promise<Player[]> => {
+    return await this.storage.getPlayers(updateId)
+  }
+
+  getClanPlayers = async (updateId?: number): Promise<ClanPlayer[]> => {
+    const players = await this.getPlayers(updateId)
+    return players.filter((player): player is ClanPlayer => player.clanName !== undefined)
+  }
+
+  getTeams = async (updateId?: number): Promise<Teams> => {
+    const players = await this.getPlayers(updateId)
+    const activePlayers = players.filter(({ count, level, isQuestionable }) => count > 0 && level > 0 && !isQuestionable)
+
+    return getBalancedTeams(activePlayers)
+  }
+
+  getTeamsWithClans = async (updateId?: number): Promise<Teams> => {
+    const players = await this.getPlayers(updateId)
+    const activePlayers = players.filter(({ count, level, isQuestionable }) => count > 0 && level > 0 && !isQuestionable)
+
+    return sortTeamsByClans(getBalancedTeamsWithClans(activePlayers))
   }
 
   getPlaceAndTime = async (): Promise<GameLocation[]> => {
@@ -26,25 +45,6 @@ export class Game implements BaseGame {
 
   getLinks = async (): Promise<GameLink[]> => {
     return await this.storage.getLinks()
-  }
-
-  getClanPlayers = async (): Promise<ClanPlayer[]> => {
-    const players = await this.getPlayers()
-    return players.filter((player): player is ClanPlayer => player.clanName !== undefined)
-  }
-
-  getTeams = async (): Promise<Teams> => {
-    const players = await this.getPlayers()
-    const activePlayers = players.filter(({ count, level, isQuestionable }) => count > 0 && level > 0 && !isQuestionable)
-
-    return getBalancedTeams(activePlayers)
-  }
-
-  getTeamsWithClans = async (): Promise<Teams> => {
-    const players = await this.getPlayers()
-    const activePlayers = players.filter(({ count, level, isQuestionable }) => count > 0 && level > 0 && !isQuestionable)
-
-    return sortTeamsByClans(getBalancedTeamsWithClans(activePlayers))
   }
 
   savePlayer = async (name: string, fields: Partial<Player>): Promise<void> => {
