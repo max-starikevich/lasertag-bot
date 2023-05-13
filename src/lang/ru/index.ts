@@ -22,6 +22,7 @@ const ru: MappedTranslation = {
   REGISTER_CHOOSE_YOURSELF: 'Выберите свое имя из списка',
   REGISTER_SUCCESS: '{name:string}, вы успешно зарегистрированы',
   REGISTER_ALREADY_REGISTERED: 'Вы уже зарегистрированы',
+  REGISTER_NO_FREE_ROWS: 'Все игроки уже зарегистрированы. Нет свободных строк в таблице.',
   REGISTER_REQUIRED: 'Для этого функционала требуется регистрация. Используйте /{registerCommandName:string}, чтобы продолжить.',
 
   LANGUAGE_COMMAND_DESCRIPTION: 'Выбрать язык',

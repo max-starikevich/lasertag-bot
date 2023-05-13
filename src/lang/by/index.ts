@@ -22,6 +22,7 @@ const by: MappedTranslation = {
   REGISTER_CHOOSE_YOURSELF: 'Выберыце сваё імя са спісу',
   REGISTER_SUCCESS: '{name:string}, вы пасьпяхова зарэгістраваны',
   REGISTER_ALREADY_REGISTERED: 'Вы ўжо зарэгістраваны',
+  REGISTER_NO_FREE_ROWS: 'Усе гульцы ўжо зарэгістраваны. Няма свабодных радкоў у табліцы.',
   REGISTER_REQUIRED: 'Для гэтай функцыі патрабуецца рэгістрацыя. Выкарыстоўвайце /{registerCommandName:string}, каб працягнуць.',
 
   LANGUAGE_COMMAND_DESCRIPTION: 'Выбраць мову',
