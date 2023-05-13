@@ -16,24 +16,24 @@ export class Game implements BaseGame {
     this.storage = storage
   }
 
-  getPlayers = async (updateId?: number): Promise<Player[]> => {
-    return await this.storage.getPlayers(updateId)
+  getPlayers = async (cacheId?: number): Promise<Player[]> => {
+    return await this.storage.getPlayers(cacheId)
   }
 
-  getClanPlayers = async (updateId?: number): Promise<ClanPlayer[]> => {
-    const players = await this.getPlayers(updateId)
+  getClanPlayers = async (cacheId?: number): Promise<ClanPlayer[]> => {
+    const players = await this.getPlayers(cacheId)
     return players.filter((player): player is ClanPlayer => player.clanName !== undefined)
   }
 
-  getTeams = async (updateId?: number): Promise<Teams> => {
-    const players = await this.getPlayers(updateId)
+  getTeams = async (cacheId?: number): Promise<Teams> => {
+    const players = await this.getPlayers(cacheId)
     const activePlayers = players.filter(({ count, level, isQuestionable }) => count > 0 && level > 0 && !isQuestionable)
 
     return getBalancedTeams(activePlayers)
   }
 
-  getTeamsWithClans = async (updateId?: number): Promise<Teams> => {
-    const players = await this.getPlayers(updateId)
+  getTeamsWithClans = async (cacheId?: number): Promise<Teams> => {
+    const players = await this.getPlayers(cacheId)
     const activePlayers = players.filter(({ count, level, isQuestionable }) => count > 0 && level > 0 && !isQuestionable)
 
     return sortTeamsByClans(getBalancedTeamsWithClans(activePlayers))

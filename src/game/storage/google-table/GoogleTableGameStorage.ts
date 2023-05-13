@@ -13,9 +13,6 @@ import { GameLink, GameLocation } from '../../types'
 import { GameStorage } from '../types'
 
 export class GoogleTableGameStorage implements GameStorage {
-  protected documentMap: { [docId: string]: GoogleSpreadsheet } = {}
-  protected playersCache = new NodeCache({ stdTTL: 120 })
-
   protected email: string
   protected privateKey: string
 
@@ -24,6 +21,9 @@ export class GoogleTableGameStorage implements GameStorage {
   protected links: LinksData
   protected stats: StatsData
   protected enroll: EnrollData
+
+  protected documentMap: { [docId: string]: GoogleSpreadsheet } = {}
+  protected playersCache = new NodeCache({ stdTTL: 60 })
 
   constructor (params: GoogleTableGameStorageParams) {
     this.email = params.email
@@ -71,9 +71,9 @@ export class GoogleTableGameStorage implements GameStorage {
     return sheets
   }
 
-  getPlayers = async (updateId?: number): Promise<Player[]> => {
-    if (updateId !== undefined) {
-      const cache = this.playersCache.get<Player[]>(updateId)
+  getPlayers = async (cacheId?: number): Promise<Player[]> => {
+    if (cacheId !== undefined) {
+      const cache = this.playersCache.get<Player[]>(cacheId)
 
       if (cache !== undefined) {
         return cache
@@ -139,8 +139,8 @@ export class GoogleTableGameStorage implements GameStorage {
       }
     })
 
-    if (updateId !== undefined) {
-      this.playersCache.set<Player[]>(updateId, processedPlayers)
+    if (cacheId !== undefined) {
+      this.playersCache.set<Player[]>(cacheId, processedPlayers)
     }
 
     return processedPlayers
