@@ -1,5 +1,8 @@
+import NodeCache from 'node-cache'
+
 import { GameStorage } from './storage/types'
-import { GameLocation, BaseGame, GameLink } from './types'
+import { GameLocation, BaseGame, GameLink, GameGetParams } from './types'
+
 import { ClanPlayer, Player, Teams } from './player/types'
 import { getBalancedTeams } from './player/balance/no-clans'
 import { getBalancedTeamsWithClans } from './player/balance/with-clans'
@@ -11,29 +14,49 @@ interface GameConstructorParams {
 
 export class Game implements BaseGame {
   protected storage: GameStorage
+  protected cache = new NodeCache({ stdTTL: 120 })
 
   constructor ({ storage }: GameConstructorParams) {
     this.storage = storage
   }
 
-  getPlayers = async (cacheId?: number): Promise<Player[]> => {
-    return await this.storage.getPlayers(cacheId)
+  getPlayers = async ({ logger }: GameGetParams): Promise<Player[]> => {
+    const cacheId = 'players'
+    const cachedData = this.cache.get<Player[]>(cacheId)
+
+    if (cachedData !== undefined) {
+      // microcaching
+      void this.storage.getPlayers()
+        .then(players => this.cache.set(cacheId, players))
+
+      logger.info('Fetched players from the cache and updated in the background')
+
+      return cachedData
+    }
+
+    const players = await this.storage.getPlayers()
+
+    this.cache.set(cacheId, players)
+
+    logger.info('Fetched players from API')
+
+    return players
   }
 
-  getClanPlayers = async (cacheId?: number): Promise<ClanPlayer[]> => {
-    const players = await this.getPlayers(cacheId)
+  getClanPlayers = async (params: GameGetParams): Promise<ClanPlayer[]> => {
+    const players = await this.getPlayers(params)
     return players.filter((player): player is ClanPlayer => player.clanName !== undefined)
   }
 
-  getTeams = async (cacheId?: number): Promise<Teams> => {
-    const players = await this.getPlayers(cacheId)
+  getTeams = async (params: GameGetParams): Promise<Teams> => {
+    const players = await this.getPlayers(params)
     const activePlayers = players.filter(({ count, level, isQuestionable }) => count > 0 && level > 0 && !isQuestionable)
 
     return getBalancedTeams(activePlayers)
   }
 
-  getTeamsWithClans = async (cacheId?: number): Promise<Teams> => {
-    const players = await this.getPlayers(cacheId)
+  getTeamsWithClans = async (params: GameGetParams): Promise<Teams> => {
+    const players = await this.getPlayers(params)
     const activePlayers = players.filter(({ count, level, isQuestionable }) => count > 0 && level > 0 && !isQuestionable)
 
     return sortTeamsByClans(getBalancedTeamsWithClans(activePlayers))

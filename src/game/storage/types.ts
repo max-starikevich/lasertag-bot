@@ -2,7 +2,7 @@ import { Player, ScoredTeams } from '../player/types'
 import { GameLink, GameLocation } from '../types'
 
 export interface GameStorage {
-  getPlayers: (cacheId?: number) => Promise<Player[]>
+  getPlayers: () => Promise<Player[]>
   getPlaceAndTime: () => Promise<GameLocation[]>
   getLinks: () => Promise<GameLink[]>
 

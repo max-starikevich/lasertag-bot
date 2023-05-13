@@ -10,14 +10,14 @@ import { updateBotCommands, updateBotCommandsForPlayers, updateBotWebhook } from
 import { makeLogger } from '$/logger'
 import { defaultLocale } from '$/lang/i18n-custom'
 import { BaseGame } from '$/game/types'
-import { initBot } from '$/bot'
+import { botPromise } from '$/lambda'
 /* eslint-enable */
 
 async function run (): Promise<void> {
   const logger = makeLogger()
 
   try {
-    const bot = await initBot()
+    const bot = await botPromise
 
     await updateBotWebhook({
       telegram: bot.telegram,
@@ -31,7 +31,10 @@ async function run (): Promise<void> {
     })
 
     const game = bot.context.game as BaseGame
-    const players = await game.getPlayers()
+
+    const players = await game.getPlayers({
+      logger
+    })
 
     await updateBotCommandsForPlayers({
       telegram: bot.telegram,

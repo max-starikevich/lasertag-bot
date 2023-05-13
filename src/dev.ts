@@ -6,18 +6,17 @@ import bodyParser from 'koa-bodyparser'
 import Router from 'koa-router'
 
 import config from '$/config'
-import { handler } from '$/lambda'
+import { botPromise, handler } from '$/lambda'
 import { updateBotCommands, updateBotCommandsForPlayers, updateBotWebhook } from '$/bot/webhooks'
 import { makeLogger } from '$/logger'
 import { defaultLocale } from '$/lang/i18n-custom'
 import { BaseGame } from '$/game/types'
-import { initBot } from '$/bot'
 
 const dev = async (): Promise<void> => {
   const logger = makeLogger()
 
   try {
-    const bot = await initBot()
+    const bot = await botPromise
 
     if (bot == null) {
       throw new Error('The instance is unavailable')
@@ -35,7 +34,10 @@ const dev = async (): Promise<void> => {
     })
 
     const game = bot.context.game as BaseGame
-    const players = await game.getPlayers()
+
+    const players = await game.getPlayers({
+      logger
+    })
 
     await updateBotCommandsForPlayers({
       telegram: bot.telegram,

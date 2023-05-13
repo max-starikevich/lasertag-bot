@@ -1,7 +1,6 @@
 import { GoogleSpreadsheet, GoogleSpreadsheetWorksheet } from 'google-spreadsheet'
 import { decode } from 'html-entities'
 import { groupBy, intersection, range } from 'lodash'
-import NodeCache from 'node-cache'
 
 import { extractString, parseRange } from '$/utils'
 import { getLocaleByName } from '$/lang/i18n-custom'
@@ -23,7 +22,6 @@ export class GoogleTableGameStorage implements GameStorage {
   protected enroll: EnrollData
 
   protected documentMap: { [docId: string]: GoogleSpreadsheet } = {}
-  protected playersCache = new NodeCache({ stdTTL: 60 })
 
   constructor (params: GoogleTableGameStorageParams) {
     this.email = params.email
@@ -72,14 +70,6 @@ export class GoogleTableGameStorage implements GameStorage {
   }
 
   getPlayers = async (cacheId?: number): Promise<Player[]> => {
-    if (cacheId !== undefined) {
-      const cache = this.playersCache.get<Player[]>(cacheId)
-
-      if (cache !== undefined) {
-        return cache
-      }
-    }
-
     const sheets = await this.getSheets(this.players)
 
     const players = (await sheets.getRows())
@@ -138,10 +128,6 @@ export class GoogleTableGameStorage implements GameStorage {
         isAlone: false
       }
     })
-
-    if (cacheId !== undefined) {
-      this.playersCache.set<Player[]>(cacheId, processedPlayers)
-    }
 
     return processedPlayers
   }

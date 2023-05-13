@@ -1,21 +1,22 @@
 import { chunk } from 'lodash'
 
 import { hashString } from '$/utils'
-import { NotEnoughPlayersError } from '$/errors/NotEnoughPlayersError'
+import { NoFreeRowsToRegister } from '$/errors/NoFreeRowsToRegister'
 
 import { Action, ActionHandler, ActionInitializer } from '../types'
 
 const initializer: ActionInitializer = async ctx => {
-  const { game, lang, currentPlayer, update } = ctx
+  const { game, lang, currentPlayer, logger } = ctx
 
   if (currentPlayer !== undefined) {
     return await ctx.reply(lang.REGISTER_ALREADY_REGISTERED())
   }
 
-  const nonRegisteredPlayers = (await game.getPlayers(update.update_id)).filter(({ telegramUserId }) => telegramUserId === undefined)
+  const nonRegisteredPlayers = (await game.getPlayers({ logger }))
+    .filter(({ telegramUserId }) => telegramUserId === undefined)
 
   if (nonRegisteredPlayers.length === 0) {
-    throw new NotEnoughPlayersError()
+    throw new NoFreeRowsToRegister()
   }
 
   const chunkedPlayers = chunk(nonRegisteredPlayers, 2)
@@ -35,7 +36,7 @@ const initializer: ActionInitializer = async ctx => {
 }
 
 const handler: ActionHandler = async ctx => {
-  const { game, lang, update } = ctx
+  const { game, lang, logger } = ctx
 
   const playerHash = String(ctx.match[1])
 
@@ -43,7 +44,7 @@ const handler: ActionHandler = async ctx => {
     return await ctx.reply(lang.ACTION_HANDLER_WRONG_DATA())
   }
 
-  const players = await game.getPlayers(update.update_id)
+  const players = await game.getPlayers({ logger })
   const targetPlayer = players.find(player => hashString(player.name) === playerHash)
 
   if (targetPlayer === undefined) {

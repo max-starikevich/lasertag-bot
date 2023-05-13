@@ -3,7 +3,7 @@ import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda'
 import { initBot } from '$/bot'
 import { parseJsonSafe } from '$/utils'
 
-const botPromise = initBot()
+export const botPromise = initBot()
 
 export const handler = async (
   event: APIGatewayProxyEvent

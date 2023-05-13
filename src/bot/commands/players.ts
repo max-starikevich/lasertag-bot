@@ -9,9 +9,9 @@ import { replyWithPlaceAndTime } from '.'
 const handler: CommandHandler = async (ctx) => {
   await replyWithPlaceAndTime(ctx)
 
-  const { game, lang, update } = ctx
+  const { game, lang, logger } = ctx
 
-  const players = await game.getPlayers(update.update_id)
+  const players = await game.getPlayers({ logger })
   const enrolledPlayers = players.filter(({ count }) => count > 0)
 
   if (enrolledPlayers.length === 0) {
