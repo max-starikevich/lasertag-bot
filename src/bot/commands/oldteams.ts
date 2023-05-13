@@ -9,9 +9,9 @@ import { replyWithPlaceAndTime, replyWithTeamBalance, replyWithTeamCount } from 
 const handler: CommandHandler = async (ctx) => {
   await replyWithPlaceAndTime(ctx)
 
-  const { game } = ctx
+  const { game, update } = ctx
 
-  const [redPlayers, bluePlayers] = await game.getTeams()
+  const [redPlayers, bluePlayers] = await game.getTeams(update.update_id)
 
   if (redPlayers.length === 0 || bluePlayers.length === 0) {
     throw new NotEnoughPlayersError()

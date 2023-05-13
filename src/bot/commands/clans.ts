@@ -4,9 +4,9 @@ import { groupBy, orderBy } from 'lodash'
 import { Command, CommandHandler } from '../types'
 
 const handler: CommandHandler = async (ctx) => {
-  const { game } = ctx
+  const { game, update } = ctx
 
-  const clanPlayers = await game.getClanPlayers()
+  const clanPlayers = await game.getClanPlayers(update.update_id)
 
   const clans = orderBy(
     Object.entries(

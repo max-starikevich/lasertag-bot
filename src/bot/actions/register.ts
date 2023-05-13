@@ -6,13 +6,13 @@ import { NotEnoughPlayersError } from '$/errors/NotEnoughPlayersError'
 import { Action, ActionHandler, ActionInitializer } from '../types'
 
 const initializer: ActionInitializer = async ctx => {
-  const { game, lang, currentPlayer } = ctx
+  const { game, lang, currentPlayer, update } = ctx
 
   if (currentPlayer !== undefined) {
     return await ctx.reply(lang.REGISTER_ALREADY_REGISTERED())
   }
 
-  const nonRegisteredPlayers = (await game.getPlayers()).filter(({ telegramUserId }) => telegramUserId === undefined)
+  const nonRegisteredPlayers = (await game.getPlayers(update.update_id)).filter(({ telegramUserId }) => telegramUserId === undefined)
 
   if (nonRegisteredPlayers.length === 0) {
     throw new NotEnoughPlayersError()
@@ -35,7 +35,7 @@ const initializer: ActionInitializer = async ctx => {
 }
 
 const handler: ActionHandler = async ctx => {
-  const { game, lang } = ctx
+  const { game, lang, update } = ctx
 
   const playerHash = String(ctx.match[1])
 
@@ -43,7 +43,7 @@ const handler: ActionHandler = async ctx => {
     return await ctx.reply(lang.ACTION_HANDLER_WRONG_DATA())
   }
 
-  const players = await game.getPlayers()
+  const players = await game.getPlayers(update.update_id)
   const targetPlayer = players.find(player => hashString(player.name) === playerHash)
 
   if (targetPlayer === undefined) {

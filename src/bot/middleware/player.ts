@@ -9,9 +9,9 @@ export const playerMiddleware: BotMiddleware = async (ctx, next) => {
     throw new Error('Missing "ctx.from"')
   }
 
-  const { game } = ctx
+  const { game, update } = ctx
 
-  const players = await game.getPlayers()
+  const players = await game.getPlayers(update.update_id)
   const currentPlayer = players.find(({ telegramUserId }) => telegramUserId !== undefined && telegramUserId === ctx.from?.id)
 
   if (currentPlayer === undefined) {
