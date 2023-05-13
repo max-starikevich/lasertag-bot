@@ -1,9 +1,9 @@
 import { Command, CommandHandler } from '../types'
 
 const handler: CommandHandler = async (ctx) => {
-  const { game, logger } = ctx
+  const { game } = ctx
 
-  const links = await game.getLinks({ logger })
+  const links = await game.getLinks()
   const langLinks = links.filter(link => link.lang === ctx.locale)
 
   for (const { url, description } of langLinks) {

@@ -45,7 +45,7 @@ export class GoogleTableGameStorage implements GameStorage {
     }
   }
 
-  getSheets = async ({ docId, sheetsId }: SheetsData): Promise<GoogleSpreadsheetWorksheet> => {
+  async getSheets ({ docId, sheetsId }: SheetsData): Promise<GoogleSpreadsheetWorksheet> {
     if (this.documentMap[docId] === undefined) {
       const document = new GoogleSpreadsheet(docId)
 
@@ -69,7 +69,7 @@ export class GoogleTableGameStorage implements GameStorage {
     return sheets
   }
 
-  getPlayers = async (cacheId?: number): Promise<Player[]> => {
+  async getPlayers (): Promise<Player[]> {
     const sheets = await this.getSheets(this.players)
 
     const players = (await sheets.getRows())
@@ -132,7 +132,7 @@ export class GoogleTableGameStorage implements GameStorage {
     return processedPlayers
   }
 
-  getPlaceAndTime = async (): Promise<GameLocation[]> => {
+  async getLocations (): Promise<GameLocation[]> {
     const sheets = await this.getSheets(this.game)
     const rows = await sheets.getRows()
 
@@ -150,7 +150,7 @@ export class GoogleTableGameStorage implements GameStorage {
     }, [])
   }
 
-  getLinks = async (): Promise<GameLink[]> => {
+  async getLinks (): Promise<GameLink[]> {
     const sheets = await this.getSheets(this.links)
     const rows = await sheets.getRows()
 
@@ -168,7 +168,7 @@ export class GoogleTableGameStorage implements GameStorage {
     }, [])
   }
 
-  savePlayer = async (name: string, fieldsToSave: Partial<Player>): Promise<void> => {
+  async savePlayer (name: string, fieldsToSave: Partial<Player>): Promise<void> {
     const cellMap = await this.buildPlayerCellMap(name, fieldsToSave)
 
     for (const playerField of Object.keys(fieldsToSave)) {
@@ -197,10 +197,10 @@ export class GoogleTableGameStorage implements GameStorage {
     ])
   }
 
-  protected buildPlayerCellMap = async (
+  async buildPlayerCellMap (
     name: string,
     fieldsToSave: Partial<Player>
-  ): Promise<GoogleSpreadsheetCellMap> => {
+  ): Promise<GoogleSpreadsheetCellMap> {
     const playerFields: Array<keyof Player> = ['telegramUserId', 'locale']
     const enrollFields: Array<keyof Player> = ['count', 'rentCount', 'comment']
 
@@ -267,10 +267,6 @@ export class GoogleTableGameStorage implements GameStorage {
   }
 
   saveStats = async (teams: ScoredTeams): Promise<void> => {
-    console.log({
-      teams
-    })
-
     const sheets = await this.getSheets(this.stats)
     await sheets.saveUpdatedCells()
   }

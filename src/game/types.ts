@@ -1,5 +1,4 @@
 import { Locales } from '$/lang/i18n-types'
-import { BaseLogger } from '../logger/types'
 
 import { ClanPlayer, Player, Teams } from './player/types'
 
@@ -17,18 +16,14 @@ export interface GameLink {
   lang: Locales
 }
 
-export interface GameGetParams {
-  logger: BaseLogger
-}
-
 export interface BaseGame {
-  getPlayers: (params: GameGetParams) => Promise<Player[]>
-  getClanPlayers: (params: GameGetParams) => Promise<ClanPlayer[]>
-  getTeams: (params: GameGetParams) => Promise<Teams>
-  getTeamsWithClans: (params: GameGetParams) => Promise<Teams>
+  getPlayers: () => Promise<Player[]>
+  getClanPlayers: () => Promise<ClanPlayer[]>
+  getTeams: () => Promise<Teams>
+  getTeamsWithClans: () => Promise<Teams>
 
-  getPlaceAndTime: (params: GameGetParams) => Promise<GameLocation[]>
-  getLinks: (params: GameGetParams) => Promise<GameLink[]>
+  getLocations: () => Promise<GameLocation[]>
+  getLinks: () => Promise<GameLink[]>
 
   savePlayer: (name: string, fields: Partial<Player>) => Promise<void>
 }

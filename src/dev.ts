@@ -35,9 +35,7 @@ const dev = async (): Promise<void> => {
 
     const game = bot.context.game as BaseGame
 
-    const players = await game.getPlayers({
-      logger
-    })
+    const players = await game.getPlayers()
 
     await updateBotCommandsForPlayers({
       telegram: bot.telegram,

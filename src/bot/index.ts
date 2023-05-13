@@ -7,7 +7,7 @@ import { GameContext } from '$/bot/types'
 import { commands } from '$/bot/commands'
 import { setBotActions, setBotMiddlewares } from '$/bot/middleware'
 
-import { Game } from '$/game/Game'
+import { GameWithCache } from '$/game/GameWithCache'
 import { GoogleTableGameStorage } from '$/game/storage/google-table/GoogleTableGameStorage'
 import { reportException } from '$/errors'
 import L from '$/lang/i18n-node'
@@ -53,7 +53,7 @@ export const initBot = async (): Promise<Telegraf<GameContext>> => {
     }
   })
 
-  const game = new Game({ storage })
+  const game = new GameWithCache({ storage })
   const bot = new Telegraf<GameContext>(config.BOT_TOKEN)
 
   bot.context.game = game
