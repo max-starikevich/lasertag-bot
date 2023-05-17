@@ -41,6 +41,8 @@ const by: MappedTranslation = {
   RECORDED: 'Запісана',
   RENT: 'Патрэбны пракат',
   COUNT: 'Колькасць',
+  STATS_WHO_WON: 'Вы ўжо адыгралі? Якая каманда перамагла?',
+  STATS_SAVE_SUCCESS: 'Статыстыка захавана пасьпяхова',
 
   RENT_NOT_NEEDED: 'Не патрэбен',
   ABSENT: 'Мяне не будзе',

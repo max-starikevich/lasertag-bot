@@ -134,6 +134,14 @@ type RootTranslation = {
 	 */
 	COUNT: string
 	/**
+	 * D​i​d​ ​y​o​u​ ​p​l​a​y​ ​a​l​r​e​a​d​y​?​ ​W​h​i​c​h​ ​t​e​a​m​ ​w​o​n​?
+	 */
+	STATS_WHO_WON: string
+	/**
+	 * S​t​a​t​s​ ​s​a​v​e​d​ ​s​u​c​c​e​s​s​f​u​l​l​y
+	 */
+	STATS_SAVE_SUCCESS: string
+	/**
 	 * N​o​t​ ​n​e​e​d​e​d
 	 */
 	RENT_NOT_NEEDED: string
@@ -292,6 +300,14 @@ export type TranslationFunctions = {
 	 * Count
 	 */
 	COUNT: () => LocalizedString
+	/**
+	 * Did you play already? Which team won?
+	 */
+	STATS_WHO_WON: () => LocalizedString
+	/**
+	 * Stats saved successfully
+	 */
+	STATS_SAVE_SUCCESS: () => LocalizedString
 	/**
 	 * Not needed
 	 */
