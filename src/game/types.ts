@@ -26,4 +26,5 @@ export interface BaseGame {
   getLinks: () => Promise<GameLink[]>
 
   savePlayer: (name: string, fields: Partial<Player>) => Promise<void>
+  saveStats: (teams: Teams) => Promise<void>
 }

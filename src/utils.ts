@@ -31,6 +31,20 @@ export const extractString = (data: any): string | undefined => {
   return str
 }
 
+export const extractNumber = (data: any): number | undefined => {
+  if (data == null) {
+    return undefined
+  }
+
+  const n = Number(String(data).replace('?', ''))
+
+  if (Number.isNaN(n)) {
+    return undefined
+  }
+
+  return n
+}
+
 export interface ParsedRange {
   raw: string
   from: { letter: string, num: number }
@@ -58,5 +72,8 @@ export const parseRange = (s?: string): ParsedRange => {
   }
 }
 
-export const hashString = (s: string): string =>
+export const stringToSha1 = (s: string): string =>
   crypto.createHash('sha1').update(s).digest('hex')
+
+export const stringToBase64 = (s: string): string => Buffer.from(s, 'ascii').toString('base64')
+export const base64ToString = (s: string): string => Buffer.from(s, 'base64').toString('ascii')

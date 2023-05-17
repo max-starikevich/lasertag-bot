@@ -28,14 +28,14 @@ export class Game implements BaseGame {
 
   async getTeams (): Promise<Teams> {
     const players = await this.getPlayers()
-    const activePlayers = players.filter(({ count, level, isQuestionable }) => count > 0 && level > 0 && !isQuestionable)
+    const activePlayers = players.filter(({ count, level, isQuestionableCount }) => count > 0 && level > 0 && !isQuestionableCount)
 
     return getBalancedTeams(activePlayers)
   }
 
   async getTeamsWithClans (): Promise<Teams> {
     const players = await this.getPlayers()
-    const activePlayers = players.filter(({ count, level, isQuestionable }) => count > 0 && level > 0 && !isQuestionable)
+    const activePlayers = players.filter(({ count, level, isQuestionableCount }) => count > 0 && level > 0 && !isQuestionableCount)
 
     return sortTeamsByClans(getBalancedTeamsWithClans(activePlayers))
   }
@@ -49,6 +49,10 @@ export class Game implements BaseGame {
   }
 
   async savePlayer (name: string, fields: Partial<Player>): Promise<void> {
-    await this.storage.savePlayer(name, fields)
+    return await this.storage.savePlayer(name, fields)
+  }
+
+  async saveStats (teams: Teams): Promise<void> {
+    return await this.storage.saveStats(teams)
   }
 }

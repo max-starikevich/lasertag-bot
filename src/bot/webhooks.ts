@@ -7,7 +7,7 @@ import { commandsInMenu } from '.'
 
 import L from '$/lang/i18n-node'
 import { Player } from '$/game/player/types'
-import { defaultLocale, getLocaleByName } from '$/lang/i18n-custom'
+import { defaultLocale, extractLocale } from '$/lang/i18n-custom'
 
 export const updateBotWebhook = async (ctx: Pick<GameContext, 'logger' | 'telegram'>): Promise<void> => {
   const { logger, telegram } = ctx
@@ -42,7 +42,7 @@ export const updateBotCommandsForPlayers = async (ctx: Pick<GameContext, 'logger
       continue
     }
 
-    const locale = getLocaleByName(player.locale)
+    const locale = extractLocale(player.locale)
 
     const scope: BotCommandScope = { type: 'chat', chat_id: player.telegramUserId }
 

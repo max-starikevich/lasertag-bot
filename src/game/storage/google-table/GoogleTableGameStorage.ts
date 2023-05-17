@@ -2,12 +2,12 @@ import { GoogleSpreadsheet, GoogleSpreadsheetWorksheet } from 'google-spreadshee
 import { decode } from 'html-entities'
 import { groupBy, intersection, range } from 'lodash'
 
-import { extractString, parseRange } from '$/utils'
-import { getLocaleByName } from '$/lang/i18n-custom'
+import { extractNumber, extractString, parseRange } from '$/utils'
+import { extractLocale, defaultLocale } from '$/lang/i18n-custom'
 import { NoSheetsError } from '$/errors/NoSheetsError'
 
 import { EnrollData, GameData, GoogleSpreadsheetCellMap, GoogleTableGameStorageParams, LinksData, PlayersData, SheetsData, StatsData } from './types'
-import { Player, ScoredTeams } from '../../player/types'
+import { Player, Teams } from '../../player/types'
 import { GameLink, GameLocation } from '../../types'
 import { GameStorage } from '../types'
 
@@ -80,24 +80,29 @@ export class GoogleTableGameStorage implements GameStorage {
         return players
       }
 
-      const rawCount = (row.count ?? '0')
-      const count = +(rawCount.replace('?', ''))
-      const rentCount = +(row.rentCount ?? '0')
-      const level = +(row.level ?? '0')
-      const comment = row.comment
+      const telegramUserId = extractNumber(row.telegramUserId)
+
+      const count = extractNumber(row.count) ?? 0
+      const isQuestionableCount = extractString(row.count)?.includes('?') ?? false
+
+      const rentCount = extractNumber(row.rentCount) ?? 0
+      const isQuestionableRentCount = extractString(row.rentCount)?.includes('?') ?? false
+
+      const level = extractNumber(row.level) ?? 0
+      const comment = extractString(row.comment)
       const clanName = extractString(row.clanName)
-      const telegramUserId = extractString(row.telegramUserId)
-      const locale = extractString(row.locale)
+      const locale = extractLocale(row.locale) ?? defaultLocale
 
       const player: Player = {
         tableRow: row.rowIndex,
-        telegramUserId: telegramUserId !== undefined ? +(telegramUserId) : undefined,
+        telegramUserId,
         name,
         count,
         rentCount,
         comment,
         level,
-        isQuestionable: rawCount.includes('?'),
+        isQuestionableCount,
+        isQuestionableRentCount,
         combinedName: count > 1 ? `${name} (${count})` : name,
         clanName,
         clanEmoji: clanName?.match(/\p{Emoji}+/gu)?.[0],
@@ -114,7 +119,7 @@ export class GoogleTableGameStorage implements GameStorage {
       ({ clanName }) => clanName
     )
 
-    const processedPlayers = players.map(p => {
+    return players.map(p => {
       if (
         p.clanName === undefined ||
         clans[p.clanName] === undefined ||
@@ -128,8 +133,6 @@ export class GoogleTableGameStorage implements GameStorage {
         isAlone: false
       }
     })
-
-    return processedPlayers
   }
 
   async getLocations (): Promise<GameLocation[]> {
@@ -137,7 +140,7 @@ export class GoogleTableGameStorage implements GameStorage {
     const rows = await sheets.getRows()
 
     return rows.reduce<GameLocation[]>((result, row) => {
-      const lang = getLocaleByName(row.lang)
+      const lang = extractLocale(row.lang)
 
       if (lang === undefined) {
         return result
@@ -155,7 +158,7 @@ export class GoogleTableGameStorage implements GameStorage {
     const rows = await sheets.getRows()
 
     return rows.reduce<GameLink[]>((result, row) => {
-      const lang = getLocaleByName(row.lang)
+      const lang = extractLocale(row.lang)
 
       if (lang === undefined) {
         return result
@@ -266,7 +269,11 @@ export class GoogleTableGameStorage implements GameStorage {
     return map
   }
 
-  saveStats = async (teams: ScoredTeams): Promise<void> => {
+  saveStats = async (teams: Teams): Promise<void> => {
+    console.log({
+      teams
+    })
+
     const sheets = await this.getSheets(this.stats)
     await sheets.saveUpdatedCells()
   }

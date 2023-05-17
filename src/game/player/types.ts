@@ -1,3 +1,5 @@
+import { Locales } from '$/lang/i18n-types'
+
 export interface Player {
   tableRow: number
 
@@ -5,15 +7,16 @@ export interface Player {
   combinedName: string
   count: number
   rentCount: number
-  comment: string
   level: number
-  isQuestionable: boolean
-  clanName?: string
-  clanEmoji?: string
+  isQuestionableCount: boolean
+  isQuestionableRentCount: boolean
   isClanMember: boolean
   isAlone: boolean
+  locale: Locales
 
-  locale?: string
+  clanName?: string
+  clanEmoji?: string
+  comment?: string
   telegramUserId?: number | null
 }
 
@@ -22,5 +25,3 @@ export interface ClanPlayer extends Player {
 }
 
 export type Teams = [Player[], Player[]]
-
-export type ScoredTeams = Array<{ players: Player[], score: number }>
