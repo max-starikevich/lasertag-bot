@@ -11,6 +11,8 @@ export const playerMiddleware: BotMiddleware = async (ctx, next) => {
 
   const players = await storage.getPlayers()
 
+  ctx.players = players
+
   const currentPlayer = players.find(({ telegramUserId }) => telegramUserId !== undefined && telegramUserId === ctx.from?.id)
 
   if (currentPlayer === undefined) {

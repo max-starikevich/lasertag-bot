@@ -5,9 +5,8 @@ import { Command, CommandHandler } from '../types'
 import { getClanPlayers } from '../../game/player'
 
 const handler: CommandHandler = async (ctx) => {
-  const { storage } = ctx
+  const { players } = ctx
 
-  const players = await storage.getPlayers()
   const clanPlayers = getClanPlayers(players)
 
   const clans = orderBy(

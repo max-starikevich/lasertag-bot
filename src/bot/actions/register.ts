@@ -6,13 +6,13 @@ import { NoFreeRowsToRegister } from '$/errors/NoFreeRowsToRegister'
 import { Action, ActionHandler, ActionInitializer } from '../types'
 
 const initializer: ActionInitializer = async ctx => {
-  const { storage, lang, currentPlayer } = ctx
+  const { players, lang, currentPlayer } = ctx
 
   if (currentPlayer !== undefined) {
     return await ctx.reply(lang.REGISTER_ALREADY_REGISTERED())
   }
 
-  const nonRegisteredPlayers = (await storage.getPlayers())
+  const nonRegisteredPlayers = players
     .filter(({ telegramUserId }) => telegramUserId === undefined)
 
   if (nonRegisteredPlayers.length === 0) {
@@ -36,7 +36,7 @@ const initializer: ActionInitializer = async ctx => {
 }
 
 const handler: ActionHandler = async ctx => {
-  const { storage, lang } = ctx
+  const { players, lang, storage } = ctx
 
   const playerHash = String(ctx.match[1])
 
@@ -44,7 +44,6 @@ const handler: ActionHandler = async ctx => {
     return await ctx.reply(lang.ACTION_HANDLER_WRONG_DATA())
   }
 
-  const players = await storage.getPlayers()
   const targetPlayer = players.find(player => stringToSha1(player.name) === playerHash)
 
   if (targetPlayer === undefined) {

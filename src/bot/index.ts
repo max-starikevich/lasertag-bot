@@ -55,6 +55,7 @@ export const initBot = async (): Promise<Telegraf<GameContext>> => {
   })
 
   bot.context.storage = storage
+  bot.context.players = []
 
   // will be overriden in the access middleware
   bot.context.isAdmin = false

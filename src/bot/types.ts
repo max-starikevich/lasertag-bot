@@ -23,6 +23,7 @@ export interface GameContext extends Context {
   locale: Locales
 
   currentPlayer: Player | undefined
+  players: Player[]
 }
 
 export type CommandContext = NarrowedContext<GameContext, Update.MessageUpdate<Message.TextMessage>>

@@ -12,9 +12,8 @@ import { replyWithPlaceAndTime, replyWithTeamBalance, replyWithTeamCount } from 
 const handler: CommandHandler = async (ctx) => {
   await replyWithPlaceAndTime(ctx)
 
-  const { storage } = ctx
+  const { players } = ctx
 
-  const players = await storage.getPlayers()
   const activePlayers = getActivePlayers(players)
   const [redPlayers, bluePlayers] = getBalancedTeams(activePlayers)
 
