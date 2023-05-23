@@ -1,16 +1,16 @@
 /* eslint-disable */
 import 'module-alias/register'
 import dotenv from 'dotenv'
+dotenv.config({ path: '.env.production' })
+
 import axios from 'axios'
 import { version } from '../../package.json'
-
-dotenv.config({ path: '.env.production' })
 
 import { updateBotCommands, updateBotCommandsForPlayers, updateBotWebhook } from '$/bot/webhooks'
 import { makeLogger } from '$/logger'
 import { defaultLocale } from '$/lang/i18n-custom'
-import { BaseGame } from '$/game/types'
 import { botPromise } from '$/lambda'
+import { GameStorage } from '$/game/storage/types'
 /* eslint-enable */
 
 async function run (): Promise<void> {
@@ -30,9 +30,8 @@ async function run (): Promise<void> {
       locale: defaultLocale
     })
 
-    const game = bot.context.game as BaseGame
-
-    const players = await game.getPlayers()
+    const storage = bot.context.storage as GameStorage
+    const players = await storage.getPlayers()
 
     await updateBotCommandsForPlayers({
       telegram: bot.telegram,

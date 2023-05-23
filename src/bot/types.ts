@@ -1,14 +1,14 @@
 import { Context, NarrowedContext } from 'telegraf'
 import { ChatMember, Message, Update } from 'telegraf/typings/core/types/typegram'
 
-import { BaseGame } from '$/game/types'
 import { Player } from '$/game/player/types'
 
 import { BaseLogger } from '$/logger/types'
 import { Locales, TranslationFunctions } from '$/lang/i18n-types'
+import { GameStorage } from '$/game/storage/types'
 
 export interface GameContext extends Context {
-  game: BaseGame
+  storage: GameStorage
   logger: BaseLogger
 
   isAdmin: boolean

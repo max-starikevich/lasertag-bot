@@ -45,7 +45,7 @@ export class GoogleTableGameStorage implements GameStorage {
     }
   }
 
-  async getSheets ({ docId, sheetsId }: SheetsData): Promise<GoogleSpreadsheetWorksheet> {
+  protected async getSheets ({ docId, sheetsId }: SheetsData): Promise<GoogleSpreadsheetWorksheet> {
     if (this.documentMap[docId] === undefined) {
       const document = new GoogleSpreadsheet(docId)
 
@@ -69,7 +69,7 @@ export class GoogleTableGameStorage implements GameStorage {
     return sheets
   }
 
-  async getPlayers (): Promise<Player[]> {
+  public async getPlayers (): Promise<Player[]> {
     const sheets = await this.getSheets(this.players)
 
     const players = (await sheets.getRows())
@@ -135,7 +135,7 @@ export class GoogleTableGameStorage implements GameStorage {
     })
   }
 
-  async getLocations (): Promise<GameLocation[]> {
+  public async getLocations (): Promise<GameLocation[]> {
     const sheets = await this.getSheets(this.game)
     const rows = await sheets.getRows()
 
@@ -153,7 +153,7 @@ export class GoogleTableGameStorage implements GameStorage {
     }, [])
   }
 
-  async getLinks (): Promise<GameLink[]> {
+  public async getLinks (): Promise<GameLink[]> {
     const sheets = await this.getSheets(this.links)
     const rows = await sheets.getRows()
 
@@ -171,7 +171,7 @@ export class GoogleTableGameStorage implements GameStorage {
     }, [])
   }
 
-  async savePlayer (name: string, fieldsToSave: Partial<Player>): Promise<void> {
+  public async savePlayer (name: string, fieldsToSave: Partial<Player>): Promise<void> {
     const cellMap = await this.buildPlayerCellMap(name, fieldsToSave)
 
     for (const playerField of Object.keys(fieldsToSave)) {
@@ -200,7 +200,16 @@ export class GoogleTableGameStorage implements GameStorage {
     ])
   }
 
-  async buildPlayerCellMap (
+  public saveStats = async (teams: Teams): Promise<void> => {
+    console.log({
+      teams
+    })
+
+    const sheets = await this.getSheets(this.stats)
+    await sheets.saveUpdatedCells()
+  }
+
+  protected async buildPlayerCellMap (
     name: string,
     fieldsToSave: Partial<Player>
   ): Promise<GoogleSpreadsheetCellMap> {
@@ -267,14 +276,5 @@ export class GoogleTableGameStorage implements GameStorage {
     }
 
     return map
-  }
-
-  saveStats = async (teams: Teams): Promise<void> => {
-    console.log({
-      teams
-    })
-
-    const sheets = await this.getSheets(this.stats)
-    await sheets.saveUpdatedCells()
   }
 }

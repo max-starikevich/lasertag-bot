@@ -7,7 +7,6 @@ import { GameContext } from '$/bot/types'
 import { commands } from '$/bot/commands'
 import { setBotActions, setBotMiddlewares } from '$/bot/middleware'
 
-import { GameWithCache } from '$/game/GameWithCache'
 import { GoogleTableGameStorage } from '$/game/storage/google-table/GoogleTableGameStorage'
 import { reportException } from '$/errors'
 import L from '$/lang/i18n-node'
@@ -21,6 +20,8 @@ export const commandsInMenu = commands.filter(
 
 export const initBot = async (): Promise<Telegraf<GameContext>> => {
   await checkEnvironment()
+
+  const bot = new Telegraf<GameContext>(config.BOT_TOKEN)
 
   const storage = new GoogleTableGameStorage({
     email: config.GOOGLE_SERVICE_ACCOUNT_EMAIL,
@@ -53,10 +54,7 @@ export const initBot = async (): Promise<Telegraf<GameContext>> => {
     }
   })
 
-  const game = new GameWithCache({ storage })
-  const bot = new Telegraf<GameContext>(config.BOT_TOKEN)
-
-  bot.context.game = game
+  bot.context.storage = storage
 
   // will be overriden in the access middleware
   bot.context.isAdmin = false

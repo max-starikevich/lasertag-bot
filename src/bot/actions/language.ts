@@ -1,5 +1,4 @@
-import { isLocaleName, localeNames } from '$/lang/i18n-custom'
-import { Locales } from '$/lang/i18n-types'
+import { extractLocale, localeNames } from '$/lang/i18n-custom'
 import L from '$/lang/i18n-node'
 import { RegisterRequiredError } from '$/errors/RegisterRequiredError'
 
@@ -26,26 +25,26 @@ const initializer: ActionInitializer = async ctx => {
 }
 
 const handler: ActionHandler = async ctx => {
-  const { game, currentPlayer } = ctx
+  const { storage, currentPlayer } = ctx
 
   if (currentPlayer === undefined) {
     throw new RegisterRequiredError()
   }
 
-  const locale = ctx.match[1] as Locales
+  const locale = extractLocale(ctx.match[1])
 
-  if (ctx.chat === undefined || ctx.from === undefined || isLocaleName(locale) !== true) {
+  if (ctx.chat === undefined || ctx.from === undefined || locale === undefined) {
     return await ctx.reply(ctx.lang.ACTION_HANDLER_WRONG_DATA())
   }
 
   currentPlayer.locale = locale
 
-  await game.savePlayer(currentPlayer.name, {
+  await storage.savePlayer(currentPlayer.name, {
     locale
   })
 
+  ctx.lang = L[locale]
   ctx.locale = locale
-  ctx.lang = L[ctx.locale]
 
   await updateBotCommands(ctx, { type: 'chat', chat_id: ctx.from.id })
   await ctx.editMessageText(`✅ ${ctx.lang.LANGUAGE_CHOOSE_SUCCESS()}`)

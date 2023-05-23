@@ -1,6 +1,13 @@
 import { requiredConfigInput as config } from './index'
 
-const isValidString = (s?: string): boolean => String(s).length > 0
+const isValidString = (s?: string): boolean => {
+  if (s === undefined) {
+    return false
+  }
+
+  return s.length > 0
+}
+
 const isValidEmail = (s?: string): boolean => /\S+@\S+\.\S+/.test(String(s))
 const isValidNumber = (s?: string): boolean => s === undefined ? false : !isNaN(parseInt(s))
 const isValidTableRange = (s?: string): boolean => /^([A-Z]+)(\d+):([A-Z]+)(\d+)$/.test(String(s))

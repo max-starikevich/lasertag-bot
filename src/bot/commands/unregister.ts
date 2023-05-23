@@ -3,7 +3,7 @@ import { RegisterRequiredError } from '$/errors/RegisterRequiredError'
 import { Command, CommandHandler } from '../types'
 
 const handler: CommandHandler = async (ctx) => {
-  const { lang, game, currentPlayer } = ctx
+  const { lang, storage, currentPlayer } = ctx
 
   if (currentPlayer === undefined) {
     throw new RegisterRequiredError()
@@ -11,7 +11,7 @@ const handler: CommandHandler = async (ctx) => {
 
   currentPlayer.telegramUserId = null
 
-  await game.savePlayer(currentPlayer.name, {
+  await storage.savePlayer(currentPlayer.name, {
     telegramUserId: null
   })
 

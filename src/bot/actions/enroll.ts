@@ -50,7 +50,7 @@ const initializer: ActionInitializer = async ctx => {
 }
 
 const countHandler: ActionHandler = async ctx => {
-  const { lang, currentPlayer, game } = ctx
+  const { lang, currentPlayer, storage } = ctx
 
   if (currentPlayer === undefined) {
     throw new RegisterRequiredError()
@@ -66,7 +66,7 @@ const countHandler: ActionHandler = async ctx => {
 
   await ctx.editMessageText(`⌛ ${lang.COUNT()}: ${count}`)
 
-  await game.savePlayer(currentPlayer.name, {
+  await storage.savePlayer(currentPlayer.name, {
     count
   })
 
@@ -74,7 +74,7 @@ const countHandler: ActionHandler = async ctx => {
 }
 
 const rentHandler: ActionHandler = async ctx => {
-  const { lang, currentPlayer, game } = ctx
+  const { lang, currentPlayer, storage } = ctx
 
   if (currentPlayer === undefined) {
     throw new RegisterRequiredError()
@@ -90,7 +90,7 @@ const rentHandler: ActionHandler = async ctx => {
 
   await ctx.editMessageText(`⌛ ${lang.RENT()}: ${rentCount}`)
 
-  await game.savePlayer(currentPlayer.name, {
+  await storage.savePlayer(currentPlayer.name, {
     rentCount
   })
 

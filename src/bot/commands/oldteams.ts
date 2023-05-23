@@ -2,16 +2,21 @@ import dedent from 'dedent-js'
 import { shuffle } from 'lodash'
 
 import { NotEnoughPlayersError } from '$/errors/NotEnoughPlayersError'
+import { getBalancedTeams } from '$/game/player/balance/no-clans'
+import { getActivePlayers } from '$/game/player'
 
 import { Command, CommandHandler } from '../types'
 import { replyWithPlaceAndTime, replyWithTeamBalance, replyWithTeamCount } from '.'
+// import { score as scoreAction } from '../actions/score'
 
 const handler: CommandHandler = async (ctx) => {
   await replyWithPlaceAndTime(ctx)
 
-  const { game } = ctx
+  const { storage } = ctx
 
-  const [redPlayers, bluePlayers] = await game.getTeams()
+  const players = await storage.getPlayers()
+  const activePlayers = getActivePlayers(players)
+  const [redPlayers, bluePlayers] = getBalancedTeams(activePlayers)
 
   if (redPlayers.length === 0 || bluePlayers.length === 0) {
     throw new NotEnoughPlayersError()
@@ -36,6 +41,8 @@ const handler: CommandHandler = async (ctx) => {
   }
 
   await replyWithTeamBalance(ctx, [redPlayers, bluePlayers])
+
+  // await scoreAction.initializer(ctx)
 }
 
 export const oldTeams: Command = {

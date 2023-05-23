@@ -10,7 +10,7 @@ import { botPromise, handler } from '$/lambda'
 import { updateBotCommands, updateBotCommandsForPlayers, updateBotWebhook } from '$/bot/webhooks'
 import { makeLogger } from '$/logger'
 import { defaultLocale } from '$/lang/i18n-custom'
-import { BaseGame } from '$/game/types'
+import { GameStorage } from './game/storage/types'
 
 const dev = async (): Promise<void> => {
   const logger = makeLogger()
@@ -33,9 +33,8 @@ const dev = async (): Promise<void> => {
       locale: defaultLocale
     })
 
-    const game = bot.context.game as BaseGame
-
-    const players = await game.getPlayers()
+    const storage = bot.context.storage as GameStorage
+    const players = await storage.getPlayers()
 
     await updateBotCommandsForPlayers({
       telegram: bot.telegram,
