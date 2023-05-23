@@ -22,6 +22,7 @@ const en: BaseTranslation = {
   REGISTER_CHOOSE_YOURSELF: 'Choose your name from the list',
   REGISTER_SUCCESS: '{name:string}, you have been registered successfully',
   REGISTER_ALREADY_REGISTERED: 'You are already registered',
+  REGISTER_NO_FREE_ROWS: 'All players have been registered already. No free slots at the moment.',
   REGISTER_REQUIRED: 'Registration is required for this functionality. Use /{registerCommandName:string} to proceed.',
 
   LANGUAGE_COMMAND_DESCRIPTION: 'Choose language',
@@ -40,6 +41,8 @@ const en: BaseTranslation = {
   RECORDED: 'Recorded',
   RENT: 'Rent',
   COUNT: 'Count',
+  STATS_WHO_WON: 'Did you play already? Which team won?',
+  STATS_SAVE_SUCCESS: 'Stats saved successfully',
 
   RENT_NOT_NEEDED: 'Not needed',
   ABSENT: "I'll be absent",

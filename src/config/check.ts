@@ -1,6 +1,13 @@
 import { requiredConfigInput as config } from './index'
 
-const isValidString = (s?: string): boolean => String(s).length > 0
+const isValidString = (s?: string): boolean => {
+  if (s === undefined) {
+    return false
+  }
+
+  return s.length > 0
+}
+
 const isValidEmail = (s?: string): boolean => /\S+@\S+\.\S+/.test(String(s))
 const isValidNumber = (s?: string): boolean => s === undefined ? false : !isNaN(parseInt(s))
 const isValidTableRange = (s?: string): boolean => /^([A-Z]+)(\d+):([A-Z]+)(\d+)$/.test(String(s))
@@ -33,7 +40,10 @@ const requiredRuntimeVariables: EnvironmentToCheck = {
   ENROLL_NAMES_RANGE: async () => isValidTableRange(config.ENROLL_NAMES_RANGE),
   ENROLL_COUNT_RANGE: async () => isValidTableRange(config.ENROLL_COUNT_RANGE),
   ENROLL_RENT_RANGE: async () => isValidTableRange(config.ENROLL_RENT_RANGE),
-  ENROLL_COMMENT_RANGE: async () => isValidTableRange(config.ENROLL_COMMENT_RANGE)
+  ENROLL_COMMENT_RANGE: async () => isValidTableRange(config.ENROLL_COMMENT_RANGE),
+
+  STATS_DOC_ID: async () => isValidString(config.STATS_DOC_ID),
+  STATS_SHEETS_ID: async () => isValidNumber(config.STATS_SHEETS_ID)
 }
 
 export const checkEnvironment = async (): Promise<void> => {

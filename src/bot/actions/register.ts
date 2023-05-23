@@ -1,21 +1,22 @@
 import { chunk } from 'lodash'
 
-import { hashString } from '$/utils'
-import { NotEnoughPlayersError } from '$/errors/NotEnoughPlayersError'
+import { stringToSha1 } from '$/utils'
+import { NoFreeRowsToRegister } from '$/errors/NoFreeRowsToRegister'
 
 import { Action, ActionHandler, ActionInitializer } from '../types'
 
 const initializer: ActionInitializer = async ctx => {
-  const { game, lang, currentPlayer } = ctx
+  const { players, lang, currentPlayer } = ctx
 
   if (currentPlayer !== undefined) {
     return await ctx.reply(lang.REGISTER_ALREADY_REGISTERED())
   }
 
-  const nonRegisteredPlayers = (await game.getPlayers()).filter(({ telegramUserId }) => telegramUserId === undefined)
+  const nonRegisteredPlayers = players
+    .filter(({ telegramUserId }) => telegramUserId === undefined)
 
   if (nonRegisteredPlayers.length === 0) {
-    throw new NotEnoughPlayersError()
+    throw new NoFreeRowsToRegister()
   }
 
   const chunkedPlayers = chunk(nonRegisteredPlayers, 2)
@@ -26,7 +27,7 @@ const initializer: ActionInitializer = async ctx => {
         ...players.map(player =>
           ({
             text: `${player.name} ${player.clanEmoji ?? ''}`,
-            callback_data: `register-${hashString(player.name)}`
+            callback_data: `register-${stringToSha1(player.name)}`
           })
         )
       ])
@@ -35,7 +36,7 @@ const initializer: ActionInitializer = async ctx => {
 }
 
 const handler: ActionHandler = async ctx => {
-  const { game, lang } = ctx
+  const { players, lang, storage } = ctx
 
   const playerHash = String(ctx.match[1])
 
@@ -43,8 +44,7 @@ const handler: ActionHandler = async ctx => {
     return await ctx.reply(lang.ACTION_HANDLER_WRONG_DATA())
   }
 
-  const players = await game.getPlayers()
-  const targetPlayer = players.find(player => hashString(player.name) === playerHash)
+  const targetPlayer = players.find(player => stringToSha1(player.name) === playerHash)
 
   if (targetPlayer === undefined) {
     return await ctx.reply(lang.ACTION_HANDLER_WRONG_DATA())
@@ -58,7 +58,7 @@ const handler: ActionHandler = async ctx => {
 
   ctx.currentPlayer = targetPlayer
 
-  await game.savePlayer(ctx.currentPlayer.name, {
+  await storage.savePlayer(ctx.currentPlayer.name, {
     telegramUserId: ctx.from.id
   })
 

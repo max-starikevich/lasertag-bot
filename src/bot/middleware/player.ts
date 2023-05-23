@@ -1,7 +1,5 @@
 import { BotMiddleware } from '.'
 
-import { isLocaleName } from '$/lang/i18n-custom'
-import { Locales } from '$/lang/i18n-types'
 import L from '$/lang/i18n-node'
 
 export const playerMiddleware: BotMiddleware = async (ctx, next) => {
@@ -9,9 +7,12 @@ export const playerMiddleware: BotMiddleware = async (ctx, next) => {
     throw new Error('Missing "ctx.from"')
   }
 
-  const { game } = ctx
+  const { storage } = ctx
 
-  const players = await game.getPlayers()
+  const players = await storage.getPlayers()
+
+  ctx.players = players
+
   const currentPlayer = players.find(({ telegramUserId }) => telegramUserId !== undefined && telegramUserId === ctx.from?.id)
 
   if (currentPlayer === undefined) {
@@ -19,11 +20,8 @@ export const playerMiddleware: BotMiddleware = async (ctx, next) => {
   }
 
   ctx.currentPlayer = currentPlayer
-
-  if (isLocaleName(currentPlayer.locale) === true) {
-    ctx.locale = currentPlayer.locale as Locales
-    ctx.lang = L[ctx.locale]
-  }
+  ctx.locale = currentPlayer.locale
+  ctx.lang = L[ctx.locale]
 
   return await next()
 }

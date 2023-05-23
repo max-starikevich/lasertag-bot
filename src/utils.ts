@@ -31,18 +31,32 @@ export const extractString = (data: any): string | undefined => {
   return str
 }
 
+export const extractNumber = (data: any): number | undefined => {
+  if (data == null) {
+    return undefined
+  }
+
+  const n = Number(String(data).replace('?', ''))
+
+  if (Number.isNaN(n)) {
+    return undefined
+  }
+
+  return n
+}
+
 export interface ParsedRange {
   raw: string
   from: { letter: string, num: number }
   to: { letter: string, num: number }
 }
 
-export const parseRange = (s?: string): ParsedRange | null => {
+export const parseRange = (s?: string): ParsedRange => {
   const input = String(s)
   const regexResult = /^([A-Z]+)(\d+):([A-Z]+)(\d+)$/.exec(input)
 
   if (regexResult === null) {
-    return null
+    throw new Error(`Failed to parse range for ${String(s)}`)
   }
 
   return {
@@ -58,5 +72,5 @@ export const parseRange = (s?: string): ParsedRange | null => {
   }
 }
 
-export const hashString = (s: string): string =>
+export const stringToSha1 = (s: string): string =>
   crypto.createHash('sha1').update(s).digest('hex')

@@ -33,9 +33,9 @@ export const commands: Command[] = [
 ]
 
 export const replyWithPlaceAndTime = async (ctx: CommandContext): Promise<void> => {
-  const { game } = ctx
+  const { storage } = ctx
 
-  const placeAndTimeData = await game.getPlaceAndTime()
+  const placeAndTimeData = await storage.getLocations()
   const placeAndTime = placeAndTimeData.find(data => data.lang === ctx.locale)
 
   if (placeAndTime === undefined) {

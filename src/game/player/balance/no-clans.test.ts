@@ -16,19 +16,21 @@ describe('balance/no-clans.ts', () => {
       const successTries = times(numberOfTries).reduce((successTries) => {
         const levels = getRandomArray(playerCount, maxLevel)
 
-        const playersToBalance: Player[] = levels.map(randomLevel => ({
+        const playersToBalance = levels.map<Player>(randomLevel => ({
           tableRow: 0,
           name: 'random-player',
           combinedName: 'random-player',
           count: 1,
           rentCount: 0,
           comment: '',
-          isQuestionable: false,
+          isQuestionableCount: false,
+          isQuestionableRentCount: false,
           isCompanion: false,
           level: randomLevel,
           clanName: 'random-team',
           isClanMember: true,
-          isAlone: true
+          isAlone: true,
+          locale: 'en'
         }))
 
         const [team1, team2] = getBalancedTeams(playersToBalance)

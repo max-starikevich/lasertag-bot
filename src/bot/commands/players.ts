@@ -2,6 +2,7 @@ import dedent from 'dedent-js'
 import { partition } from 'lodash'
 
 import { NotEnoughPlayersError } from '$/errors/NotEnoughPlayersError'
+import { Player } from '$/game/player/types'
 
 import { Command, CommandHandler } from '../types'
 import { replyWithPlaceAndTime } from '.'
@@ -9,9 +10,8 @@ import { replyWithPlaceAndTime } from '.'
 const handler: CommandHandler = async (ctx) => {
   await replyWithPlaceAndTime(ctx)
 
-  const { game, lang } = ctx
+  const { players, lang } = ctx
 
-  const players = await game.getPlayers()
   const enrolledPlayers = players.filter(({ count }) => count > 0)
 
   if (enrolledPlayers.length === 0) {
@@ -20,17 +20,19 @@ const handler: CommandHandler = async (ctx) => {
 
   const [readyPlayers, questionablePlayers] = partition(
     enrolledPlayers,
-    ({ isQuestionable }) => !isQuestionable
+    ({ isQuestionableCount }) => !isQuestionableCount
   )
 
   const playersWithComments = players.filter(
-    ({ comment }) => comment !== undefined && comment.length > 0
+    (player): player is Player & { comment: string } => player.comment !== undefined
   )
 
   await ctx.replyWithHTML(dedent`
-    ${lang.RECORDED()}: ${readyPlayers.reduce((sum, { count }) => sum + count, 0)}
+    ${lang.RECORDED()}: ${players.reduce(
+      (sum, { count, isQuestionableCount }) => isQuestionableCount ? sum : sum + count,
+    0)}
     ${lang.RENT()}: ${players.reduce(
-      (sum, { rentCount }) => sum + rentCount,
+      (sum, { rentCount, isQuestionableRentCount }) => isQuestionableRentCount ? sum : sum + rentCount,
     0)}
   `)
 
@@ -53,7 +55,7 @@ const handler: CommandHandler = async (ctx) => {
   if (playersWithComments.length > 0) {
     await ctx.replyWithHTML(dedent`
       ${playersWithComments
-        .map(({ name, comment }) => `💬 ${name}: «<i>${comment.trim()}</i>»`)
+        .map(({ name, comment }) => `💬 ${name}: «<i>${comment}</i>»`)
         .join('\n\n')}
     `)
   }

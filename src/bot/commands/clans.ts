@@ -2,11 +2,12 @@ import dedent from 'dedent-js'
 import { groupBy, orderBy } from 'lodash'
 
 import { Command, CommandHandler } from '../types'
+import { getClanPlayers } from '../../game/player'
 
 const handler: CommandHandler = async (ctx) => {
-  const { game } = ctx
+  const { players } = ctx
 
-  const clanPlayers = await game.getClanPlayers()
+  const clanPlayers = getClanPlayers(players)
 
   const clans = orderBy(
     Object.entries(
@@ -21,7 +22,7 @@ const handler: CommandHandler = async (ctx) => {
 
       ${players
         .map(player =>
-          `${player.count > 0 && !player.isQuestionable ? '✔️' : '➖'} ${player.name}`
+          `${player.count > 0 && !player.isQuestionableCount ? '✔️' : '➖'} ${player.name}`
         ).join('\n')
       }
     `)

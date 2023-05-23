@@ -1,6 +1,6 @@
 {
   "name": "lasertag-bot",
-  "version": "7.3.1",
+  "version": "7.4.0",
   "repository": "https://github.com/max-starikevich/lasertag-bot",
   "author": "Max Starikevich <maxim.starikevich@gmail.com>",
   "license": "MIT",
@@ -53,13 +53,14 @@
     "test:watch": "jest --watch --verbose",
     "lang:watch": "typesafe-i18n",
     "prepare": "husky install",
-    "pre-push": "pnpm lint && pnpm test && pnpm deploy:build-image",
+    "pre-push": "pnpm lint && pnpm test && pnpm deploy:build",
     "ngrok": "ngrok http 4000",
     "build": "tsc -p tsconfig.prod.json",
-    "deploy:all": "pnpm deploy:build-image && pnpm deploy:aws && pnpm deploy:post-deploy",
-    "deploy:build-image": "docker image build -t lasertag-bot .",
+    "deploy:all": "pnpm deploy:pre && pnpm deploy:build && pnpm deploy:aws && pnpm deploy:post",
+    "deploy:build": "docker image build -t lasertag-bot .",
     "deploy:aws": "serverless deploy --verbose --stage production",
-    "deploy:post-deploy": "node --enable-source-maps dist/src/scripts/post-deploy.js"
+    "deploy:pre": "node --enable-source-maps dist/src/scripts/pre-deploy.js",
+    "deploy:post": "node --enable-source-maps dist/src/scripts/post-deploy.js"
   },
   "_moduleAliases": {
     "$": "./dist/src"

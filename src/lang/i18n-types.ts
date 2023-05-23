@@ -77,6 +77,10 @@ type RootTranslation = {
 	 */
 	REGISTER_ALREADY_REGISTERED: string
 	/**
+	 * A​l​l​ ​p​l​a​y​e​r​s​ ​h​a​v​e​ ​b​e​e​n​ ​r​e​g​i​s​t​e​r​e​d​ ​a​l​r​e​a​d​y​.​ ​N​o​ ​f​r​e​e​ ​s​l​o​t​s​ ​a​t​ ​t​h​e​ ​m​o​m​e​n​t​.
+	 */
+	REGISTER_NO_FREE_ROWS: string
+	/**
 	 * R​e​g​i​s​t​r​a​t​i​o​n​ ​i​s​ ​r​e​q​u​i​r​e​d​ ​f​o​r​ ​t​h​i​s​ ​f​u​n​c​t​i​o​n​a​l​i​t​y​.​ ​U​s​e​ ​/​{​r​e​g​i​s​t​e​r​C​o​m​m​a​n​d​N​a​m​e​}​ ​t​o​ ​p​r​o​c​e​e​d​.
 	 * @param {string} registerCommandName
 	 */
@@ -129,6 +133,14 @@ type RootTranslation = {
 	 * C​o​u​n​t
 	 */
 	COUNT: string
+	/**
+	 * D​i​d​ ​y​o​u​ ​p​l​a​y​ ​a​l​r​e​a​d​y​?​ ​W​h​i​c​h​ ​t​e​a​m​ ​w​o​n​?
+	 */
+	STATS_WHO_WON: string
+	/**
+	 * S​t​a​t​s​ ​s​a​v​e​d​ ​s​u​c​c​e​s​s​f​u​l​l​y
+	 */
+	STATS_SAVE_SUCCESS: string
 	/**
 	 * N​o​t​ ​n​e​e​d​e​d
 	 */
@@ -233,6 +245,10 @@ export type TranslationFunctions = {
 	 */
 	REGISTER_ALREADY_REGISTERED: () => LocalizedString
 	/**
+	 * All players have been registered already. No free slots at the moment.
+	 */
+	REGISTER_NO_FREE_ROWS: () => LocalizedString
+	/**
 	 * Registration is required for this functionality. Use /{registerCommandName} to proceed.
 	 */
 	REGISTER_REQUIRED: (arg: { registerCommandName: string }) => LocalizedString
@@ -284,6 +300,14 @@ export type TranslationFunctions = {
 	 * Count
 	 */
 	COUNT: () => LocalizedString
+	/**
+	 * Did you play already? Which team won?
+	 */
+	STATS_WHO_WON: () => LocalizedString
+	/**
+	 * Stats saved successfully
+	 */
+	STATS_SAVE_SUCCESS: () => LocalizedString
 	/**
 	 * Not needed
 	 */

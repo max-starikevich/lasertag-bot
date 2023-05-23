@@ -12,11 +12,13 @@ const basePlayer: Player = {
   count: 1,
   rentCount: 0,
   comment: '',
-  isQuestionable: false,
+  isQuestionableCount: false,
+  isQuestionableRentCount: false,
   clanName: undefined,
   isClanMember: false,
   isAlone: true,
-  level: 0
+  level: 0,
+  locale: 'en'
 }
 
 describe('balance/with-clans.ts', () => {
@@ -37,7 +39,7 @@ describe('balance/with-clans.ts', () => {
       const successTries = times(numberOfTries).reduce((successTries) => {
         const levels = getRandomArray(noClanPlayersCount, maxLevel)
 
-        const nonClanPlayers: Player[] = levels.map((randomLevel, index) => ({
+        const nonClanPlayers = levels.map<Player>((randomLevel, index) => ({
           ...basePlayer,
           name: `player-${index}`,
           level: randomLevel
