@@ -74,6 +74,3 @@ export const parseRange = (s?: string): ParsedRange => {
 
 export const stringToSha1 = (s: string): string =>
   crypto.createHash('sha1').update(s).digest('hex')
-
-export const stringToBase64 = (s: string): string => Buffer.from(s, 'ascii').toString('base64')
-export const base64ToString = (s: string): string => Buffer.from(s, 'base64').toString('ascii')

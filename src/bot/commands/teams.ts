@@ -7,7 +7,6 @@ import { getActivePlayers } from '$/game/player'
 
 import { Command, CommandHandler } from '../types'
 import { replyWithPlaceAndTime, replyWithTeamBalance, replyWithTeamCount } from '.'
-// import { score as scoreAction } from '../actions/score'
 
 const handler: CommandHandler = async (ctx) => {
   await replyWithPlaceAndTime(ctx)
@@ -65,7 +64,7 @@ const handler: CommandHandler = async (ctx) => {
 
   await replyWithTeamBalance(ctx, [redPlayers, bluePlayers])
 
-  // await scoreAction.initializer(ctx)
+  // TODO: call score action here, when it's implemented
 }
 
 export const teams: Command = {

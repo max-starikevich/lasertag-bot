@@ -32,6 +32,8 @@ const handler: ActionHandler = async ctx => {
     throw new RegisterRequiredError()
   }
 
+  // TODO: implement stats saving here
+
   await ctx.editMessageText(`✅ ${lang.STATS_SAVE_SUCCESS()}`)
 }
 
