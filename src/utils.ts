@@ -36,6 +36,10 @@ export const extractNumber = (data: any): number | undefined => {
     return undefined
   }
 
+  if (data === '') {
+    return undefined
+  }
+
   const n = Number(String(data).replace('?', ''))
 
   if (Number.isNaN(n)) {
