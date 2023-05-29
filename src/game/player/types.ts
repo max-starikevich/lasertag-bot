@@ -25,3 +25,9 @@ export interface ClanPlayer extends Player {
 }
 
 export type Teams = [Player[], Player[]]
+
+export interface ScoredTeams {
+  won: Player[]
+  lost: Player[]
+  draw: Player[]
+}

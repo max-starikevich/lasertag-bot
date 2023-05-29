@@ -1,3 +1,4 @@
+import { keyBy } from 'lodash'
 import { Player, ClanPlayer } from './types'
 
 export const getActivePlayers = (players: Player[]): Player[] => {
@@ -10,4 +11,9 @@ export const getClanPlayers = (players: Player[]): ClanPlayer[] => {
 
 export const getPlayerNames = (players: Player[]): string[] => {
   return players.map(player => player.name)
+}
+
+export const getPlayersByNames = (players: Player[], names: string[]): Player[] => {
+  const map = keyBy(players, player => player.name)
+  return names.map(name => map[name]).filter(player => player !== undefined)
 }
