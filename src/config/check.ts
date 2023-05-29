@@ -43,7 +43,10 @@ const requiredRuntimeVariables: EnvironmentToCheck = {
   ENROLL_COMMENT_RANGE: async () => isValidTableRange(config.ENROLL_COMMENT_RANGE),
 
   STATS_DOC_ID: async () => isValidString(config.STATS_DOC_ID),
-  STATS_SHEETS_ID: async () => isValidNumber(config.STATS_SHEETS_ID)
+  STATS_SHEETS_ID: async () => isValidNumber(config.STATS_SHEETS_ID),
+
+  STORE_DOC_ID: async () => isValidString(config.STORE_DOC_ID),
+  STORE_SHEETS_ID: async () => isValidString(config.STORE_SHEETS_ID)
 }
 
 export const checkEnvironment = async (): Promise<void> => {
