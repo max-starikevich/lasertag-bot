@@ -146,6 +146,10 @@ type RootTranslation = {
 	 */
 	STATS_DRAW: string
 	/**
+	 * D​a​t​a​ ​f​o​r​ ​t​h​i​s​ ​g​a​m​e​ ​i​s​ ​a​l​r​e​a​d​y​ ​l​o​s​t
+	 */
+	STATS_NON_EXISTENT: string
+	/**
 	 * N​o​t​ ​n​e​e​d​e​d
 	 */
 	RENT_NOT_NEEDED: string
@@ -182,7 +186,7 @@ type RootTranslation = {
 	 */
 	ACTION_HANDLER_WRONG_DATA: string
 	/**
-	 * �​�​ ​N​o​t​ ​e​n​o​u​g​h​ ​p​l​a​y​e​r​s​ ​f​o​r​ ​t​h​i​s​ ​f​u​n​c​t​i​o​n
+	 * N​o​t​ ​e​n​o​u​g​h​ ​p​l​a​y​e​r​s​ ​f​o​r​ ​t​h​i​s​ ​f​u​n​c​t​i​o​n
 	 */
 	NOT_ENOUGH_PLAYERS: string
 }
@@ -317,6 +321,10 @@ export type TranslationFunctions = {
 	 */
 	STATS_DRAW: () => LocalizedString
 	/**
+	 * Data for this game is already lost
+	 */
+	STATS_NON_EXISTENT: () => LocalizedString
+	/**
 	 * Not needed
 	 */
 	RENT_NOT_NEEDED: () => LocalizedString
@@ -351,7 +359,7 @@ Thanks!
 	 */
 	ACTION_HANDLER_WRONG_DATA: () => LocalizedString
 	/**
-	 * 🤷 Not enough players for this function
+	 * Not enough players for this function
 	 */
 	NOT_ENOUGH_PLAYERS: () => LocalizedString
 }

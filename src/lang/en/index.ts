@@ -44,6 +44,7 @@ const en: BaseTranslation = {
   STATS_WHO_WON: 'Did you play already? Which team won?',
   STATS_SAVE_SUCCESS: 'Stats saved successfully',
   STATS_DRAW: 'Draw',
+  STATS_NON_EXISTENT: 'Data for this game is already lost',
 
   RENT_NOT_NEEDED: 'Not needed',
   ABSENT: "I'll be absent",
@@ -56,7 +57,7 @@ const en: BaseTranslation = {
 
   ACTION_HANDLER_WRONG_DATA: 'Wrong data provided',
 
-  NOT_ENOUGH_PLAYERS: '🤷 Not enough players for this function'
+  NOT_ENOUGH_PLAYERS: 'Not enough players for this function'
 }
 
 export default en
