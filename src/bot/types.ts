@@ -5,10 +5,11 @@ import { Player } from '$/game/player/types'
 
 import { BaseLogger } from '$/logger/types'
 import { Locales, TranslationFunctions } from '$/lang/i18n-types'
-import { GameStorage } from '$/game/storage/types'
+import { GameStorage, GameStore } from '$/game/storage/types'
 
 export interface GameContext extends Context {
   storage: GameStorage
+  store: GameStore
   logger: BaseLogger
 
   isAdmin: boolean
@@ -40,9 +41,8 @@ export type ActionHandler = (ctx: NarrowedContext<GameContext & {
   match: RegExpExecArray
 }, Update.CallbackQueryUpdate>) => Promise<any>
 
-export type ActionInitializer = (ctx: NarrowedContext<GameContext, Update.MessageUpdate<Message.TextMessage>>) => Promise<any>
+export type ActionInitializer = (ctx: CommandContext) => Promise<any>
 
 export interface Action {
-  initializer: ActionInitializer
   mapping: { [key: string]: ActionHandler }
 }

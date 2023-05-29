@@ -8,6 +8,7 @@ import { commands } from '$/bot/commands'
 import { setBotActions, setBotMiddlewares } from '$/bot/middleware'
 
 import { GoogleTableGameStorage } from '$/game/storage/google-table/GoogleTableGameStorage'
+import { GoogleTableGameStore } from '$/game/storage/google-table/GoogleTableStore'
 import { reportException } from '$/errors'
 import L from '$/lang/i18n-node'
 import { defaultLocale } from '$/lang/i18n-custom'
@@ -23,7 +24,7 @@ export const initBot = async (): Promise<Telegraf<GameContext>> => {
 
   const bot = new Telegraf<GameContext>(config.BOT_TOKEN)
 
-  const storage = new GoogleTableGameStorage({
+  bot.context.storage = new GoogleTableGameStorage({
     email: config.GOOGLE_SERVICE_ACCOUNT_EMAIL,
     privateKey: config.GOOGLE_PRIVATE_KEY,
     players: {
@@ -54,7 +55,13 @@ export const initBot = async (): Promise<Telegraf<GameContext>> => {
     }
   })
 
-  bot.context.storage = storage
+  bot.context.store = new GoogleTableGameStore({
+    email: config.GOOGLE_SERVICE_ACCOUNT_EMAIL,
+    privateKey: config.GOOGLE_PRIVATE_KEY,
+    docId: config.STORE_DOC_ID,
+    sheetsId: config.STORE_SHEETS_ID
+  })
+
   bot.context.players = []
 
   // will be overriden in the access middleware
