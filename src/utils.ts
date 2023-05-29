@@ -9,9 +9,9 @@ export const escapeHtml = (unsafeString = ''): string =>
     .replace(/"/g, '&quot;')
     .replace(/'/g, '&#039;')
 
-export const parseJsonSafe = (json: string): any => {
+export const parseJsonSafe = <T = any>(json: string): T | null => {
   try {
-    return JSON.parse(json)
+    return JSON.parse(json) as T
   } catch (e) {
     return null
   }
