@@ -7,3 +7,7 @@ export const getActivePlayers = (players: Player[]): Player[] => {
 export const getClanPlayers = (players: Player[]): ClanPlayer[] => {
   return players.filter((player): player is ClanPlayer => player.clanName !== undefined)
 }
+
+export const getPlayerNames = (players: Player[]): string[] => {
+  return players.map(player => player.name)
+}
