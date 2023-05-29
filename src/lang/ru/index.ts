@@ -43,6 +43,7 @@ const ru: MappedTranslation = {
   COUNT: 'Количество',
   STATS_WHO_WON: 'Вы уже отыграли? Какая команда победила?',
   STATS_SAVE_SUCCESS: 'Статистика сохранена успешно',
+  STATS_DRAW: 'Ничья',
 
   RENT_NOT_NEEDED: 'Не нужен',
   ABSENT: 'Меня не будет',

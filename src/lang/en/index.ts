@@ -43,6 +43,7 @@ const en: BaseTranslation = {
   COUNT: 'Count',
   STATS_WHO_WON: 'Did you play already? Which team won?',
   STATS_SAVE_SUCCESS: 'Stats saved successfully',
+  STATS_DRAW: 'Draw',
 
   RENT_NOT_NEEDED: 'Not needed',
   ABSENT: "I'll be absent",

@@ -142,6 +142,10 @@ type RootTranslation = {
 	 */
 	STATS_SAVE_SUCCESS: string
 	/**
+	 * D​r​a​w
+	 */
+	STATS_DRAW: string
+	/**
 	 * N​o​t​ ​n​e​e​d​e​d
 	 */
 	RENT_NOT_NEEDED: string
@@ -308,6 +312,10 @@ export type TranslationFunctions = {
 	 * Stats saved successfully
 	 */
 	STATS_SAVE_SUCCESS: () => LocalizedString
+	/**
+	 * Draw
+	 */
+	STATS_DRAW: () => LocalizedString
 	/**
 	 * Not needed
 	 */
