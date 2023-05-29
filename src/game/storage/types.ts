@@ -9,3 +9,9 @@ export interface GameStorage {
   savePlayer: (name: string, fields: Partial<Player>) => Promise<void>
   saveStats: (teams: Teams) => Promise<void>
 }
+
+export interface GameStore {
+  get: <T>(key: string) => Promise<T | null>
+  set: <T>(key: string, value: T) => Promise<void>
+  delete: (key: string) => Promise<void>
+}
