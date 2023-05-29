@@ -1,8 +1,8 @@
 import { Command, CommandHandler } from '../types'
-import { enroll as enrollAction } from '../actions/enroll'
+import { initializer as startEnroll } from '../actions/enroll'
 
 const handler: CommandHandler = async (ctx) => {
-  return await enrollAction.initializer(ctx)
+  return await startEnroll(ctx)
 }
 
 export const enroll: Command = {

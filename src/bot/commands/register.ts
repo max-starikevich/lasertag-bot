@@ -1,8 +1,8 @@
 import { Command, CommandHandler } from '../types'
-import { register as registerAction } from '../actions/register'
+import { initializer as startRegister } from '../actions/register'
 
 const handler: CommandHandler = async (ctx) => {
-  return await registerAction.initializer(ctx)
+  return await startRegister(ctx)
 }
 
 export const register: Command = {
