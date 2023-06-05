@@ -52,8 +52,8 @@ const ru: MappedTranslation = {
   UNEXPECTED_ERROR_FOR_USER: 'Неожиданная ошибка. Повторите запрос позже',
   UNKNOWN_COMMAND: 'Не удалось распознать команду. Используйте меню или команду /{helpCommandName:string}',
   NO_HOME_CHAT_ACCESS_MESSAGE: 'Нет доступа',
-  DOCUMENT_UNAVAILABLE_FOR_USER: 'Документ недоступен. Повторите запрос позже',
-  GROUP_CHAT_WARNING: '✍️ Пишите мне в личку тут: @{botUsername:string}.\n\nСпасибо!',
+  SHEETS_ERROR: 'Что-то не так с Google-документом. Повторите запрос позже',
+  GROUP_CHAT_WARNING: '✍️ Пишите мне в личку тут: @{botUsername:string}',
 
   ACTION_HANDLER_WRONG_DATA: 'Указаны неверные данные',
 

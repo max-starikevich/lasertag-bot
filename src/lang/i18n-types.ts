@@ -171,13 +171,11 @@ type RootTranslation = {
 	 */
 	NO_HOME_CHAT_ACCESS_MESSAGE: string
 	/**
-	 * D​o​c​u​m​e​n​t​ ​i​s​ ​u​n​a​v​a​i​l​a​b​l​e​.​ ​T​r​y​ ​a​g​a​i​n​ ​l​a​t​e​r
+	 * S​o​m​e​t​h​i​n​g​ ​i​s​ ​w​r​o​n​g​ ​w​i​t​h​ ​t​h​e​ ​G​o​o​g​l​e​ ​d​o​c​u​m​e​n​t​.​ ​T​r​y​ ​a​g​a​i​n​ ​l​a​t​e​r
 	 */
-	DOCUMENT_UNAVAILABLE_FOR_USER: string
+	SHEETS_ERROR: string
 	/**
-	 * ✍​️​ ​S​e​n​d​ ​m​e​ ​a​ ​p​r​i​v​a​t​e​ ​m​e​s​s​a​g​e​ ​h​e​r​e​:​ ​@​{​b​o​t​U​s​e​r​n​a​m​e​}​.​
-​
-​T​h​a​n​k​s​!
+	 * ✍​️​ ​S​e​n​d​ ​m​e​ ​a​ ​p​r​i​v​a​t​e​ ​m​e​s​s​a​g​e​ ​h​e​r​e​:​ ​@​{​b​o​t​U​s​e​r​n​a​m​e​}​.
 	 * @param {string} botUsername
 	 */
 	GROUP_CHAT_WARNING: RequiredParams<'botUsername'>
@@ -345,13 +343,11 @@ export type TranslationFunctions = {
 	 */
 	NO_HOME_CHAT_ACCESS_MESSAGE: () => LocalizedString
 	/**
-	 * Document is unavailable. Try again later
+	 * Something is wrong with the Google document. Try again later
 	 */
-	DOCUMENT_UNAVAILABLE_FOR_USER: () => LocalizedString
+	SHEETS_ERROR: () => LocalizedString
 	/**
 	 * ✍️ Send me a private message here: @{botUsername}.
-
-Thanks!
 	 */
 	GROUP_CHAT_WARNING: (arg: { botUsername: string }) => LocalizedString
 	/**

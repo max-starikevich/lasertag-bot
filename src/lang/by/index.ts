@@ -52,8 +52,8 @@ const by: MappedTranslation = {
   UNEXPECTED_ERROR_FOR_USER: 'Нечаканая памылка. Паўтарыце запыт пазьней',
   UNKNOWN_COMMAND: 'Не ўдалося распазнаць каманду. Выкарыстоўвайце меню ці каманду /{helpCommandName:string}',
   NO_HOME_CHAT_ACCESS_MESSAGE: 'Няма доступу',
-  DOCUMENT_UNAVAILABLE_FOR_USER: 'Дакумент недаступны. Паўтарыце запыт пазьней',
-  GROUP_CHAT_WARNING: '✍️ Пішыце мне ў прыват сюды: @{botUsername:string}.\n\nДзякуй вялікі!',
+  SHEETS_ERROR: 'Нешта здарылася з Google-дакументам. Паўтарыце запыт пазьней',
+  GROUP_CHAT_WARNING: '✍️ Пішыце мне сюды: @{botUsername:string}',
 
   ACTION_HANDLER_WRONG_DATA: 'Уведзены няправільныя дадзеныя',
 

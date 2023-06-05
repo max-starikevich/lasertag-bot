@@ -52,8 +52,8 @@ const en: BaseTranslation = {
   UNEXPECTED_ERROR_FOR_USER: 'Unexpected error. Try again later',
   UNKNOWN_COMMAND: 'Unknown command. Use menu or command /{helpCommandName:string}',
   NO_HOME_CHAT_ACCESS_MESSAGE: 'Access denied',
-  DOCUMENT_UNAVAILABLE_FOR_USER: 'Document is unavailable. Try again later',
-  GROUP_CHAT_WARNING: '✍️ Send me a private message here: @{botUsername:string}.\n\nThanks!',
+  SHEETS_ERROR: 'Something is wrong with the Google document. Try again later',
+  GROUP_CHAT_WARNING: '✍️ Send me a private message here: @{botUsername:string}.',
 
   ACTION_HANDLER_WRONG_DATA: 'Wrong data provided',
 
