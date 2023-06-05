@@ -58,7 +58,7 @@
     "ngrok": "ngrok http 4000",
     "build": "tsc -p tsconfig.prod.json",
     "deploy:all": "pnpm pre-deploy && pnpm deploy:build && pnpm deploy:aws && pnpm post-deploy",
-    "deploy:build": "docker image build -t lasertag-bot .",
+    "deploy:build": "docker image build --progress=plain -t lasertag-bot .",
     "deploy:aws": "serverless deploy --verbose --stage production",
     "pre-deploy": "node --enable-source-maps dist/src/scripts/pre-deploy.js",
     "post-deploy": "node --enable-source-maps dist/src/scripts/post-deploy.js"
