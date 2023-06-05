@@ -2,7 +2,7 @@ import { GoogleSpreadsheet, GoogleSpreadsheetRow, GoogleSpreadsheetWorksheet } f
 import { keyBy } from 'lodash'
 
 import { parseJsonSafe } from '$/utils'
-import { NoSheetsError } from '$/errors/NoSheetsError'
+import { GoogleDocumentError } from '$/errors/GoogleDocumentError'
 
 import { GameStore, StoreData } from '../types'
 
@@ -46,7 +46,7 @@ export class GoogleTableGameStore implements GameStore {
     const sheets = document.sheetsById[this.sheetsId]
 
     if (sheets === undefined) {
-      throw new NoSheetsError()
+      throw new GoogleDocumentError()
     }
 
     return sheets

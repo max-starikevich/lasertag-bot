@@ -4,12 +4,13 @@ import { groupBy, intersection, range } from 'lodash'
 
 import { extractNumber, extractString, parseRange } from '$/utils'
 import { extractLocale, defaultLocale } from '$/lang/i18n-custom'
-import { NoSheetsError } from '$/errors/NoSheetsError'
+import { GoogleDocumentError } from '$/errors/GoogleDocumentError'
 
 import { EnrollData, GameData, GoogleSpreadsheetCellMap, GoogleTableGameStorageParams, LinksData, PlayersData, SheetsData, StatsData } from './types'
 import { GameStatsData, Player } from '../../player/types'
 import { GameLink, GameLocation } from '../../types'
 import { GameStorage } from '../types'
+import { assertRows } from './utils'
 
 export class GoogleTableGameStorage implements GameStorage {
   protected email: string
@@ -63,7 +64,7 @@ export class GoogleTableGameStorage implements GameStorage {
     const sheets = document.sheetsById[sheetsId]
 
     if (sheets === undefined) {
-      throw new NoSheetsError()
+      throw new GoogleDocumentError()
     }
 
     return sheets
@@ -71,8 +72,11 @@ export class GoogleTableGameStorage implements GameStorage {
 
   public async getPlayers (): Promise<Player[]> {
     const sheets = await this.getSheets(this.players)
+    const rows = await sheets.getRows()
 
-    const players = (await sheets.getRows())
+    assertRows(rows)
+
+    const players = rows
       .reduce<Player[]>((players, row) => {
       const name = decode(row.name)
 
@@ -139,6 +143,8 @@ export class GoogleTableGameStorage implements GameStorage {
     const sheets = await this.getSheets(this.game)
     const rows = await sheets.getRows()
 
+    assertRows(rows)
+
     return rows.reduce<GameLocation[]>((result, row) => {
       const lang = extractLocale(row.lang)
 
@@ -156,6 +162,8 @@ export class GoogleTableGameStorage implements GameStorage {
   public async getLinks (): Promise<GameLink[]> {
     const sheets = await this.getSheets(this.links)
     const rows = await sheets.getRows()
+
+    assertRows(rows)
 
     return rows.reduce<GameLink[]>((result, row) => {
       const lang = extractLocale(row.lang)
@@ -201,8 +209,8 @@ export class GoogleTableGameStorage implements GameStorage {
   }
 
   public saveStats = async ({ won, lost, draw, date }: GameStatsData): Promise<void> => {
-    // const sheets = await this.getSheets(this.stats)
-    // await sheets.saveUpdatedCells()
+    const sheets = await this.getSheets(this.stats)
+    await sheets.saveUpdatedCells()
     // TODO: implement stats save mechanism here
   }
 
