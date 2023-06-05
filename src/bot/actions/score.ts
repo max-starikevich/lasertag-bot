@@ -117,8 +117,6 @@ const handler: ActionHandler = async ctx => {
   })
 
   await ctx.editMessageText(`✅ ${lang.STATS_SAVE_SUCCESS()}`)
-
-  await store.delete([gameData.id])
 }
 
 export const score: Action = {
