@@ -1,17 +1,52 @@
 import { RegisterRequiredError } from '$/errors/RegisterRequiredError'
-import { Teams } from '$/game/player/types'
+import { Player, Teams } from '$/game/player/types'
 import { getPlayerNames, getPlayersByNames } from '$/game/player'
 import { generateId } from '$/utils'
 
 import { Action, ActionHandler, CommandContext } from '../types'
 
-interface GameScoreData {
+enum GameResult {
+  RED = 'RED',
+  BLUE = 'BLUE',
+  DRAW = 'DRAW'
+}
+
+const isGameResult = (data?: string): data is GameResult => String(data) in GameResult
+
+interface GameData {
   id: string
-  connectedIds: string[]
   date: number
-  won: string[]
-  lost: string[]
-  draw: string[]
+  red: string[]
+  blue: string[]
+}
+
+const getScoredPlayersByResult = (players: Player[], gameData: GameData, result: GameResult): { won: Player[], lost: Player[], draw: Player[] } => {
+  const red = getPlayersByNames(players, gameData.red)
+  const blue = getPlayersByNames(players, gameData.blue)
+
+  switch (result) {
+    case GameResult.DRAW: {
+      return {
+        won: [],
+        lost: [],
+        draw: [...red, ...blue]
+      }
+    }
+    case GameResult.RED: {
+      return {
+        won: red,
+        lost: blue,
+        draw: []
+      }
+    }
+    case GameResult.BLUE: {
+      return {
+        won: blue,
+        lost: red,
+        draw: []
+      }
+    }
+  }
 }
 
 export const initializer = async (ctx: CommandContext, teams: Teams): Promise<void> => {
@@ -21,59 +56,33 @@ export const initializer = async (ctx: CommandContext, teams: Teams): Promise<vo
     throw new RegisterRequiredError()
   }
 
-  const redWonScoreId = generateId()
-  const blueWonScoreId = generateId()
-  const drawScoreId = generateId()
+  const [red, blue] = teams.map(team => getPlayerNames(team))
 
-  const now = Date.now()
-
-  const [redNames, blueNames] = teams.map(team => getPlayerNames(team))
-
-  const redWonData: GameScoreData = {
-    id: redWonScoreId,
-    connectedIds: [blueWonScoreId, drawScoreId],
-    won: redNames,
-    lost: blueNames,
-    draw: [],
-    date: now
+  const gameData: GameData = {
+    id: generateId(),
+    date: Date.now(),
+    red,
+    blue
   }
 
-  const blueWonData: GameScoreData = {
-    id: blueWonScoreId,
-    connectedIds: [redWonScoreId, drawScoreId],
-    won: blueNames,
-    lost: redNames,
-    draw: [],
-    date: now
-  }
-
-  const drawData: GameScoreData = {
-    id: drawScoreId,
-    connectedIds: [redWonScoreId, blueWonScoreId],
-    won: [],
-    lost: [],
-    draw: [...redNames, ...blueNames],
-    date: now
-  }
-
-  await store.set(redWonScoreId, redWonData)
-  await store.set(blueWonScoreId, blueWonData)
-  await store.set(drawScoreId, drawData)
+  await store.set([
+    { key: gameData.id, value: gameData }
+  ])
 
   await ctx.reply(lang.STATS_WHO_WON(), {
     reply_markup: {
       inline_keyboard: [[
         {
           text: '🔴',
-          callback_data: `score-${redWonScoreId}`
+          callback_data: `score-${GameResult.RED}-${gameData.id}`
         },
         {
           text: '🔵',
-          callback_data: `score-${blueWonScoreId}`
+          callback_data: `score-${GameResult.BLUE}-${gameData.id}`
         },
         {
           text: lang.STATS_DRAW(),
-          callback_data: `score-${drawScoreId}`
+          callback_data: `score-${GameResult.DRAW}-${gameData.id}`
         }
       ]]
     }
@@ -87,32 +96,33 @@ const handler: ActionHandler = async ctx => {
     throw new RegisterRequiredError()
   }
 
-  const scoreId = String(ctx.match[1])
+  const gameResult = ctx.match[1]
 
-  const score = await store.get<GameScoreData>(scoreId)
-
-  if (score === null) {
-    await ctx.editMessageText(`🤷 ${lang.STATS_NON_EXISTENT()}`)
-    return
+  if (!isGameResult(gameResult)) {
+    return await ctx.editMessageText(`🤷 ${lang.STATS_NON_EXISTENT()}`)
   }
 
-  const { id, connectedIds, won, lost, draw, date } = score
+  const gameDataId = ctx.match[2]
+
+  const [{ value: gameData }] = await store.get<GameData>([gameDataId])
+
+  if (gameData === null) {
+    return await ctx.editMessageText(`🤷 ${lang.STATS_NON_EXISTENT()}`)
+  }
+
+  const { won, lost, draw } = getScoredPlayersByResult(players, gameData, gameResult)
 
   await storage.saveStats({
-    won: getPlayersByNames(players, won),
-    lost: getPlayersByNames(players, lost),
-    draw: getPlayersByNames(players, draw)
-  }, new Date(date))
+    won, lost, draw, date: new Date(gameData.date)
+  })
 
   await ctx.editMessageText(`✅ ${lang.STATS_SAVE_SUCCESS()}`)
 
-  for (const scoreId of [id, ...connectedIds]) {
-    await store.delete(scoreId)
-  }
+  await store.delete([gameData.id])
 }
 
 export const score: Action = {
   mapping: {
-    '^score-(\\S+)$': handler
+    '^score-(\\w+)-(\\S+)$': handler
   }
 }

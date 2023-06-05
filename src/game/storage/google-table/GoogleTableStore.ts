@@ -1,9 +1,10 @@
-import { GoogleSpreadsheet, GoogleSpreadsheetWorksheet } from 'google-spreadsheet'
+import { GoogleSpreadsheet, GoogleSpreadsheetRow, GoogleSpreadsheetWorksheet } from 'google-spreadsheet'
+import { keyBy } from 'lodash'
 
 import { parseJsonSafe } from '$/utils'
 import { NoSheetsError } from '$/errors/NoSheetsError'
 
-import { GameStore } from '../types'
+import { GameStore, StoreData } from '../types'
 
 interface GoogleTableGameStorageParams {
   email: string
@@ -51,34 +52,54 @@ export class GoogleTableGameStore implements GameStore {
     return sheets
   }
 
-  async get <T>(key: string): Promise<T | null> {
+  async get <T>(keys: string[]): Promise<Array<StoreData<T>>> {
     const sheets = await this.getSheets()
     const rows = await sheets.getRows()
 
-    const row = rows.find(row => row.key === key)
+    const map = keyBy<GoogleSpreadsheetRow>(rows, row => row.key)
 
-    if (row === undefined) {
-      return null
-    }
+    return keys.map(key => {
+      const row = map[key]
 
-    return parseJsonSafe<T>(row.value)
+      if (row === undefined) {
+        return {
+          key, value: null
+        }
+      }
+
+      return {
+        key,
+        value: parseJsonSafe<T>(row.value)
+      }
+    })
   }
 
-  async set <T>(key: string, value: T): Promise<void> {
+  async set <T>(data: Array<StoreData<T>>): Promise<void> {
     const sheets = await this.getSheets()
-    await sheets.addRow({ key, value: JSON.stringify(value) })
+
+    for (const { key, value } of data) {
+      if (value === null) {
+        continue
+      }
+
+      await sheets.addRow({ key, value: JSON.stringify(value) })
+    }
   }
 
-  async delete (key: string): Promise<void> {
+  async delete (keys: string[]): Promise<void> {
     const sheets = await this.getSheets()
     const rows = await sheets.getRows()
 
-    const row = rows.find(row => row.key === key)
+    const map = keyBy<GoogleSpreadsheetRow>(rows, row => row.key)
 
-    if (row === undefined) {
-      return
+    for (const key of keys) {
+      if (map[key] == null) {
+        continue
+      }
+
+      const row = map[key]
+
+      await row.delete()
     }
-
-    await row.delete()
   }
 }

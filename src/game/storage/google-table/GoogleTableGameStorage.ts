@@ -7,7 +7,7 @@ import { extractLocale, defaultLocale } from '$/lang/i18n-custom'
 import { NoSheetsError } from '$/errors/NoSheetsError'
 
 import { EnrollData, GameData, GoogleSpreadsheetCellMap, GoogleTableGameStorageParams, LinksData, PlayersData, SheetsData, StatsData } from './types'
-import { Player, ScoredTeams } from '../../player/types'
+import { GameStatsData, Player } from '../../player/types'
 import { GameLink, GameLocation } from '../../types'
 import { GameStorage } from '../types'
 
@@ -200,9 +200,9 @@ export class GoogleTableGameStorage implements GameStorage {
     ])
   }
 
-  public saveStats = async ({ won, lost, draw }: ScoredTeams): Promise<void> => {
-    const sheets = await this.getSheets(this.stats)
-    await sheets.saveUpdatedCells()
+  public saveStats = async ({ won, lost, draw, date }: GameStatsData): Promise<void> => {
+    // const sheets = await this.getSheets(this.stats)
+    // await sheets.saveUpdatedCells()
     // TODO: implement stats save mechanism here
   }
 
