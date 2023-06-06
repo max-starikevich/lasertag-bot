@@ -7,7 +7,7 @@
   "main": "dist/src/index.js",
   "engines": {
     "node": "^18",
-    "pnpm": "^7"
+    "pnpm": "^8"
   },
   "dependencies": {
     "@sentry/node": "^7.53.1",
@@ -18,7 +18,7 @@
     "html-entities": "^2.3.3",
     "lodash": "^4.17.21",
     "logform": "^2.5.1",
-    "module-alias": "^2.2.2",
+    "module-alias": "^2.2.3",
     "telegraf": "^4.12.2",
     "typesafe-i18n": "^5.24.3",
     "uuid": "^9.0.0",
