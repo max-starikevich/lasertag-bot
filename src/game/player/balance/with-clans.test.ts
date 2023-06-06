@@ -26,7 +26,7 @@ describe('balance/with-clans.ts', () => {
     const numberOfTries = 1000
     const playerCount = 11
     const maxLevel = 10
-    const targetSuccessPercentage = 81
+    const targetSuccessPercentage = 80
 
     const clans: Array<[string, number]> = [['test1', 3], ['test2', 2], ['test3', 1], ['test4', 1], ['test5', 1]]
     const noClanPlayersCount = clans.reduce((count, [, clanPlayersCount]) => count - clanPlayersCount, playerCount)

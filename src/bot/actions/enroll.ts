@@ -1,7 +1,8 @@
+import { chunk, range } from 'lodash'
+
 import { Action, ActionHandler, ActionInitializer } from '../types'
 
-import { RegisterRequiredError } from '$/errors/RegisterRequiredError'
-import { chunk, range } from 'lodash'
+import { RegisterRequiredError } from '$/errors/RegisterRequiredError.js'
 
 export const initializer: ActionInitializer = async ctx => {
   const { currentPlayer, lang } = ctx
