@@ -41,7 +41,7 @@ const by: MappedTranslation = {
   RECORDED: 'Запісана',
   RENT: 'Патрэбны пракат',
   COUNT: 'Колькасць',
-  STATS_WHO_WON: 'Вы ўжо адыгралі? Якая каманда перамагла?',
+  STATS_WHO_WON: 'Якая каманда перамагла?',
   STATS_SAVE_SUCCESS: 'Статыстыка захавана пасьпяхова',
   STATS_DRAW: 'Нічыя',
   STATS_NON_EXISTENT: 'Дадзеныя для гэтай гульні ўжо страчаны',
@@ -51,13 +51,15 @@ const by: MappedTranslation = {
 
   UNEXPECTED_ERROR_FOR_USER: 'Нечаканая памылка. Паўтарыце запыт пазьней',
   UNKNOWN_COMMAND: 'Не ўдалося распазнаць каманду. Выкарыстоўвайце меню ці каманду /{helpCommandName:string}',
-  NO_HOME_CHAT_ACCESS_MESSAGE: 'Няма доступу',
+  ACCESS_DENIED: 'Няма доступу',
   SHEETS_ERROR: 'Нешта здарылася з Google-дакументам. Паўтарыце запыт пазьней',
   GROUP_CHAT_WARNING: '✍️ Пішыце мне сюды: @{botUsername:string}',
 
   ACTION_HANDLER_WRONG_DATA: 'Уведзены няправільныя дадзеныя',
 
-  NOT_ENOUGH_PLAYERS: 'Недастаткова гульцоў для гэтай функцыі'
+  NOT_ENOUGH_PLAYERS: 'Недастаткова гульцоў для гэтай функцыі',
+
+  NEW_PHRASE_FOR_LILIYA: 'Test'
 }
 
 export default by

@@ -41,7 +41,7 @@ const en: BaseTranslation = {
   RECORDED: 'Recorded',
   RENT: 'Rent',
   COUNT: 'Count',
-  STATS_WHO_WON: 'Did you play already? Which team won?',
+  STATS_WHO_WON: 'Which team won?',
   STATS_SAVE_SUCCESS: 'Stats saved successfully',
   STATS_DRAW: 'Draw',
   STATS_NON_EXISTENT: 'Data for this game is already lost',
@@ -51,13 +51,15 @@ const en: BaseTranslation = {
 
   UNEXPECTED_ERROR_FOR_USER: 'Unexpected error. Try again later',
   UNKNOWN_COMMAND: 'Unknown command. Use menu or command /{helpCommandName:string}',
-  NO_HOME_CHAT_ACCESS_MESSAGE: 'Access denied',
+  ACCESS_DENIED: 'Access denied',
   SHEETS_ERROR: 'Something is wrong with the Google document. Try again later',
   GROUP_CHAT_WARNING: '✍️ Send me a private message here: @{botUsername:string}.',
 
   ACTION_HANDLER_WRONG_DATA: 'Wrong data provided',
 
-  NOT_ENOUGH_PLAYERS: 'Not enough players for this function'
+  NOT_ENOUGH_PLAYERS: 'Not enough players for this function',
+
+  NEW_PHRASE_FOR_LILIYA: 'This is new phrase'
 }
 
 export default en

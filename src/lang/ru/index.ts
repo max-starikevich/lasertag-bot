@@ -41,7 +41,7 @@ const ru: MappedTranslation = {
   RECORDED: 'Записано',
   RENT: 'Прокат',
   COUNT: 'Количество',
-  STATS_WHO_WON: 'Вы уже отыграли? Какая команда победила?',
+  STATS_WHO_WON: 'Какая команда победила?',
   STATS_SAVE_SUCCESS: 'Статистика сохранена успешно',
   STATS_DRAW: 'Ничья',
   STATS_NON_EXISTENT: 'Данные для этой игры уже потеряны',
@@ -51,13 +51,15 @@ const ru: MappedTranslation = {
 
   UNEXPECTED_ERROR_FOR_USER: 'Неожиданная ошибка. Повторите запрос позже',
   UNKNOWN_COMMAND: 'Не удалось распознать команду. Используйте меню или команду /{helpCommandName:string}',
-  NO_HOME_CHAT_ACCESS_MESSAGE: 'Нет доступа',
+  ACCESS_DENIED: 'Нет доступа',
   SHEETS_ERROR: 'Что-то не так с Google-документом. Повторите запрос позже',
   GROUP_CHAT_WARNING: '✍️ Пишите мне в личку тут: @{botUsername:string}',
 
   ACTION_HANDLER_WRONG_DATA: 'Указаны неверные данные',
 
-  NOT_ENOUGH_PLAYERS: 'Недостаточное игроков для этой функции'
+  NOT_ENOUGH_PLAYERS: 'Недостаточное игроков для этой функции',
+
+  NEW_PHRASE_FOR_LILIYA: 'Test'
 }
 
 export default ru

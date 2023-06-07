@@ -134,7 +134,7 @@ type RootTranslation = {
 	 */
 	COUNT: string
 	/**
-	 * D​i​d​ ​y​o​u​ ​p​l​a​y​ ​a​l​r​e​a​d​y​?​ ​W​h​i​c​h​ ​t​e​a​m​ ​w​o​n​?
+	 * W​h​i​c​h​ ​t​e​a​m​ ​w​o​n​?
 	 */
 	STATS_WHO_WON: string
 	/**
@@ -169,7 +169,7 @@ type RootTranslation = {
 	/**
 	 * A​c​c​e​s​s​ ​d​e​n​i​e​d
 	 */
-	NO_HOME_CHAT_ACCESS_MESSAGE: string
+	ACCESS_DENIED: string
 	/**
 	 * S​o​m​e​t​h​i​n​g​ ​i​s​ ​w​r​o​n​g​ ​w​i​t​h​ ​t​h​e​ ​G​o​o​g​l​e​ ​d​o​c​u​m​e​n​t​.​ ​T​r​y​ ​a​g​a​i​n​ ​l​a​t​e​r
 	 */
@@ -187,6 +187,10 @@ type RootTranslation = {
 	 * N​o​t​ ​e​n​o​u​g​h​ ​p​l​a​y​e​r​s​ ​f​o​r​ ​t​h​i​s​ ​f​u​n​c​t​i​o​n
 	 */
 	NOT_ENOUGH_PLAYERS: string
+	/**
+	 * T​h​i​s​ ​i​s​ ​n​e​w​ ​p​h​r​a​s​e
+	 */
+	NEW_PHRASE_FOR_LILIYA: string
 }
 
 export type TranslationFunctions = {
@@ -307,7 +311,7 @@ export type TranslationFunctions = {
 	 */
 	COUNT: () => LocalizedString
 	/**
-	 * Did you play already? Which team won?
+	 * Which team won?
 	 */
 	STATS_WHO_WON: () => LocalizedString
 	/**
@@ -341,7 +345,7 @@ export type TranslationFunctions = {
 	/**
 	 * Access denied
 	 */
-	NO_HOME_CHAT_ACCESS_MESSAGE: () => LocalizedString
+	ACCESS_DENIED: () => LocalizedString
 	/**
 	 * Something is wrong with the Google document. Try again later
 	 */
@@ -358,6 +362,10 @@ export type TranslationFunctions = {
 	 * Not enough players for this function
 	 */
 	NOT_ENOUGH_PLAYERS: () => LocalizedString
+	/**
+	 * This is new phrase
+	 */
+	NEW_PHRASE_FOR_LILIYA: () => LocalizedString
 }
 
 export type Formatters = {}
