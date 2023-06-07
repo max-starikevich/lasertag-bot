@@ -1,7 +1,7 @@
 import { chunk } from 'lodash'
 
 import { stringToSha1 } from '$/utils'
-import { NoFreeRowsToRegister } from '$/errors/NoFreeRowsToRegister'
+import { NoFreeRowsToRegisterError } from '$/errors/NoFreeRowsToRegisterError'
 
 import { Action, ActionHandler, ActionInitializer } from '../types'
 
@@ -16,7 +16,7 @@ export const initializer: ActionInitializer = async ctx => {
     .filter(({ telegramUserId }) => telegramUserId === undefined)
 
   if (nonRegisteredPlayers.length === 0) {
-    throw new NoFreeRowsToRegister()
+    throw new NoFreeRowsToRegisterError()
   }
 
   const chunkedPlayers = chunk(nonRegisteredPlayers, 2)
