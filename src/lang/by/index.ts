@@ -42,7 +42,12 @@ const by: MappedTranslation = {
   RENT: 'Патрэбны пракат',
   COUNT: 'Колькасць',
   STATS_WHO_WON: 'Якая каманда перамагла?',
-  STATS_SAVE_SUCCESS: 'Статыстыка захавана пасьпяхова',
+  STATS_SAVE_SUCCESS: 'Статыстыка захавана',
+  STATS_SAVE_APPROVED: 'Ваш запыт адобраны адміністратарам. Статыстыка захавана',
+  STATS_SEND_TO_ADMIN: 'Так, даслаць адміністратару',
+  STATS_SEND_TO_ADMIN_OFFER: 'Ужо адыгралі гэтымі складамі?',
+  STATS_SENT_SUCCESS: 'Статыстыка адпраўлена адміністратару',
+  STATS_SAVE_REQUEST: 'Новы запыт на захаваньне статыстыкі\n\n{username: string}',
   STATS_DRAW: 'Нічыя',
   STATS_NON_EXISTENT: 'Дадзеныя для гэтай гульні ўжо страчаны',
 

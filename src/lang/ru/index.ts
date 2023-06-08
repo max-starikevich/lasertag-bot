@@ -43,6 +43,11 @@ const ru: MappedTranslation = {
   COUNT: 'Количество',
   STATS_WHO_WON: 'Какая команда победила?',
   STATS_SAVE_SUCCESS: 'Статистика сохранена успешно',
+  STATS_SAVE_APPROVED: 'Ваш запрос одобрен администратором. Статистика успешно сохранена',
+  STATS_SEND_TO_ADMIN: 'Да, отправить администратору',
+  STATS_SEND_TO_ADMIN_OFFER: 'Уже отыграли этими составами?',
+  STATS_SENT_SUCCESS: 'Статистика успешно отправлена администратору',
+  STATS_SAVE_REQUEST: 'Запрос на сохранение статистики от {username: string}',
   STATS_DRAW: 'Ничья',
   STATS_NON_EXISTENT: 'Данные для этой игры уже потеряны',
 
