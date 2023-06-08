@@ -1,7 +1,14 @@
 import { Locales } from '$/lang/i18n-types'
 
+export enum Role {
+  ADMIN = 'admin',
+  USER = 'user',
+}
+
 export interface Player {
   tableRow: number
+  role?: Role
+  isAdmin: boolean
 
   name: string
   combinedName: string
@@ -22,6 +29,11 @@ export interface Player {
 
 export interface ClanPlayer extends Player {
   clanName: string
+}
+
+export interface AdminPlayer extends Player {
+  telegramUserId: number
+  role: Role.ADMIN
 }
 
 export type Teams = [Player[], Player[]]
