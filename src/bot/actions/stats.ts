@@ -1,5 +1,4 @@
 import dedent from 'dedent-js'
-import { InlineKeyboardMarkup } from 'telegraf/typings/core/types/typegram'
 
 import { Player, Teams } from '$/game/player/types'
 import { getAdmins, getFormattedTelegramUserName, getPlayerNames, getPlayersByNames } from '$/game/player'
@@ -55,8 +54,34 @@ const getScoredPlayersByResult = (players: Player[], gameData: GameData, result:
   }
 }
 
-export const initializer = async (ctx: CommandContext, teams: Teams): Promise<void> => {
-  const { lang, store } = ctx
+const replyWithStatsSaveOffer = async (ctx: Pick<CommandContext, 'lang' | 'telegram'>, chatId: number, gameData: GameData): Promise<void> => {
+  const { lang } = ctx
+
+  await ctx.telegram.sendMessage(chatId, lang.STATS_WHO_WON(), {
+    reply_markup: {
+      inline_keyboard: [[
+        {
+          text: '🔴',
+          callback_data: `stats-save-${gameData.id}-${GameResult.RED}`
+        },
+        {
+          text: '🔵',
+          callback_data: `stats-save-${gameData.id}-${GameResult.BLUE}`
+        },
+        {
+          text: lang.STATS_DRAW(),
+          callback_data: `stats-save-${gameData.id}-${GameResult.DRAW}`
+        }
+      ]]
+    }
+  })
+}
+
+export const initializer = async (
+  ctx: CommandContext,
+  teams: Teams
+): Promise<void> => {
+  const { lang, store, currentPlayer } = ctx
 
   const [redNames, blueNames] = teams.map(team => getPlayerNames(team))
 
@@ -71,6 +96,11 @@ export const initializer = async (ctx: CommandContext, teams: Teams): Promise<vo
   await store.set([
     { key: gameData.id, value: gameData }
   ])
+
+  if (currentPlayer?.isAdmin === true) {
+    await replyWithStatsSaveOffer(ctx, ctx.from.id, gameData)
+    return
+  }
 
   await ctx.reply(lang.STATS_SEND_TO_ADMIN_OFFER(), {
     reply_markup: {
@@ -100,25 +130,8 @@ const sendStatsHandler: ActionHandler = async ctx => {
   }
 
   const allAdmins = getAdmins(players)
-
-  const whoWonButtons: InlineKeyboardMarkup = {
-    inline_keyboard: [[
-      {
-        text: '🔴',
-        callback_data: `stats-save-${gameData.id}-${GameResult.RED}`
-      },
-      {
-        text: '🔵',
-        callback_data: `stats-save-${gameData.id}-${GameResult.BLUE}`
-      },
-      {
-        text: lang.STATS_DRAW(),
-        callback_data: `stats-save-${gameData.id}-${GameResult.DRAW}`
-      }
-    ]]
-  }
-
-  const { red: redTeam, blue: blueTeam } = gameData
+  const redTeam = getPlayersByNames(players, gameData.red)
+  const blueTeam = getPlayersByNames(players, gameData.blue)
 
   for (const admin of allAdmins) {
     const username = getFormattedTelegramUserName(ctx.from)
@@ -127,17 +140,15 @@ const sendStatsHandler: ActionHandler = async ctx => {
       💾 ${lang.STATS_SAVE_REQUEST({ username })}:
 
       ${redTeam
-        .map(name => `🔴 ${name}`)
+        .map(({ name, clanEmoji }) => `🔴 ${name} ${clanEmoji ?? ''}`)
         .join('\n')}
 
       ${blueTeam
-        .map(name => `🔵 ${name}`)
+        .map(({ name, clanEmoji }) => `🔵 ${name} ${clanEmoji ?? ''}`)
         .join('\n')}
+    `)
 
-      ${lang.STATS_WHO_WON()}
-    `, {
-      reply_markup: whoWonButtons
-    })
+    await replyWithStatsSaveOffer(ctx, admin.telegramUserId, gameData)
   }
 
   await ctx.editMessageText(`👌 ${lang.STATS_SENT_SUCCESS()}`)
@@ -145,6 +156,10 @@ const sendStatsHandler: ActionHandler = async ctx => {
 
 const saveStatsHandler: ActionHandler = async ctx => {
   const { lang, store, storage, players, currentPlayer } = ctx
+
+  if (ctx.from === undefined) {
+    throw new Error('Missing "ctx.from"')
+  }
 
   if (currentPlayer === undefined) {
     throw new RegisterRequiredError()
@@ -176,7 +191,9 @@ const saveStatsHandler: ActionHandler = async ctx => {
 
   await ctx.editMessageText(`✅ ${lang.STATS_SAVE_SUCCESS()}`)
 
-  await ctx.telegram.sendMessage(gameData.telegramUserId, `✅ ${lang.STATS_SAVE_APPROVED()}`)
+  if (ctx.from.id !== gameData.telegramUserId) {
+    await ctx.telegram.sendMessage(gameData.telegramUserId, `✅ ${lang.STATS_SAVE_APPROVED()}`)
+  }
 }
 
 export const stats: Action = {
