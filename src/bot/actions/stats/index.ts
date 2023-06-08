@@ -1,81 +1,15 @@
 import dedent from 'dedent-js'
 
-import { Player, Teams } from '$/game/player/types'
+import { Teams } from '$/game/player/types'
 import { getAdmins, getFormattedTelegramUserName, getPlayerNames, getPlayersByNames } from '$/game/player'
 import { generateId } from '$/utils'
 
 import { RegisterRequiredError } from '$/errors/RegisterRequiredError'
 import { AccessDeniedError } from '$/errors/AccessDeniedError'
 
-import { Action, ActionHandler, CommandContext } from '../types'
-
-enum GameResult {
-  RED = 'RED',
-  BLUE = 'BLUE',
-  DRAW = 'DRAW'
-}
-
-const isGameResult = (data?: string): data is GameResult => String(data) in GameResult
-
-interface GameData {
-  id: string
-  date: number
-  red: string[]
-  blue: string[]
-  telegramUserId: number
-}
-
-const getScoredPlayersByResult = (players: Player[], gameData: GameData, result: GameResult): { won: Player[], lost: Player[], draw: Player[] } => {
-  const red = getPlayersByNames(players, gameData.red)
-  const blue = getPlayersByNames(players, gameData.blue)
-
-  switch (result) {
-    case GameResult.DRAW: {
-      return {
-        won: [],
-        lost: [],
-        draw: [...red, ...blue]
-      }
-    }
-    case GameResult.RED: {
-      return {
-        won: red,
-        lost: blue,
-        draw: []
-      }
-    }
-    case GameResult.BLUE: {
-      return {
-        won: blue,
-        lost: red,
-        draw: []
-      }
-    }
-  }
-}
-
-const replyWithStatsSaveOffer = async (ctx: Pick<CommandContext, 'lang' | 'telegram'>, chatId: number, gameData: GameData): Promise<void> => {
-  const { lang } = ctx
-
-  await ctx.telegram.sendMessage(chatId, lang.STATS_WHO_WON(), {
-    reply_markup: {
-      inline_keyboard: [[
-        {
-          text: '🔴',
-          callback_data: `stats-save-${gameData.id}-${GameResult.RED}`
-        },
-        {
-          text: '🔵',
-          callback_data: `stats-save-${gameData.id}-${GameResult.BLUE}`
-        },
-        {
-          text: lang.STATS_DRAW(),
-          callback_data: `stats-save-${gameData.id}-${GameResult.DRAW}`
-        }
-      ]]
-    }
-  })
-}
+import { Action, ActionHandler, CommandContext } from '../../types'
+import { GameData } from './types'
+import { replyWithStatsSave, isGameResult, getScoredPlayersByResult } from './utils'
 
 export const initializer = async (
   ctx: CommandContext,
@@ -98,7 +32,7 @@ export const initializer = async (
   ])
 
   if (currentPlayer?.isAdmin === true) {
-    await replyWithStatsSaveOffer(ctx, ctx.from.id, gameData)
+    await replyWithStatsSave(ctx, ctx.from.id, gameData)
     return
   }
 
@@ -114,7 +48,7 @@ export const initializer = async (
   })
 }
 
-const sendStatsHandler: ActionHandler = async ctx => {
+const sendStatsToAllAdminsHandler: ActionHandler = async ctx => {
   const { lang, store, players } = ctx
 
   if (ctx.from === undefined) {
@@ -148,7 +82,7 @@ const sendStatsHandler: ActionHandler = async ctx => {
         .join('\n')}
     `)
 
-    await replyWithStatsSaveOffer(ctx, admin.telegramUserId, gameData)
+    await replyWithStatsSave(ctx, admin.telegramUserId, gameData)
   }
 
   await ctx.editMessageText(`👌 ${lang.STATS_SENT_SUCCESS()}`)
@@ -199,6 +133,6 @@ const saveStatsHandler: ActionHandler = async ctx => {
 export const stats: Action = {
   mapping: {
     '^stats-save-(\\S+)-(\\w+)$': saveStatsHandler,
-    '^stats-send-(\\S+)$': sendStatsHandler
+    '^stats-send-(\\S+)$': sendStatsToAllAdminsHandler
   }
 }
