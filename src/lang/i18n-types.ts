@@ -146,7 +146,7 @@ type RootTranslation = {
 	 */
 	STATS_SAVE_APPROVED: string
 	/**
-	 * Y​e​s​,​ ​s​e​n​d​ ​t​o​ ​a​d​m​i​n
+	 * Y​e​s​,​ ​s​e​n​d​ ​t​o​ ​a​d​m​i​n​ ​t​o​ ​s​a​v​e​ ​s​t​a​t​i​s​t​i​c​s
 	 */
 	STATS_SEND_TO_ADMIN: string
 	/**
@@ -344,7 +344,7 @@ export type TranslationFunctions = {
 	 */
 	STATS_SAVE_APPROVED: () => LocalizedString
 	/**
-	 * Yes, send to admin
+	 * Yes, send to admin to save statistics
 	 */
 	STATS_SEND_TO_ADMIN: () => LocalizedString
 	/**

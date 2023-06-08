@@ -44,7 +44,7 @@ const en: BaseTranslation = {
   STATS_WHO_WON: 'Which team won?',
   STATS_SAVE_SUCCESS: 'Stats saved successfully',
   STATS_SAVE_APPROVED: 'Your request has been approved by admin. Stats saved successfully',
-  STATS_SEND_TO_ADMIN: 'Yes, send to admin',
+  STATS_SEND_TO_ADMIN: 'Yes, send to admin to save statistics',
   STATS_SEND_TO_ADMIN_OFFER: 'Already played with these teams?',
   STATS_SENT_SUCCESS: 'Stats have been sent to admin successfully',
   STATS_SAVE_REQUEST: 'Incoming stats save request from {username: string}',
