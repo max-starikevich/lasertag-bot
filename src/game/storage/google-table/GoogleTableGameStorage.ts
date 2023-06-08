@@ -7,10 +7,11 @@ import { extractLocale, defaultLocale } from '$/lang/i18n-custom'
 import { GoogleDocumentError } from '$/errors/GoogleDocumentError'
 
 import { EnrollData, GameData, GoogleSpreadsheetCellMap, GoogleTableGameStorageParams, LinksData, PlayersData, SheetsData, StatsData } from './types'
-import { GameStatsData, Player } from '../../player/types'
+import { GameStatsData, Player, Role } from '../../player/types'
 import { GameLink, GameLocation } from '../../types'
 import { GameStorage } from '../types'
 import { assertRows } from './utils'
+import { extractRole } from '../../player'
 
 export class GoogleTableGameStorage implements GameStorage {
   protected email: string
@@ -96,9 +97,12 @@ export class GoogleTableGameStorage implements GameStorage {
       const comment = extractString(row.comment)
       const clanName = extractString(row.clanName)
       const locale = extractLocale(row.locale) ?? defaultLocale
+      const role = extractRole(row.role)
 
       const player: Player = {
         tableRow: row.rowIndex,
+        role,
+        isAdmin: role === Role.ADMIN,
         telegramUserId,
         name,
         count,

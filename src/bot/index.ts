@@ -65,8 +65,8 @@ export const initBot = async (): Promise<Telegraf<GameContext>> => {
   bot.context.players = []
 
   // will be overriden in the access middleware
-  bot.context.isAdmin = false
-  bot.context.isCreator = false
+  bot.context.isAdminInHomeChat = false
+  bot.context.isCreatorOfHomeChat = false
   bot.context.isGroupChat = false
   bot.context.isPrivateChat = false
 

@@ -12,8 +12,8 @@ export interface GameContext extends Context {
   store: GameStore
   logger: BaseLogger
 
-  isAdmin: boolean
-  isCreator: boolean
+  isAdminInHomeChat: boolean
+  isCreatorOfHomeChat: boolean
 
   isPrivateChat: boolean
   isGroupChat: boolean
