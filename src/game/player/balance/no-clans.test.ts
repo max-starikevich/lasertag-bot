@@ -30,7 +30,8 @@ describe('balance/no-clans.ts', () => {
           clanName: 'random-team',
           isClanMember: true,
           isAlone: true,
-          locale: 'en'
+          locale: 'en',
+          isAdmin: false
         }))
 
         const [team1, team2] = getBalancedTeams(playersToBalance)

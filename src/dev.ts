@@ -7,10 +7,8 @@ import Router from 'koa-router'
 
 import config from '$/config'
 import { botPromise, handler } from '$/lambda'
-import { updateBotCommands, updateBotCommandsForPlayers, updateBotWebhook } from '$/bot/webhooks'
+import { updateBotWebhook } from '$/bot/webhooks'
 import { makeLogger } from '$/logger'
-import { defaultLocale } from '$/lang/i18n-custom'
-import { GameStorage } from './game/storage/types'
 
 const dev = async (): Promise<void> => {
   const logger = makeLogger()
@@ -26,20 +24,6 @@ const dev = async (): Promise<void> => {
       telegram: bot.telegram,
       logger
     })
-
-    await updateBotCommands({
-      telegram: bot.telegram,
-      logger,
-      locale: defaultLocale
-    })
-
-    const storage = bot.context.storage as GameStorage
-    const players = await storage.getPlayers()
-
-    await updateBotCommandsForPlayers({
-      telegram: bot.telegram,
-      logger
-    }, players)
 
     const app = new Koa()
     const router = new Router()

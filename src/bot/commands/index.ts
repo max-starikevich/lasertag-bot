@@ -55,12 +55,16 @@ export const replyWithTeamCount = async (ctx: CommandContext, [redPlayers, blueP
 }
 
 export const replyWithTeamBalance = async (ctx: CommandContext, teams: Teams): Promise<void> => {
-  if (ctx.isAdmin && ctx.isPrivateChat) {
-    const { lang } = ctx
-    const [redLevel, blueLevel] = getTeamsLevels(teams)
+  const { currentPlayer } = ctx
 
-    await ctx.replyWithHTML(dedent`
-      ⚖️ ${lang.TEAMS_BALANCE()}: 🔴 ${Math.trunc(redLevel)} 🔵 ${Math.trunc(blueLevel)}
-    `)
+  if (currentPlayer === undefined || !currentPlayer.isAdmin || !ctx.isPrivateChat) {
+    return
   }
+
+  const { lang } = ctx
+  const [redLevel, blueLevel] = getTeamsLevels(teams)
+
+  await ctx.replyWithHTML(dedent`
+    ⚖️ ${lang.TEAMS_BALANCE()}: 🔴 ${Math.trunc(redLevel)} 🔵 ${Math.trunc(blueLevel)}
+  `)
 }

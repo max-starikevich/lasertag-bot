@@ -41,6 +41,10 @@ functions:
 
       STATS_DOC_ID: ${env:STATS_DOC_ID}
       STATS_SHEETS_ID: ${env:STATS_SHEETS_ID}
+      STATS_TIMEZONE: ${env:STATS_TIMEZONE}
+
+      STORE_DOC_ID: ${env:STORE_DOC_ID}
+      STORE_SHEETS_ID: ${env:STORE_SHEETS_ID}
     events:
       - http:
           path: /webhook/${env:BOT_TOKEN}

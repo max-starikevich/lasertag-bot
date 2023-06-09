@@ -1,9 +1,10 @@
-import { Action, ActionHandler, ActionInitializer } from '../types'
-
-import { RegisterRequiredError } from '$/errors/RegisterRequiredError'
 import { chunk, range } from 'lodash'
 
-const initializer: ActionInitializer = async ctx => {
+import { Action, ActionHandler, ActionInitializer } from '../types'
+
+import { RegisterRequiredError } from '$/errors/RegisterRequiredError.js'
+
+export const initializer: ActionInitializer = async ctx => {
   const { currentPlayer, lang } = ctx
 
   if (currentPlayer === undefined) {
@@ -98,7 +99,6 @@ const rentHandler: ActionHandler = async ctx => {
 }
 
 export const enroll: Action = {
-  initializer,
   mapping: {
     '^enroll-count-(\\d+)$': countHandler,
     '^enroll-rent-(\\d+)$': rentHandler

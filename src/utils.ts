@@ -1,4 +1,5 @@
 import crypto from 'node:crypto'
+import { v4 } from 'uuid'
 
 export const escapeHtml = (unsafeString = ''): string =>
   unsafeString
@@ -9,9 +10,9 @@ export const escapeHtml = (unsafeString = ''): string =>
     .replace(/"/g, '&quot;')
     .replace(/'/g, '&#039;')
 
-export const parseJsonSafe = (json: string): any => {
+export const parseJsonSafe = <T = any>(json: string): T | null => {
   try {
-    return JSON.parse(json)
+    return JSON.parse(json) as T
   } catch (e) {
     return null
   }
@@ -78,3 +79,5 @@ export const parseRange = (s?: string): ParsedRange => {
 
 export const stringToSha1 = (s: string): string =>
   crypto.createHash('sha1').update(s).digest('hex')
+
+export const generateId = (): string => v4()

@@ -7,6 +7,7 @@ import { getActivePlayers } from '$/game/player'
 
 import { Command, CommandHandler } from '../types'
 import { replyWithPlaceAndTime, replyWithTeamBalance, replyWithTeamCount } from '.'
+import { initializer as replyWithStatsActions } from '../actions/stats'
 
 const handler: CommandHandler = async (ctx) => {
   await replyWithPlaceAndTime(ctx)
@@ -14,7 +15,8 @@ const handler: CommandHandler = async (ctx) => {
   const { players } = ctx
 
   const activePlayers = getActivePlayers(players)
-  const [redPlayers, bluePlayers] = getBalancedTeams(activePlayers)
+  const teams = getBalancedTeams(activePlayers)
+  const [redPlayers, bluePlayers] = teams
 
   if (redPlayers.length === 0 || bluePlayers.length === 0) {
     throw new NotEnoughPlayersError()
@@ -40,7 +42,7 @@ const handler: CommandHandler = async (ctx) => {
 
   await replyWithTeamBalance(ctx, [redPlayers, bluePlayers])
 
-  // TODO: call score action here, when it's implemented
+  await replyWithStatsActions(ctx, teams)
 }
 
 export const oldTeams: Command = {

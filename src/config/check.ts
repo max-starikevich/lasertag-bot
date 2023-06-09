@@ -12,6 +12,15 @@ const isValidEmail = (s?: string): boolean => /\S+@\S+\.\S+/.test(String(s))
 const isValidNumber = (s?: string): boolean => s === undefined ? false : !isNaN(parseInt(s))
 const isValidTableRange = (s?: string): boolean => /^([A-Z]+)(\d+):([A-Z]+)(\d+)$/.test(String(s))
 
+const isValidTimeZone = (tz?: string): boolean => {
+  try {
+    Intl.DateTimeFormat(undefined, { timeZone: tz })
+    return true
+  } catch (error) {
+    return false
+  }
+}
+
 type EnvironmentValidator = () => Promise<boolean>
 
 type EnvironmentToCheck = {
@@ -43,7 +52,11 @@ const requiredRuntimeVariables: EnvironmentToCheck = {
   ENROLL_COMMENT_RANGE: async () => isValidTableRange(config.ENROLL_COMMENT_RANGE),
 
   STATS_DOC_ID: async () => isValidString(config.STATS_DOC_ID),
-  STATS_SHEETS_ID: async () => isValidNumber(config.STATS_SHEETS_ID)
+  STATS_SHEETS_ID: async () => isValidNumber(config.STATS_SHEETS_ID),
+  STATS_TIMEZONE: async () => isValidTimeZone(config.STATS_TIMEZONE),
+
+  STORE_DOC_ID: async () => isValidString(config.STORE_DOC_ID),
+  STORE_SHEETS_ID: async () => isValidString(config.STORE_SHEETS_ID)
 }
 
 export const checkEnvironment = async (): Promise<void> => {

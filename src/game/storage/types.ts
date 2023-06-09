@@ -1,4 +1,4 @@
-import { Player, Teams } from '../player/types'
+import { GameStatsData, Player } from '../player/types'
 import { GameLink, GameLocation } from '../types'
 
 export interface GameStorage {
@@ -7,5 +7,16 @@ export interface GameStorage {
   getLinks: () => Promise<GameLink[]>
 
   savePlayer: (name: string, fields: Partial<Player>) => Promise<void>
-  saveStats: (teams: Teams) => Promise<void>
+  saveStats: (statsData: GameStatsData) => Promise<void>
+}
+
+export interface StoreData<T> {
+  key: string
+  value: T | null
+}
+
+export interface GameStore {
+  get: <T>(keys: string[]) => Promise<Array<StoreData<T>>>
+  set: <T>(data: Array<StoreData<T>>) => Promise<void>
+  delete: (keys: string[]) => Promise<void>
 }

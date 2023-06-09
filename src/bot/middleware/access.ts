@@ -1,5 +1,5 @@
 import config from '$/config'
-import { NoHomeChatAccessError } from '$/errors/NoHomeChatAccessError'
+import { AccessDeniedError } from '$/errors/AccessDeniedError'
 
 import { BotMiddleware } from '.'
 
@@ -17,23 +17,23 @@ export const accessMiddleware: BotMiddleware = async (ctx, next) => {
     ctx.memberStatus = status
 
     if (!['creator', 'member', 'administrator'].includes(status)) {
-      throw new NoHomeChatAccessError()
+      throw new AccessDeniedError()
     }
 
     if (status === 'creator') {
-      ctx.isCreator = true
-      ctx.isAdmin = true
+      ctx.isCreatorOfHomeChat = true
+      ctx.isAdminInHomeChat = true
     }
 
     if (status === 'administrator') {
-      ctx.isAdmin = true
+      ctx.isAdminInHomeChat = true
     }
   } catch (error) {
-    if (error instanceof NoHomeChatAccessError) {
+    if (error instanceof AccessDeniedError) {
       throw error
     }
 
-    throw new NoHomeChatAccessError(error)
+    throw new AccessDeniedError(error)
   }
 
   return await next()

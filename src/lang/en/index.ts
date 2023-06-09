@@ -41,21 +41,30 @@ const en: BaseTranslation = {
   RECORDED: 'Recorded',
   RENT: 'Rent',
   COUNT: 'Count',
-  STATS_WHO_WON: 'Did you play already? Which team won?',
+  STATS_WHO_WON: 'Which team won?',
   STATS_SAVE_SUCCESS: 'Stats saved successfully',
+  STATS_SAVE_APPROVED: 'Your request has been approved by admin. Stats saved successfully',
+  STATS_SEND_TO_ADMIN: 'Yes, send to admins',
+  STATS_SEND_TO_ADMIN_OFFER: 'Already played with these teams?',
+  STATS_SENT_SUCCESS: 'Stats have been sent to admin',
+  STATS_SAVE_REQUEST: 'Incoming stats save request from {username: string}',
+  STATS_DRAW: 'Draw',
+  STATS_NON_EXISTENT: 'Data for this game is already lost',
 
   RENT_NOT_NEEDED: 'Not needed',
   ABSENT: "I'll be absent",
 
   UNEXPECTED_ERROR_FOR_USER: 'Unexpected error. Try again later',
   UNKNOWN_COMMAND: 'Unknown command. Use menu or command /{helpCommandName:string}',
-  NO_HOME_CHAT_ACCESS_MESSAGE: 'Access denied',
-  DOCUMENT_UNAVAILABLE_FOR_USER: 'Document is unavailable. Try again later',
-  GROUP_CHAT_WARNING: '✍️ Send me a private message here: @{botUsername:string}.\n\nThanks!',
+  ACCESS_DENIED: 'Access denied',
+  SHEETS_ERROR: 'Something is wrong with the Google document. Try again later',
+  GROUP_CHAT_WARNING: '✍️ Send me a private message here: @{botUsername:string}.',
 
   ACTION_HANDLER_WRONG_DATA: 'Wrong data provided',
 
-  NOT_ENOUGH_PLAYERS: '🤷 Not enough players for this function'
+  NOT_ENOUGH_PLAYERS: 'Not enough players for this function',
+
+  PLEASE_WAIT: 'Please wait'
 }
 
 export default en

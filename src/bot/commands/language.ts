@@ -1,8 +1,8 @@
 import { Command, CommandHandler } from '../types'
-import { language as languageAction } from '../actions/language'
+import { initializer as chooseLanguage } from '../actions/language'
 
 const handler: CommandHandler = async (ctx) => {
-  return await languageAction.initializer(ctx)
+  return await chooseLanguage(ctx)
 }
 
 export const language: Command = {

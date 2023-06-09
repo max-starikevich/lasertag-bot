@@ -134,13 +134,42 @@ type RootTranslation = {
 	 */
 	COUNT: string
 	/**
-	 * D​i​d​ ​y​o​u​ ​p​l​a​y​ ​a​l​r​e​a​d​y​?​ ​W​h​i​c​h​ ​t​e​a​m​ ​w​o​n​?
+	 * W​h​i​c​h​ ​t​e​a​m​ ​w​o​n​?
 	 */
 	STATS_WHO_WON: string
 	/**
 	 * S​t​a​t​s​ ​s​a​v​e​d​ ​s​u​c​c​e​s​s​f​u​l​l​y
 	 */
 	STATS_SAVE_SUCCESS: string
+	/**
+	 * Y​o​u​r​ ​r​e​q​u​e​s​t​ ​h​a​s​ ​b​e​e​n​ ​a​p​p​r​o​v​e​d​ ​b​y​ ​a​d​m​i​n​.​ ​S​t​a​t​s​ ​s​a​v​e​d​ ​s​u​c​c​e​s​s​f​u​l​l​y
+	 */
+	STATS_SAVE_APPROVED: string
+	/**
+	 * Y​e​s​,​ ​s​e​n​d​ ​t​o​ ​a​d​m​i​n​s
+	 */
+	STATS_SEND_TO_ADMIN: string
+	/**
+	 * A​l​r​e​a​d​y​ ​p​l​a​y​e​d​ ​w​i​t​h​ ​t​h​e​s​e​ ​t​e​a​m​s​?
+	 */
+	STATS_SEND_TO_ADMIN_OFFER: string
+	/**
+	 * S​t​a​t​s​ ​h​a​v​e​ ​b​e​e​n​ ​s​e​n​t​ ​t​o​ ​a​d​m​i​n
+	 */
+	STATS_SENT_SUCCESS: string
+	/**
+	 * I​n​c​o​m​i​n​g​ ​s​t​a​t​s​ ​s​a​v​e​ ​r​e​q​u​e​s​t​ ​f​r​o​m​ ​{​u​s​e​r​n​a​m​e​}
+	 * @param {string} username
+	 */
+	STATS_SAVE_REQUEST: RequiredParams<'username'>
+	/**
+	 * D​r​a​w
+	 */
+	STATS_DRAW: string
+	/**
+	 * D​a​t​a​ ​f​o​r​ ​t​h​i​s​ ​g​a​m​e​ ​i​s​ ​a​l​r​e​a​d​y​ ​l​o​s​t
+	 */
+	STATS_NON_EXISTENT: string
 	/**
 	 * N​o​t​ ​n​e​e​d​e​d
 	 */
@@ -161,15 +190,13 @@ type RootTranslation = {
 	/**
 	 * A​c​c​e​s​s​ ​d​e​n​i​e​d
 	 */
-	NO_HOME_CHAT_ACCESS_MESSAGE: string
+	ACCESS_DENIED: string
 	/**
-	 * D​o​c​u​m​e​n​t​ ​i​s​ ​u​n​a​v​a​i​l​a​b​l​e​.​ ​T​r​y​ ​a​g​a​i​n​ ​l​a​t​e​r
+	 * S​o​m​e​t​h​i​n​g​ ​i​s​ ​w​r​o​n​g​ ​w​i​t​h​ ​t​h​e​ ​G​o​o​g​l​e​ ​d​o​c​u​m​e​n​t​.​ ​T​r​y​ ​a​g​a​i​n​ ​l​a​t​e​r
 	 */
-	DOCUMENT_UNAVAILABLE_FOR_USER: string
+	SHEETS_ERROR: string
 	/**
-	 * ✍​️​ ​S​e​n​d​ ​m​e​ ​a​ ​p​r​i​v​a​t​e​ ​m​e​s​s​a​g​e​ ​h​e​r​e​:​ ​@​{​b​o​t​U​s​e​r​n​a​m​e​}​.​
-​
-​T​h​a​n​k​s​!
+	 * ✍​️​ ​S​e​n​d​ ​m​e​ ​a​ ​p​r​i​v​a​t​e​ ​m​e​s​s​a​g​e​ ​h​e​r​e​:​ ​@​{​b​o​t​U​s​e​r​n​a​m​e​}​.
 	 * @param {string} botUsername
 	 */
 	GROUP_CHAT_WARNING: RequiredParams<'botUsername'>
@@ -178,9 +205,13 @@ type RootTranslation = {
 	 */
 	ACTION_HANDLER_WRONG_DATA: string
 	/**
-	 * �​�​ ​N​o​t​ ​e​n​o​u​g​h​ ​p​l​a​y​e​r​s​ ​f​o​r​ ​t​h​i​s​ ​f​u​n​c​t​i​o​n
+	 * N​o​t​ ​e​n​o​u​g​h​ ​p​l​a​y​e​r​s​ ​f​o​r​ ​t​h​i​s​ ​f​u​n​c​t​i​o​n
 	 */
 	NOT_ENOUGH_PLAYERS: string
+	/**
+	 * P​l​e​a​s​e​ ​w​a​i​t
+	 */
+	PLEASE_WAIT: string
 }
 
 export type TranslationFunctions = {
@@ -301,13 +332,41 @@ export type TranslationFunctions = {
 	 */
 	COUNT: () => LocalizedString
 	/**
-	 * Did you play already? Which team won?
+	 * Which team won?
 	 */
 	STATS_WHO_WON: () => LocalizedString
 	/**
 	 * Stats saved successfully
 	 */
 	STATS_SAVE_SUCCESS: () => LocalizedString
+	/**
+	 * Your request has been approved by admin. Stats saved successfully
+	 */
+	STATS_SAVE_APPROVED: () => LocalizedString
+	/**
+	 * Yes, send to admins
+	 */
+	STATS_SEND_TO_ADMIN: () => LocalizedString
+	/**
+	 * Already played with these teams?
+	 */
+	STATS_SEND_TO_ADMIN_OFFER: () => LocalizedString
+	/**
+	 * Stats have been sent to admin
+	 */
+	STATS_SENT_SUCCESS: () => LocalizedString
+	/**
+	 * Incoming stats save request from {username}
+	 */
+	STATS_SAVE_REQUEST: (arg: { username: string }) => LocalizedString
+	/**
+	 * Draw
+	 */
+	STATS_DRAW: () => LocalizedString
+	/**
+	 * Data for this game is already lost
+	 */
+	STATS_NON_EXISTENT: () => LocalizedString
 	/**
 	 * Not needed
 	 */
@@ -327,15 +386,13 @@ export type TranslationFunctions = {
 	/**
 	 * Access denied
 	 */
-	NO_HOME_CHAT_ACCESS_MESSAGE: () => LocalizedString
+	ACCESS_DENIED: () => LocalizedString
 	/**
-	 * Document is unavailable. Try again later
+	 * Something is wrong with the Google document. Try again later
 	 */
-	DOCUMENT_UNAVAILABLE_FOR_USER: () => LocalizedString
+	SHEETS_ERROR: () => LocalizedString
 	/**
 	 * ✍️ Send me a private message here: @{botUsername}.
-
-Thanks!
 	 */
 	GROUP_CHAT_WARNING: (arg: { botUsername: string }) => LocalizedString
 	/**
@@ -343,9 +400,13 @@ Thanks!
 	 */
 	ACTION_HANDLER_WRONG_DATA: () => LocalizedString
 	/**
-	 * 🤷 Not enough players for this function
+	 * Not enough players for this function
 	 */
 	NOT_ENOUGH_PLAYERS: () => LocalizedString
+	/**
+	 * Please wait
+	 */
+	PLEASE_WAIT: () => LocalizedString
 }
 
 export type Formatters = {}
