@@ -44,7 +44,7 @@ const by: MappedTranslation = {
   STATS_WHO_WON: 'Якая каманда перамагла?',
   STATS_SAVE_SUCCESS: 'Статыстыка захавана',
   STATS_SAVE_APPROVED: 'Ваш запыт адобраны адміністратарам. Статыстыка захавана',
-  STATS_SEND_TO_ADMIN: 'Так, даслаць гэта адміністратару, каб захаваць статыстыку',
+  STATS_SEND_TO_ADMIN: 'Так, даслаць адмінам',
   STATS_SEND_TO_ADMIN_OFFER: 'Ужо адыгралі гэтымі складамі?',
   STATS_SENT_SUCCESS: 'Статыстыка адпраўлена адміністратару',
   STATS_SAVE_REQUEST: 'Новы запыт на захаваньне статыстыкі\n\n{username: string}',
@@ -64,7 +64,7 @@ const by: MappedTranslation = {
 
   NOT_ENOUGH_PLAYERS: 'Недастаткова гульцоў для гэтай функцыі',
 
-  NEW_PHRASE_FOR_LILIYA: 'Test'
+  PLEASE_WAIT: 'Пачакайце, калі ласка'
 }
 
 export default by

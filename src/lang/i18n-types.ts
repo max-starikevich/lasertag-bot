@@ -146,7 +146,7 @@ type RootTranslation = {
 	 */
 	STATS_SAVE_APPROVED: string
 	/**
-	 * Y​e​s​,​ ​s​e​n​d​ ​t​o​ ​a​d​m​i​n​ ​t​o​ ​s​a​v​e​ ​s​t​a​t​i​s​t​i​c​s
+	 * Y​e​s​,​ ​s​e​n​d​ ​t​o​ ​a​d​m​i​n​s
 	 */
 	STATS_SEND_TO_ADMIN: string
 	/**
@@ -209,9 +209,9 @@ type RootTranslation = {
 	 */
 	NOT_ENOUGH_PLAYERS: string
 	/**
-	 * T​h​i​s​ ​i​s​ ​n​e​w​ ​p​h​r​a​s​e
+	 * P​l​e​a​s​e​ ​w​a​i​t
 	 */
-	NEW_PHRASE_FOR_LILIYA: string
+	PLEASE_WAIT: string
 }
 
 export type TranslationFunctions = {
@@ -344,7 +344,7 @@ export type TranslationFunctions = {
 	 */
 	STATS_SAVE_APPROVED: () => LocalizedString
 	/**
-	 * Yes, send to admin to save statistics
+	 * Yes, send to admins
 	 */
 	STATS_SEND_TO_ADMIN: () => LocalizedString
 	/**
@@ -404,9 +404,9 @@ export type TranslationFunctions = {
 	 */
 	NOT_ENOUGH_PLAYERS: () => LocalizedString
 	/**
-	 * This is new phrase
+	 * Please wait
 	 */
-	NEW_PHRASE_FOR_LILIYA: () => LocalizedString
+	PLEASE_WAIT: () => LocalizedString
 }
 
 export type Formatters = {}
