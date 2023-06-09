@@ -1,4 +1,5 @@
 import dedent from 'dedent-js'
+import dayjs from 'dayjs'
 
 import { Teams } from '$/game/player/types'
 import { getAdmins, getFormattedTelegramUserName, getPlayerNames, getPlayersByNames } from '$/game/player'
@@ -51,6 +52,8 @@ export const initializer = async (
 const sendStatsToAllAdminsHandler: ActionHandler = async ctx => {
   const { lang, store, players } = ctx
 
+  await ctx.editMessageText(`⏳ ${lang.PLEASE_WAIT()}`)
+
   if (ctx.from === undefined) {
     throw new Error('Missing "ctx.from"')
   }
@@ -80,6 +83,8 @@ const sendStatsToAllAdminsHandler: ActionHandler = async ctx => {
       ${blueTeam
         .map(({ name, clanEmoji }) => `🔵 ${name} ${clanEmoji ?? ''}`)
         .join('\n')}
+
+      📅 ${dayjs(gameData.date).format('DD-MM-YYYY')}
     `)
 
     await replyWithStatsSave(ctx, admin.telegramUserId, gameData)
@@ -90,6 +95,8 @@ const sendStatsToAllAdminsHandler: ActionHandler = async ctx => {
 
 const saveStatsHandler: ActionHandler = async ctx => {
   const { lang, store, storage, players, currentPlayer } = ctx
+
+  await ctx.editMessageText(`⏳ ${lang.PLEASE_WAIT()}`)
 
   if (ctx.from === undefined) {
     throw new Error('Missing "ctx.from"')

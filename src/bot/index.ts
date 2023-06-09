@@ -41,7 +41,8 @@ export const initBot = async (): Promise<Telegraf<GameContext>> => {
     },
     stats: {
       docId: config.STATS_DOC_ID,
-      sheetsId: config.STATS_SHEETS_ID
+      sheetsId: config.STATS_SHEETS_ID,
+      timezone: config.STATS_TIMEZONE
     },
     enroll: {
       docId: config.ENROLL_DOC_ID,

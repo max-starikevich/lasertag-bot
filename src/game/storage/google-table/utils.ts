@@ -1,7 +1,13 @@
 import { GoogleSpreadsheetRow, GoogleSpreadsheetWorksheet } from 'google-spreadsheet'
+import dayjs from 'dayjs'
+import utc from 'dayjs/plugin/utc'
+import timezone from 'dayjs/plugin/timezone'
 
 import { GoogleDocumentError } from '$/errors/GoogleDocumentError'
 import { GoogleSpreadsheetCellMap } from './types'
+
+dayjs.extend(utc)
+dayjs.extend(timezone)
 
 const cellErrors = ['#REF!', '#ERROR', '#NAME?', '#VALUE!']
 
@@ -56,3 +62,5 @@ export const getCellsByRows = async (sheets: GoogleSpreadsheetWorksheet, rows: G
 
   return cellMaps
 }
+
+export const getDateByTimestamp = (timestamp: number, tz?: string): dayjs.Dayjs => dayjs.tz(timestamp, tz)

@@ -11,7 +11,9 @@ export interface SheetsData { docId: string, sheetsId: string }
 export interface PlayersData extends SheetsData {}
 export interface GameData extends SheetsData {}
 export interface LinksData extends SheetsData {}
-export interface StatsData extends SheetsData {}
+export interface StatsData extends SheetsData {
+  timezone: string
+}
 
 export interface GoogleTableGameStorageParams {
   email: string

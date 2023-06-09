@@ -1,7 +1,6 @@
 import { GoogleSpreadsheet, GoogleSpreadsheetCell, GoogleSpreadsheetWorksheet } from 'google-spreadsheet'
 import { decode } from 'html-entities'
 import { groupBy, omitBy, range } from 'lodash'
-import dayjs from 'dayjs'
 
 import { extractNumber, extractString, parseRange } from '$/utils'
 import { extractLocale, defaultLocale } from '$/lang/i18n-custom'
@@ -11,7 +10,7 @@ import { EnrollData, GameData, GoogleSpreadsheetPlayerCellMap, GoogleTableGameSt
 import { GameStatsData, Player, Role } from '../../player/types'
 import { GameLink, GameLocation } from '../../types'
 import { GameStorage } from '../types'
-import { assertRows, getCellsByRow, getCellsByRows } from './utils'
+import { assertRows, getCellsByRow, getCellsByRows, getDateByTimestamp } from './utils'
 import { extractRole } from '../../player'
 
 export class GoogleTableGameStorage implements GameStorage {
@@ -286,7 +285,7 @@ export class GoogleTableGameStorage implements GameStorage {
 
   public saveStats = async ({ won, lost, draw, date }: GameStatsData): Promise<void> => {
     const sheets = await this.getSheets(this.stats)
-    const dateString = dayjs(date).format(STATS_DATE_FORMAT)
+    const dateString = getDateByTimestamp(date, this.stats.timezone).format(STATS_DATE_FORMAT)
     await sheets.getRows({ limit: 1 })
 
     if (!sheets.headerValues.includes(dateString)) {
