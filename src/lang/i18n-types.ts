@@ -154,7 +154,7 @@ type RootTranslation = {
 	 */
 	STATS_SEND_TO_ADMIN_OFFER: string
 	/**
-	 * S​t​a​t​s​ ​h​a​v​e​ ​b​e​e​n​ ​s​e​n​t​ ​t​o​ ​a​d​m​i​n​ ​s​u​c​c​e​s​s​f​u​l​l​y
+	 * S​t​a​t​s​ ​h​a​v​e​ ​b​e​e​n​ ​s​e​n​t​ ​t​o​ ​a​d​m​i​n
 	 */
 	STATS_SENT_SUCCESS: string
 	/**
@@ -352,7 +352,7 @@ export type TranslationFunctions = {
 	 */
 	STATS_SEND_TO_ADMIN_OFFER: () => LocalizedString
 	/**
-	 * Stats have been sent to admin successfully
+	 * Stats have been sent to admin
 	 */
 	STATS_SENT_SUCCESS: () => LocalizedString
 	/**

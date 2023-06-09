@@ -2,7 +2,7 @@ import dedent from 'dedent-js'
 import dayjs from 'dayjs'
 
 import { Teams } from '$/game/player/types'
-import { getAdmins, getFormattedTelegramUserName, getPlayerNames, getPlayersByNames } from '$/game/player'
+import { getAdmins, getFormattedTelegramUserName, getPlayerLang, getPlayerNames, getPlayersByNames } from '$/game/player'
 import { generateId } from '$/utils'
 
 import { RegisterRequiredError } from '$/errors/RegisterRequiredError'
@@ -72,6 +72,7 @@ const sendStatsToAllAdminsHandler: ActionHandler = async ctx => {
 
   for (const admin of allAdmins) {
     const username = getFormattedTelegramUserName(ctx.from)
+    const lang = getPlayerLang(admin)
 
     await ctx.telegram.sendMessage(admin.telegramUserId, dedent`
       💾 ${lang.STATS_SAVE_REQUEST({ username })}:
@@ -133,6 +134,9 @@ const saveStatsHandler: ActionHandler = async ctx => {
   await ctx.editMessageText(`✅ ${lang.STATS_SAVE_SUCCESS()}`)
 
   if (ctx.from.id !== gameData.telegramUserId) {
+    const playerToNotify = players.find(p => p.telegramUserId === gameData.telegramUserId)
+    const lang = getPlayerLang(playerToNotify)
+
     await ctx.telegram.sendMessage(gameData.telegramUserId, `✅ ${lang.STATS_SAVE_APPROVED()}`)
   }
 }

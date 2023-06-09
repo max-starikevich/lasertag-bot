@@ -1,6 +1,11 @@
 import { keyBy } from 'lodash'
-import { Player, ClanPlayer, Role, AdminPlayer } from './types'
 import { User } from 'telegraf/typings/core/types/typegram'
+
+import L from '$/lang/i18n-node'
+import { TranslationFunctions } from '$/lang/i18n-types'
+import { defaultLocale } from '$/lang/i18n-custom'
+
+import { Player, ClanPlayer, Role, AdminPlayer } from './types'
 
 export const getActivePlayers = (players: Player[]): Player[] => {
   return players.filter(({ count, level, isQuestionableCount }) => count > 0 && level > 0 && !isQuestionableCount)
@@ -36,3 +41,5 @@ export const getFormattedTelegramUserName = ({ first_name: firstName, last_name:
   ]
     .filter(s => s !== undefined && s.length > 0)
     .join(' | ')
+
+export const getPlayerLang = (player?: Player): TranslationFunctions => L[player?.locale ?? defaultLocale]

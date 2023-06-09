@@ -1,6 +1,6 @@
-import { BotMiddleware } from '.'
+import { getPlayerLang } from '$/game/player'
 
-import L from '$/lang/i18n-node'
+import { BotMiddleware } from '.'
 
 export const playerMiddleware: BotMiddleware = async (ctx, next) => {
   if (ctx.from == null) {
@@ -20,8 +20,9 @@ export const playerMiddleware: BotMiddleware = async (ctx, next) => {
   }
 
   ctx.currentPlayer = currentPlayer
+
   ctx.locale = currentPlayer.locale
-  ctx.lang = L[ctx.locale]
+  ctx.lang = getPlayerLang(currentPlayer)
 
   return await next()
 }

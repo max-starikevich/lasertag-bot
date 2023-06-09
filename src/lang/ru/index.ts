@@ -46,7 +46,7 @@ const ru: MappedTranslation = {
   STATS_SAVE_APPROVED: 'Ваш запрос одобрен администратором. Статистика успешно сохранена',
   STATS_SEND_TO_ADMIN: 'Да, отправить администраторам',
   STATS_SEND_TO_ADMIN_OFFER: 'Уже отыграли этими составами?',
-  STATS_SENT_SUCCESS: 'Статистика успешно отправлена администратору',
+  STATS_SENT_SUCCESS: 'Статистика отправлена администратору',
   STATS_SAVE_REQUEST: 'Запрос на сохранение статистики от {username: string}',
   STATS_DRAW: 'Ничья',
   STATS_NON_EXISTENT: 'Данные для этой игры уже потеряны',
