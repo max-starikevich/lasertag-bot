@@ -123,8 +123,7 @@ const saveStatsHandler: ActionHandler = async ctx => {
     won, lost, draw, date: gameData.date
   })
 
-  // await ctx.editMessageText(`✅ ${lang.STATS_SAVE_SUCCESS()}`)
-  await ctx.reply(`✅ ${lang.STATS_SAVE_SUCCESS()}`)
+  await ctx.editMessageText(`✅ ${lang.STATS_SAVE_SUCCESS()}`)
 
   if (ctx.from.id !== gameData.telegramUserId) {
     await ctx.telegram.sendMessage(gameData.telegramUserId, `✅ ${lang.STATS_SAVE_APPROVED()}`)
