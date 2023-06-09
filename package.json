@@ -13,6 +13,7 @@
     "@sentry/node": "^7.54.0",
     "@sentry/tracing": "^7.54.0",
     "axios": "^1.4.0",
+    "dayjs": "^1.11.8",
     "dedent-js": "^1.0.1",
     "google-spreadsheet": "^3.3.0",
     "html-entities": "^2.3.5",
