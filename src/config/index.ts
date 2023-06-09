@@ -42,6 +42,7 @@ export const requiredConfigInput = {
 
   STATS_DOC_ID: process.env.STATS_DOC_ID as string,
   STATS_SHEETS_ID: process.env.STATS_SHEETS_ID as string,
+  STATS_TIMEZONE: process.env.STATS_TIMEZONE as string,
 
   STORE_DOC_ID: process.env.STORE_DOC_ID as string,
   STORE_SHEETS_ID: process.env.STORE_SHEETS_ID as string
