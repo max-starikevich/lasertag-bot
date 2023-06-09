@@ -7,7 +7,7 @@ import { getActivePlayers } from '$/game/player'
 
 import { Command, CommandHandler } from '../types'
 import { replyWithPlaceAndTime, replyWithTeamBalance, replyWithTeamCount } from '.'
-import { initializer as initStatsAction } from '../actions/stats'
+import { initializer as replyWithStatsActions } from '../actions/stats'
 
 const handler: CommandHandler = async (ctx) => {
   await replyWithPlaceAndTime(ctx)
@@ -42,7 +42,7 @@ const handler: CommandHandler = async (ctx) => {
 
   await replyWithTeamBalance(ctx, [redPlayers, bluePlayers])
 
-  await initStatsAction(ctx, teams)
+  await replyWithStatsActions(ctx, teams)
 }
 
 export const oldTeams: Command = {

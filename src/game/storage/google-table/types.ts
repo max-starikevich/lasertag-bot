@@ -4,7 +4,8 @@ import { ParsedRange } from '$/utils'
 
 import { Player } from '../../player/types'
 
-export type GoogleSpreadsheetCellMap = { [key in keyof Partial<Player>]: GoogleSpreadsheetCell }
+export type GoogleSpreadsheetPlayerCellMap = { [key in keyof Partial<Player>]: GoogleSpreadsheetCell }
+export interface GoogleSpreadsheetCellMap { [key: string]: GoogleSpreadsheetCell }
 
 export interface SheetsData { docId: string, sheetsId: string }
 export interface PlayersData extends SheetsData {}
@@ -39,3 +40,11 @@ export interface EnrollRangesData {
 export interface EnrollData extends SheetsData {
   ranges: EnrollRangesData
 }
+
+export enum StatsResult {
+  WON = 'W',
+  LOST = 'L',
+  DRAW = 'X'
+}
+
+export const STATS_DATE_FORMAT = 'YYYY-MM-DD'

@@ -42,5 +42,5 @@ export interface GameStatsData {
   won: Player[]
   lost: Player[]
   draw: Player[]
-  date: Date
+  date: number
 }
