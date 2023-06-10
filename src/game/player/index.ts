@@ -30,7 +30,7 @@ export const extractRole = (s?: string): Role | undefined => {
 
 export const getAdmins = (players: Player[]): AdminPlayer[] =>
   players.filter((player): player is AdminPlayer =>
-    player.telegramUserId !== null && player.role === Role.ADMIN
+    player.telegramUserId != null && player.role === Role.ADMIN
   )
 
 export const getFormattedTelegramUserName = ({ first_name: firstName, last_name: lastName, username: userName }: User): string =>
