@@ -1,6 +1,6 @@
 {
   "name": "lasertag-bot",
-  "version": "7.5.0",
+  "version": "7.5.1",
   "repository": "https://github.com/max-starikevich/lasertag-bot",
   "author": "Max Starikevich <maxim.starikevich@gmail.com>",
   "license": "MIT",
@@ -10,6 +10,7 @@
     "pnpm": "^8"
   },
   "dependencies": {
+    "@sentry/cli": "^2.18.1",
     "@sentry/node": "^7.54.0",
     "@sentry/tracing": "^7.54.0",
     "axios": "^1.4.0",

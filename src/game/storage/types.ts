@@ -8,6 +8,7 @@ export interface GameStorage {
 
   savePlayer: (name: string, fields: Partial<Player>) => Promise<void>
   saveStats: (statsData: GameStatsData) => Promise<void>
+  getStatsTimezone: () => string
 }
 
 export interface StoreData<T> {
