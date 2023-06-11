@@ -32,7 +32,7 @@ export const initializer = async (
     { key: gameData.id, value: gameData }
   ])
 
-  if (currentPlayer?.isAdmin === true) {
+  if (currentPlayer?.isAdmin !== true) {
     await replyWithStatsSave(ctx, ctx.from.id, gameData)
     return
   }
@@ -52,8 +52,6 @@ export const initializer = async (
 const sendStatsToAllAdminsHandler: ActionHandler = async ctx => {
   const { lang, store, players, storage } = ctx
   const timezone = storage.getStatsTimezone()
-
-  void ctx.editMessageText(`⏳ ${lang.PLEASE_WAIT()}`)
 
   if (ctx.from === undefined) {
     throw new Error('Missing "ctx.from"')
@@ -93,7 +91,7 @@ const sendStatsToAllAdminsHandler: ActionHandler = async ctx => {
     await replyWithStatsSave(ctx, admin.telegramUserId, gameData)
   }
 
-  await ctx.reply(`👌 ${lang.STATS_SENT_SUCCESS()}`)
+  void ctx.editMessageText(`👌 ${lang.STATS_SENT_SUCCESS()}`)
 }
 
 const saveStatsHandler: ActionHandler = async ctx => {
