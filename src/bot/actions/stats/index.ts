@@ -32,7 +32,7 @@ export const initializer = async (
     { key: gameData.id, value: gameData }
   ])
 
-  if (currentPlayer?.isAdmin !== true) {
+  if (currentPlayer?.isAdmin === true) {
     await replyWithStatsSave(ctx, ctx.from.id, gameData)
     return
   }
