@@ -53,7 +53,7 @@ const sendStatsToAllAdminsHandler: ActionHandler = async ctx => {
   const { lang, store, players, storage } = ctx
   const timezone = storage.getStatsTimezone()
 
-  await ctx.editMessageText(`⏳ ${lang.PLEASE_WAIT()}`)
+  void ctx.editMessageText(`⏳ ${lang.PLEASE_WAIT()}`)
 
   if (ctx.from === undefined) {
     throw new Error('Missing "ctx.from"')
@@ -64,7 +64,8 @@ const sendStatsToAllAdminsHandler: ActionHandler = async ctx => {
   const [{ value: gameData }] = await store.get<GameData>([gameDataId])
 
   if (gameData === null) {
-    return await ctx.editMessageText(`🤷 ${lang.STATS_NON_EXISTENT()}`)
+    void ctx.editMessageText(`🤷 ${lang.STATS_NON_EXISTENT()}`)
+    return
   }
 
   const allAdmins = getAdmins(players)
@@ -92,13 +93,13 @@ const sendStatsToAllAdminsHandler: ActionHandler = async ctx => {
     await replyWithStatsSave(ctx, admin.telegramUserId, gameData)
   }
 
-  await ctx.editMessageText(`👌 ${lang.STATS_SENT_SUCCESS()}`)
+  await ctx.reply(`👌 ${lang.STATS_SENT_SUCCESS()}`)
 }
 
 const saveStatsHandler: ActionHandler = async ctx => {
   const { lang, store, storage, players, currentPlayer } = ctx
 
-  await ctx.editMessageText(`⏳ ${lang.PLEASE_WAIT()}`)
+  void ctx.editMessageText(`⏳ ${lang.PLEASE_WAIT()}`)
 
   if (ctx.from === undefined) {
     throw new Error('Missing "ctx.from"')
@@ -115,7 +116,8 @@ const saveStatsHandler: ActionHandler = async ctx => {
   const gameResult = ctx.match[2]
 
   if (!isGameResult(gameResult)) {
-    return await ctx.editMessageText(`🤷 ${lang.STATS_NON_EXISTENT()}`)
+    void ctx.editMessageText(`🤷 ${lang.STATS_NON_EXISTENT()}`)
+    return
   }
 
   const gameDataId = ctx.match[1]
@@ -123,7 +125,8 @@ const saveStatsHandler: ActionHandler = async ctx => {
   const [{ value: gameData }] = await store.get<GameData>([gameDataId])
 
   if (gameData === null) {
-    return await ctx.editMessageText(`🤷 ${lang.STATS_NON_EXISTENT()}`)
+    void ctx.editMessageText(`🤷 ${lang.STATS_NON_EXISTENT()}`)
+    return
   }
 
   const { won, lost, draw } = getScoredPlayersByResult(players, gameData, gameResult)
@@ -132,7 +135,7 @@ const saveStatsHandler: ActionHandler = async ctx => {
     won, lost, draw, date: gameData.date
   })
 
-  await ctx.editMessageText(`✅ ${lang.STATS_SAVE_SUCCESS()}`)
+  void ctx.editMessageText(`✅ ${lang.STATS_SAVE_SUCCESS()}`)
 
   if (ctx.from.id !== gameData.telegramUserId) {
     const playerToNotify = players.find(p => p.telegramUserId === gameData.telegramUserId)
