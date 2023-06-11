@@ -47,6 +47,10 @@ export class GoogleTableGameStorage implements GameStorage {
     }
   }
 
+  public getStatsTimezone (): string {
+    return this.stats.timezone
+  }
+
   protected async getSheets ({ docId, sheetsId }: SheetsData): Promise<GoogleSpreadsheetWorksheet> {
     if (this.documentMap[docId] === undefined) {
       const document = new GoogleSpreadsheet(docId)

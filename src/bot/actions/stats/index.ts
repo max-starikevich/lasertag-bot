@@ -1,5 +1,4 @@
 import dedent from 'dedent-js'
-import dayjs from 'dayjs'
 
 import { Teams } from '$/game/player/types'
 import { getAdmins, getFormattedTelegramUserName, getPlayerLang, getPlayerNames, getPlayersByNames } from '$/game/player'
@@ -11,6 +10,7 @@ import { AccessDeniedError } from '$/errors/AccessDeniedError'
 import { Action, ActionHandler, CommandContext } from '../../types'
 import { GameData } from './types'
 import { replyWithStatsSave, isGameResult, getScoredPlayersByResult } from './utils'
+import { getDateByTimestamp } from '$/game/storage/google-table/utils'
 
 export const initializer = async (
   ctx: CommandContext,
@@ -50,7 +50,8 @@ export const initializer = async (
 }
 
 const sendStatsToAllAdminsHandler: ActionHandler = async ctx => {
-  const { lang, store, players } = ctx
+  const { lang, store, players, storage } = ctx
+  const timezone = storage.getStatsTimezone()
 
   await ctx.editMessageText(`⏳ ${lang.PLEASE_WAIT()}`)
 
@@ -85,7 +86,7 @@ const sendStatsToAllAdminsHandler: ActionHandler = async ctx => {
         .map(({ name, clanEmoji }) => `🔵 ${name} ${clanEmoji ?? ''}`)
         .join('\n')}
 
-      📅 ${dayjs(gameData.date).format('DD-MM-YYYY')}
+      📅 ${getDateByTimestamp(gameData.date, timezone).format('DD-MM-YYYY')}
     `)
 
     await replyWithStatsSave(ctx, admin.telegramUserId, gameData)
