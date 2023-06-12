@@ -15,7 +15,7 @@ export const errorMiddleware = async (error: any, ctx: GameContext): Promise<voi
     return
   }
 
-  reportException(error)
+  reportException(error, ctx)
 
   logger.error({
     update: ctx.update,
@@ -28,7 +28,7 @@ export const errorMiddleware = async (error: any, ctx: GameContext): Promise<voi
 
 const handleCustomError = async (error: CustomError, ctx: GameContext): Promise<void> => {
   if (error.shouldBeReported) {
-    reportException(error.cause)
+    reportException(error.cause, ctx)
 
     const { logger } = ctx
 

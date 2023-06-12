@@ -9,7 +9,6 @@ import { setBotActions, setBotMiddlewares } from '$/bot/middleware'
 
 import { GoogleTableGameStorage } from '$/game/storage/google-table/GoogleTableGameStorage'
 import { GoogleTableGameStore } from '$/game/storage/google-table/GoogleTableStore'
-import { reportException } from '$/errors'
 import L from '$/lang/i18n-node'
 import { defaultLocale } from '$/lang/i18n-custom'
 
@@ -78,9 +77,6 @@ export const initBot = async (): Promise<Telegraf<GameContext>> => {
   setBotActions(bot)
 
   bot.catch(errorMiddleware)
-
-  process.on('uncaughtException', e => reportException(e))
-  process.on('unhandledRejection', e => reportException(e))
 
   return bot
 }
