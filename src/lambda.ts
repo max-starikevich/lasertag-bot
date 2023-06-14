@@ -2,6 +2,7 @@ import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda'
 
 import { initBot } from '$/bot'
 import { parseJsonSafe } from '$/utils'
+import { reportException } from './errors'
 
 export const botPromise = initBot()
 
@@ -41,6 +42,8 @@ export const handler = async (
       body: 'OK'
     }
   } catch (e) {
+    reportException(e)
+
     return {
       statusCode: 500,
       body: 'Unexpected server error'

@@ -5,6 +5,7 @@ import { groupBy, omitBy, range } from 'lodash'
 import { extractNumber, extractString, parseRange } from '$/utils'
 import { extractLocale, defaultLocale } from '$/lang/i18n-custom'
 import { GoogleDocumentError } from '$/errors/GoogleDocumentError'
+import { reportException } from '$/errors'
 
 import { EnrollData, GameData, GoogleSpreadsheetPlayerCellMap, GoogleTableGameStorageParams, LinksData, PlayersData, STATS_DATE_FORMAT, SheetsData, StatsData, StatsResult } from './types'
 import { GameStatsData, Player, Role } from '../../player/types'
@@ -290,7 +291,7 @@ export class GoogleTableGameStorage implements GameStorage {
   public saveStats = async ({ won, lost, draw, date }: GameStatsData): Promise<void> => {
     const sheets = await this.getSheets(this.stats)
     const dateString = getDateByTimestamp(date, this.stats.timezone).format(STATS_DATE_FORMAT)
-    await sheets.getRows({ limit: 1 })
+    await sheets.loadHeaderRow()
 
     if (!sheets.headerValues.includes(dateString)) {
       await sheets.resize({
@@ -317,7 +318,8 @@ export class GoogleTableGameStorage implements GameStorage {
 
     for (const { statsResult, statsCell, ...p } of playersWithStats) {
       if (statsCell === undefined) {
-        throw new Error(`Missing writable cell for ${p.name}`)
+        reportException(new Error(`Missing writable date cell for ${p.name} (${dateString})`))
+        continue
       }
 
       statsCell.value = statsResult

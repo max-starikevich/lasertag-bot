@@ -9,11 +9,11 @@ import { setBotActions, setBotMiddlewares } from '$/bot/middleware'
 
 import { GoogleTableGameStorage } from '$/game/storage/google-table/GoogleTableGameStorage'
 import { GoogleTableGameStore } from '$/game/storage/google-table/GoogleTableStore'
-import { reportException } from '$/errors'
 import L from '$/lang/i18n-node'
 import { defaultLocale } from '$/lang/i18n-custom'
 
 import { errorMiddleware } from './middleware/error'
+import { CustomContext } from './CustomContext'
 
 export const commandsInMenu = commands.filter(
   ({ showInMenu }) => showInMenu
@@ -22,7 +22,8 @@ export const commandsInMenu = commands.filter(
 export const initBot = async (): Promise<Telegraf<GameContext>> => {
   await checkEnvironment()
 
-  const bot = new Telegraf<GameContext>(config.BOT_TOKEN)
+  // @ts-expect-error
+  const bot = new Telegraf<GameContext>(config.BOT_TOKEN, { contextType: CustomContext })
 
   bot.context.storage = new GoogleTableGameStorage({
     email: config.GOOGLE_SERVICE_ACCOUNT_EMAIL,
@@ -78,9 +79,6 @@ export const initBot = async (): Promise<Telegraf<GameContext>> => {
   setBotActions(bot)
 
   bot.catch(errorMiddleware)
-
-  process.on('uncaughtException', e => reportException(e))
-  process.on('unhandledRejection', e => reportException(e))
 
   return bot
 }

@@ -1,4 +1,4 @@
-import { Context, NarrowedContext } from 'telegraf'
+import { NarrowedContext } from 'telegraf'
 import { ChatMember, Message, Update } from 'telegraf/typings/core/types/typegram'
 
 import { Player } from '$/game/player/types'
@@ -6,8 +6,9 @@ import { Player } from '$/game/player/types'
 import { BaseLogger } from '$/logger/types'
 import { Locales, TranslationFunctions } from '$/lang/i18n-types'
 import { GameStorage, GameStore } from '$/game/storage/types'
+import { CustomContext } from './CustomContext'
 
-export interface GameContext extends Context {
+export interface GameContext extends CustomContext {
   storage: GameStorage
   store: GameStore
   logger: BaseLogger
