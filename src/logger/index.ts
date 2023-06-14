@@ -31,3 +31,5 @@ export const makeLogger = (id?: string): BaseLogger => {
     defaultMeta: id !== undefined ? { requestId: id } : {}
   })
 }
+
+export const globalLogger = makeLogger('global')
