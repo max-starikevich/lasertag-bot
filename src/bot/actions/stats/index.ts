@@ -62,7 +62,7 @@ const sendStatsToAllAdminsHandler: ActionHandler = async ctx => {
   const [{ value: gameData }] = await store.get<GameData>([gameDataId])
 
   if (gameData === null) {
-    void ctx.editMessageText(`🤷 ${lang.STATS_NON_EXISTENT()}`)
+    await ctx.editMessageText(`🤷 ${lang.STATS_NON_EXISTENT()}`)
     return
   }
 
@@ -91,13 +91,13 @@ const sendStatsToAllAdminsHandler: ActionHandler = async ctx => {
     await replyWithStatsSave(ctx, admin.telegramUserId, gameData)
   }
 
-  void ctx.editMessageText(`👌 ${lang.STATS_SENT_SUCCESS()}`)
+  await ctx.editMessageText(`👌 ${lang.STATS_SENT_SUCCESS()}`)
 }
 
 const saveStatsHandler: ActionHandler = async ctx => {
   const { lang, store, storage, players, currentPlayer } = ctx
 
-  void ctx.editMessageText(`⏳ ${lang.PLEASE_WAIT()}`)
+  await ctx.editMessageText(`⏳ ${lang.PLEASE_WAIT()}`)
 
   if (ctx.from === undefined) {
     throw new Error('Missing "ctx.from"')
@@ -114,7 +114,7 @@ const saveStatsHandler: ActionHandler = async ctx => {
   const gameResult = ctx.match[2]
 
   if (!isGameResult(gameResult)) {
-    void ctx.editMessageText(`🤷 ${lang.STATS_NON_EXISTENT()}`)
+    await ctx.editMessageText(`🤷 ${lang.STATS_NON_EXISTENT()}`)
     return
   }
 
@@ -123,7 +123,7 @@ const saveStatsHandler: ActionHandler = async ctx => {
   const [{ value: gameData }] = await store.get<GameData>([gameDataId])
 
   if (gameData === null) {
-    void ctx.editMessageText(`🤷 ${lang.STATS_NON_EXISTENT()}`)
+    await ctx.editMessageText(`🤷 ${lang.STATS_NON_EXISTENT()}`)
     return
   }
 
@@ -133,7 +133,7 @@ const saveStatsHandler: ActionHandler = async ctx => {
     won, lost, draw, date: gameData.date
   })
 
-  void ctx.editMessageText(`✅ ${lang.STATS_SAVE_SUCCESS()}`)
+  await ctx.editMessageText(`✅ ${lang.STATS_SAVE_SUCCESS()}`)
 
   if (ctx.from.id !== gameData.telegramUserId) {
     const playerToNotify = players.find(p => p.telegramUserId === gameData.telegramUserId)

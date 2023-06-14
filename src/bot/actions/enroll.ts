@@ -65,13 +65,13 @@ const countHandler: ActionHandler = async ctx => {
 
   currentPlayer.count = count
 
-  void ctx.editMessageText(`⌛ ${lang.COUNT()}: ${count}`)
+  await ctx.editMessageText(`⌛ ${lang.COUNT()}: ${count}`)
 
   await storage.savePlayer(currentPlayer.name, {
     count
   })
 
-  void ctx.editMessageText(`✅ ${lang.COUNT()}: ${count}`)
+  await ctx.editMessageText(`✅ ${lang.COUNT()}: ${count}`)
 }
 
 const rentHandler: ActionHandler = async ctx => {
@@ -89,13 +89,13 @@ const rentHandler: ActionHandler = async ctx => {
 
   currentPlayer.rentCount = rentCount
 
-  void ctx.editMessageText(`⌛ ${lang.RENT()}: ${rentCount}`)
+  await ctx.editMessageText(`⌛ ${lang.RENT()}: ${rentCount}`)
 
   await storage.savePlayer(currentPlayer.name, {
     rentCount
   })
 
-  void ctx.editMessageText(`✅ ${lang.RENT()}: ${rentCount}`)
+  await ctx.editMessageText(`✅ ${lang.RENT()}: ${rentCount}`)
 }
 
 export const enroll: Action = {

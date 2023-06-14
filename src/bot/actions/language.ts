@@ -47,7 +47,7 @@ const handler: ActionHandler = async ctx => {
   ctx.locale = locale
 
   await updateBotCommands(ctx, { type: 'chat', chat_id: ctx.from.id })
-  void ctx.editMessageText(`✅ ${ctx.lang.LANGUAGE_CHOOSE_SUCCESS()}`)
+  await ctx.editMessageText(`✅ ${ctx.lang.LANGUAGE_CHOOSE_SUCCESS()}`)
 }
 
 export const language: Action = {

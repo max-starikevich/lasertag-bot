@@ -62,7 +62,7 @@ const handler: ActionHandler = async ctx => {
     telegramUserId: ctx.from.id
   })
 
-  void ctx.editMessageText(`✅ ${lang.REGISTER_SUCCESS({ name: targetPlayer.name })}`)
+  await ctx.editMessageText(`✅ ${lang.REGISTER_SUCCESS({ name: targetPlayer.name })}`)
 }
 
 export const register: Action = {
