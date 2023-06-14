@@ -1,7 +1,7 @@
 import * as Sentry from '@sentry/node'
 
-export const reportException = (e: any, ctx?: any): void => {
+export const reportException = (e: any, data?: any): void => {
   Sentry.captureException(e, {
-    extra: { ctx }
+    extra: { data }
   })
 }
