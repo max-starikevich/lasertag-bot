@@ -40,6 +40,6 @@ export const getFormattedTelegramUserName = ({ first_name: firstName, last_name:
     userName !== undefined ? `@${userName}` : undefined
   ]
     .filter(s => s !== undefined && s.length > 0)
-    .join(' | ')
+    .join(' ')
 
 export const getPlayerLang = (player?: Player): TranslationFunctions => L[player?.locale ?? defaultLocale]

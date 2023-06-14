@@ -88,7 +88,9 @@ const sendStatsToAllAdminsHandler: ActionHandler = async ctx => {
       📅 ${getDateByTimestamp(gameData.date, timezone).format('DD-MM-YYYY')}
     `)
 
-    await replyWithStatsSave(ctx, admin.telegramUserId, gameData)
+    await replyWithStatsSave({
+      lang, telegram: ctx.telegram
+    }, admin.telegramUserId, gameData)
   }
 
   await ctx.editMessageText(`👌 ${lang.STATS_SENT_SUCCESS()}`)
@@ -96,8 +98,6 @@ const sendStatsToAllAdminsHandler: ActionHandler = async ctx => {
 
 const saveStatsHandler: ActionHandler = async ctx => {
   const { lang, store, storage, players, currentPlayer } = ctx
-
-  await ctx.editMessageText(`⏳ ${lang.PLEASE_WAIT()}`)
 
   if (ctx.from === undefined) {
     throw new Error('Missing "ctx.from"')
