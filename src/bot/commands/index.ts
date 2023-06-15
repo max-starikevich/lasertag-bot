@@ -16,10 +16,12 @@ import { unregister } from './unregister'
 import { about } from './about'
 import { links } from './links'
 import { enroll } from './enroll'
+import { me } from './me'
 
 export const commands: Command[] = [
   start,
   enroll,
+  me,
   players,
   teams,
   oldTeams,
