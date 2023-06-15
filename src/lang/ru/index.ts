@@ -64,7 +64,14 @@ const ru: MappedTranslation = {
 
   NOT_ENOUGH_PLAYERS: 'Недостаточное игроков для этой функции',
 
-  PLEASE_WAIT: 'Пожалуйста, подождите'
+  PLEASE_WAIT: 'Пожалуйста, подождите',
+
+  ME_COMMAND_DESCRIPTION: 'Показать всю информацию обо мне',
+  ME_WINS: 'Победы',
+  ME_LOSSES: 'Поражения',
+  ME_DRAWS: 'Ничьи',
+  ME_GAME_COUNT: 'Всего игр',
+  ME_WINRATE: 'Винрэйт'
 }
 
 export default ru

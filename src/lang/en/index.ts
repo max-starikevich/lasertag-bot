@@ -64,7 +64,14 @@ const en: BaseTranslation = {
 
   NOT_ENOUGH_PLAYERS: 'Not enough players for this function',
 
-  PLEASE_WAIT: 'Please wait'
+  PLEASE_WAIT: 'Please wait',
+
+  ME_COMMAND_DESCRIPTION: 'Show all information about me',
+  ME_WINS: 'Wins',
+  ME_LOSSES: 'Losses',
+  ME_DRAWS: 'Draws',
+  ME_GAME_COUNT: 'Total',
+  ME_WINRATE: 'Win Rate'
 }
 
 export default en
