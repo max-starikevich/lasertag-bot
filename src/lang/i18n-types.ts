@@ -212,6 +212,30 @@ type RootTranslation = {
 	 * P​l​e​a​s​e​ ​w​a​i​t
 	 */
 	PLEASE_WAIT: string
+	/**
+	 * S​h​o​w​ ​a​l​l​ ​i​n​f​o​r​m​a​t​i​o​n​ ​a​b​o​u​t​ ​m​e
+	 */
+	ME_COMMAND_DESCRIPTION: string
+	/**
+	 * W​i​n​s
+	 */
+	ME_WINS: string
+	/**
+	 * L​o​s​s​e​s
+	 */
+	ME_LOSSES: string
+	/**
+	 * D​r​a​w​s
+	 */
+	ME_DRAWS: string
+	/**
+	 * T​o​t​a​l
+	 */
+	ME_GAME_COUNT: string
+	/**
+	 * W​i​n​ ​R​a​t​e
+	 */
+	ME_WINRATE: string
 }
 
 export type TranslationFunctions = {
@@ -407,6 +431,30 @@ export type TranslationFunctions = {
 	 * Please wait
 	 */
 	PLEASE_WAIT: () => LocalizedString
+	/**
+	 * Show all information about me
+	 */
+	ME_COMMAND_DESCRIPTION: () => LocalizedString
+	/**
+	 * Wins
+	 */
+	ME_WINS: () => LocalizedString
+	/**
+	 * Losses
+	 */
+	ME_LOSSES: () => LocalizedString
+	/**
+	 * Draws
+	 */
+	ME_DRAWS: () => LocalizedString
+	/**
+	 * Total
+	 */
+	ME_GAME_COUNT: () => LocalizedString
+	/**
+	 * Win Rate
+	 */
+	ME_WINRATE: () => LocalizedString
 }
 
 export type Formatters = {}

@@ -64,7 +64,14 @@ const by: MappedTranslation = {
 
   NOT_ENOUGH_PLAYERS: 'Недастаткова гульцоў для гэтай функцыі',
 
-  PLEASE_WAIT: 'Пачакайце, калі ласка'
+  PLEASE_WAIT: 'Пачакайце, калі ласка',
+
+  ME_COMMAND_DESCRIPTION: 'Паказаць усю інфармацыю пра мяне',
+  ME_WINS: 'Перамогі',
+  ME_LOSSES: 'Паразы',
+  ME_DRAWS: 'Нічыя',
+  ME_GAME_COUNT: 'Усяго гульняў',
+  ME_WINRATE: 'Вінрэйт'
 }
 
 export default by

@@ -120,8 +120,13 @@ export class GoogleTableGameStorage implements GameStorage {
         clanName,
         clanEmoji: clanName?.match(/\p{Emoji}+/gu)?.[0],
         isClanMember: clanName !== undefined,
-        isAlone: true, // will be overriden later
-        locale
+        isAlone: true,
+        locale,
+        wins: extractNumber(row.wins) ?? 0,
+        losses: extractNumber(row.losses) ?? 0,
+        draws: extractNumber(row.draws) ?? 0,
+        gameCount: extractNumber(row.gameCount) ?? 0,
+        winRate: extractNumber(row.winRate) ?? 0
       }
 
       return [...players, player]

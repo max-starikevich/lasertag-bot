@@ -21,6 +21,12 @@ export interface Player {
   isAlone: boolean
   locale: Locales
 
+  wins: number
+  losses: number
+  draws: number
+  gameCount: number
+  winRate: number
+
   clanName?: string
   clanEmoji?: string
   comment?: string

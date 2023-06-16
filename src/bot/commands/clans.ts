@@ -1,8 +1,9 @@
 import dedent from 'dedent-js'
 import { groupBy, orderBy } from 'lodash'
 
+import { getClanPlayers } from '$/game/player'
+
 import { Command, CommandHandler } from '../types'
-import { getClanPlayers } from '../../game/player'
 
 const handler: CommandHandler = async (ctx) => {
   const { players } = ctx

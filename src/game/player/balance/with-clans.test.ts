@@ -19,7 +19,12 @@ const basePlayer: Player = {
   isAlone: true,
   level: 0,
   locale: 'en',
-  isAdmin: false
+  isAdmin: false,
+  gameCount: 0,
+  wins: 0,
+  losses: 0,
+  draws: 0,
+  winRate: 0
 }
 
 describe('balance/with-clans.ts', () => {
