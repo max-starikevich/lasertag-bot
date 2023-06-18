@@ -12,7 +12,7 @@ export const analyticsMiddleware: BotMiddleware = async (ctx, next) => {
     id: ctx.from.id.toString()
   })
 
-  Sentry.setExtra('update', ctx.update)
+  Sentry.setExtra('update', JSON.stringify(ctx.update))
 
   return await next()
 }
