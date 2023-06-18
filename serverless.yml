@@ -16,7 +16,7 @@ functions:
   webhook:
     image: app
     environment:
-      NODE_OPTIONS: '--enable-source-maps'
+      NODE_OPTIONS: ${env:NODE_OPTIONS}
       SENTRY_DSN: ${env:SENTRY_DSN}
       WEBHOOK_BASE: ${env:WEBHOOK_BASE}
       BOT_TOKEN: ${env:BOT_TOKEN}

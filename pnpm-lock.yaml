@@ -82,6 +82,9 @@ devDependencies:
   dotenv:
     specifier: ^16.1.4
     version: 16.1.4
+  dotenv-cli:
+    specifier: ^7.2.1
+    version: 7.2.1
   husky:
     specifier: ^8.0.3
     version: 8.0.3
@@ -2474,6 +2477,16 @@ packages:
     engines: {node: '>=6.0.0'}
     dependencies:
       esutils: 2.0.3
+    dev: true
+
+  /dotenv-cli@7.2.1:
+    resolution: {integrity: sha512-ODHbGTskqRtXAzZapDPvgNuDVQApu4oKX8lZW7Y0+9hKA6le1ZJlyRS687oU9FXjOVEDU/VFV6zI125HzhM1UQ==}
+    hasBin: true
+    dependencies:
+      cross-spawn: 7.0.3
+      dotenv: 16.1.4
+      dotenv-expand: 10.0.0
+      minimist: 1.2.8
     dev: true
 
   /dotenv-expand@10.0.0:

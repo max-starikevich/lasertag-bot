@@ -1,5 +1,4 @@
 import 'module-alias/register'
-import 'dotenv/config'
 
 import Koa from 'koa'
 import bodyParser from 'koa-bodyparser'
