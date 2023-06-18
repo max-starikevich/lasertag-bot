@@ -1,5 +1,3 @@
-import 'module-alias/register'
-
 import { updateBotCommands, updateBotCommandsForPlayers } from '$/bot/webhooks'
 import { makeLogger } from '$/logger'
 import { defaultLocale } from '$/lang/i18n-custom'

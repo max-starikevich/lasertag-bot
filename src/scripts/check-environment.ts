@@ -1,5 +1,3 @@
-import 'module-alias/register'
-
 import { makeLogger } from '$/logger'
 import { checkEnvironment } from '$/config/check'
 

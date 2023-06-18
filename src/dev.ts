@@ -1,5 +1,3 @@
-import 'module-alias/register'
-
 import Koa from 'koa'
 import bodyParser from 'koa-bodyparser'
 import Router from 'koa-router'

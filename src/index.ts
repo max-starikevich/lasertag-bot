@@ -1,5 +1,3 @@
-
-import 'module-alias/register'
 import * as Sentry from '@sentry/node'
 import { version } from '../package.json'
 import { reportException } from './errors'

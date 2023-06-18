@@ -1,5 +1,3 @@
-import 'module-alias/register'
-
 import { updateBotWebhook } from '$/bot/webhooks'
 import { makeLogger } from '$/logger'
 import { botPromise } from '$/lambda'

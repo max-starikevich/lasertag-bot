@@ -65,7 +65,7 @@
     "deploy:aws": "serverless deploy --verbose --stage production",
     "deploy:sentry": "sentry-cli releases new $(jq --raw-output .version package.json) && sentry-cli releases files ./dist && sentry-cli releases files $(jq --raw-output .version package.json) upload-sourcemaps ./dist && dotenv -e .env.production -- sentry-cli releases finalize $(jq --raw-output .version package.json)",
     "pre-deploy": "dotenv -e .env.production -- node dist/src/scripts/check-environment.js",
-    "post-deploy": "dotenv -e .env.production -- node dist/src/scripts/update-webhook.js && dotenv -- node dist/src/scripts/update-commands.js"
+    "post-deploy": "dotenv -e .env.production -- node dist/src/scripts/update-webhook.js && dotenv -e .env.production -- node dist/src/scripts/update-commands.js"
   },
   "_moduleAliases": {
     "$": "./dist/src"
