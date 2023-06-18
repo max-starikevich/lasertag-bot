@@ -59,7 +59,7 @@
     "prepare": "husky install",
     "pre-push": "pnpm lint && pnpm test && pnpm deploy:build",
     "ngrok": "ngrok http 4000",
-    "build": "rm -rf ./dist && tsc -p ./tsconfig.prod.json",
+    "build": "tsc -p ./tsconfig.prod.json",
     "deploy:all": "pnpm pre-deploy && pnpm deploy:build && pnpm deploy:aws && pnpm post-deploy && pnpm deploy:sentry",
     "deploy:build": "docker image build --progress=plain -t lasertag-bot .",
     "deploy:aws": "serverless deploy --verbose --stage production",
