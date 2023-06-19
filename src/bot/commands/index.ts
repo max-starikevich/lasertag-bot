@@ -17,6 +17,7 @@ import { about } from './about'
 import { links } from './links'
 import { enroll } from './enroll'
 import { me } from './me'
+import { error } from './error'
 
 export const commands: Command[] = [
   start,
@@ -31,7 +32,8 @@ export const commands: Command[] = [
   language,
   unregister,
   about,
-  help
+  help,
+  error
 ]
 
 export const replyWithPlaceAndTime = async (ctx: CommandContext): Promise<void> => {

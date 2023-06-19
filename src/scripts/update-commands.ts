@@ -1,7 +1,4 @@
-import 'module-alias/register'
-import 'dotenv/config'
-
-import { updateBotCommands, updateBotCommandsForPlayers, updateBotWebhook } from '$/bot/webhooks'
+import { updateBotCommands, updateBotCommandsForPlayers } from '$/bot/webhooks'
 import { makeLogger } from '$/logger'
 import { defaultLocale } from '$/lang/i18n-custom'
 import { botPromise } from '$/lambda'
@@ -12,11 +9,6 @@ async function run (): Promise<void> {
 
   try {
     const bot = await botPromise
-
-    await updateBotWebhook({
-      telegram: bot.telegram,
-      logger
-    })
 
     await updateBotCommands({
       telegram: bot.telegram,
@@ -32,7 +24,7 @@ async function run (): Promise<void> {
       logger
     }, players)
 
-    logger.info('✅ Updated bot commands')
+    logger.info('✅ Updated bot commands for registered users')
   } catch (e) {
     logger.error(e)
     process.exit(1)

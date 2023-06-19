@@ -15,7 +15,7 @@ export const errorMiddleware = async (error: any, ctx: GameContext): Promise<voi
     return
   }
 
-  reportException(error, ctx)
+  reportException(error)
 
   logger.error({
     update: ctx.update,
