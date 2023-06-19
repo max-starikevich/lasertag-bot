@@ -65,7 +65,7 @@
     "deploy:build": "docker image build --progress=plain -t lasertag-bot .",
     "deploy:aws": "serverless deploy --verbose --stage production",
     "pre-deploy": "node dist/src/scripts/check-environment.js",
-    "post-deploy": "node dist/src/scripts/update-webhook.js && node dist/src/scripts/update-commands.js"
+    "post-deploy": "node dist/src/scripts/update-webhook.js && node dist/src/scripts/update-commands.js && node dist/src/scripts/release-sentry.js"
   },
   "_moduleAliases": {
     "$": "./dist/src"
