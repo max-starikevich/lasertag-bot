@@ -80,3 +80,8 @@ export const orderTeamByPlayerList = (team: Player[], playerList: Player[]): Pla
     team, p =>
       playerList.map(({ name }) => name).indexOf(p.name)
   )
+
+export const orderTeamByGameCount = (team: Player[]): Player[] =>
+  orderBy(
+    team, p => p.gameCount, 'desc'
+  )
