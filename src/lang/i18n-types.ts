@@ -171,6 +171,10 @@ type RootTranslation = {
 	 */
 	STATS_NON_EXISTENT: string
 	/**
+	 * S​t​a​t​s​ ​f​o​r​ ​t​h​i​s​ ​g​a​m​e​ ​a​r​e​ ​a​l​r​e​a​d​y​ ​s​a​v​e​d
+	 */
+	STATS_ALREADY_SAVED: string
+	/**
 	 * N​o​t​ ​n​e​e​d​e​d
 	 */
 	RENT_NOT_NEEDED: string
@@ -391,6 +395,10 @@ export type TranslationFunctions = {
 	 * Data for this game is already lost
 	 */
 	STATS_NON_EXISTENT: () => LocalizedString
+	/**
+	 * Stats for this game are already saved
+	 */
+	STATS_ALREADY_SAVED: () => LocalizedString
 	/**
 	 * Not needed
 	 */

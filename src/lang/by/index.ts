@@ -50,6 +50,7 @@ const by: MappedTranslation = {
   STATS_SAVE_REQUEST: 'Новы запыт на захаваньне статыстыкі\n\n{username: string}',
   STATS_DRAW: 'Нічыя',
   STATS_NON_EXISTENT: 'Дадзеныя для гэтай гульні ўжо страчаны',
+  STATS_ALREADY_SAVED: 'Статыстыка для гэтай гульні ўжо захавана',
 
   RENT_NOT_NEEDED: 'Не патрэбен',
   ABSENT: 'Мяне не будзе',
