@@ -5,6 +5,7 @@ import { groupBy, omitBy, range } from 'lodash'
 import { extractNumber, extractString, parseRange } from '$/utils'
 import { extractLocale, defaultLocale } from '$/lang/i18n-custom'
 import { GoogleDocumentError } from '$/errors/GoogleDocumentError'
+import { StatsAlreadySavedError } from '$/errors/StatsAlreadySavedError'
 import { reportException } from '$/errors'
 
 import { EnrollData, GameData, GoogleSpreadsheetPlayerCellMap, GoogleTableGameStorageParams, LinksData, PlayersData, STATS_DATE_FORMAT, SheetsData, StatsData, StatsResult } from './types'
@@ -298,14 +299,16 @@ export class GoogleTableGameStorage implements GameStorage {
     const dateString = getDateByTimestamp(date, this.stats.timezone).format(STATS_DATE_FORMAT)
     await sheets.loadHeaderRow()
 
-    if (!sheets.headerValues.includes(dateString)) {
-      await sheets.resize({
-        rowCount: sheets.rowCount,
-        columnCount: sheets.columnCount + 1
-      })
-
-      await sheets.setHeaderRow([...sheets.headerValues, dateString])
+    if (sheets.headerValues.includes(dateString)) {
+      throw new StatsAlreadySavedError()
     }
+
+    await sheets.resize({
+      rowCount: sheets.rowCount,
+      columnCount: sheets.columnCount + 1
+    })
+
+    await sheets.setHeaderRow([...sheets.headerValues, dateString])
 
     const rows = await sheets.getRows()
     const cellMaps = await getCellsByRows(sheets, rows)
