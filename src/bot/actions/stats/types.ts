@@ -1,7 +1,7 @@
 export enum GameResult {
   RED = 'RED',
   BLUE = 'BLUE',
-  DRAW = 'DRAW'
+  DRAW = 'DRAW',
 }
 
 export interface GameData {
