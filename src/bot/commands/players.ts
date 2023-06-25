@@ -14,8 +14,8 @@ const handler: CommandHandler = async (ctx) => {
 
   const { players, lang } = ctx
 
-  const enrolledPlayers = orderTeamByGameCount(players)
-    .filter(({ count }) => count > 0)
+  const playersSorted = orderTeamByGameCount(players)
+  const enrolledPlayers = playersSorted.filter(({ count }) => count > 0)
 
   if (enrolledPlayers.length === 0) {
     throw new NotEnoughPlayersError()
@@ -26,15 +26,15 @@ const handler: CommandHandler = async (ctx) => {
     ({ isQuestionableCount }) => !isQuestionableCount
   )
 
-  const playersWithComments = players.filter(
+  const playersWithComments = playersSorted.filter(
     (player): player is Player & { comment: string } => player.comment !== undefined
   )
 
   await ctx.replyWithHTML(dedent`
-    ${lang.RECORDED()}: ${players.reduce(
+    ${lang.RECORDED()}: ${playersSorted.reduce(
       (sum, { count, isQuestionableCount }) => isQuestionableCount ? sum : sum + count,
     0)}
-    ${lang.RENT()}: ${players.reduce(
+    ${lang.RENT()}: ${playersSorted.reduce(
       (sum, { rentCount, isQuestionableRentCount }) => isQuestionableRentCount ? sum : sum + rentCount,
     0)}
   `)
