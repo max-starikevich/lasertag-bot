@@ -49,7 +49,7 @@ const en: BaseTranslation = {
   STATS_SENT_SUCCESS: 'Stats have been sent to admin',
   STATS_SAVE_REQUEST: 'Incoming stats save request from {username: string}',
   STATS_DRAW: 'Draw',
-  STATS_NON_EXISTENT: 'Data for this game is already lost',
+  STATS_NON_EXISTENT: 'Data for this game is lost or broken',
   STATS_ALREADY_SAVED: 'Stats for this game are already saved',
   STATS_SAVE_REJECT: 'Reject',
   STATS_SAVE_REJECTED: 'Stats have been rejected',

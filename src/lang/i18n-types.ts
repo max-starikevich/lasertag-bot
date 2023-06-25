@@ -167,7 +167,7 @@ type RootTranslation = {
 	 */
 	STATS_DRAW: string
 	/**
-	 * D​a​t​a​ ​f​o​r​ ​t​h​i​s​ ​g​a​m​e​ ​i​s​ ​a​l​r​e​a​d​y​ ​l​o​s​t
+	 * D​a​t​a​ ​f​o​r​ ​t​h​i​s​ ​g​a​m​e​ ​i​s​ ​l​o​s​t​ ​o​r​ ​b​r​o​k​e​n
 	 */
 	STATS_NON_EXISTENT: string
 	/**
@@ -404,7 +404,7 @@ export type TranslationFunctions = {
 	 */
 	STATS_DRAW: () => LocalizedString
 	/**
-	 * Data for this game is already lost
+	 * Data for this game is lost or broken
 	 */
 	STATS_NON_EXISTENT: () => LocalizedString
 	/**
