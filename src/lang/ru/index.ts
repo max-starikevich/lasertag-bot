@@ -51,6 +51,9 @@ const ru: MappedTranslation = {
   STATS_DRAW: 'Ничья',
   STATS_NON_EXISTENT: 'Данные для этой игры уже потеряны',
   STATS_ALREADY_SAVED: 'Статистика для этой игры уже сохранена',
+  STATS_SAVE_REJECT: 'Отклонить',
+  STATS_SAVE_REJECTED: 'Статистика отклонена',
+  STATS_SAVE_REJECTED_FOR_USER: 'Ваш запрос отклонен администратором',
 
   RENT_NOT_NEEDED: 'Не нужен',
   ABSENT: 'Меня не будет',

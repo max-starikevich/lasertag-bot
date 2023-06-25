@@ -51,6 +51,9 @@ const en: BaseTranslation = {
   STATS_DRAW: 'Draw',
   STATS_NON_EXISTENT: 'Data for this game is already lost',
   STATS_ALREADY_SAVED: 'Stats for this game are already saved',
+  STATS_SAVE_REJECT: 'Reject',
+  STATS_SAVE_REJECTED: 'Stats have been rejected',
+  STATS_SAVE_REJECTED_FOR_USER: 'Your request has been rejected by admin',
 
   RENT_NOT_NEEDED: 'Not needed',
   ABSENT: "I'll be absent",
