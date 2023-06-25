@@ -1,4 +1,4 @@
-import { keyBy } from 'lodash'
+import { groupBy, keyBy } from 'lodash'
 import { User } from 'telegraf/typings/core/types/typegram'
 
 import L from '$/lang/i18n-node'
@@ -43,3 +43,34 @@ export const getFormattedTelegramUserName = ({ first_name: firstName, last_name:
     .join(' ')
 
 export const getPlayerLang = (player?: Player): TranslationFunctions => L[player?.locale ?? defaultLocale]
+
+interface Squads {
+  alone: Player[]
+  [clanName: string]: Player[]
+}
+
+export const getSquadsForTeam = (team: Player[]): Squads => {
+  const clans = groupBy(team, p => p.clanName)
+
+  return team.reduce<Squads>((squads, p) => {
+    if (p.clanName == null) {
+      squads.alone.push(p)
+      return squads
+    }
+
+    const { clanName } = p
+
+    if (clans[clanName] == null || clans[clanName].length < 2) {
+      squads.alone.push(p)
+      return squads
+    }
+
+    if (squads[clanName] === undefined) {
+      squads[clanName] = []
+    }
+
+    squads[clanName].push(p)
+
+    return squads
+  }, { alone: [] })
+}

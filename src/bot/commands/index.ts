@@ -1,7 +1,9 @@
 import dedent from 'dedent-js'
+import { orderBy } from 'lodash'
 
+import { getSquadsForTeam } from '$/game/player'
 import { getTeamsLevels } from '$/game/player/balance'
-import { Teams } from '$/game/player/types'
+import { Player, Teams } from '$/game/player/types'
 
 import { Command, CommandContext } from '../types'
 
@@ -70,5 +72,30 @@ export const replyWithTeamBalance = async (ctx: CommandContext, teams: Teams): P
 
   await ctx.replyWithHTML(dedent`
     ⚖️ ${lang.TEAMS_BALANCE()}: 🔴 ${Math.trunc(redLevel)} 🔵 ${Math.trunc(blueLevel)}
+  `)
+}
+
+export const replyWithPlayers = async (ctx: CommandContext, team: Player[], color: string): Promise<void> => {
+  await ctx.replyWithHTML(dedent`
+    ${team
+      .map(({ name, clanEmoji }) => `${color} ${name} ${clanEmoji ?? ''}`)
+      .join('\n')}
+  `)
+}
+
+export const replyWithSquads = async (ctx: CommandContext, team: Player[], color: string): Promise<void> => {
+  const { alone, ...clanSquadMap } = getSquadsForTeam(team)
+  const clans = orderBy(Object.entries(clanSquadMap), ([, players]) => players.length, 'desc')
+
+  await ctx.replyWithHTML(dedent`
+    ${clans
+      .map(([clanName, players]) =>
+        `<b>${clanName}</b>\n` +
+        players.map(({ name }) => `${color} ${name}`).join('\n')
+      ).join('\n\n')}
+
+    ${alone
+      .map(({ name, clanEmoji }) => `${color} ${name} ${clanEmoji ?? ''}`)
+      .join('\n')}
   `)
 }
