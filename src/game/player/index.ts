@@ -1,4 +1,4 @@
-import { groupBy, keyBy } from 'lodash'
+import { groupBy, keyBy, orderBy } from 'lodash'
 import { User } from 'telegraf/typings/core/types/typegram'
 
 import L from '$/lang/i18n-node'
@@ -74,3 +74,9 @@ export const getSquadsForTeam = (team: Player[]): Squads => {
     return squads
   }, { alone: [] })
 }
+
+export const orderTeamByPlayerList = (team: Player[], playerList: Player[]): Player[] =>
+  orderBy(
+    team, p =>
+      playerList.map(({ name }) => name).indexOf(p.name)
+  )

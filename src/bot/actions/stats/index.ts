@@ -1,7 +1,7 @@
 import dedent from 'dedent-js'
 
 import { Teams } from '$/game/player/types'
-import { getAdmins, getFormattedTelegramUserName, getPlayerLang, getPlayerNames, getPlayersByNames } from '$/game/player'
+import { getAdmins, getFormattedTelegramUserName, getPlayerLang, getPlayerNames, getPlayersByNames, orderTeamByPlayerList } from '$/game/player'
 import { generateId } from '$/utils'
 import { Action, ActionHandler, CommandContext } from '$/bot/types'
 import { getDateByTimestamp } from '$/game/storage/google-table/utils'
@@ -77,11 +77,11 @@ const sendStatsToAllAdminsHandler: ActionHandler = async ctx => {
     await ctx.telegram.sendMessage(admin.telegramUserId, dedent`
       💾 ${lang.STATS_SAVE_REQUEST({ username })}:
 
-      ${redTeam
+      ${orderTeamByPlayerList(redTeam, players)
         .map(({ name, clanEmoji }) => `🔴 ${name} ${clanEmoji ?? ''}`)
         .join('\n')}
 
-      ${blueTeam
+      ${orderTeamByPlayerList(blueTeam, players)
         .map(({ name, clanEmoji }) => `🔵 ${name} ${clanEmoji ?? ''}`)
         .join('\n')}
 
