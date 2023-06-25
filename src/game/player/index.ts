@@ -75,13 +75,13 @@ export const getSquadsForTeam = (team: Player[]): Squads => {
   }, { alone: [] })
 }
 
-export const orderTeamByPlayerList = (team: Player[], playerList: Player[]): Player[] =>
+export const orderTeamByPlayerList = <P extends Player>(team: P[], playerList: P[]): P[] =>
   orderBy(
     team, p =>
       playerList.map(({ name }) => name).indexOf(p.name)
   )
 
-export const orderTeamByGameCount = (team: Player[]): Player[] =>
+export const orderTeamByGameCount = <P extends Player>(team: P[]): P[] =>
   orderBy(
     team, p => p.gameCount, 'desc'
   )
