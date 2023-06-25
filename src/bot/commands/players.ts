@@ -4,6 +4,8 @@ import { partition } from 'lodash'
 import { NotEnoughPlayersError } from '$/errors/NotEnoughPlayersError'
 import { Player } from '$/game/player/types'
 
+import { orderTeamByGameCount } from '$/game/player'
+
 import { Command, CommandHandler } from '../types'
 import { replyWithPlaceAndTime } from '.'
 
@@ -12,7 +14,8 @@ const handler: CommandHandler = async (ctx) => {
 
   const { players, lang } = ctx
 
-  const enrolledPlayers = players.filter(({ count }) => count > 0)
+  const enrolledPlayers = orderTeamByGameCount(players)
+    .filter(({ count }) => count > 0)
 
   if (enrolledPlayers.length === 0) {
     throw new NotEnoughPlayersError()
