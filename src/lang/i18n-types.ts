@@ -167,9 +167,25 @@ type RootTranslation = {
 	 */
 	STATS_DRAW: string
 	/**
-	 * D​a​t​a​ ​f​o​r​ ​t​h​i​s​ ​g​a​m​e​ ​i​s​ ​a​l​r​e​a​d​y​ ​l​o​s​t
+	 * D​a​t​a​ ​f​o​r​ ​t​h​i​s​ ​g​a​m​e​ ​i​s​ ​l​o​s​t​ ​o​r​ ​b​r​o​k​e​n
 	 */
 	STATS_NON_EXISTENT: string
+	/**
+	 * S​t​a​t​s​ ​f​o​r​ ​t​h​i​s​ ​g​a​m​e​ ​a​r​e​ ​a​l​r​e​a​d​y​ ​s​a​v​e​d
+	 */
+	STATS_ALREADY_SAVED: string
+	/**
+	 * R​e​j​e​c​t
+	 */
+	STATS_SAVE_REJECT: string
+	/**
+	 * S​t​a​t​s​ ​h​a​v​e​ ​b​e​e​n​ ​r​e​j​e​c​t​e​d
+	 */
+	STATS_SAVE_REJECTED: string
+	/**
+	 * Y​o​u​r​ ​r​e​q​u​e​s​t​ ​h​a​s​ ​b​e​e​n​ ​r​e​j​e​c​t​e​d​ ​b​y​ ​a​d​m​i​n
+	 */
+	STATS_SAVE_REJECTED_FOR_USER: string
 	/**
 	 * N​o​t​ ​n​e​e​d​e​d
 	 */
@@ -388,9 +404,25 @@ export type TranslationFunctions = {
 	 */
 	STATS_DRAW: () => LocalizedString
 	/**
-	 * Data for this game is already lost
+	 * Data for this game is lost or broken
 	 */
 	STATS_NON_EXISTENT: () => LocalizedString
+	/**
+	 * Stats for this game are already saved
+	 */
+	STATS_ALREADY_SAVED: () => LocalizedString
+	/**
+	 * Reject
+	 */
+	STATS_SAVE_REJECT: () => LocalizedString
+	/**
+	 * Stats have been rejected
+	 */
+	STATS_SAVE_REJECTED: () => LocalizedString
+	/**
+	 * Your request has been rejected by admin
+	 */
+	STATS_SAVE_REJECTED_FOR_USER: () => LocalizedString
 	/**
 	 * Not needed
 	 */

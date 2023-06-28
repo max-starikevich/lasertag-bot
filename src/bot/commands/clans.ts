@@ -1,14 +1,14 @@
 import dedent from 'dedent-js'
 import { groupBy, orderBy } from 'lodash'
 
-import { getClanPlayers } from '$/game/player'
+import { getClanPlayers, orderTeamByGameCount } from '$/game/player'
 
 import { Command, CommandHandler } from '../types'
 
 const handler: CommandHandler = async (ctx) => {
   const { players } = ctx
 
-  const clanPlayers = getClanPlayers(players)
+  const clanPlayers = orderTeamByGameCount(getClanPlayers(players))
 
   const clans = orderBy(
     Object.entries(

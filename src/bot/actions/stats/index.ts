@@ -1,16 +1,16 @@
 import dedent from 'dedent-js'
 
 import { Teams } from '$/game/player/types'
-import { getAdmins, getFormattedTelegramUserName, getPlayerLang, getPlayerNames, getPlayersByNames } from '$/game/player'
+import { getAdmins, getFormattedTelegramUserName, getPlayerLang, getPlayerNames, getPlayersByNames, orderTeamByGameCount } from '$/game/player'
 import { generateId } from '$/utils'
+import { Action, ActionHandler, CommandContext } from '$/bot/types'
+import { getDateByTimestamp } from '$/game/storage/google-table/utils'
 
 import { RegisterRequiredError } from '$/errors/RegisterRequiredError'
 import { AccessDeniedError } from '$/errors/AccessDeniedError'
 
-import { Action, ActionHandler, CommandContext } from '../../types'
 import { GameData } from './types'
 import { replyWithStatsSave, isGameResult, getScoredPlayersByResult } from './utils'
-import { getDateByTimestamp } from '$/game/storage/google-table/utils'
 
 export const initializer = async (
   ctx: CommandContext,
@@ -77,11 +77,11 @@ const sendStatsToAllAdminsHandler: ActionHandler = async ctx => {
     await ctx.telegram.sendMessage(admin.telegramUserId, dedent`
       💾 ${lang.STATS_SAVE_REQUEST({ username })}:
 
-      ${redTeam
+      ${orderTeamByGameCount(redTeam)
         .map(({ name, clanEmoji }) => `🔴 ${name} ${clanEmoji ?? ''}`)
         .join('\n')}
 
-      ${blueTeam
+      ${orderTeamByGameCount(blueTeam)
         .map(({ name, clanEmoji }) => `🔵 ${name} ${clanEmoji ?? ''}`)
         .join('\n')}
 
@@ -111,18 +111,18 @@ const saveStatsHandler: ActionHandler = async ctx => {
     throw new AccessDeniedError()
   }
 
-  const gameResult = ctx.match[2]
-
-  if (!isGameResult(gameResult)) {
-    await ctx.editMessageText(`🤷 ${lang.STATS_NON_EXISTENT()}`)
-    return
-  }
-
   const gameDataId = ctx.match[1]
 
   const [{ value: gameData }] = await store.get<GameData>([gameDataId])
 
   if (gameData === null) {
+    await ctx.editMessageText(`🤷 ${lang.STATS_NON_EXISTENT()}`)
+    return
+  }
+
+  const gameResult = ctx.match[2]
+
+  if (!isGameResult(gameResult)) {
     await ctx.editMessageText(`🤷 ${lang.STATS_NON_EXISTENT()}`)
     return
   }
