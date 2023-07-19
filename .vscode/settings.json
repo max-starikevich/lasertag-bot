@@ -6,5 +6,5 @@
   "standard.trace.server": "verbose",
   "standard.treatErrorsAsWarnings": true,
   "typescript.disableAutomaticTypeAcquisition": true,
-  "typescript.reportStyleChecksAsWarnings": false,
+  "typescript.reportStyleChecksAsWarnings": false
 }

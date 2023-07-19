@@ -34,6 +34,14 @@ export const updateBotCommands = async (ctx: Pick<GameContext, 'logger' | 'teleg
   logger.info(`✅ Set bot menu for scope: ${JSON.stringify(scope)}, locale "${ctx.locale}", result: "${String(result)}"`)
 }
 
+export const unsetCommandsForGroups = async (ctx: Pick<GameContext, 'logger' | 'telegram' >): Promise<void> => {
+  const { logger, telegram } = ctx
+
+  await telegram.setMyCommands([], { scope: { type: 'all_group_chats' } })
+
+  logger.info('✅ Unset bot commands for all groups chats')
+}
+
 export const updateBotCommandsForPlayers = async (ctx: Pick<GameContext, 'logger' | 'telegram'>, players: Player[]): Promise<void> => {
   const { logger, telegram } = ctx
 

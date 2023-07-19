@@ -1,4 +1,5 @@
 import { Telegraf, MiddlewareFn } from 'telegraf'
+import { message, callbackQuery } from 'telegraf/filters'
 
 import { GameContext } from '../types'
 import { commands } from '../commands'
@@ -15,8 +16,8 @@ import { playerMiddleware } from './player'
 export type BotMiddleware = MiddlewareFn<GameContext>
 
 export const setBotMiddlewares = (bot: Telegraf<GameContext>): void => {
-  bot.on('text', loggingMiddleware, analyticsMiddleware, accessMiddleware, groupChatMiddleware, playerMiddleware)
-  bot.on('callback_query', loggingMiddleware, analyticsMiddleware, accessMiddleware, groupChatMiddleware, playerMiddleware)
+  bot.on(message('text'), loggingMiddleware, analyticsMiddleware, groupChatMiddleware, accessMiddleware, playerMiddleware)
+  bot.on(callbackQuery(), loggingMiddleware, analyticsMiddleware, groupChatMiddleware, accessMiddleware, playerMiddleware)
 
   commands.map((command) => bot.command(command.name, async (ctx) => await command.handler(ctx)))
 

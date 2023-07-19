@@ -17,7 +17,6 @@ export interface GameContext extends CustomContext {
   isCreatorOfHomeChat: boolean
 
   isPrivateChat: boolean
-  isGroupChat: boolean
 
   memberStatus: ChatMember['status']
 
