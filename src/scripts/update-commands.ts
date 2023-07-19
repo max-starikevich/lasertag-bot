@@ -1,4 +1,4 @@
-import { updateBotCommands, updateBotCommandsForPlayers } from '$/bot/webhooks'
+import { unsetCommandsForGroups, updateBotCommands, updateBotCommandsForPlayers } from '$/bot/webhooks'
 import { makeLogger } from '$/logger'
 import { defaultLocale } from '$/lang/i18n-custom'
 import { botPromise } from '$/lambda'
@@ -9,6 +9,11 @@ async function run (): Promise<void> {
 
   try {
     const bot = await botPromise
+
+    await unsetCommandsForGroups({
+      telegram: bot.telegram,
+      logger
+    })
 
     await updateBotCommands({
       telegram: bot.telegram,

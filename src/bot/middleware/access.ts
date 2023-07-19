@@ -9,9 +9,6 @@ export const accessMiddleware: BotMiddleware = async (ctx, next) => {
       throw new Error('Missing "ctx.chat" and "ctx.from"')
     }
 
-    ctx.isGroupChat = ctx.chat.type === 'supergroup' || ctx.chat.type === 'group'
-    ctx.isPrivateChat = ctx.chat.type === 'private'
-
     const { status } = await ctx.telegram.getChatMember(config.TELEGRAM_HOME_CHAT_ID, ctx.from.id)
 
     ctx.memberStatus = status

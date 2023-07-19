@@ -1,8 +1,14 @@
 import { BotMiddleware } from '.'
 
 export const groupChatMiddleware: BotMiddleware = async (ctx, next) => {
-  if (ctx.isGroupChat) {
-    return await ctx.reply(ctx.lang.GROUP_CHAT_WARNING({ botUsername: ctx.botInfo.username }))
+  if ((ctx.chat == null) || (ctx.from == null)) {
+    throw new Error('Missing "ctx.chat" and "ctx.from"')
+  }
+
+  ctx.isPrivateChat = ctx.chat.type === 'private'
+
+  if (!ctx.isPrivateChat) {
+    return
   }
 
   return await next()
