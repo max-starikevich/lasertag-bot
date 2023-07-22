@@ -9,8 +9,8 @@ import { Command, CommandContext } from '../types'
 
 import { start, help } from './help'
 import { players } from './players'
-import { oldTeams } from './oldteams'
 import { teams } from './teams'
+import { clanteams } from './clanteams'
 import { clans } from './clans'
 import { register } from './register'
 import { language } from './language'
@@ -26,8 +26,8 @@ export const commands: Command[] = [
   enroll,
   me,
   players,
+  clanteams,
   teams,
-  oldTeams,
   clans,
   links,
   register,
