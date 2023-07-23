@@ -3,5 +3,6 @@
   "include": [
     "src/dev.ts",
     "src/scripts/**/*.ts",
+    "test/**/*.ts"
   ]
 }

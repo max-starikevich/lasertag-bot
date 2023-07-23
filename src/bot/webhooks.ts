@@ -3,7 +3,7 @@ import { BotCommandScope } from 'telegraf/typings/core/types/typegram'
 import config from '$/config'
 
 import { GameContext } from './types'
-import { commandsInMenu } from '.'
+import { commandsInMenu } from './bot'
 
 import L from '$/lang/i18n-node'
 import { Player } from '$/game/player/types'

@@ -1,9 +1,10 @@
 import { difference, intersection, times } from 'lodash'
 
-import { getRandomArray, getRandomNumber } from '../../../utils.dev'
-import { ClanPlayer, Player } from '../types'
-import { getTeamsLevels } from './'
-import { getBalancedTeamsWithClans } from './with-clans'
+import { getRandomArray, getRandomNumber } from './utils'
+
+import { ClanPlayer, Player } from '$/game/player/types'
+import { getTeamsLevels } from '$/game/player/balance'
+import { getBalancedTeamsWithClans } from '$/game/player/balance/with-clans'
 
 const basePlayer: Player = {
   tableRow: 0,

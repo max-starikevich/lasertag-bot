@@ -1,6 +1,7 @@
 import * as Sentry from '@sentry/node'
 import { version } from '../package.json'
-import { reportException } from './errors'
+
+import { reportException } from '$/errors'
 
 Sentry.init({
   dsn: process.env.SENTRY_DSN,

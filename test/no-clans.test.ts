@@ -1,9 +1,10 @@
 import { difference, times } from 'lodash'
 
-import { getRandomArray } from '../../../utils.dev'
-import { getBalancedTeams } from './no-clans'
-import { Player } from '../types'
-import { getTeamsLevels } from './'
+import { getRandomArray } from './utils'
+
+import { getBalancedTeams } from '$/game/player/balance/no-clans'
+import { Player } from '$/game/player/types'
+import { getTeamsLevels } from '$/game/player/balance'
 
 describe('balance/no-clans.ts', () => {
   describe('getBalancedTeams()', () => {

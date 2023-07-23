@@ -1,6 +1,6 @@
 import dedent from 'dedent-js'
 
-import { commandsInMenu } from '$/bot'
+import { commandsInMenu } from '$/bot/bot'
 
 import { Command, CommandHandler } from '../types'
 
