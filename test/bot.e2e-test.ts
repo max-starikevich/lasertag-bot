@@ -37,7 +37,7 @@ describe('Telegraf bot', () => {
 
   const storage: GameStorage = {
     getPlayers: jest.fn(async function (): Promise<Player[]> {
-      throw new Error('Function not implemented.')
+      return []
     }),
     getLocations: async function (): Promise<GameLocation[]> {
       throw new Error('Function not implemented.')
@@ -86,11 +86,7 @@ describe('Telegraf bot', () => {
 
   describe('/about', () => {
     it('should properly get the information', async () => {
-      const response = await telegramApi.sendMessageWithText('/about')
-
-      console.log({
-        response
-      })
+      await telegramApi.sendMessageWithText('/about')
 
       expect(storage.getPlayers).toBeCalled()
     })
