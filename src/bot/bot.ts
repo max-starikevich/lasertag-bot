@@ -1,4 +1,5 @@
 import { Telegraf } from 'telegraf'
+import ApiClient from 'telegraf/typings/core/network/client'
 
 import { GameContext } from '$/bot/types'
 import { commands } from '$/bot/commands'
@@ -10,7 +11,7 @@ import { defaultLocale } from '$/lang/i18n-custom'
 
 import { errorMiddleware } from './middleware/error'
 import { CustomContext } from './CustomContext'
-import ApiClient from 'telegraf/typings/core/network/client'
+import { Locales } from '$/lang/i18n-types'
 
 export const commandsInMenu = commands.filter(
   ({ showInMenu }) => showInMenu
@@ -20,14 +21,15 @@ interface InitBotParams {
   storage: GameStorage
   store: GameStore
   token: string
-  telegram?: Partial<ApiClient.Options>
+  telegramApiOptions?: Partial<ApiClient.Options>
+  locale?: Locales
 }
 
-export const initBot = async ({ token, telegram, storage, store }: InitBotParams): Promise<Telegraf<GameContext>> => {
+export const initBot = async ({ token, telegramApiOptions, storage, store, locale = defaultLocale }: InitBotParams): Promise<Telegraf<GameContext>> => {
   const bot = new Telegraf<GameContext>(token, {
     // @ts-expect-error
     contextType: CustomContext,
-    telegram
+    telegram: telegramApiOptions
   })
 
   bot.context.storage = storage
@@ -39,8 +41,8 @@ export const initBot = async ({ token, telegram, storage, store }: InitBotParams
   bot.context.isCreatorOfHomeChat = false
   bot.context.isPrivateChat = false
 
-  bot.context.lang = L[defaultLocale]
-  bot.context.locale = defaultLocale
+  bot.context.lang = L[locale]
+  bot.context.locale = locale
 
   setBotMiddlewares(bot)
   setBotActions(bot)

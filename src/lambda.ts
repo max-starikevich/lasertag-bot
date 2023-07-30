@@ -48,7 +48,7 @@ const store = new GoogleTableGameStore({
   sheetsId: config.STORE_SHEETS_ID
 })
 
-export const botPromise = initBot({ storage, store })
+export const botPromise = initBot({ token: config.BOT_TOKEN, storage, store })
 
 export const handler = async (
   event: APIGatewayProxyEvent

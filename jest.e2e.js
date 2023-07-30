@@ -3,7 +3,7 @@ module.exports = {
   setupFiles: ["dotenv/config"],
   passWithNoTests: true,
   testMatch: [
-    '<rootDir>/**/*.test.ts',
+    '<rootDir>/**/*.e2e-test.ts',
   ],
   transform: {
     '^.+\\.ts$': 'ts-jest'
