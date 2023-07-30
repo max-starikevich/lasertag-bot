@@ -36,7 +36,6 @@
     "@types/koa-router": "^7.4.4",
     "@types/lodash": "^4.14.195",
     "@types/node": "^18.16.19",
-    "@types/supertest": "^2.0.12",
     "@types/uuid": "^9.0.2",
     "axios": "^1.4.0",
     "debug": "^4.3.4",
@@ -49,7 +48,6 @@
     "koa-bodyparser": "^4.4.1",
     "koa-router": "^12.0.0",
     "serverless": "^3.33.0",
-    "supertest": "^6.3.3",
     "ts-jest": "^29.1.1",
     "ts-standard": "^12.0.2",
     "tsc-watch": "^6.0.4",
@@ -78,7 +76,7 @@
     "deploy:all": "dotenv -e .env.production -- bash -c 'echo APP_ENV=$APP_ENV && pnpm pre-deploy && pnpm deploy:build && pnpm deploy:aws && pnpm post-deploy'"
   },
   "_moduleAliases": {
-    "$": "./dist/src/"
+    "$": "./dist/src"
   },
   "ts-standard": {
     "ignore": [
