@@ -2,8 +2,9 @@ import { GoogleSpreadsheet, GoogleSpreadsheetCell, GoogleSpreadsheetWorksheet } 
 import { decode } from 'html-entities'
 import { groupBy, omitBy, range } from 'lodash'
 
+import config from '$/config'
 import { extractNumber, extractString, parseRange } from '$/utils'
-import { extractLocale, defaultLocale } from '$/lang/i18n-custom'
+import { extractLocale } from '$/lang/i18n-custom'
 import { GoogleDocumentError } from '$/errors/GoogleDocumentError'
 import { StatsAlreadySavedError } from '$/errors/StatsAlreadySavedError'
 import { reportException } from '$/errors'
@@ -102,7 +103,7 @@ export class GoogleTableGameStorage implements GameStorage {
       const level = extractNumber(row.level) ?? 0
       const comment = extractString(row.comment)
       const clanName = extractString(row.clanName)
-      const locale = extractLocale(row.locale) ?? defaultLocale
+      const locale = extractLocale(row.locale) ?? config.DEFAULT_LOCALE
       const role = extractRole(row.role)
 
       const player: Player = {

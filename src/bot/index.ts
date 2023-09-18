@@ -10,7 +10,6 @@ import { setBotActions, setBotMiddlewares } from '$/bot/middleware'
 import { GoogleTableGameStorage } from '$/game/storage/google-table/GoogleTableGameStorage'
 import { GoogleTableGameStore } from '$/game/storage/google-table/GoogleTableStore'
 import L from '$/lang/i18n-node'
-import { defaultLocale } from '$/lang/i18n-custom'
 
 import { errorMiddleware } from './middleware/error'
 import { CustomContext } from './CustomContext'
@@ -71,8 +70,8 @@ export const initBot = async (): Promise<Telegraf<GameContext>> => {
   bot.context.isCreatorOfHomeChat = false
   bot.context.isPrivateChat = false
 
-  bot.context.lang = L[defaultLocale]
-  bot.context.locale = defaultLocale
+  bot.context.lang = L[config.DEFAULT_LOCALE]
+  bot.context.locale = config.DEFAULT_LOCALE
 
   setBotMiddlewares(bot)
   setBotActions(bot)

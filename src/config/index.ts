@@ -1,3 +1,5 @@
+import { Locales } from '$/lang/i18n-types'
+
 const APP_ENV = process.env.APP_ENV ?? 'local'
 const isProduction = APP_ENV === 'production'
 const isLocal = !isProduction
@@ -19,6 +21,7 @@ const defaultConfig = {
 export const requiredConfigInput = {
   WEBHOOK_BASE,
   BOT_TOKEN,
+  DEFAULT_LOCALE: process.env.DEFAULT_LOCALE as Locales,
   TELEGRAM_HOME_CHAT_ID: process.env.TELEGRAM_HOME_CHAT_ID as string,
 
   GOOGLE_SERVICE_ACCOUNT_EMAIL: process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL as string,
