@@ -1,6 +1,6 @@
 {
   "name": "lasertag-bot",
-  "version": "7.9.0",
+  "version": "7.9.1",
   "repository": "https://github.com/max-starikevich/lasertag-bot",
   "author": "Max Starikevich <maxim.starikevich@gmail.com>",
   "license": "MIT",
@@ -61,7 +61,7 @@
     "ngrok": "ngrok http 4000",
     "build": "tsc -p ./tsconfig.prod.json",
     "deploy:build": "docker image build --progress=plain -t lasertag-bot .",
-    "deploy:aws": "serverless deploy --verbose --stage production",
+    "deploy:aws": "serverless deploy --verbose --stage $APP_ID",
     "check-environment": "node dist/src/scripts/check-environment.js",
     "release-sentry": "node dist/src/scripts/release-sentry.js",
     "update-webhook": "node dist/src/scripts/update-webhook.js",
@@ -69,7 +69,7 @@
     "pre-deploy": "pnpm check-environment",
     "post-deploy": "pnpm update-webhook && pnpm update-commands && pnpm release-sentry",
     "update-commands:dev": "dotenv -- pnpm update-commands",
-    "deploy:all": "dotenv -e .env.production -- bash -c 'echo APP_ENV=$APP_ENV && pnpm pre-deploy && pnpm deploy:build && pnpm deploy:aws && pnpm post-deploy'"
+    "deploy:all": "echo APP_ENV=$APP_ENV && echo APP_ID=$APP_ID && pnpm pre-deploy && pnpm deploy:build && pnpm deploy:aws && pnpm post-deploy"
   },
   "_moduleAliases": {
     "$": "./dist/src"
