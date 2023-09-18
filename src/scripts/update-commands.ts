@@ -1,8 +1,8 @@
 import { unsetCommandsForGroups, updateBotCommands, updateBotCommandsForPlayers } from '$/bot/webhooks'
 import { makeLogger } from '$/logger'
-import { defaultLocale } from '$/lang/i18n-custom'
 import { botPromise } from '$/lambda'
 import { GameStorage } from '$/game/storage/types'
+import config from '$/config'
 
 async function run (): Promise<void> {
   const logger = makeLogger()
@@ -18,7 +18,7 @@ async function run (): Promise<void> {
     await updateBotCommands({
       telegram: bot.telegram,
       logger,
-      locale: defaultLocale
+      locale: config.DEFAULT_LOCALE
     })
 
     const storage = bot.context.storage as GameStorage

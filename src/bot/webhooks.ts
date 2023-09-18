@@ -7,7 +7,7 @@ import { commandsInMenu } from '.'
 
 import L from '$/lang/i18n-node'
 import { Player } from '$/game/player/types'
-import { defaultLocale, extractLocale } from '$/lang/i18n-custom'
+import { extractLocale } from '$/lang/i18n-custom'
 
 export const updateBotWebhook = async (ctx: Pick<GameContext, 'logger' | 'telegram'>): Promise<void> => {
   const { logger, telegram } = ctx
@@ -57,7 +57,7 @@ export const updateBotCommandsForPlayers = async (ctx: Pick<GameContext, 'logger
     await updateBotCommands({
       logger,
       telegram,
-      locale: locale !== undefined ? locale : defaultLocale
+      locale: locale !== undefined ? locale : config.DEFAULT_LOCALE
     }, scope)
   }
 }
