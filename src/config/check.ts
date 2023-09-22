@@ -1,3 +1,5 @@
+import { localeNames } from '../lang/i18n-custom'
+import { Locales } from '../lang/i18n-types'
 import { requiredConfigInput as config } from './index'
 
 const isValidString = (s?: string): boolean => {
@@ -21,6 +23,8 @@ const isValidTimeZone = (tz?: string): boolean => {
   }
 }
 
+const isValidLocale = (s?: string): boolean => s === undefined ? false : localeNames.includes(s as Locales)
+
 type EnvironmentValidator = () => Promise<boolean>
 
 type EnvironmentToCheck = {
@@ -31,6 +35,7 @@ const requiredRuntimeVariables: EnvironmentToCheck = {
   TELEGRAM_HOME_CHAT_ID: async () => isValidNumber(config.TELEGRAM_HOME_CHAT_ID),
   WEBHOOK_BASE: async () => isValidString(config.WEBHOOK_BASE),
   BOT_TOKEN: async () => isValidString(config.BOT_TOKEN),
+  DEFAULT_LOCALE: async () => isValidLocale(config.DEFAULT_LOCALE),
 
   GOOGLE_SERVICE_ACCOUNT_EMAIL: async () => isValidEmail(config.GOOGLE_SERVICE_ACCOUNT_EMAIL),
   GOOGLE_PRIVATE_KEY: async () => isValidString(config.GOOGLE_PRIVATE_KEY),
