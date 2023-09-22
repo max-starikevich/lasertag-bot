@@ -7,11 +7,11 @@ import { setBotActions, setBotMiddlewares } from '$/bot/middleware'
 
 import { GameStorage, GameStore } from '$/game/storage/types'
 import L from '$/lang/i18n-node'
-import { defaultLocale } from '$/lang/i18n-custom'
 
 import { errorMiddleware } from './middleware/error'
 import { CustomContext } from './CustomContext'
 import { Locales } from '$/lang/i18n-types'
+import config from '$/config'
 
 export const commandsInMenu = commands.filter(
   ({ showInMenu }) => showInMenu
@@ -25,7 +25,7 @@ interface InitBotParams {
   locale?: Locales
 }
 
-export const initBot = async ({ token, telegramApiOptions, storage, store, locale = defaultLocale }: InitBotParams): Promise<Telegraf<GameContext>> => {
+export const initBot = async ({ token, telegramApiOptions, storage, store, locale = config.DEFAULT_LOCALE }: InitBotParams): Promise<Telegraf<GameContext>> => {
   const bot = new Telegraf<GameContext>(token, {
     // @ts-expect-error
     contextType: CustomContext,
