@@ -19,10 +19,10 @@ const by: MappedTranslation = {
   TEAMS_COMMAND_DESCRIPTION: 'Стварыць каманды з кланамі',
 
   REGISTER_COMMAND_DESCRIPTION: 'Дадаць сябе ў базу дадзеных бота',
-  REGISTER_CHOOSE_YOURSELF: 'Выберыце сваё імя са спісу',
+  REGISTER_CHOOSE_YOURSELF: 'Выберыце сваё імя з файлу запісу. Калі яго няма - звярніцеся да арганізатара, каб ён дадаў.',
   REGISTER_SUCCESS: '{name:string}, вы пасьпяхова зарэгістраваны',
   REGISTER_ALREADY_REGISTERED: 'Вы ўжо зарэгістраваны',
-  REGISTER_NO_FREE_ROWS: 'Усе гульцы ўжо зарэгістраваны. Няма свабодных радкоў у табліцы.',
+  REGISTER_NO_FREE_ROWS: 'Усе гульцы з файла запісу ўжо зарэгістраваны. Няма свабодных радкоў у табліцы. Звярніцеся да арганізатара, каб дадаць вас.',
   REGISTER_REQUIRED: 'Для гэтай функцыі патрабуецца рэгістрацыя. Выкарыстоўвайце /{registerCommandName:string}, каб працягнуць.',
 
   LANGUAGE_COMMAND_DESCRIPTION: 'Выбраць мову',

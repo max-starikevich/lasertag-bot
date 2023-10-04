@@ -19,10 +19,10 @@ const pl: MappedTranslation = {
   TEAMS_COMMAND_DESCRIPTION: 'Utwórz drużyny z klanami',
 
   REGISTER_COMMAND_DESCRIPTION: 'Dodaj się do bazy danych bota',
-  REGISTER_CHOOSE_YOURSELF: 'Wybierz swoje imię z listy',
+  REGISTER_CHOOSE_YOURSELF: 'Wybierz swoje imię z listy. Jeśli go brakuje, skontaktuj się z organizatorem, aby Cię dodał.',
   REGISTER_SUCCESS: '{name:string}, zostałeś pomyślnie zarejestrowany',
   REGISTER_ALREADY_REGISTERED: 'Jesteś już zarejestrowany',
-  REGISTER_NO_FREE_ROWS: 'Wszyscy gracze są już zarejestrowani. Brak wolnych wierszy w tabeli.',
+  REGISTER_NO_FREE_ROWS: 'Wszyscy gracze są już zarejestrowani. W tabeli nie ma wolnych wierszy. Skontaktuj się z organizatorem w celu dodania.',
   REGISTER_REQUIRED: 'Ta funkcja wymaga rejestracji. Użyj /{registerCommandName:string}, aby kontynuować.',
 
   LANGUAGE_COMMAND_DESCRIPTION: 'Wybierz język',
