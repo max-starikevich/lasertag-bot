@@ -47,7 +47,7 @@ const by: MappedTranslation = {
   STATS_SEND_TO_ADMIN: 'Так, даслаць адмінам',
   STATS_SEND_TO_ADMIN_OFFER: 'Ужо адыгралі гэтымі складамі?',
   STATS_SENT_SUCCESS: 'Статыстыка адпраўленая адміністратару',
-  STATS_SAVE_REQUEST: 'Новы запыт на захаванне статыстыкі\n\n{username: string}',
+  STATS_SAVE_REQUEST: 'Новы запыт на захаваньне статыстыкі\n\n{username: string}',
   STATS_DRAW: 'Нічыя',
   STATS_NON_EXISTENT: 'Дадзеныя для гэтай гульні ўжо страчаны ці сапсаваны',
   STATS_ALREADY_SAVED: 'Статыстыка для гэтай гульні ўжо захавана',
