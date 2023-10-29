@@ -27,7 +27,8 @@ export const loggingMiddleware: MiddlewareFn<GameContext> = async (ctx, next) =>
       update: ctx.update,
       timeElapsedMs,
       status: 'ERROR',
-      memberStatus: ctx.memberStatus
+      memberStatus: ctx.memberStatus,
+      error: e
     })
 
     throw e

@@ -1,36 +1,36 @@
 import type { MappedTranslation } from '../i18n-custom'
 
 const by: MappedTranslation = {
-  ABOUT_PROJECT_NAME: 'Тэлеграм-бот для лазертага',
+  ABOUT_PROJECT_NAME: 'Тэлеграм-бот для лазертагу',
   ABOUT_VERSION: 'Версія',
   ABOUT_AUTHOR: 'Аўтар',
   ABOUT_SOURCE_CODE: 'Зыходны код',
-  ABOUT_COMMAND_DESCRIPTION: 'Інфармацыя аб боце',
+  ABOUT_COMMAND_DESCRIPTION: 'Інфармацыя пра бота',
 
-  CLANS_COMMAND_DESCRIPTION: 'Інфармацыя аб кланах',
+  CLANS_COMMAND_DESCRIPTION: 'Інфармацыя пра кланы',
 
   HELP_COMMAND_DESCRIPTION: 'Паказаць даступныя каманды',
   HELP_TITLE: 'Даступныя каманды',
 
-  PLAYERS_COMMAND_DESCRIPTION: 'Спіс гульцоў, якія запісаліся',
+  PLAYERS_COMMAND_DESCRIPTION: 'Сьпіс гульцоў, якія запісаліся',
 
   OLD_TEAMS_COMMAND_DESCRIPTION: 'Стварыць каманды без кланаў',
 
-  TEAMS_COMMAND_DESCRIPTION: 'Стварыць каманды з кланамі',
+  TEAMS_COMMAND_DESCRIPTION: 'Стварыць каманды зь кланамі',
 
   REGISTER_COMMAND_DESCRIPTION: 'Дадаць сябе ў базу дадзеных бота',
-  REGISTER_CHOOSE_YOURSELF: 'Выберыце сваё імя са спісу',
+  REGISTER_CHOOSE_YOURSELF: 'Выберыце сваё імя з файлу запісу. Калі яго няма - зьвярніцеся да арганізатара, каб ён дадаў.',
   REGISTER_SUCCESS: '{name:string}, вы пасьпяхова зарэгістраваны',
   REGISTER_ALREADY_REGISTERED: 'Вы ўжо зарэгістраваны',
-  REGISTER_NO_FREE_ROWS: 'Усе гульцы ўжо зарэгістраваны. Няма свабодных радкоў у табліцы.',
+  REGISTER_NO_FREE_ROWS: 'Усе гульцы з файла запісу ўжо зарэгістраваны. Няма свабодных радкоў у табліцы. Зьвярніцеся да арганізатара, каб дадаць вас.',
   REGISTER_REQUIRED: 'Для гэтай функцыі патрабуецца рэгістрацыя. Выкарыстоўвайце /{registerCommandName:string}, каб працягнуць.',
 
   LANGUAGE_COMMAND_DESCRIPTION: 'Выбраць мову',
   LANGUAGE_CHOOSE: 'Выберыце мову',
   LANGUAGE_CHOOSE_SUCCESS: 'Мова выбрана пасьпяхова',
 
-  UNREGISTER_COMMAND_DESCRIPTION: 'Выдаліць сябе з базы дадзеных боту',
-  UNREGISTER_SUCCESS: 'Вы пасьпяхова выдалены з базы боту',
+  UNREGISTER_COMMAND_DESCRIPTION: 'Выдаліць сябе з базы дадзеных бота',
+  UNREGISTER_SUCCESS: 'Вы пасьпяхова выдалены з базы бота',
 
   LINKS_COMMAND_DESCRIPTION: 'Карысныя спасылкі',
 
@@ -40,19 +40,19 @@ const by: MappedTranslation = {
   TEAMS_BALANCE: 'Баланс каманд',
   RECORDED: 'Запісана',
   RENT: 'Патрэбны пракат',
-  COUNT: 'Колькасць',
-  STATS_WHO_WON: 'Якая каманда перамагла?',
+  COUNT: 'Колькасьць',
+  STATS_WHO_WON: 'Якая каманда перамогла?',
   STATS_SAVE_SUCCESS: 'Статыстыка захавана',
-  STATS_SAVE_APPROVED: 'Ваш запыт адобраны адміністратарам. Статыстыка захавана',
+  STATS_SAVE_APPROVED: 'Ваш запыт ухвалены адміністратарам. Статыстыка захавана',
   STATS_SEND_TO_ADMIN: 'Так, даслаць адмінам',
   STATS_SEND_TO_ADMIN_OFFER: 'Ужо адыгралі гэтымі складамі?',
-  STATS_SENT_SUCCESS: 'Статыстыка адпраўлена адміністратару',
+  STATS_SENT_SUCCESS: 'Статыстыка адпраўленая адміністратару',
   STATS_SAVE_REQUEST: 'Новы запыт на захаваньне статыстыкі\n\n{username: string}',
   STATS_DRAW: 'Нічыя',
   STATS_NON_EXISTENT: 'Дадзеныя для гэтай гульні ўжо страчаны ці сапсаваны',
   STATS_ALREADY_SAVED: 'Статыстыка для гэтай гульні ўжо захавана',
   STATS_SAVE_REJECT: 'Адмова',
-  STATS_SAVE_REJECTED: 'Статыстыка адмоўлена',
+  STATS_SAVE_REJECTED: 'Статыстыка адмоўленая',
   STATS_SAVE_REJECTED_FOR_USER: 'Ваш запыт адмоўлены адміністратарам',
 
   RENT_NOT_NEEDED: 'Не патрэбен',
@@ -61,10 +61,10 @@ const by: MappedTranslation = {
   UNEXPECTED_ERROR_FOR_USER: 'Нечаканая памылка. Паўтарыце запыт пазьней',
   UNKNOWN_COMMAND: 'Не ўдалося распазнаць каманду. Выкарыстоўвайце меню ці каманду /{helpCommandName:string}',
   ACCESS_DENIED: 'Няма доступу',
-  SHEETS_ERROR: 'Нешта здарылася з Google-дакументам. Паўтарыце запыт пазьней',
+  SHEETS_ERROR: 'Нешта здарылася зь Google-дакументам. Паўтарыце запыт пазьней',
   GROUP_CHAT_WARNING: '✍️ Пішыце мне сюды: @{botUsername:string}',
 
-  ACTION_HANDLER_WRONG_DATA: 'Уведзены няправільныя дадзеныя',
+  ACTION_HANDLER_WRONG_DATA: 'Уведзеныя няправільныя дадзеныя',
 
   NOT_ENOUGH_PLAYERS: 'Недастаткова гульцоў для гэтай функцыі',
 

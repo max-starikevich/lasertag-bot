@@ -19,10 +19,10 @@ const ru: MappedTranslation = {
   TEAMS_COMMAND_DESCRIPTION: 'Создать команды с кланами',
 
   REGISTER_COMMAND_DESCRIPTION: 'Добавить себя в базу данных бота',
-  REGISTER_CHOOSE_YOURSELF: 'Выберите свое имя из списка',
+  REGISTER_CHOOSE_YOURSELF: 'Выберите свое имя из списка. Если оно отсутствует - обратитесь к организатору, чтобы он вас добавил.',
   REGISTER_SUCCESS: '{name:string}, вы успешно зарегистрированы',
   REGISTER_ALREADY_REGISTERED: 'Вы уже зарегистрированы',
-  REGISTER_NO_FREE_ROWS: 'Все игроки уже зарегистрированы. Нет свободных строк в таблице.',
+  REGISTER_NO_FREE_ROWS: 'Все игроки уже зарегистрированы. Нет свободных строк в таблице. Обратитесь к организатору, чтобы вас добавить.',
   REGISTER_REQUIRED: 'Для этого функционала требуется регистрация. Используйте /{registerCommandName:string}, чтобы продолжить.',
 
   LANGUAGE_COMMAND_DESCRIPTION: 'Выбрать язык',
