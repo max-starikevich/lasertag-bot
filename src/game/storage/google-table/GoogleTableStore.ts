@@ -46,7 +46,7 @@ export class GoogleTableGameStore implements GameStore {
     const sheets = document.sheetsById[this.sheetsId]
 
     if (sheets === undefined) {
-      throw new GoogleDocumentError()
+      throw new GoogleDocumentError(`Missing sheets with id ${this.sheetsId} in document ${this.docId}`)
     }
 
     return sheets

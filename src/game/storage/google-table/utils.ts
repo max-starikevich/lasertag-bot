@@ -23,7 +23,7 @@ export const assertRows = (rows: GoogleSpreadsheetRow[]): void => {
   )
 
   if (errorRows.length > 0) {
-    throw new GoogleDocumentError()
+    throw new GoogleDocumentError(`Broken formulas detected: ${errorRows.join()}`)
   }
 }
 

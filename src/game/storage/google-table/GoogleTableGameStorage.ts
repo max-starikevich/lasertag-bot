@@ -72,7 +72,7 @@ export class GoogleTableGameStorage implements GameStorage {
     const sheets = document.sheetsById[sheetsId]
 
     if (sheets === undefined) {
-      throw new GoogleDocumentError()
+      throw new GoogleDocumentError(`Missing sheets with id ${sheetsId} in document ${docId}`)
     }
 
     return sheets
