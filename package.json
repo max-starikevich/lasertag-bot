@@ -67,7 +67,7 @@
     "update-webhook": "node dist/src/scripts/update-webhook.js",
     "update-commands": "node dist/src/scripts/update-commands.js",
     "check-documents": "node dist/src/scripts/check-documents.js",
-    "pre-deploy": "pnpm check-environment",
+    "pre-deploy": "pnpm check-environment && pnpm check-documents",
     "post-deploy": "pnpm update-webhook && pnpm update-commands && pnpm release-sentry",
     "update-commands:dev": "dotenv -- pnpm update-commands",
     "deploy:all": "echo APP_ENV=$APP_ENV && echo APP_ID=$APP_ID && pnpm pre-deploy && pnpm deploy:build && pnpm deploy:aws && pnpm post-deploy"

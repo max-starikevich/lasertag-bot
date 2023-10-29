@@ -28,6 +28,25 @@ export class GoogleTableGameStore implements GameStore {
     this.sheetsId = params.sheetsId
   }
 
+  async loadDebugInfo (): Promise<object> {
+    const sheets = await this.getSheets()
+    await sheets.getRows()
+
+    // it should be defined already,
+    // otherwise it would throw rejection
+    const document = this.doc as GoogleSpreadsheet
+
+    return {
+      class: GoogleTableGameStore.name,
+      id: document.spreadsheetId,
+      title: document.title,
+      sheets: Object.values(this.doc?.sheetsById ?? {}).map(sheet => ({
+        id: sheet.sheetId,
+        title: sheet.title
+      }))
+    }
+  }
+
   protected async getSheets (): Promise<GoogleSpreadsheetWorksheet> {
     if (this.doc === undefined) {
       const document = new GoogleSpreadsheet(this.docId)
