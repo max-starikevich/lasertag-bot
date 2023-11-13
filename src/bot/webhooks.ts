@@ -8,6 +8,7 @@ import { commandsInMenu } from '.'
 import L from '$/lang/i18n-node'
 import { Player } from '$/game/player/types'
 import { extractLocale } from '$/lang/i18n-custom'
+import { reportException } from '../errors'
 
 export const updateBotWebhook = async (ctx: Pick<GameContext, 'logger' | 'telegram'>): Promise<void> => {
   const { logger, telegram } = ctx
@@ -46,18 +47,23 @@ export const updateBotCommandsForPlayers = async (ctx: Pick<GameContext, 'logger
   const { logger, telegram } = ctx
 
   for (const player of players) {
-    if (player.telegramUserId == null || player.locale === undefined) {
-      continue
+    try {
+      if (player.telegramUserId == null || player.locale === undefined) {
+        continue
+      }
+
+      const locale = extractLocale(player.locale)
+
+      const scope: BotCommandScope = { type: 'chat', chat_id: player.telegramUserId }
+
+      await updateBotCommands({
+        logger,
+        telegram,
+        locale: locale !== undefined ? locale : config.DEFAULT_LOCALE
+      }, scope)
+    } catch (e) {
+      logger.error(e)
+      reportException(e)
     }
-
-    const locale = extractLocale(player.locale)
-
-    const scope: BotCommandScope = { type: 'chat', chat_id: player.telegramUserId }
-
-    await updateBotCommands({
-      logger,
-      telegram,
-      locale: locale !== undefined ? locale : config.DEFAULT_LOCALE
-    }, scope)
   }
 }
