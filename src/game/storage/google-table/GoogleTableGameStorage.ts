@@ -50,6 +50,23 @@ export class GoogleTableGameStorage implements GameStorage {
     }
   }
 
+  async loadDebugInfo (): Promise<object> {
+    await this.getSheets(this.players)
+    await this.getSheets(this.game)
+    await this.getSheets(this.links)
+    await this.getSheets(this.stats)
+    await this.getSheets(this.enroll)
+
+    return Object.values(this.documentMap).map(doc => ({
+      id: doc.spreadsheetId,
+      title: doc.title,
+      sheets: Object.values(doc.sheetsById).map(sheet => ({
+        id: sheet.sheetId,
+        title: sheet.title
+      }))
+    }))
+  }
+
   public getStatsTimezone (): string {
     return this.stats.timezone
   }
@@ -72,7 +89,7 @@ export class GoogleTableGameStorage implements GameStorage {
     const sheets = document.sheetsById[sheetsId]
 
     if (sheets === undefined) {
-      throw new GoogleDocumentError()
+      throw new GoogleDocumentError(`Missing sheets with id ${sheetsId} in document ${docId}`)
     }
 
     return sheets

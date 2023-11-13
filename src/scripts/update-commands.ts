@@ -3,11 +3,14 @@ import { makeLogger } from '$/logger'
 import { botPromise } from '$/lambda'
 import { GameStorage } from '$/game/storage/types'
 import config from '$/config'
+import { checkEnvironment } from '$/config/check'
 
 async function run (): Promise<void> {
   const logger = makeLogger()
 
   try {
+    await checkEnvironment()
+
     const bot = await botPromise
 
     await unsetCommandsForGroups({

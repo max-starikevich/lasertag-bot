@@ -65,7 +65,7 @@ type RootTranslation = {
 	 */
 	REGISTER_COMMAND_DESCRIPTION: string
 	/**
-	 * C​h​o​o​s​e​ ​y​o​u​r​ ​n​a​m​e​ ​f​r​o​m​ ​t​h​e​ ​l​i​s​t
+	 * C​h​o​o​s​e​ ​y​o​u​r​ ​n​a​m​e​ ​f​r​o​m​ ​t​h​e​ ​l​i​s​t​.​ ​I​f​ ​i​t​'​s​ ​m​i​s​s​i​n​g​ ​t​h​e​n​ ​a​s​k​ ​t​h​e​ ​g​a​m​e​ ​o​r​g​a​n​i​z​e​r​ ​t​o​ ​a​d​d​ ​i​t​.
 	 */
 	REGISTER_CHOOSE_YOURSELF: string
 	/**
@@ -78,7 +78,7 @@ type RootTranslation = {
 	 */
 	REGISTER_ALREADY_REGISTERED: string
 	/**
-	 * A​l​l​ ​p​l​a​y​e​r​s​ ​h​a​v​e​ ​b​e​e​n​ ​r​e​g​i​s​t​e​r​e​d​ ​a​l​r​e​a​d​y​.​ ​N​o​ ​f​r​e​e​ ​s​l​o​t​s​ ​a​t​ ​t​h​e​ ​m​o​m​e​n​t​.
+	 * A​l​l​ ​p​l​a​y​e​r​s​ ​h​a​v​e​ ​b​e​e​n​ ​r​e​g​i​s​t​e​r​e​d​ ​a​l​r​e​a​d​y​.​ ​N​o​ ​f​r​e​e​ ​s​l​o​t​s​ ​a​t​ ​t​h​e​ ​m​o​m​e​n​t​.​ ​A​s​k​ ​t​h​e​ ​g​a​m​e​ ​o​r​g​a​n​i​z​e​r​ ​t​o​ ​a​d​d​ ​y​o​u​.
 	 */
 	REGISTER_NO_FREE_ROWS: string
 	/**
@@ -305,7 +305,7 @@ export type TranslationFunctions = {
 	 */
 	REGISTER_COMMAND_DESCRIPTION: () => LocalizedString
 	/**
-	 * Choose your name from the list
+	 * Choose your name from the list. If it's missing then ask the game organizer to add it.
 	 */
 	REGISTER_CHOOSE_YOURSELF: () => LocalizedString
 	/**
@@ -317,7 +317,7 @@ export type TranslationFunctions = {
 	 */
 	REGISTER_ALREADY_REGISTERED: () => LocalizedString
 	/**
-	 * All players have been registered already. No free slots at the moment.
+	 * All players have been registered already. No free slots at the moment. Ask the game organizer to add you.
 	 */
 	REGISTER_NO_FREE_ROWS: () => LocalizedString
 	/**

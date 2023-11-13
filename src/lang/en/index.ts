@@ -19,10 +19,10 @@ const en: BaseTranslation = {
   TEAMS_COMMAND_DESCRIPTION: 'Create teams with clans',
 
   REGISTER_COMMAND_DESCRIPTION: 'Add yourself to the bot\'s database',
-  REGISTER_CHOOSE_YOURSELF: 'Choose your name from the list',
+  REGISTER_CHOOSE_YOURSELF: "Choose your name from the list. If it's missing then ask the game organizer to add it.",
   REGISTER_SUCCESS: '{name:string}, you have been registered successfully',
   REGISTER_ALREADY_REGISTERED: 'You are already registered',
-  REGISTER_NO_FREE_ROWS: 'All players have been registered already. No free slots at the moment.',
+  REGISTER_NO_FREE_ROWS: 'All players have been registered already. No free slots at the moment. Ask the game organizer to add you.',
   REGISTER_REQUIRED: 'Registration is required for this functionality. Use /{registerCommandName:string} to proceed.',
 
   LANGUAGE_COMMAND_DESCRIPTION: 'Choose language',
