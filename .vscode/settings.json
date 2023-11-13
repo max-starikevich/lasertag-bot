@@ -7,4 +7,5 @@
   "standard.treatErrorsAsWarnings": true,
   "typescript.disableAutomaticTypeAcquisition": true,
   "typescript.reportStyleChecksAsWarnings": false,
+  "editor.defaultFormatter": "standard.vscode-standard",
 }
