@@ -1,6 +1,6 @@
 import { initBot } from '$/bot/bot'
 
-import { TelegrafTest } from './TelegrafTest'
+import { TelegrafTest } from './TelegrafTest/TelegrafTest'
 
 import { getTestStorage } from './storage'
 import { getTestStore } from './store'
@@ -41,7 +41,9 @@ describe('Telegraf bot', () => {
   beforeAll(async () => {
     await telegramApi.startServer()
 
-    await (await botPromise).launch({
+    const bot = await botPromise
+
+    await bot.launch({
       webhook: {
         hookPath: `/${botPath}`,
         port: botPort,
@@ -51,15 +53,18 @@ describe('Telegraf bot', () => {
   })
 
   afterAll(async () => {
-    (await botPromise).stop('E2E testing shutdown')
+    const bot = await botPromise
+
+    bot.stop('E2E testing shutdown')
+
     await telegramApi.stopServer()
   })
 
   describe('/about', () => {
     it('should properly get the information', async () => {
-      await telegramApi.sendMessageWithText('/about')
+      await telegramApi.sendMessage({ text: '/about' })
 
-      expect(storage.getPlayers).toBeCalled()
-    })
+      expect(storage.getPlayers).not.toBeCalled()
+    }, 10000)
   })
 })

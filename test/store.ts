@@ -24,6 +24,12 @@ export const getTestStore = (): GameStore => {
       for (const key of keys) {
         map.delete(key)
       }
+    },
+
+    async loadDebugInfo (): Promise<object> {
+      return {
+        debug: 'some data'
+      }
     }
   }
 }

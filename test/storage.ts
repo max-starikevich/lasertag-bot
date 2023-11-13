@@ -21,6 +21,9 @@ export const getTestStorage = (): GameStorage => {
     }),
     getStatsTimezone: jest.fn(function (): string {
       return 'Europe/Minsk'
+    }),
+    loadDebugInfo: jest.fn(async function (): Promise<object> {
+      return { debug: 'some data' }
     })
   }
 }
