@@ -1,11 +1,10 @@
 {
-  "typescript.preferences.importModuleSpecifier": "relative",
   "standard.enable": true,
   "standard.engine": "ts-standard",
   "standard.autoFixOnSave": true,
-  "standard.trace.server": "verbose",
   "standard.treatErrorsAsWarnings": true,
   "typescript.disableAutomaticTypeAcquisition": true,
   "typescript.reportStyleChecksAsWarnings": false,
-  "editor.defaultFormatter": "standard.vscode-standard",
+  "typescript.preferences.importModuleSpecifier": "relative",
+  "editor.formatOnSave": false,
 }
