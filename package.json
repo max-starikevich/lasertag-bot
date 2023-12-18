@@ -6,7 +6,7 @@
   "license": "MIT",
   "main": "dist/src/index.js",
   "engines": {
-    "node": "^18",
+    "node": "^20",
     "pnpm": "^8"
   },
   "dependencies": {
