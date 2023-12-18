@@ -8,6 +8,7 @@ const en: BaseTranslation = {
   ABOUT_COMMAND_DESCRIPTION: 'Bot information',
 
   CLANS_COMMAND_DESCRIPTION: 'Clan information',
+  CLANS_NO_PLAYERS: 'No active clans at this moment',
 
   HELP_COMMAND_DESCRIPTION: 'Show available commands',
   HELP_TITLE: 'Available commands',

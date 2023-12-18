@@ -8,6 +8,7 @@ const ua: MappedTranslation = {
   ABOUT_COMMAND_DESCRIPTION: 'Інформація про бота',
 
   CLANS_COMMAND_DESCRIPTION: 'Інформація про клани',
+  CLANS_NO_PLAYERS: 'Немає активних кланів на цей момент',
 
   HELP_COMMAND_DESCRIPTION: 'Показати доступні команди',
   HELP_TITLE: 'Доступні команди',

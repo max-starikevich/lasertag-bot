@@ -42,6 +42,10 @@ type RootTranslation = {
 	 */
 	CLANS_COMMAND_DESCRIPTION: string
 	/**
+	 * N​o​ ​a​c​t​i​v​e​ ​c​l​a​n​s​ ​a​t​ ​t​h​i​s​ ​m​o​m​e​n​t
+	 */
+	CLANS_NO_PLAYERS: string
+	/**
 	 * S​h​o​w​ ​a​v​a​i​l​a​b​l​e​ ​c​o​m​m​a​n​d​s
 	 */
 	HELP_COMMAND_DESCRIPTION: string
@@ -281,6 +285,10 @@ export type TranslationFunctions = {
 	 * Clan information
 	 */
 	CLANS_COMMAND_DESCRIPTION: () => LocalizedString
+	/**
+	 * No active clans at this moment
+	 */
+	CLANS_NO_PLAYERS: () => LocalizedString
 	/**
 	 * Show available commands
 	 */
