@@ -15,9 +15,11 @@ const en: BaseTranslation = {
 
   PLAYERS_COMMAND_DESCRIPTION: 'Players in the record',
 
-  OLD_TEAMS_COMMAND_DESCRIPTION: 'Create teams without clans',
+  TEAMS_COMMAND_DESCRIPTION: 'Create teams without clans',
 
-  TEAMS_COMMAND_DESCRIPTION: 'Create teams with clans',
+  CLAN_TEAMS_COMMAND_DESCRIPTION: 'Create teams with clans',
+
+  AI_TEAMS_COMMAND_DESCRIPTION: 'Create teams using AI',
 
   REGISTER_COMMAND_DESCRIPTION: 'Add yourself to the bot\'s database',
   REGISTER_CHOOSE_YOURSELF: "Choose your name from the list. If it's missing then ask the game organizer to add it.",

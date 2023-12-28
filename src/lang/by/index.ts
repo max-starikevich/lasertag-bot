@@ -15,9 +15,11 @@ const by: MappedTranslation = {
 
   PLAYERS_COMMAND_DESCRIPTION: 'Сьпіс гульцоў, якія запісаліся',
 
-  OLD_TEAMS_COMMAND_DESCRIPTION: 'Стварыць каманды без кланаў',
+  TEAMS_COMMAND_DESCRIPTION: 'Стварыць каманды без кланаў',
 
-  TEAMS_COMMAND_DESCRIPTION: 'Стварыць каманды зь кланамі',
+  CLAN_TEAMS_COMMAND_DESCRIPTION: 'Стварыць каманды зь кланамі',
+
+  AI_TEAMS_COMMAND_DESCRIPTION: 'Стварыць каманды з дапамогай штучнага інтэлекту',
 
   REGISTER_COMMAND_DESCRIPTION: 'Дадаць сябе ў базу дадзеных бота',
   REGISTER_CHOOSE_YOURSELF: 'Выберыце сваё імя з файлу запісу. Калі яго няма - зьвярніцеся да арганізатара, каб ён дадаў.',

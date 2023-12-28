@@ -11,6 +11,7 @@ import { start, help } from './help'
 import { players } from './players'
 import { teams } from './teams'
 import { clanteams } from './clanteams'
+import { aiteams } from './aiteams'
 import { clans } from './clans'
 import { register } from './register'
 import { language } from './language'
@@ -26,6 +27,7 @@ export const commands: Command[] = [
   enroll,
   me,
   players,
+  aiteams,
   clanteams,
   teams,
   clans,

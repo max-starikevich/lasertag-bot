@@ -3,7 +3,7 @@ import { getBalancedTeams } from '$/game/player/balance/no-clans'
 import { getActivePlayers, orderTeamByGameCount } from '$/game/player'
 
 import { Command, CommandHandler } from '../types'
-import { replyWithPlaceAndTime, replyWithPlayers, replyWithTeamBalance, replyWithTeamCount } from '.'
+import { replyWithPlaceAndTime, replyWithPlayers, replyWithTeamCount } from '.'
 import { initializer as replyWithStatsActions } from '../actions/stats'
 
 const handler: CommandHandler = async (ctx) => {
@@ -29,14 +29,12 @@ const handler: CommandHandler = async (ctx) => {
     await replyWithPlayers(ctx, bluePlayers, '🔵')
   }
 
-  await replyWithTeamBalance(ctx, [redPlayers, bluePlayers])
-
   await replyWithStatsActions(ctx, teams)
 }
 
-export const teams: Command = {
-  name: 'teams',
+export const aiteams: Command = {
+  name: 'aiteams',
   handler,
-  description: lang => lang.TEAMS_COMMAND_DESCRIPTION(),
+  description: lang => `${lang.AI_TEAMS_COMMAND_DESCRIPTION()} 🤖`,
   showInMenu: true
 }

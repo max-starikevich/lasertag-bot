@@ -10,8 +10,6 @@ import { Command, CommandHandler } from '../types'
 import { replyWithPlaceAndTime } from '.'
 
 const handler: CommandHandler = async (ctx) => {
-  await replyWithPlaceAndTime(ctx)
-
   const { players, lang } = ctx
 
   const playersSorted = orderTeamByGameCount(players)
@@ -29,6 +27,8 @@ const handler: CommandHandler = async (ctx) => {
   const playersWithComments = playersSorted.filter(
     (player): player is Player & { comment: string } => player.comment !== undefined
   )
+
+  await replyWithPlaceAndTime(ctx)
 
   await ctx.replyWithHTML(dedent`
     ${lang.RECORDED()}: ${playersSorted.reduce(

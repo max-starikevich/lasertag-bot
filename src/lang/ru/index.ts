@@ -15,9 +15,11 @@ const ru: MappedTranslation = {
 
   PLAYERS_COMMAND_DESCRIPTION: 'Список записавшихся игроков',
 
-  OLD_TEAMS_COMMAND_DESCRIPTION: 'Создать команды без кланов',
+  TEAMS_COMMAND_DESCRIPTION: 'Создать команды без кланов',
 
-  TEAMS_COMMAND_DESCRIPTION: 'Создать команды с кланами',
+  CLAN_TEAMS_COMMAND_DESCRIPTION: 'Создать команды с кланами',
+
+  AI_TEAMS_COMMAND_DESCRIPTION: 'Создать команды с помощью искусственного интеллекта',
 
   REGISTER_COMMAND_DESCRIPTION: 'Добавить себя в базу данных бота',
   REGISTER_CHOOSE_YOURSELF: 'Выберите свое имя из списка. Если оно отсутствует - обратитесь к организатору, чтобы он вас добавил.',

@@ -7,8 +7,6 @@ import { replyWithPlaceAndTime, replyWithSquads, replyWithTeamBalance, replyWith
 import { initializer as replyWithStatsAction } from '../actions/stats'
 
 const handler: CommandHandler = async (ctx) => {
-  await replyWithPlaceAndTime(ctx)
-
   const { players } = ctx
 
   const activePlayers = getActivePlayers(players)
@@ -18,6 +16,8 @@ const handler: CommandHandler = async (ctx) => {
   if (redPlayers.length === 0 || bluePlayers.length === 0) {
     throw new NotEnoughPlayersError()
   }
+
+  await replyWithPlaceAndTime(ctx)
 
   await replyWithTeamCount(ctx, [redPlayers, bluePlayers])
 
@@ -36,6 +36,6 @@ const handler: CommandHandler = async (ctx) => {
 export const clanteams: Command = {
   name: 'clanteams',
   handler,
-  description: lang => lang.TEAMS_COMMAND_DESCRIPTION(),
+  description: lang => lang.CLAN_TEAMS_COMMAND_DESCRIPTION(),
   showInMenu: true
 }

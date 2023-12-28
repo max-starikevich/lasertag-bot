@@ -60,11 +60,15 @@ type RootTranslation = {
 	/**
 	 * C​r​e​a​t​e​ ​t​e​a​m​s​ ​w​i​t​h​o​u​t​ ​c​l​a​n​s
 	 */
-	OLD_TEAMS_COMMAND_DESCRIPTION: string
+	TEAMS_COMMAND_DESCRIPTION: string
 	/**
 	 * C​r​e​a​t​e​ ​t​e​a​m​s​ ​w​i​t​h​ ​c​l​a​n​s
 	 */
-	TEAMS_COMMAND_DESCRIPTION: string
+	CLAN_TEAMS_COMMAND_DESCRIPTION: string
+	/**
+	 * C​r​e​a​t​e​ ​t​e​a​m​s​ ​u​s​i​n​g​ ​A​I
+	 */
+	AI_TEAMS_COMMAND_DESCRIPTION: string
 	/**
 	 * A​d​d​ ​y​o​u​r​s​e​l​f​ ​t​o​ ​t​h​e​ ​b​o​t​'​s​ ​d​a​t​a​b​a​s​e
 	 */
@@ -262,11 +266,15 @@ export type TranslationFunctions = {
 	/**
 	 * Create teams without clans
 	 */
-	OLD_TEAMS_COMMAND_DESCRIPTION: () => LocalizedString
+	TEAMS_COMMAND_DESCRIPTION: () => LocalizedString
 	/**
 	 * Create teams with clans
 	 */
-	TEAMS_COMMAND_DESCRIPTION: () => LocalizedString
+	CLAN_TEAMS_COMMAND_DESCRIPTION: () => LocalizedString
+	/**
+	 * Create teams using AI
+	 */
+	AI_TEAMS_COMMAND_DESCRIPTION: () => LocalizedString
 	/**
 	 * Add yourself to the bot's database
 	 */

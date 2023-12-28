@@ -49,6 +49,8 @@ export const requiredConfigInput = {
 
   STORE_DOC_ID: process.env.STORE_DOC_ID as string,
   STORE_SHEETS_ID: process.env.STORE_SHEETS_ID as string
+
+  
 }
 
 const config = { ...defaultConfig, ...requiredConfigInput }
