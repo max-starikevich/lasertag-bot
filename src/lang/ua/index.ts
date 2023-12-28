@@ -36,7 +36,6 @@ const ua: MappedTranslation = {
   LINKS_COMMAND_DESCRIPTION: 'Корисні посилання',
 
   ENROLL_COMMAND_DESCRIPTION: 'Записатися у файл',
-  ENROLL_COMMAND_SUCCESS: 'Ви записані успішно',
 
   TEAMS_BALANCE: 'Баланс команд',
   RECORDED: 'Записано',
@@ -55,7 +54,6 @@ const ua: MappedTranslation = {
   UNKNOWN_COMMAND: 'Не вдалося розпізнати команду. Використовуйте меню або команду /{helpCommandName:string}',
   ACCESS_DENIED: 'Немає доступу',
   SHEETS_ERROR: 'Щось не так з Google-документом. Повторіть запит пізніше',
-  GROUP_CHAT_WARNING: '✍️ Пишіть мені в приват тут: @{botUsername:string}',
 
   ACTION_HANDLER_WRONG_DATA: 'Вказані невірні дані',
 

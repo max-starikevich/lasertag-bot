@@ -120,10 +120,6 @@ type RootTranslation = {
 	 */
 	ENROLL_COMMAND_DESCRIPTION: string
 	/**
-	 * Y​o​u​'​v​e​ ​b​e​e​n​ ​e​n​r​o​l​l​e​d​ ​s​u​c​c​e​s​s​f​u​l​l​y
-	 */
-	ENROLL_COMMAND_SUCCESS: string
-	/**
 	 * T​e​a​m​ ​b​a​l​a​n​c​e
 	 */
 	TEAMS_BALANCE: string
@@ -184,11 +180,6 @@ type RootTranslation = {
 	 * S​o​m​e​t​h​i​n​g​ ​i​s​ ​w​r​o​n​g​ ​w​i​t​h​ ​t​h​e​ ​G​o​o​g​l​e​ ​d​o​c​u​m​e​n​t​.​ ​T​r​y​ ​a​g​a​i​n​ ​l​a​t​e​r
 	 */
 	SHEETS_ERROR: string
-	/**
-	 * ✍​️​ ​S​e​n​d​ ​m​e​ ​a​ ​p​r​i​v​a​t​e​ ​m​e​s​s​a​g​e​ ​h​e​r​e​:​ ​@​{​b​o​t​U​s​e​r​n​a​m​e​}​.
-	 * @param {string} botUsername
-	 */
-	GROUP_CHAT_WARNING: RequiredParams<'botUsername'>
 	/**
 	 * W​r​o​n​g​ ​d​a​t​a​ ​p​r​o​v​i​d​e​d
 	 */
@@ -329,10 +320,6 @@ export type TranslationFunctions = {
 	 */
 	ENROLL_COMMAND_DESCRIPTION: () => LocalizedString
 	/**
-	 * You've been enrolled successfully
-	 */
-	ENROLL_COMMAND_SUCCESS: () => LocalizedString
-	/**
 	 * Team balance
 	 */
 	TEAMS_BALANCE: () => LocalizedString
@@ -392,10 +379,6 @@ export type TranslationFunctions = {
 	 * Something is wrong with the Google document. Try again later
 	 */
 	SHEETS_ERROR: () => LocalizedString
-	/**
-	 * ✍️ Send me a private message here: @{botUsername}.
-	 */
-	GROUP_CHAT_WARNING: (arg: { botUsername: string }) => LocalizedString
 	/**
 	 * Wrong data provided
 	 */

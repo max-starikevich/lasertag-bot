@@ -36,7 +36,6 @@ const pl: MappedTranslation = {
   LINKS_COMMAND_DESCRIPTION: 'Przydatne linki',
 
   ENROLL_COMMAND_DESCRIPTION: 'Zarejestruj się w pliku',
-  ENROLL_COMMAND_SUCCESS: 'Zostałeś pomyślnie zarejestrowany',
 
   TEAMS_BALANCE: 'Bilans drużyn',
   RECORDED: 'Zarejestrowano',
@@ -55,7 +54,6 @@ const pl: MappedTranslation = {
   UNKNOWN_COMMAND: 'Nie udało się rozpoznać polecenia. Użyj menu lub polecenia /{helpCommandName:string}',
   ACCESS_DENIED: 'Brak dostępu',
   SHEETS_ERROR: 'Coś jest nie tak z Google Docs. Spróbuj ponownie później',
-  GROUP_CHAT_WARNING: '✍️ Napisz do mnie prywatnie tutaj: @{botUsername:string}',
 
   ACTION_HANDLER_WRONG_DATA: 'Podano nieprawidłowe dane',
 

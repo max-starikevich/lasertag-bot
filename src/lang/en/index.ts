@@ -36,7 +36,6 @@ const en: BaseTranslation = {
   LINKS_COMMAND_DESCRIPTION: 'Show useful links',
 
   ENROLL_COMMAND_DESCRIPTION: 'Add yourself to the player list',
-  ENROLL_COMMAND_SUCCESS: "You've been enrolled successfully",
 
   TEAMS_BALANCE: 'Team balance',
   RECORDED: 'Recorded',
@@ -55,7 +54,6 @@ const en: BaseTranslation = {
   UNKNOWN_COMMAND: 'Unknown command. Use menu or command /{helpCommandName:string}',
   ACCESS_DENIED: 'Access denied',
   SHEETS_ERROR: 'Something is wrong with the Google document. Try again later',
-  GROUP_CHAT_WARNING: '✍️ Send me a private message here: @{botUsername:string}.',
 
   ACTION_HANDLER_WRONG_DATA: 'Wrong data provided',
 

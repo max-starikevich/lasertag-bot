@@ -36,7 +36,6 @@ const ru: MappedTranslation = {
   LINKS_COMMAND_DESCRIPTION: 'Полезные ссылки',
 
   ENROLL_COMMAND_DESCRIPTION: 'Записаться в файл',
-  ENROLL_COMMAND_SUCCESS: 'Вы записаны успешно',
 
   TEAMS_BALANCE: 'Баланс команд',
   RECORDED: 'Записано',
@@ -55,7 +54,6 @@ const ru: MappedTranslation = {
   UNKNOWN_COMMAND: 'Не удалось распознать команду. Используйте меню или команду /{helpCommandName:string}',
   ACCESS_DENIED: 'Нет доступа',
   SHEETS_ERROR: 'Что-то не так с Google-документом. Повторите запрос позже',
-  GROUP_CHAT_WARNING: '✍️ Пишите мне в личку тут: @{botUsername:string}',
 
   ACTION_HANDLER_WRONG_DATA: 'Указаны неверные данные',
 

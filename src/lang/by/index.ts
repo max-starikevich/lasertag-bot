@@ -36,7 +36,6 @@ const by: MappedTranslation = {
   LINKS_COMMAND_DESCRIPTION: 'Карысныя спасылкі',
 
   ENROLL_COMMAND_DESCRIPTION: 'Запісацца ў файл',
-  ENROLL_COMMAND_SUCCESS: 'Вы пасьпяхова запісаны ў файл',
 
   TEAMS_BALANCE: 'Баланс каманд',
   RECORDED: 'Запісана',
@@ -55,7 +54,6 @@ const by: MappedTranslation = {
   UNKNOWN_COMMAND: 'Не ўдалося распазнаць каманду. Выкарыстоўвайце меню ці каманду /{helpCommandName:string}',
   ACCESS_DENIED: 'Няма доступу',
   SHEETS_ERROR: 'Нешта здарылася зь Google-дакументам. Паўтарыце запыт пазьней',
-  GROUP_CHAT_WARNING: '✍️ Пішыце мне сюды: @{botUsername:string}',
 
   ACTION_HANDLER_WRONG_DATA: 'Уведзеныя няправільныя дадзеныя',
 
