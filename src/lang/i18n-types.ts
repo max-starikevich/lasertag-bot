@@ -148,27 +148,6 @@ type RootTranslation = {
 	 */
 	STATS_SAVE_SUCCESS: string
 	/**
-	 * Y​o​u​r​ ​r​e​q​u​e​s​t​ ​h​a​s​ ​b​e​e​n​ ​a​p​p​r​o​v​e​d​ ​b​y​ ​a​d​m​i​n​.​ ​S​t​a​t​s​ ​s​a​v​e​d​ ​s​u​c​c​e​s​s​f​u​l​l​y
-	 */
-	STATS_SAVE_APPROVED: string
-	/**
-	 * Y​e​s​,​ ​s​e​n​d​ ​t​o​ ​a​d​m​i​n​s
-	 */
-	STATS_SEND_TO_ADMIN: string
-	/**
-	 * A​l​r​e​a​d​y​ ​p​l​a​y​e​d​ ​w​i​t​h​ ​t​h​e​s​e​ ​t​e​a​m​s​?
-	 */
-	STATS_SEND_TO_ADMIN_OFFER: string
-	/**
-	 * S​t​a​t​s​ ​h​a​v​e​ ​b​e​e​n​ ​s​e​n​t​ ​t​o​ ​a​d​m​i​n
-	 */
-	STATS_SENT_SUCCESS: string
-	/**
-	 * I​n​c​o​m​i​n​g​ ​s​t​a​t​s​ ​s​a​v​e​ ​r​e​q​u​e​s​t​ ​f​r​o​m​ ​{​u​s​e​r​n​a​m​e​}
-	 * @param {string} username
-	 */
-	STATS_SAVE_REQUEST: RequiredParams<'username'>
-	/**
 	 * D​r​a​w
 	 */
 	STATS_DRAW: string
@@ -180,18 +159,6 @@ type RootTranslation = {
 	 * S​t​a​t​s​ ​f​o​r​ ​t​h​i​s​ ​g​a​m​e​ ​a​r​e​ ​a​l​r​e​a​d​y​ ​s​a​v​e​d
 	 */
 	STATS_ALREADY_SAVED: string
-	/**
-	 * R​e​j​e​c​t
-	 */
-	STATS_SAVE_REJECT: string
-	/**
-	 * S​t​a​t​s​ ​h​a​v​e​ ​b​e​e​n​ ​r​e​j​e​c​t​e​d
-	 */
-	STATS_SAVE_REJECTED: string
-	/**
-	 * Y​o​u​r​ ​r​e​q​u​e​s​t​ ​h​a​s​ ​b​e​e​n​ ​r​e​j​e​c​t​e​d​ ​b​y​ ​a​d​m​i​n
-	 */
-	STATS_SAVE_REJECTED_FOR_USER: string
 	/**
 	 * N​o​t​ ​n​e​e​d​e​d
 	 */
@@ -390,26 +357,6 @@ export type TranslationFunctions = {
 	 */
 	STATS_SAVE_SUCCESS: () => LocalizedString
 	/**
-	 * Your request has been approved by admin. Stats saved successfully
-	 */
-	STATS_SAVE_APPROVED: () => LocalizedString
-	/**
-	 * Yes, send to admins
-	 */
-	STATS_SEND_TO_ADMIN: () => LocalizedString
-	/**
-	 * Already played with these teams?
-	 */
-	STATS_SEND_TO_ADMIN_OFFER: () => LocalizedString
-	/**
-	 * Stats have been sent to admin
-	 */
-	STATS_SENT_SUCCESS: () => LocalizedString
-	/**
-	 * Incoming stats save request from {username}
-	 */
-	STATS_SAVE_REQUEST: (arg: { username: string }) => LocalizedString
-	/**
 	 * Draw
 	 */
 	STATS_DRAW: () => LocalizedString
@@ -421,18 +368,6 @@ export type TranslationFunctions = {
 	 * Stats for this game are already saved
 	 */
 	STATS_ALREADY_SAVED: () => LocalizedString
-	/**
-	 * Reject
-	 */
-	STATS_SAVE_REJECT: () => LocalizedString
-	/**
-	 * Stats have been rejected
-	 */
-	STATS_SAVE_REJECTED: () => LocalizedString
-	/**
-	 * Your request has been rejected by admin
-	 */
-	STATS_SAVE_REJECTED_FOR_USER: () => LocalizedString
 	/**
 	 * Not needed
 	 */
