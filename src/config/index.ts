@@ -48,8 +48,12 @@ export const requiredConfigInput = {
   STATS_TIMEZONE: process.env.STATS_TIMEZONE as string,
 
   STORE_DOC_ID: process.env.STORE_DOC_ID as string,
-  STORE_SHEETS_ID: process.env.STORE_SHEETS_ID as string
+  STORE_SHEETS_ID: process.env.STORE_SHEETS_ID as string,
 
+  SKILLS_DOC_ID: process.env.SKILLS_DOC_ID as string,
+  SKILLS_SHEETS_ID: process.env.SKILLS_SHEETS_ID as string,
+
+  OPENAI_API_KEY: process.env.OPENAI_API_KEY as string
 }
 
 const config = { ...defaultConfig, ...requiredConfigInput }

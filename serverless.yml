@@ -47,6 +47,11 @@ functions:
 
       STORE_DOC_ID: ${env:STORE_DOC_ID}
       STORE_SHEETS_ID: ${env:STORE_SHEETS_ID}
+
+      SKILLS_DOC_ID: ${env:STORE_DOC_ID}
+      SKILLS_SHEETS_ID: ${env:STORE_SHEETS_ID}
+
+      OPENAI_API_KEY: ${env:OPENAI_API_KEY}
     events:
       - http:
           path: /webhook/${env:BOT_TOKEN}

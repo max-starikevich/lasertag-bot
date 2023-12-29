@@ -61,7 +61,12 @@ const requiredRuntimeVariables: EnvironmentToCheck = {
   STATS_TIMEZONE: async () => isValidTimeZone(config.STATS_TIMEZONE),
 
   STORE_DOC_ID: async () => isValidString(config.STORE_DOC_ID),
-  STORE_SHEETS_ID: async () => isValidString(config.STORE_SHEETS_ID)
+  STORE_SHEETS_ID: async () => isValidString(config.STORE_SHEETS_ID),
+
+  SKILLS_DOC_ID: async () => isValidString(config.SKILLS_DOC_ID),
+  SKILLS_SHEETS_ID: async () => isValidString(config.SKILLS_SHEETS_ID),
+
+  OPENAI_API_KEY: async () => isValidString(config.OPENAI_API_KEY)
 }
 
 export const checkEnvironment = async (): Promise<void> => {
