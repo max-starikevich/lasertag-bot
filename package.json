@@ -21,6 +21,7 @@
     "lodash": "^4.17.21",
     "logform": "^2.6.0",
     "module-alias": "^2.2.3",
+    "openai": "^4.24.1",
     "telegraf": "^4.15.3",
     "typesafe-i18n": "^5.26.2",
     "uuid": "^9.0.1",
