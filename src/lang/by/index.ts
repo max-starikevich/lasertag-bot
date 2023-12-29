@@ -20,6 +20,8 @@ const by: MappedTranslation = {
   CLAN_TEAMS_COMMAND_DESCRIPTION: 'Стварыць каманды зь кланамі',
 
   AI_TEAMS_COMMAND_DESCRIPTION: 'Стварыць каманды з дапамогай штучнага інтэлекту',
+  AI_WRONG_RESPONSE: 'Штучны інтэлект не змог адказаць з падыходнымі дадзенымі',
+  AI_IN_PROGRESS: 'Калі ласка, пачакайце. Штучны інтэлект апрацоўвае гэты запыт',
 
   REGISTER_COMMAND_DESCRIPTION: 'Дадаць сябе ў базу дадзеных бота',
   REGISTER_CHOOSE_YOURSELF: 'Выберыце сваё імя з файлу запісу. Калі яго няма - зьвярніцеся да арганізатара, каб ён дадаў.',

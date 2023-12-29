@@ -70,6 +70,14 @@ type RootTranslation = {
 	 */
 	AI_TEAMS_COMMAND_DESCRIPTION: string
 	/**
+	 * A​I​ ​f​a​i​l​e​d​ ​t​o​ ​r​e​s​p​o​n​d​ ​w​i​t​h​ ​a​ ​p​r​o​p​e​r​ ​d​a​t​a
+	 */
+	AI_WRONG_RESPONSE: string
+	/**
+	 * P​l​e​a​s​e​ ​w​a​i​t​.​ ​A​I​ ​i​s​ ​w​o​r​k​i​n​g​ ​o​n​ ​t​h​i​s​ ​r​e​q​u​e​s​t
+	 */
+	AI_IN_PROGRESS: string
+	/**
 	 * A​d​d​ ​y​o​u​r​s​e​l​f​ ​t​o​ ​t​h​e​ ​b​o​t​'​s​ ​d​a​t​a​b​a​s​e
 	 */
 	REGISTER_COMMAND_DESCRIPTION: string
@@ -275,6 +283,14 @@ export type TranslationFunctions = {
 	 * Create teams using AI
 	 */
 	AI_TEAMS_COMMAND_DESCRIPTION: () => LocalizedString
+	/**
+	 * AI failed to respond with a proper data
+	 */
+	AI_WRONG_RESPONSE: () => LocalizedString
+	/**
+	 * Please wait. AI is working on this request
+	 */
+	AI_IN_PROGRESS: () => LocalizedString
 	/**
 	 * Add yourself to the bot's database
 	 */

@@ -20,6 +20,8 @@ const ua: MappedTranslation = {
   CLAN_TEAMS_COMMAND_DESCRIPTION: 'Створити команди з кланами',
 
   AI_TEAMS_COMMAND_DESCRIPTION: 'Створювати команди за допомогою штучного інтелекту',
+  AI_WRONG_RESPONSE: 'Штучний інтелект не зміг відповісти з належними даними',
+  AI_IN_PROGRESS: 'Будь ласка, зачекайте. Штучний інтелект працює над цим запитом',
 
   REGISTER_COMMAND_DESCRIPTION: 'Додати себе до бази даних бота',
   REGISTER_CHOOSE_YOURSELF: 'Виберіть своє ім\'я зі списку. Якщо його немає - зверніться до організатора, щоб він вас додав.',

@@ -20,6 +20,8 @@ const en: BaseTranslation = {
   CLAN_TEAMS_COMMAND_DESCRIPTION: 'Create teams with clans',
 
   AI_TEAMS_COMMAND_DESCRIPTION: 'Create teams using AI',
+  AI_WRONG_RESPONSE: 'AI failed to respond with a proper data',
+  AI_IN_PROGRESS: 'Please wait. AI is working on this request',
 
   REGISTER_COMMAND_DESCRIPTION: 'Add yourself to the bot\'s database',
   REGISTER_CHOOSE_YOURSELF: "Choose your name from the list. If it's missing then ask the game organizer to add it.",
