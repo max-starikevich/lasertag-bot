@@ -4,8 +4,10 @@ export interface ArbitraryPlayer {
 }
 
 export interface AiBalancedTeam {
-  skills: { [skillName: string]: string }
   players: ArbitraryPlayer[]
 }
 
-export type AiBalancedTeams = [AiBalancedTeam, AiBalancedTeam]
+export interface AiBalancedTeams {
+  team1: AiBalancedTeam
+  team2: AiBalancedTeam
+}

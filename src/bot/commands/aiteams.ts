@@ -13,15 +13,15 @@ const handler: CommandHandler = async (ctx) => {
 
   const activePlayers = getActivePlayers(players)
 
-  if (activePlayers.length < 10) {
+  if (activePlayers.length < 8) {
     throw new NotEnoughPlayersError()
   }
 
   await ctx.reply(`🤖 ${lang.AI_IN_PROGRESS()}`)
 
-  const aiBalancedTeams = await aiBalancer.balance(activePlayers.map(({ name }) => name))
+  const { team1, team2 } = await aiBalancer.balance(activePlayers.map(({ name }) => name))
 
-  const [redPlayers, bluePlayers] = aiBalancedTeams.map(({ players: arbitraryPlayers }) =>
+  const [redPlayers, bluePlayers] = [team1, team2].map(({ players: arbitraryPlayers }) =>
     arbitraryPlayers.reduce<Player[]>((team, arbitraryPlayer) => {
       const player = activePlayers.find(({ name }) => name === arbitraryPlayer.Name)
 

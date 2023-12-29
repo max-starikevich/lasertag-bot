@@ -4,22 +4,20 @@ export interface AiBalancerService {
   balance: (players: ArbitraryPlayer[]) => Promise<AiBalancedTeams>
 }
 
-export const aiTeamBalanceResponseTemplate: AiBalancedTeams = [
-  {
-    skills: { skill1: 'average-of-each-player', skill2: 'average-of-each-player', skill3: 'average-of-each-player' },
+export const aiTeamBalanceResponseTemplate: AiBalancedTeams = {
+  team1: {
     players: [
-      { Name: 'Player1', skill1: 'some-value', skill2: 'some-value' },
-      { Name: 'Player2', skill1: 'some-value', skill2: 'some-value', skill3: 'some-value' },
-      { Name: 'Player3', skill1: 'some-value', skill2: 'some-value' }
+      { Name: 'string', skill1: 'string', skill2: 'string' },
+      { Name: 'string', skill1: 'string', skill2: 'string', skill3: 'string' },
+      { Name: 'string', skill1: 'string', skill2: 'string' }
     ]
   },
-  {
-    skills: { skill1: 'average-of-each-player', skill2: 'average-of-each-player' },
+  team2: {
     players: [
-      { Name: 'Player4', skill1: 'some-value', skill2: 'some-value' },
-      { Name: 'Player5', skill1: 'some-value', skill2: 'some-value' },
-      { Name: 'Player6', skill1: 'some-value', skill2: 'some-value' },
-      { Name: 'Player7', skill1: 'some-value', skill2: 'some-value' }
+      { Name: 'string', skill1: 'string', skill2: 'string' },
+      { Name: 'string', skill1: 'string', skill2: 'string' },
+      { Name: 'string', skill1: 'string', skill2: 'string' },
+      { Name: 'string', skill1: 'string', skill2: 'string' }
     ]
   }
-]
+}

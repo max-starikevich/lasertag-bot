@@ -23,9 +23,6 @@ export function parseFirstJson<T = any> (text?: string | null): T | null {
     return null
   }
 
-  // Remove all newlines and extra whitespace from the text
-  text = text.replace(/\s+/g, '')
-
   const startIndex = Math.min(
     text.includes('{') ? text.indexOf('{') : text.length,
     text.includes('[') ? text.indexOf('[') : text.length
