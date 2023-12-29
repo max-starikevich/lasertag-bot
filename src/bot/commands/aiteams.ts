@@ -29,6 +29,10 @@ const handler: CommandHandler = async (ctx) => {
     throw new NotEnoughPlayersError()
   }
 
+  if (redPlayers.length + bluePlayers.length !== activePlayers.length) {
+    throw new Error('AI balancing failed: team lengths mismatch')
+  }
+
   await replyWithPlaceAndTime(ctx)
 
   await replyWithTeamCount(ctx, [redPlayers, bluePlayers])
