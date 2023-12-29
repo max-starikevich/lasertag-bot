@@ -8,6 +8,9 @@ import { reportException } from '$/errors'
 
 import { GoogleTableGameStorage } from '$/game/storage/google-table/GoogleTableGameStorage'
 import { GoogleTableGameStore } from '$/game/storage/google-table/GoogleTableStore'
+import { AiSkillBalancer } from './game/ai'
+import { ChatGptBalancer } from './game/ai/balance/chatgpt'
+import { GoogleTableSkillsStorage } from './game/ai/storage/google-table'
 
 const storage = new GoogleTableGameStorage({
   email: config.GOOGLE_SERVICE_ACCOUNT_EMAIL,
@@ -48,7 +51,18 @@ const store = new GoogleTableGameStore({
   sheetsId: config.STORE_SHEETS_ID
 })
 
-export const botPromise = initBot({ token: config.BOT_TOKEN, storage, store })
+const aiBalancerService = new ChatGptBalancer(config.OPENAI_API_KEY)
+
+const aiSkillsStorage = new GoogleTableSkillsStorage({
+  email: config.GOOGLE_SERVICE_ACCOUNT_EMAIL,
+  privateKey: config.GOOGLE_PRIVATE_KEY,
+  docId: config.SKILLS_DOC_ID,
+  sheetsId: config.SKILLS_SHEETS_ID
+})
+
+const aiBalancer = new AiSkillBalancer(aiBalancerService, aiSkillsStorage)
+
+export const botPromise = initBot({ token: config.BOT_TOKEN, storage, store, aiBalancer })
 
 export const handler = async (
   event: APIGatewayProxyEvent

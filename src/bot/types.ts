@@ -6,11 +6,13 @@ import { Player } from '$/game/player/types'
 import { BaseLogger } from '$/logger/types'
 import { Locales, TranslationFunctions } from '$/lang/i18n-types'
 import { GameStorage, GameStore } from '$/game/storage/types'
+import { AiSkillBalancer } from '$/game/ai'
 import { CustomContext } from './CustomContext'
 
 export interface GameContext extends CustomContext {
   storage: GameStorage
   store: GameStore
+  aiBalancer: AiSkillBalancer
   logger: BaseLogger
 
   isAdminInHomeChat: boolean
