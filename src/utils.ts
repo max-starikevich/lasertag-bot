@@ -18,6 +18,30 @@ export const parseJsonSafe = <T = any>(json: string): T | null => {
   }
 }
 
+export function parseFirstJson<T = any> (text?: string | null): T | null {
+  if (text == null) {
+    return null
+  }
+
+  // Remove all newlines and extra whitespace from the text
+  text = text.replace(/\s+/g, '')
+
+  const startIndex = Math.min(
+    text.includes('{') ? text.indexOf('{') : text.length,
+    text.includes('[') ? text.indexOf('[') : text.length
+  )
+  const endIndex = Math.max(text.lastIndexOf('}'), text.lastIndexOf(']'))
+
+  if (startIndex === text.length || endIndex === -1 || startIndex > endIndex) {
+    // If no valid braces/brackets are found or they are in the wrong order, return null
+    return null
+  }
+
+  const jsonStr = text.substring(startIndex, endIndex + 1)
+
+  return parseJsonSafe(jsonStr)
+}
+
 export const extractString = (data: any): string | undefined => {
   if (data == null) {
     return undefined

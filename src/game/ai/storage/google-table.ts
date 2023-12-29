@@ -51,11 +51,31 @@ export class GoogleTableSkillsStorage implements AiSkillsStorage {
     return sheets
   }
 
-  async find (_keys: string[]): Promise<ArbitraryPlayer[]> {
-    // const sheets = await this.getSheets()
-    // const rows = await sheets.getRows()
+  async find (keys: string[]): Promise<ArbitraryPlayer[]> {
+    const sheets = await this.getSheets()
+    const rows = await sheets.getRows()
 
-    return []
+    const columnNames = sheets.headerValues
+
+    const arbitraryPlayers = rows.filter(row => keys.includes(row.Name)).map(row => {
+      const arbitraryPlayer: ArbitraryPlayer = {
+        Name: row.Name
+      }
+
+      columnNames.forEach((columnName) => {
+        const columnValue = row[columnName]
+
+        if (columnValue == null) {
+          return
+        }
+
+        arbitraryPlayer[columnName] = columnValue
+      })
+
+      return arbitraryPlayer
+    }, {})
+
+    return arbitraryPlayers
   }
 
   async findAll (): Promise<ArbitraryPlayer[]> {

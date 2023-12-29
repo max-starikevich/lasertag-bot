@@ -2,7 +2,6 @@ import { Telegraf } from 'telegraf'
 import ApiClient from 'telegraf/typings/core/network/client'
 
 import config from '$/config'
-import { checkEnvironment } from '$/config/check'
 
 import { GameContext } from '$/bot/types'
 import { commands } from '$/bot/commands'
@@ -30,9 +29,7 @@ interface InitBotParams {
   locale?: Locales
 }
 
-export const initBot = async ({ token, telegramApiOptions, storage, store, aiBalancer, locale = config.DEFAULT_LOCALE }: InitBotParams): Promise<Telegraf<GameContext>> => {
-  await checkEnvironment()
-
+export const initBot = ({ token, telegramApiOptions, storage, store, aiBalancer, locale = config.DEFAULT_LOCALE }: InitBotParams): Telegraf<GameContext> => {
   const bot = new Telegraf<GameContext>(token, {
     // @ts-expect-error
     contextType: CustomContext,

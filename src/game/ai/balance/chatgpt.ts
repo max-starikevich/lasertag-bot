@@ -1,76 +1,70 @@
-import axios from 'axios'
+import OpenAI from 'openai'
+
+import { parseFirstJson } from '$/utils'
 
 import { AiBalancerService, aiTeamBalanceResponseTemplate } from './types'
 import { ArbitraryPlayer, AiBalancedTeam, AiBalancedTeams } from '../types'
+import { AiWrongResponse } from '../../../errors/AiWrongResponse'
 
 export class ChatGptBalancer implements AiBalancerService {
-  private readonly endpoint = 'https://api.openai.com/v1/engines/davinci-codex/completions'
+  private readonly client: OpenAI
 
-  constructor (private readonly apiKey: string) {}
+  constructor (apiKey: string) {
+    this.client = new OpenAI({ apiKey })
+  }
 
   async balance (players: ArbitraryPlayer[]): Promise<[AiBalancedTeam, AiBalancedTeam]> {
-    const response = await axios.post(this.endpoint, {
-      prompt: this.generatePrompt(players),
-      max_tokens: 300
-    }, {
-      headers: {
-        Authorization: `Bearer ${this.apiKey}`,
-        'Content-Type': 'application/json'
-      }
+    const prompt = this.generatePrompt(players)
+
+    const response = await this.client.chat.completions.create({
+      messages: [{ role: 'user', content: prompt }],
+      model: 'gpt-4'
     })
 
-    const result = JSON.parse(response.data?.choices?.[0]?.text?.trim())
+    const rawContent = response.choices[0].message.content
 
-    this.validateResponse(result)
+    const parsedResult = parseFirstJson(rawContent)
 
-    return result
+    this.validateResponse(parsedResult)
+
+    return parsedResult
   }
 
   private generatePrompt (players: ArbitraryPlayer[]): string {
-    let prompt = "Create a JSON object to balance these players into two teams based on their skills. Each team should have a 'skills' summary and a list of 'players' names:\n"
+    let prompt = 'Group these players into two equal teams based on their skills from this JSON:\n\n'
 
     players.forEach(player => {
-      prompt += JSON.stringify(player) + ',\n'
+      prompt += JSON.stringify(player, null, 2) + ',\n'
     })
 
-    prompt += 'The JSON object should be structured as follows:\n' + JSON.stringify(aiTeamBalanceResponseTemplate, null, 2)
+    prompt += '\n\nThe algorithm of player distribution is at your discretion.'
+
+    prompt += '\n\nCreate a JSON object like this:\n\n' + JSON.stringify(aiTeamBalanceResponseTemplate, null, 2)
 
     return prompt
   }
 
   private validateResponse (response: Partial<AiBalancedTeams>): asserts response is AiBalancedTeams {
     if (!Array.isArray(response)) {
-      throw new Error('ChatGPT response structure is invalid: response is not array')
+      throw new AiWrongResponse('ChatGPT response structure is invalid: response is not array')
     }
 
     if (response.length !== 2) {
-      throw new Error('ChatGPT response structure is invalid: response array does not have 2 items')
+      throw new AiWrongResponse('ChatGPT response structure is invalid: response array does not have 2 items')
     }
 
     for (const team of response) {
       if (team == null) {
-        throw new Error('ChatGPT response structure is invalid: an item is not a team type')
+        throw new AiWrongResponse('ChatGPT response structure is invalid: an item is not a team type')
       }
 
       if (!Array.isArray(team.players)) {
-        throw new Error('ChatGPT response structure is invalid: team.players field should be an array')
+        throw new AiWrongResponse('ChatGPT response structure is invalid: team.players field should be an array')
       }
 
-      if (typeof team.skills === 'object') {
-        throw new Error('ChatGPT response structure is invalid: team.skills field should be an object')
-      }
+      // if (typeof team.skills === 'object') {
+      //   throw new AiWrongResponse('ChatGPT response structure is invalid: team.skills field should be an object')
+      // }
     }
   }
 }
-
-// // Example usage
-// const playerBalancer: AiBalancer = new ChatGptBalancer('your-api-key')
-
-// const players: ArbitraryPlayer[] = [
-//   { name: 'Alice', speed: '8', durability: '5', accuracy: '7', leadership: '6' }
-//   // ... more players with string fields
-// ]
-
-// playerBalancer.balance(players)
-//   .then(teams => console.log('Team A:', teams.teamA, '\nTeam B:', teams.teamB))
-//   .catch(error => console.error('Error:', error))

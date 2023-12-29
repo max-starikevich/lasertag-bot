@@ -3,7 +3,7 @@ import bodyParser from 'koa-bodyparser'
 import Router from 'koa-router'
 
 import config from '$/config'
-import { botPromise, handler } from '$/lambda'
+import { bot, handler } from '$/lambda'
 import { unsetCommandsForGroups, updateBotCommands, updateBotCommandsForPlayers, updateBotWebhook } from '$/bot/webhooks'
 import { makeLogger } from '$/logger'
 import { GameStorage } from './game/storage/types'
@@ -12,8 +12,6 @@ const dev = async (): Promise<void> => {
   const logger = makeLogger()
 
   try {
-    const bot = await botPromise
-
     if (bot == null) {
       throw new Error('The instance is unavailable')
     }

@@ -62,14 +62,12 @@ const aiSkillsStorage = new GoogleTableSkillsStorage({
 
 const aiBalancer = new AiSkillBalancer(aiBalancerService, aiSkillsStorage)
 
-export const botPromise = initBot({ token: config.BOT_TOKEN, storage, store, aiBalancer })
+export const bot = initBot({ token: config.BOT_TOKEN, storage, store, aiBalancer, telegramApiOptions: { webhookReply: true } })
 
 export const handler = async (
   event: APIGatewayProxyEvent
 ): Promise<APIGatewayProxyResult> => {
   try {
-    const bot = await botPromise
-
     if (bot === null) {
       return {
         statusCode: 500,
@@ -93,7 +91,7 @@ export const handler = async (
       }
     }
 
-    await bot.handleUpdate(payload)
+    void bot.handleUpdate(payload)
 
     return {
       statusCode: 200,

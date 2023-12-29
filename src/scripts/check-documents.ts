@@ -1,10 +1,9 @@
 import { checkEnvironment } from '$/config/check'
-import { botPromise } from '$/lambda'
+import { bot } from '$/lambda'
 
 async function run (): Promise<void> {
   try {
     await checkEnvironment()
-    const bot = await botPromise
 
     console.info(JSON.stringify({
       storage: await bot.context.storage?.loadDebugInfo(),

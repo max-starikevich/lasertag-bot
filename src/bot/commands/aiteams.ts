@@ -2,15 +2,23 @@ import { NotEnoughPlayersError } from '$/errors/NotEnoughPlayersError'
 
 import { getActivePlayers, orderTeamByGameCount } from '$/game/player'
 import { Player } from '$/game/player/types'
+import { AiWrongResponse } from '$/errors/AiWrongResponse'
 
 import { Command, CommandHandler } from '../types'
 import { replyWithPlaceAndTime, replyWithPlayers, replyWithTeamCount } from '.'
 import { initializer as replyWithStatsActions } from '../actions/stats'
 
 const handler: CommandHandler = async (ctx) => {
-  const { players, aiBalancer } = ctx
+  const { players, aiBalancer, lang } = ctx
 
   const activePlayers = getActivePlayers(players)
+
+  if (activePlayers.length < 10) {
+    throw new NotEnoughPlayersError()
+  }
+
+  await ctx.reply(`🤖 ${lang.AI_IN_PROGRESS()}`)
+
   const aiBalancedTeams = await aiBalancer.balance(activePlayers.map(({ name }) => name))
 
   const [redPlayers, bluePlayers] = aiBalancedTeams.map(({ players: arbitraryPlayers }) =>
@@ -25,12 +33,8 @@ const handler: CommandHandler = async (ctx) => {
     }, [])
   ).map(team => orderTeamByGameCount(team))
 
-  if (redPlayers.length === 0 || bluePlayers.length === 0) {
-    throw new NotEnoughPlayersError()
-  }
-
   if (redPlayers.length + bluePlayers.length !== activePlayers.length) {
-    throw new Error('AI balancing failed: team lengths mismatch')
+    throw new AiWrongResponse('AI balancing failed: team lengths mismatch')
   }
 
   await replyWithPlaceAndTime(ctx)

@@ -15,11 +15,11 @@ export const updateBotWebhook = async (ctx: Pick<GameContext, 'logger' | 'telegr
 
   const { url: savedWebhook } = await telegram.getWebhookInfo()
 
-  if (config.WEBHOOK_FULL === savedWebhook) {
-    return
-  }
+  // if (config.WEBHOOK_FULL === savedWebhook) {
+  //   return
+  // }
 
-  await telegram.setWebhook(config.WEBHOOK_FULL, { allowed_updates: ['message', 'callback_query'] })
+  await telegram.setWebhook(config.WEBHOOK_FULL, { allowed_updates: ['message', 'callback_query'], drop_pending_updates: true, max_connections: 100 })
 
   logger.info(`✅ The webhook has been updated from "${savedWebhook ?? 'undefined'}" to "${config.WEBHOOK_FULL}"`)
 }
