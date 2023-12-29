@@ -60,7 +60,7 @@
     "test:e2e": "jest --config jest.e2e.js",
     "lang:watch": "typesafe-i18n",
     "prepare": "husky install",
-    "pre-push": "pnpm lint && pnpm test",
+    "pre-push": "pnpm lint && pnpm test && pnpm deploy:build",
     "ngrok": "ngrok http 4000",
     "build": "tsc -p ./tsconfig.prod.json",
     "deploy:build": "docker image build --progress=plain -t lasertag-bot .",
