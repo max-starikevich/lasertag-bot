@@ -1,5 +1,4 @@
 import { NotEnoughPlayersError } from '$/errors/NotEnoughPlayersError'
-import { getBalancedTeams } from '$/game/player/balance/no-clans'
 import { getActivePlayers, orderTeamByGameCount } from '$/game/player'
 
 import { Command, CommandHandler } from '../types'
@@ -7,10 +6,11 @@ import { replyWithPlaceAndTime, replyWithPlayers, replyWithTeamBalance, replyWit
 import { initializer as replyWithStatsActions } from '../actions/stats'
 
 const handler: CommandHandler = async (ctx) => {
-  const { players } = ctx
+  const { players, balancers } = ctx
 
   const activePlayers = getActivePlayers(players)
-  const teams = getBalancedTeams(activePlayers)
+
+  const teams = await balancers.noClans.balance(activePlayers)
   const [redPlayers, bluePlayers] = teams.map(team => orderTeamByGameCount(team))
 
   if (redPlayers.length === 0 || bluePlayers.length === 0) {

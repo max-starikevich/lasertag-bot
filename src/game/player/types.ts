@@ -44,6 +44,10 @@ export interface AdminPlayer extends Player {
 
 export type Teams = [Player[], Player[]]
 
+export interface ITeamBalancer {
+  balance: (players: Player[]) => Promise<Teams>
+}
+
 export interface GameStatsData {
   won: Player[]
   lost: Player[]

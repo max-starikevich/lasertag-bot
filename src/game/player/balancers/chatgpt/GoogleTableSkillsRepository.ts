@@ -1,18 +1,16 @@
 import { GoogleSpreadsheet, GoogleSpreadsheetWorksheet } from 'google-spreadsheet'
 
 import { GoogleDocumentError } from '$/errors/GoogleDocumentError'
+import { Skills, ISkillsRepository } from './types'
 
-import { ArbitraryPlayer } from '../types'
-import { AiSkillsStorage } from './types'
-
-interface GoogleTableSkillsStorageParams {
+interface GoogleTableSkillsRepositoryParams {
   email: string
   privateKey: string
   docId: string
   sheetsId: string
 }
 
-export class GoogleTableSkillsStorage implements AiSkillsStorage {
+export class GoogleTableSkillsRepository implements ISkillsRepository {
   protected doc?: GoogleSpreadsheet
 
   protected email: string
@@ -20,7 +18,7 @@ export class GoogleTableSkillsStorage implements AiSkillsStorage {
   protected docId: string
   protected sheetsId: string
 
-  constructor (params: GoogleTableSkillsStorageParams) {
+  constructor (params: GoogleTableSkillsRepositoryParams) {
     this.email = params.email
     this.privateKey = params.privateKey
     this.docId = params.docId
@@ -51,14 +49,14 @@ export class GoogleTableSkillsStorage implements AiSkillsStorage {
     return sheets
   }
 
-  async find (keys: string[]): Promise<ArbitraryPlayer[]> {
+  async find (ids: string[]): Promise<Skills[]> {
     const sheets = await this.getSheets()
     const rows = await sheets.getRows()
 
     const columnNames = sheets.headerValues
 
-    const arbitraryPlayers = rows.filter(row => keys.includes(row.Name)).map(row => {
-      const arbitraryPlayer: ArbitraryPlayer = {
+    const players = rows.filter(row => ids.includes(row.Name)).map(row => {
+      const player: Skills = {
         Name: row.Name
       }
 
@@ -69,16 +67,12 @@ export class GoogleTableSkillsStorage implements AiSkillsStorage {
           return
         }
 
-        arbitraryPlayer[columnName] = columnValue
+        player[columnName] = columnValue
       })
 
-      return arbitraryPlayer
+      return player
     }, {})
 
-    return arbitraryPlayers
-  }
-
-  async findAll (): Promise<ArbitraryPlayer[]> {
-    return []
+    return players
   }
 }

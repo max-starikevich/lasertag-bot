@@ -1,9 +1,9 @@
 module.exports = {
-  roots: ['<rootDir>/test'],
+  roots: ['<rootDir>/src', '<rootDir>/test'],
   setupFiles: ["dotenv/config"],
   passWithNoTests: true,
   testMatch: [
-    '<rootDir>/**/*.test.ts',
+    '**/*.test.ts',
   ],
   transform: {
     '^.+\\.ts$': 'ts-jest'

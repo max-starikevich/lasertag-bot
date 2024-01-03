@@ -1,14 +1,18 @@
-import { ArbitraryPlayer, AiBalancedTeams } from '../types'
-
-export interface AiBalancerService {
-  balance: (players: ArbitraryPlayer[]) => Promise<AiBalancedTeams>
+export interface AiBalanceOutput {
+  team1: {
+    players: Skills[]
+  }
+  team2: {
+    players: Skills[]
+  }
 }
 
-export const aiTeamBalanceResponseTemplate: AiBalancedTeams = {
+export const balanceOutputExample: AiBalanceOutput = {
   team1: {
     players: [
       { Name: 'string', skill1: 'string', skill2: 'string' },
-      { Name: 'string', skill1: 'string', skill2: 'string', skill3: 'string' },
+      { Name: 'string', skill1: 'string', skill2: 'string' },
+      { Name: 'string', skill1: 'string', skill2: 'string' },
       { Name: 'string', skill1: 'string', skill2: 'string' }
     ]
   },
@@ -20,4 +24,13 @@ export const aiTeamBalanceResponseTemplate: AiBalancedTeams = {
       { Name: 'string', skill1: 'string', skill2: 'string' }
     ]
   }
+}
+
+export interface Skills {
+  Name: string
+  [skillName: string]: string
+}
+
+export interface ISkillsRepository {
+  find: (ids: string[]) => Promise<Skills[]>
 }

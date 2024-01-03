@@ -1,4 +1,4 @@
-import { groupBy, keyBy, orderBy } from 'lodash'
+import { groupBy, isEqual, keyBy, orderBy } from 'lodash'
 import { User } from 'telegraf/typings/core/types/typegram'
 
 import config from '$/config'
@@ -85,3 +85,13 @@ export const orderTeamByGameCount = <P extends Player>(team: P[]): P[] =>
   orderBy(
     team, p => p.gameCount, 'desc'
   )
+
+export const areTwoTeamsTheSame = (team1: Player[], team2: Player[]): boolean => {
+  if (team1.length !== team2.length) return false
+
+  for (const item1 of team1) {
+    if (!team2.some(item2 => isEqual(item1, item2))) return false
+  }
+
+  return true
+}

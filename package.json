@@ -1,6 +1,6 @@
 {
   "name": "lasertag-bot",
-  "version": "7.11.0",
+  "version": "8.0.0",
   "repository": "https://github.com/max-starikevich/lasertag-bot",
   "author": "Max Starikevich <maxim.starikevich@gmail.com>",
   "license": "MIT",
@@ -58,7 +58,9 @@
     "start": "curl http://localhost:4040/api/tunnels && WEBHOOK_BASE=$(curl http://localhost:4040/api/tunnels | jq -r '.tunnels[0].public_url') pnpm dev",
     "lint": "ts-standard",
     "test": "jest",
-    "test:e2e": "jest --config jest.e2e.js",
+    "test:dev": "node --inspect=9230 ./node_modules/jest/bin/jest.js --watchAll --runInBand",
+    "e2e": "jest --config jest.e2e.js",
+    "e2e:dev": "node --inspect=9230 ./node_modules/jest/bin/jest.js --config jest.e2e.js --watchAll --runInBand",
     "lang:watch": "typesafe-i18n",
     "prepare": "husky install",
     "pre-push": "pnpm lint && pnpm test && pnpm deploy:build",

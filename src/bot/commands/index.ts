@@ -2,7 +2,7 @@ import dedent from 'dedent-js'
 import { orderBy } from 'lodash'
 
 import { getSquadsForTeam } from '$/game/player'
-import { getTeamsLevels } from '$/game/player/balance'
+import { getTeamsLevels } from '$/game/player/balancers/utils'
 import { Player, Teams } from '$/game/player/types'
 
 import { Command, CommandContext } from '../types'

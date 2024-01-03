@@ -3,12 +3,11 @@ import ApiClient from 'telegraf/typings/core/network/client'
 
 import config from '$/config'
 
-import { GameContext } from '$/bot/types'
+import { AvailableTeamBalancers, GameContext } from '$/bot/types'
 import { commands } from '$/bot/commands'
 import { setBotActions, setBotMiddlewares } from '$/bot/middleware'
 
 import { GameStorage, GameStore } from '$/game/storage/types'
-import { AiSkillBalancer } from '$/game/ai'
 
 import L from '$/lang/i18n-node'
 import { Locales } from '$/lang/i18n-types'
@@ -20,16 +19,16 @@ export const commandsInMenu = commands.filter(
   ({ showInMenu }) => showInMenu
 )
 
-interface InitBotParams {
+interface BotParams {
   storage: GameStorage
   store: GameStore
-  aiBalancer: AiSkillBalancer
+  balancers: AvailableTeamBalancers
   token: string
   telegramApiOptions?: Partial<ApiClient.Options>
   locale?: Locales
 }
 
-export const initBot = ({ token, telegramApiOptions, storage, store, aiBalancer, locale = config.DEFAULT_LOCALE }: InitBotParams): Telegraf<GameContext> => {
+export const initBot = ({ token, telegramApiOptions, storage, store, locale = config.DEFAULT_LOCALE, balancers }: BotParams): Telegraf<GameContext> => {
   const bot = new Telegraf<GameContext>(token, {
     // @ts-expect-error
     contextType: CustomContext,
@@ -38,8 +37,8 @@ export const initBot = ({ token, telegramApiOptions, storage, store, aiBalancer,
 
   bot.context.storage = storage
   bot.context.store = store
-  bot.context.aiBalancer = aiBalancer
   bot.context.players = []
+  bot.context.balancers = balancers
 
   // will be overriden in the access middleware
   bot.context.isAdminInHomeChat = false

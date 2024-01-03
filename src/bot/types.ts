@@ -1,19 +1,25 @@
 import { NarrowedContext } from 'telegraf'
 import { ChatMember, Message, Update } from 'telegraf/typings/core/types/typegram'
 
-import { Player } from '$/game/player/types'
+import { Player, ITeamBalancer } from '$/game/player/types'
 
 import { BaseLogger } from '$/logger/types'
 import { Locales, TranslationFunctions } from '$/lang/i18n-types'
 import { GameStorage, GameStore } from '$/game/storage/types'
-import { AiSkillBalancer } from '$/game/ai'
 import { CustomContext } from './CustomContext'
+
+export interface AvailableTeamBalancers {
+  noClans: ITeamBalancer
+  withClans: ITeamBalancer
+  chatGpt: ITeamBalancer
+}
 
 export interface GameContext extends CustomContext {
   storage: GameStorage
   store: GameStore
-  aiBalancer: AiSkillBalancer
   logger: BaseLogger
+
+  balancers: AvailableTeamBalancers
 
   isAdminInHomeChat: boolean
   isCreatorOfHomeChat: boolean
