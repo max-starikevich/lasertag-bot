@@ -98,9 +98,5 @@ export const areTwoTeamsTheSame = (team1: Player[], team2: Player[]): boolean =>
 }
 
 export const generateTeamId = (team: Player[]): string => {
-  const namesCombined = orderBy(
-    team, p => p.name, 'asc'
-  ).map(({ name }) => name).join(',')
-
-  return stringToSha1(namesCombined)
+  return stringToSha1(orderBy(team.map(({ name }) => name), 'asc').join(','))
 }

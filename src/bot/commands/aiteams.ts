@@ -1,12 +1,21 @@
-import { NotEnoughPlayersError } from '$/errors/NotEnoughPlayersError'
 import { getActivePlayers, orderTeamByGameCount } from '$/game/player'
+import { NotEnoughPlayersError } from '$/errors/NotEnoughPlayersError'
+import { RegisterRequiredError } from '$/errors/RegisterRequiredError'
+import { AccessDeniedError } from '$/errors/AccessDeniedError'
 
 import { Command, CommandHandler } from '../types'
-import { replyWithPlaceAndTime, replyWithPlayers, replyWithTeamCount } from '.'
-import { initializer as replyWithStatsActions } from '../actions/stats'
+import { replyWithTeamList } from '.'
 
 const handler: CommandHandler = async (ctx) => {
-  const { players, balancers, lang } = ctx
+  const { currentPlayer, players, balancers, lang } = ctx
+
+  if (currentPlayer == null) {
+    throw new RegisterRequiredError()
+  }
+
+  if (!currentPlayer.isAdmin) {
+    throw new AccessDeniedError()
+  }
 
   const activePlayers = getActivePlayers(players)
 
@@ -19,19 +28,7 @@ const handler: CommandHandler = async (ctx) => {
   const teams = await balancers.chatGpt.balance(activePlayers)
   const [redPlayers, bluePlayers] = teams.map(team => orderTeamByGameCount(team))
 
-  await replyWithPlaceAndTime(ctx)
-
-  await replyWithTeamCount(ctx, [redPlayers, bluePlayers])
-
-  if (redPlayers.length > 0) {
-    await replyWithPlayers(ctx, redPlayers, '🔴')
-  }
-
-  if (bluePlayers.length > 0) {
-    await replyWithPlayers(ctx, bluePlayers, '🔵')
-  }
-
-  await replyWithStatsActions(ctx, teams)
+  await replyWithTeamList(ctx, [redPlayers, bluePlayers], false)
 }
 
 export const aiteams: Command = {

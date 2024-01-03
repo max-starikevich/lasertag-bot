@@ -5,20 +5,20 @@ import { RegisterRequiredError } from '$/errors/RegisterRequiredError'
 import { Command, CommandHandler } from '../types'
 
 const handler: CommandHandler = async (ctx) => {
-  const { currentPlayer: player, lang } = ctx
+  const { currentPlayer, lang } = ctx
 
-  if (player === undefined) {
+  if (currentPlayer === undefined) {
     throw new RegisterRequiredError()
   }
 
   await ctx.replyWithHTML(dedent`
-    <b>${player.name} ${player.clanEmoji ?? ''}</b>
+    <b>${currentPlayer.name} ${currentPlayer.clanEmoji ?? ''}</b>
 
-    ${lang.ME_GAME_COUNT()}: ${player.gameCount}
-    ${lang.ME_WINRATE()}: ${player.winRate}%
-    ${lang.ME_WINS()}: ${player.wins}
-    ${lang.ME_LOSSES()}: ${player.losses}
-    ${lang.ME_DRAWS()}: ${player.draws}
+    ${lang.ME_GAME_COUNT()}: ${currentPlayer.gameCount}
+    ${lang.ME_WINRATE()}: ${currentPlayer.winRate}%
+    ${lang.ME_WINS()}: ${currentPlayer.wins}
+    ${lang.ME_LOSSES()}: ${currentPlayer.losses}
+    ${lang.ME_DRAWS()}: ${currentPlayer.draws}
   `)
 }
 

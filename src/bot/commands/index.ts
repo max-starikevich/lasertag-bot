@@ -23,6 +23,8 @@ import { me } from './me'
 import { error } from './error'
 import { delay } from './delay'
 
+import { initializer as replyWithStatsActions } from '../actions/stats'
+
 export const commands: Command[] = [
   start,
   enroll,
@@ -41,6 +43,28 @@ export const commands: Command[] = [
   error,
   delay
 ]
+
+export const replyWithTeamList = async (ctx: CommandContext, teams: Teams, showBalance = true): Promise<void> => {
+  await replyWithPlaceAndTime(ctx)
+
+  await replyWithTeamCount(ctx, teams)
+
+  const [redPlayers, bluePlayers] = teams
+
+  if (redPlayers.length > 0) {
+    await replyWithPlayers(ctx, redPlayers, '🔴')
+  }
+
+  if (bluePlayers.length > 0) {
+    await replyWithPlayers(ctx, bluePlayers, '🔵')
+  }
+
+  if (showBalance) {
+    await replyWithTeamBalance(ctx, [redPlayers, bluePlayers])
+  }
+
+  await replyWithStatsActions(ctx, teams)
+}
 
 export const replyWithPlaceAndTime = async (ctx: CommandContext): Promise<void> => {
   const { storage } = ctx
