@@ -96,11 +96,6 @@ export const handler = async (
       }
     }
 
-    // Telegram servers do send updates sequentially,
-    // if we respond with 200 after the whole handler execution,
-    // then all requests are gonna run one-by-one, which sucks
-    //
-    // so let's not await here, so we can serve many requests in parallel
     await bot.handleUpdate(payload)
 
     return {
