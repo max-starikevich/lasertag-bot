@@ -2,7 +2,6 @@ import OpenAI from 'openai'
 
 import { parseFirstJson } from '$/utils'
 import { AiError } from '$/errors/AiError'
-import { ILogger } from '$/logger/types'
 
 import { Skills, ISkillsRepository, balanceOutputExample, AiBalanceOutput } from './types'
 import { ITeamBalancer, Player, Teams } from '../../types'
@@ -11,7 +10,7 @@ import { areTwoTeamsTheSame } from '../..'
 export class ChatGptTeamBalancer implements ITeamBalancer {
   private readonly client: OpenAI
 
-  constructor (apiKey: string, private readonly skillsRepository: ISkillsRepository, private readonly logger: ILogger) {
+  constructor (apiKey: string, private readonly skillsRepository: ISkillsRepository) {
     this.client = new OpenAI({ apiKey })
   }
 
@@ -35,25 +34,25 @@ export class ChatGptTeamBalancer implements ITeamBalancer {
     const skills = await this.skillsRepository.find(players.map(({ name }) => name))
     const prompt = this.generatePrompt(skills)
 
-    this.logger.info('ChatGPT prompt: ' + prompt)
-
     const response = await this.client.chat.completions.create({
       messages: [{ role: 'user', content: prompt }],
       model: 'gpt-4',
       n: 1
     })
 
-    const rawContent = response.choices[0].message.content
+    const rawResponse = response.choices[0].message.content
 
-    this.logger.info('Raw ChatGPT response: ' + (rawContent ?? ''))
+    const teamsJson = parseFirstJson<AiBalanceOutput>(rawResponse)
 
-    const parsedResult = parseFirstJson<AiBalanceOutput>(rawContent)
-
-    if (parsedResult == null) {
-      throw new AiError('Invalid response from ChatGPT. Can\'t parse the JSON')
+    if (teamsJson == null) {
+      throw new AiError({
+        message: 'Invalid response from ChatGPT. Can\'t parse the JSON',
+        prompt,
+        rawResponse
+      })
     }
 
-    const { team1, team2 } = parsedResult
+    const { team1, team2 } = teamsJson
 
     const [team1Players, team2Players] = [team1, team2].map(({ players: skills }) =>
       skills.reduce<Player[]>((team, skills) => {
@@ -68,7 +67,12 @@ export class ChatGptTeamBalancer implements ITeamBalancer {
     )
 
     if (!areTwoTeamsTheSame([...team1Players, ...team2Players], players)) {
-      throw new AiError('Balanced teams don\'t match the source player list')
+      throw new AiError({
+        message: 'Balanced teams don\'t match the source player list',
+        prompt,
+        rawResponse,
+        teams: [team1Players, team2Players]
+      })
     }
 
     return [team1Players, team2Players]

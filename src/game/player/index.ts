@@ -6,6 +6,7 @@ import L from '$/lang/i18n-node'
 import { TranslationFunctions } from '$/lang/i18n-types'
 
 import { Player, ClanPlayer, Role, AdminPlayer } from './types'
+import { stringToSha1 } from '../../utils'
 
 export const getActivePlayers = (players: Player[]): Player[] => {
   return players.filter(({ count, level, isQuestionableCount }) => count > 0 && level > 0 && !isQuestionableCount)
@@ -94,4 +95,12 @@ export const areTwoTeamsTheSame = (team1: Player[], team2: Player[]): boolean =>
   }
 
   return true
+}
+
+export const generateTeamId = (team: Player[]): string => {
+  const namesCombined = orderBy(
+    team, p => p.name, 'asc'
+  ).map(({ name }) => name).join(',')
+
+  return stringToSha1(namesCombined)
 }
