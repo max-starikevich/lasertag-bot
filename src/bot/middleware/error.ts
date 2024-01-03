@@ -23,7 +23,7 @@ export const errorMiddleware = async (error: any, ctx: GameContext): Promise<voi
     memberStatus: ctx.memberStatus
   })
 
-  void ctx.reply(`⚠️ ${ctx.lang.UNEXPECTED_ERROR_FOR_USER()}`)
+  void ctx.reply(`❗ ${ctx.lang.UNEXPECTED_ERROR_FOR_USER()}`)
 }
 
 const handleCustomError = async (error: CustomError, ctx: GameContext): Promise<void> => {

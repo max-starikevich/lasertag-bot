@@ -55,7 +55,7 @@ export const replyWithPlaceAndTime = async (ctx: CommandContext): Promise<void> 
   await ctx.replyWithHTML(dedent`
     📅 <b>${placeAndTime.date}</b>
     📍 <b>${placeAndTime.location}</b>
-  `)
+  `, { reply_to_message_id: ctx.message.message_id })
 }
 
 export const replyWithTeamCount = async (ctx: CommandContext, [redPlayers, bluePlayers]: Teams): Promise<void> => {

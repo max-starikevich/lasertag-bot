@@ -3,6 +3,6 @@ import { CustomError } from './CustomError'
 
 export class AiError extends CustomError {
   public message = 'Something is wrong with AI'
-  public replyMessage: (lang: TranslationFunctions) => string = lang => lang.AI_ERROR_MESSAGE()
+  public replyMessage: (lang: TranslationFunctions) => string = lang => lang.AI_TEAMS_ERROR_MESSAGE()
   public shouldBeReported = true
 }

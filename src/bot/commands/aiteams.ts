@@ -14,7 +14,7 @@ const handler: CommandHandler = async (ctx) => {
     throw new NotEnoughPlayersError()
   }
 
-  void ctx.reply(`⌛ ${lang.AI_IN_PROGRESS()}`)
+  void ctx.reply(`⌛ ${lang.AI_TEAMS_IN_PROGRESS()}`)
 
   const teams = await balancers.chatGpt.balance(activePlayers)
   const [redPlayers, bluePlayers] = teams.map(team => orderTeamByGameCount(team))

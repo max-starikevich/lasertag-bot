@@ -70,13 +70,13 @@ type RootTranslation = {
 	 */
 	AI_TEAMS_COMMAND_DESCRIPTION: string
 	/**
-	 * S​o​m​e​t​h​i​n​g​ ​i​s​ ​w​r​o​n​g​ ​w​i​t​h​ ​t​h​e​ ​A​I​.​ ​T​r​y​ ​a​g​a​i​n​ ​l​a​t​e​r
+	 * A​I​ ​f​a​i​l​e​d​ ​t​o​ ​b​a​l​a​n​c​e​ ​t​e​a​m​s​ ​p​r​o​p​e​r​l​y​.​ ​T​r​y​ ​a​g​a​i​n​ ​l​a​t​e​r
 	 */
-	AI_ERROR_MESSAGE: string
+	AI_TEAMS_ERROR_MESSAGE: string
 	/**
 	 * P​l​e​a​s​e​ ​w​a​i​t​.​ ​A​I​ ​i​s​ ​w​o​r​k​i​n​g​ ​o​n​ ​y​o​u​r​ ​r​e​q​u​e​s​t
 	 */
-	AI_IN_PROGRESS: string
+	AI_TEAMS_IN_PROGRESS: string
 	/**
 	 * A​d​d​ ​y​o​u​r​s​e​l​f​ ​t​o​ ​t​h​e​ ​b​o​t​'​s​ ​d​a​t​a​b​a​s​e
 	 */
@@ -284,13 +284,13 @@ export type TranslationFunctions = {
 	 */
 	AI_TEAMS_COMMAND_DESCRIPTION: () => LocalizedString
 	/**
-	 * Something is wrong with the AI. Try again later
+	 * AI failed to balance teams properly. Try again later
 	 */
-	AI_ERROR_MESSAGE: () => LocalizedString
+	AI_TEAMS_ERROR_MESSAGE: () => LocalizedString
 	/**
 	 * Please wait. AI is working on your request
 	 */
-	AI_IN_PROGRESS: () => LocalizedString
+	AI_TEAMS_IN_PROGRESS: () => LocalizedString
 	/**
 	 * Add yourself to the bot's database
 	 */
