@@ -70,11 +70,11 @@ type RootTranslation = {
 	 */
 	AI_TEAMS_COMMAND_DESCRIPTION: string
 	/**
-	 * A​I​ ​f​a​i​l​e​d​ ​t​o​ ​r​e​s​p​o​n​d​ ​w​i​t​h​ ​a​ ​p​r​o​p​e​r​ ​d​a​t​a
+	 * S​o​m​e​t​h​i​n​g​ ​i​s​ ​w​r​o​n​g​ ​w​i​t​h​ ​t​h​e​ ​A​I​.​ ​T​r​y​ ​a​g​a​i​n​ ​l​a​t​e​r
 	 */
-	AI_WRONG_RESPONSE: string
+	AI_ERROR_MESSAGE: string
 	/**
-	 * P​l​e​a​s​e​ ​w​a​i​t​.​ ​A​I​ ​i​s​ ​w​o​r​k​i​n​g​ ​o​n​ ​t​h​i​s​ ​r​e​q​u​e​s​t
+	 * P​l​e​a​s​e​ ​w​a​i​t​.​ ​A​I​ ​i​s​ ​w​o​r​k​i​n​g​ ​o​n​ ​y​o​u​r​ ​r​e​q​u​e​s​t
 	 */
 	AI_IN_PROGRESS: string
 	/**
@@ -284,11 +284,11 @@ export type TranslationFunctions = {
 	 */
 	AI_TEAMS_COMMAND_DESCRIPTION: () => LocalizedString
 	/**
-	 * AI failed to respond with a proper data
+	 * Something is wrong with the AI. Try again later
 	 */
-	AI_WRONG_RESPONSE: () => LocalizedString
+	AI_ERROR_MESSAGE: () => LocalizedString
 	/**
-	 * Please wait. AI is working on this request
+	 * Please wait. AI is working on your request
 	 */
 	AI_IN_PROGRESS: () => LocalizedString
 	/**

@@ -14,6 +14,9 @@ import { NoClansTeamBalancer } from '$/game/player/balancers/NoClansTeamBalancer
 import { ClansTeamBalancer } from '$/game/player/balancers/ClansTeamBalancer'
 import { ChatGptTeamBalancer } from '$/game/player/balancers/chatgpt/ChatGptTeamBalancer'
 import { GoogleTableSkillsRepository } from '$/game/player/balancers/chatgpt/GoogleTableSkillsRepository'
+import { makeLogger } from '$/logger'
+
+const systemLogger = makeLogger('system')
 
 const storage = new GoogleTableGameStorage({
   email: config.GOOGLE_SERVICE_ACCOUNT_EMAIL,
@@ -64,7 +67,7 @@ const skillsRepository = new GoogleTableSkillsRepository({
 const balancers: AvailableTeamBalancers = {
   noClans: new NoClansTeamBalancer(),
   withClans: new ClansTeamBalancer(),
-  chatGpt: new ChatGptTeamBalancer(config.OPENAI_API_KEY, skillsRepository)
+  chatGpt: new ChatGptTeamBalancer(config.OPENAI_API_KEY, skillsRepository, systemLogger)
 }
 
 export const bot = initBot({ token: config.BOT_TOKEN, storage, store, balancers, telegramApiOptions: { webhookReply: true } })
@@ -96,11 +99,11 @@ export const handler = async (
       }
     }
 
-    // Telegram servers send updates sequentially,
-    // if we send 200 after the whole handler execution,
-    // then all requests are gonna run one-by-one, which does suck
+    // Telegram servers do send updates sequentially,
+    // if we respond with 200 after the whole handler execution,
+    // then all requests are gonna run one-by-one, which sucks
     //
-    // so let's not await here
+    // so let's not await here, so we can serve many requests in parallel
     void bot.handleUpdate(payload)
 
     return {

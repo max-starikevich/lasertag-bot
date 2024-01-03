@@ -10,13 +10,13 @@ import { StatsAlreadySavedError } from '$/errors/StatsAlreadySavedError'
 import { reportException } from '$/errors'
 
 import { EnrollData, GameData, GoogleSpreadsheetPlayerCellMap, GoogleTableGameStorageParams, LinksData, PlayersData, STATS_DATE_FORMAT, SheetsData, StatsData, StatsResult } from './types'
-import { GameStatsData, Player, Role } from '../../player/types'
-import { GameLink, GameLocation } from '../../types'
-import { GameStorage } from '../types'
+import { GameStatsData, Player, Role } from '$/game/player/types'
+import { GameLink, GameLocation } from '$/game/types'
+import { IGameStorage } from '$/game/storage/types'
 import { assertRows, getCellsByRow, getCellsByRows, getDateByTimestamp } from './utils'
-import { extractRole } from '../../player'
+import { extractRole } from '$/game/player'
 
-export class GoogleTableGameStorage implements GameStorage {
+export class GoogleTableGameStorage implements IGameStorage {
   protected email: string
   protected privateKey: string
 

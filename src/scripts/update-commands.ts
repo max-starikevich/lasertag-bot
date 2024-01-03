@@ -1,7 +1,7 @@
 import { unsetCommandsForGroups, updateBotCommands, updateBotCommandsForPlayers } from '$/bot/webhooks'
 import { makeLogger } from '$/logger'
 import { bot } from '$/lambda'
-import { GameStorage } from '$/game/storage/types'
+import { IGameStorage } from '$/game/storage/types'
 import config from '$/config'
 import { checkEnvironment } from '$/config/check'
 
@@ -22,7 +22,7 @@ async function run (): Promise<void> {
       locale: config.DEFAULT_LOCALE
     })
 
-    const storage = bot.context.storage as GameStorage
+    const storage = bot.context.storage as IGameStorage
     const players = await storage.getPlayers()
 
     await updateBotCommandsForPlayers({

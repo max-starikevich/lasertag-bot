@@ -1,11 +1,11 @@
 import { GameStatsData, Player } from '../player/types'
 import { GameLink, GameLocation } from '../types'
 
-export interface Debuggable {
+export interface IDebuggable {
   loadDebugInfo: () => Promise<object>
 }
 
-export interface GameStorage extends Debuggable {
+export interface IGameStorage extends IDebuggable {
   getPlayers: () => Promise<Player[]>
   getLocations: () => Promise<GameLocation[]>
   getLinks: () => Promise<GameLink[]>
@@ -20,7 +20,7 @@ export interface StoreData<T> {
   value: T | null
 }
 
-export interface GameStore extends Debuggable {
+export interface IGameStore extends IDebuggable {
   get: <T>(keys: string[]) => Promise<Array<StoreData<T>>>
   set: <T>(data: Array<StoreData<T>>) => Promise<void>
   delete: (keys: string[]) => Promise<void>

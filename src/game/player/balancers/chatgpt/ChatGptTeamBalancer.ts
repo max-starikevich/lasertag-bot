@@ -1,16 +1,17 @@
 import OpenAI from 'openai'
 
 import { parseFirstJson } from '$/utils'
-import { AiWrongResponse } from '$/errors/AiWrongResponse'
+import { AiError } from '$/errors/AiError'
 
 import { Skills, ISkillsRepository, balanceOutputExample, AiBalanceOutput } from './types'
 import { ITeamBalancer, Player, Teams } from '../../types'
 import { areTwoTeamsTheSame } from '../..'
+import { ILogger } from '../../../../logger/types'
 
 export class ChatGptTeamBalancer implements ITeamBalancer {
   private readonly client: OpenAI
 
-  constructor (apiKey: string, private readonly skillsRepository: ISkillsRepository) {
+  constructor (apiKey: string, private readonly skillsRepository: ISkillsRepository, private readonly logger: ILogger) {
     this.client = new OpenAI({ apiKey })
   }
 
@@ -34,18 +35,22 @@ export class ChatGptTeamBalancer implements ITeamBalancer {
     const skills = await this.skillsRepository.find(players.map(({ name }) => name))
     const prompt = this.generatePrompt(skills)
 
+    this.logger.info('ChatGPT prompt: ' + prompt)
+
     const response = await this.client.chat.completions.create({
       messages: [{ role: 'user', content: prompt }],
-      model: 'gpt-4-1106-preview',
+      model: 'gpt-3.5-turbo',
       n: 1
     })
 
     const rawContent = response.choices[0].message.content
 
+    this.logger.info('Raw ChatGPT response: ' + (rawContent ?? ''))
+
     const parsedResult = parseFirstJson<AiBalanceOutput>(rawContent)
 
     if (parsedResult == null) {
-      throw new AiWrongResponse('Invalid response from ChatGPT. Can\'t parse the JSON')
+      throw new AiError('Invalid response from ChatGPT. Can\'t parse the JSON')
     }
 
     const { team1, team2 } = parsedResult
@@ -62,8 +67,8 @@ export class ChatGptTeamBalancer implements ITeamBalancer {
       }, [])
     )
 
-    if (areTwoTeamsTheSame([...team1Players, ...team2Players], players)) {
-      throw new AiWrongResponse('Balanced teams don\'t match the source player list')
+    if (!areTwoTeamsTheSame([...team1Players, ...team2Players], players)) {
+      throw new AiError('Balanced teams don\'t match the source player list')
     }
 
     return [team1Players, team2Players]

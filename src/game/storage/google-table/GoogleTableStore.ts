@@ -4,7 +4,7 @@ import { keyBy } from 'lodash'
 import { parseJsonSafe } from '$/utils'
 import { GoogleDocumentError } from '$/errors/GoogleDocumentError'
 
-import { GameStore, StoreData } from '../types'
+import { IGameStore, StoreData } from '../types'
 
 interface GoogleTableGameStorageParams {
   email: string
@@ -13,7 +13,7 @@ interface GoogleTableGameStorageParams {
   sheetsId: string
 }
 
-export class GoogleTableGameStore implements GameStore {
+export class GoogleTableGameStore implements IGameStore {
   protected doc?: GoogleSpreadsheet
 
   protected email: string

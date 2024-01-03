@@ -1,8 +1,8 @@
 import { Player, GameStatsData } from '$/game/player/types'
-import { GameStorage } from '$/game/storage/types'
+import { IGameStorage } from '$/game/storage/types'
 import { GameLocation, GameLink } from '$/game/types'
 
-export const getTestStorage = (): GameStorage => {
+export const getTestStorage = (): IGameStorage => {
   return {
     getPlayers: async function (): Promise<Player[]> {
       return []

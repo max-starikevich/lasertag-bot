@@ -10,12 +10,12 @@ const handler: CommandHandler = async (ctx) => {
 
   const activePlayers = getActivePlayers(players)
 
-  const teams = await balancers.noClans.balance(activePlayers)
-  const [redPlayers, bluePlayers] = teams.map(team => orderTeamByGameCount(team))
-
-  if (redPlayers.length === 0 || bluePlayers.length === 0) {
+  if (activePlayers.length < 8) {
     throw new NotEnoughPlayersError()
   }
+
+  const teams = await balancers.noClans.balance(activePlayers)
+  const [redPlayers, bluePlayers] = teams.map(team => orderTeamByGameCount(team))
 
   await replyWithPlaceAndTime(ctx)
 

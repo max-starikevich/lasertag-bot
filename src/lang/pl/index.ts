@@ -19,9 +19,9 @@ const pl: MappedTranslation = {
 
   CLAN_TEAMS_COMMAND_DESCRIPTION: 'Utwórz drużyny z klanami',
 
-  AI_TEAMS_COMMAND_DESCRIPTION: 'Tworzyć zespoły przy użyciu sztucznej inteligencji',
-  AI_WRONG_RESPONSE: 'Sztuczna inteligencja nie zdołała odpowiedzieć z odpowiednimi danymi',
-  AI_IN_PROGRESS: 'Proszę czekać. Sztuczna inteligencja pracuje nad tym zapytaniem',
+  AI_TEAMS_COMMAND_DESCRIPTION: 'Tworzyć zespoły przy użyciu sztucznej inteligencji (AI)',
+  AI_ERROR_MESSAGE: 'Coś jest nie tak z AI. Spróbuj ponownie później',
+  AI_IN_PROGRESS: 'Proszę czekać. AI pracuje nad twoim zapytaniem',
 
   REGISTER_COMMAND_DESCRIPTION: 'Dodaj się do bazy danych bota',
   REGISTER_CHOOSE_YOURSELF: 'Wybierz swoje imię z listy. Jeśli go brakuje, skontaktuj się z organizatorem, aby Cię dodał.',

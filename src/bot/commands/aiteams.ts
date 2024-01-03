@@ -2,20 +2,22 @@ import { NotEnoughPlayersError } from '$/errors/NotEnoughPlayersError'
 import { getActivePlayers, orderTeamByGameCount } from '$/game/player'
 
 import { Command, CommandHandler } from '../types'
-import { replyWithPlaceAndTime, replyWithPlayers, replyWithTeamBalance, replyWithTeamCount } from '.'
+import { replyWithPlaceAndTime, replyWithPlayers, replyWithTeamCount } from '.'
 import { initializer as replyWithStatsActions } from '../actions/stats'
 
 const handler: CommandHandler = async (ctx) => {
-  const { players, balancers } = ctx
+  const { players, balancers, lang } = ctx
 
   const activePlayers = getActivePlayers(players)
 
-  const teams = await balancers.chatGpt.balance(activePlayers)
-  const [redPlayers, bluePlayers] = teams.map(team => orderTeamByGameCount(team))
-
-  if (redPlayers.length === 0 || bluePlayers.length === 0) {
+  if (activePlayers.length < 8) {
     throw new NotEnoughPlayersError()
   }
+
+  void ctx.reply(`⌛ ${lang.AI_IN_PROGRESS()}`)
+
+  const teams = await balancers.chatGpt.balance(activePlayers)
+  const [redPlayers, bluePlayers] = teams.map(team => orderTeamByGameCount(team))
 
   await replyWithPlaceAndTime(ctx)
 
@@ -29,14 +31,12 @@ const handler: CommandHandler = async (ctx) => {
     await replyWithPlayers(ctx, bluePlayers, '🔵')
   }
 
-  await replyWithTeamBalance(ctx, [redPlayers, bluePlayers])
-
   await replyWithStatsActions(ctx, teams)
 }
 
 export const aiteams: Command = {
   name: 'aiteams',
   handler,
-  description: lang => `${lang.AI_TEAMS_COMMAND_DESCRIPTION()} 🤖 (beta)`,
+  description: lang => `${lang.AI_TEAMS_COMMAND_DESCRIPTION()} 🤖`,
   showInMenu: true
 }

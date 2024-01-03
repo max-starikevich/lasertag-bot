@@ -1,6 +1,6 @@
-import { GameStore, StoreData } from '$/game/storage/types'
+import { IGameStore, StoreData } from '$/game/storage/types'
 
-export const getTestStore = (): GameStore => {
+export const getTestStore = (): IGameStore => {
   const map = new Map<string, any>()
 
   return {

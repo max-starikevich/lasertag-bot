@@ -7,7 +7,7 @@ import { AvailableTeamBalancers, GameContext } from '$/bot/types'
 import { commands } from '$/bot/commands'
 import { setBotActions, setBotMiddlewares } from '$/bot/middleware'
 
-import { GameStorage, GameStore } from '$/game/storage/types'
+import { IGameStorage, IGameStore } from '$/game/storage/types'
 
 import L from '$/lang/i18n-node'
 import { Locales } from '$/lang/i18n-types'
@@ -20,8 +20,8 @@ export const commandsInMenu = commands.filter(
 )
 
 interface BotParams {
-  storage: GameStorage
-  store: GameStore
+  storage: IGameStorage
+  store: IGameStore
   balancers: AvailableTeamBalancers
   token: string
   telegramApiOptions?: Partial<ApiClient.Options>
