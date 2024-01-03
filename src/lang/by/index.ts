@@ -17,7 +17,7 @@ const by: MappedTranslation = {
 
   TEAMS_COMMAND_DESCRIPTION: 'Стварыць каманды без кланаў',
 
-  CLAN_TEAMS_COMMAND_DESCRIPTION: 'Стварыць каманды зь кланамі',
+  CLAN_TEAMS_COMMAND_DESCRIPTION: 'Стварыць каманды з кланамі',
 
   AI_TEAMS_COMMAND_DESCRIPTION: 'Стварыць каманды з дапамогай штучнага інтэлекту (ШІ)',
   AI_TEAMS_ERROR_MESSAGE: 'ШІ не змог збалансаваць каманды належным чынам. Паспрабуйце яшчэ раз пазьней',
@@ -45,21 +45,21 @@ const by: MappedTranslation = {
   RECORDED: 'Запісана',
   RENT: 'Патрэбны пракат',
   COUNT: 'Колькасьць',
-  STATS_WHO_WON: 'Якая каманда перамогла?',
+  STATS_WHO_WON: 'Якая каманда перамагла?',
   STATS_SAVE_SUCCESS: 'Статыстыка захавана',
   STATS_DRAW: 'Нічыя',
   STATS_NON_EXISTENT: 'Дадзеныя для гэтай гульні ўжо страчаны ці сапсаваны',
   STATS_ALREADY_SAVED: 'Статыстыка для гэтай гульні ўжо захавана',
 
   RENT_NOT_NEEDED: 'Не патрэбен',
-  ABSENT: 'Мяне не будзе',
+  ABSENT: 'Мяне ня будзе',
 
   UNEXPECTED_ERROR_FOR_USER: 'Нечаканая памылка. Паўтарыце запыт пазьней',
   UNKNOWN_COMMAND: 'Не ўдалося распазнаць каманду. Выкарыстоўвайце меню ці каманду /{helpCommandName:string}',
   ACCESS_DENIED: 'Няма доступу',
-  SHEETS_ERROR: 'Нешта здарылася зь Google-дакументам. Паўтарыце запыт пазьней',
+  SHEETS_ERROR: 'Нешта здарылася з Google-дакументам. Паўтарыце запыт пазьней',
 
-  ACTION_HANDLER_WRONG_DATA: 'Уведзеныя няправільныя дадзеныя',
+  ACTION_HANDLER_WRONG_DATA: 'Уведзены няправільныя дадзеныя',
 
   NOT_ENOUGH_PLAYERS: 'Недастаткова гульцоў для гэтай функцыі',
 
