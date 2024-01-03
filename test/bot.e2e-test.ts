@@ -1,6 +1,8 @@
 import { initBot } from '$/bot/bot'
+import { baseLocale } from '$/lang/i18n-util'
 
 import { TelegrafTest } from './TelegrafTest/TelegrafTest'
+import { getBalancers } from './balancers'
 
 import { getTestStorage } from './storage'
 import { getTestStore } from './store'
@@ -27,21 +29,21 @@ describe('Telegraf bot', () => {
 
   const storage = getTestStorage()
   const store = getTestStore()
+  const balancers = getBalancers()
 
-  const botPromise = initBot({
+  const bot = initBot({
     token,
     storage,
     store,
+    balancers,
     telegramApiOptions: {
       apiRoot: `http://127.0.0.1:${telegramApiPort}`
     },
-    locale: 'en'
+    locale: baseLocale
   })
 
   beforeAll(async () => {
     await telegramApi.startServer()
-
-    const bot = await botPromise
 
     await bot.launch({
       webhook: {
@@ -53,8 +55,6 @@ describe('Telegraf bot', () => {
   })
 
   afterAll(async () => {
-    const bot = await botPromise
-
     bot.stop('E2E testing shutdown')
 
     await telegramApi.stopServer()
@@ -63,8 +63,7 @@ describe('Telegraf bot', () => {
   describe('/about', () => {
     it('should properly get the information', async () => {
       await telegramApi.sendMessage({ text: '/about' })
-
       expect(storage.getPlayers).not.toBeCalled()
-    }, 10000)
+    })
   })
 })

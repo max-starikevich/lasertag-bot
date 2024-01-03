@@ -13,10 +13,10 @@ export const getTestStorage = (): GameStorage => {
     getLinks: jest.fn(async function (): Promise<GameLink[]> {
       return []
     }),
-    savePlayer: jest.fn(async function (name: string, fields: Partial<Player>): Promise<void> {
+    savePlayer: jest.fn(async function (_name: string, _fields: Partial<Player>): Promise<void> {
       // do nothing
     }),
-    saveStats: jest.fn(async function (statsData: GameStatsData): Promise<void> {
+    saveStats: jest.fn(async function (_statsData: GameStatsData): Promise<void> {
       // do nothing
     }),
     getStatsTimezone: jest.fn(function (): string {

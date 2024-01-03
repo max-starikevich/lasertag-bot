@@ -1,7 +1,7 @@
 import { Server } from 'http'
 import axios from 'axios'
 import debug from 'debug'
-import { Chat, Message, Update, User, WebhookInfo } from 'telegraf/typings/core/types/typegram'
+import { Chat, Message, User, WebhookInfo } from 'telegraf/typings/core/types/typegram'
 
 import Koa from 'koa'
 import bodyParser from 'koa-bodyparser'
@@ -58,7 +58,8 @@ export class TelegrafTest implements ITelegramClient {
     from: this.user,
     chat: this.chat,
     text: 'test text for test message',
-    date: Date.now()
+    date: Date.now(),
+    edit_date: Date.now()
   }
 
   webhookInfo: WebhookInfo = {
@@ -157,7 +158,8 @@ export class TelegrafTest implements ITelegramClient {
       message_id: messageId,
       from: this.user,
       chat: this.chat,
-      date: Date.now()
+      date: Date.now(),
+      edit_date: Date.now()
     }
 
     return this.message
@@ -167,7 +169,7 @@ export class TelegrafTest implements ITelegramClient {
     return this.message
   }
 
-  async sendUpdate (update: Partial<Update.MessageUpdate<Message.TextMessage>>): Promise<void> {
+  async sendUpdate (update: any): Promise<void> {
     this.updateId++
 
     return await axios({
@@ -188,7 +190,7 @@ export class TelegrafTest implements ITelegramClient {
       ...messageInput
     })
 
-    return await this.sendUpdate({ message })
+    return await this.sendUpdate({ message: { ...message, edit_date: undefined } })
   }
 
   async startServer (): Promise<void> {
