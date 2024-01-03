@@ -101,7 +101,7 @@ export const handler = async (
     // then all requests are gonna run one-by-one, which sucks
     //
     // so let's not await here, so we can serve many requests in parallel
-    void bot.handleUpdate(payload)
+    await bot.handleUpdate(payload)
 
     return {
       statusCode: 200,
