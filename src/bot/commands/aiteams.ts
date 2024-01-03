@@ -35,5 +35,5 @@ export const aiteams: Command = {
   name: 'aiteams',
   handler,
   description: lang => `${lang.AI_TEAMS_COMMAND_DESCRIPTION()} 🤖`,
-  showInMenu: true
+  showInMenu: false
 }
