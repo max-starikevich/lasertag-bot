@@ -1,6 +1,5 @@
 module.exports = {
   roots: ['<rootDir>/src', '<rootDir>/test'],
-  setupFiles: ["dotenv/config"],
   passWithNoTests: true,
   testMatch: [
     '**/*.e2e-test.ts',
