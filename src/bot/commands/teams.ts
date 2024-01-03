@@ -16,7 +16,12 @@ const handler: CommandHandler = async (ctx) => {
   const teams = await balancers.noClans.balance(activePlayers)
   const [redPlayers, bluePlayers] = teams.map(team => orderTeamByGameCount(team))
 
-  await replyWithTeamList(ctx, [redPlayers, bluePlayers])
+  await replyWithTeamList({
+    ctx,
+    teams: [redPlayers, bluePlayers],
+    showBalance: true,
+    showSquads: false
+  })
 }
 
 export const teams: Command = {

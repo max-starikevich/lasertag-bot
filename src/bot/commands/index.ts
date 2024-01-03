@@ -44,19 +44,28 @@ export const commands: Command[] = [
   delay
 ]
 
-export const replyWithTeamList = async (ctx: CommandContext, teams: Teams, showBalance = true): Promise<void> => {
+interface ReplyWithTeamListParams {
+  ctx: CommandContext
+  teams: Teams
+  showBalance?: boolean
+  showSquads?: boolean
+}
+
+export const replyWithTeamList = async ({ ctx, teams, showBalance = false, showSquads = false }: ReplyWithTeamListParams): Promise<void> => {
   await replyWithPlaceAndTime(ctx)
 
   await replyWithTeamCount(ctx, teams)
 
   const [redPlayers, bluePlayers] = teams
 
+  const replyWithPlayerListFunction = showSquads ? replyWithSquads : replyWithPlayers
+
   if (redPlayers.length > 0) {
-    await replyWithPlayers(ctx, redPlayers, '🔴')
+    await replyWithPlayerListFunction(ctx, redPlayers, '🔴')
   }
 
   if (bluePlayers.length > 0) {
-    await replyWithPlayers(ctx, bluePlayers, '🔵')
+    await replyWithPlayerListFunction(ctx, bluePlayers, '🔵')
   }
 
   if (showBalance) {

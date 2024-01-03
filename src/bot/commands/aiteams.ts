@@ -28,7 +28,9 @@ const handler: CommandHandler = async (ctx) => {
   const teams = await balancers.chatGpt.balance(activePlayers)
   const [redPlayers, bluePlayers] = teams.map(team => orderTeamByGameCount(team))
 
-  await replyWithTeamList(ctx, [redPlayers, bluePlayers], false)
+  await replyWithTeamList({
+    ctx, teams: [redPlayers, bluePlayers]
+  })
 }
 
 export const aiteams: Command = {
