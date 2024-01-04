@@ -1,36 +1,35 @@
 export interface AiBalanceOutput {
-  team1: {
-    players: Skills[]
-  }
-  team2: {
-    players: Skills[]
-  }
+  team1: string[]
+  team2: string[]
 }
 
 export const balanceOutputExample: AiBalanceOutput = {
-  team1: {
-    players: [
-      { Name: 'string', skill1: 'string', skill2: 'string' },
-      { Name: 'string', skill1: 'string', skill2: 'string' },
-      { Name: 'string', skill1: 'string', skill2: 'string' },
-      { Name: 'string', skill1: 'string', skill2: 'string' }
-    ]
-  },
-  team2: {
-    players: [
-      { Name: 'string', skill1: 'string', skill2: 'string' },
-      { Name: 'string', skill1: 'string', skill2: 'string' },
-      { Name: 'string', skill1: 'string', skill2: 'string' },
-      { Name: 'string', skill1: 'string', skill2: 'string' }
-    ]
-  }
+  team1: [
+    'playerName',
+    'playerName',
+    'playerName',
+    'playerName',
+    'playerName',
+    'playerName',
+    'playerName',
+    'playerName'
+  ],
+  team2: [
+    'playerName',
+    'playerName',
+    'playerName',
+    'playerName',
+    'playerName',
+    'playerName',
+    'playerName'
+  ]
 }
 
-export interface Skills {
+export interface PlayerWithSkills {
   Name: string
   [skillName: string]: string
 }
 
 export interface ISkillsRepository {
-  find: (ids: string[]) => Promise<Skills[]>
+  find: (keys: string[]) => Promise<PlayerWithSkills[]>
 }

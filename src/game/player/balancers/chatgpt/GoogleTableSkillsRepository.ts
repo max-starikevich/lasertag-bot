@@ -1,7 +1,7 @@
 import { GoogleSpreadsheet, GoogleSpreadsheetWorksheet } from 'google-spreadsheet'
 
 import { GoogleDocumentError } from '$/errors/GoogleDocumentError'
-import { Skills, ISkillsRepository } from './types'
+import { PlayerWithSkills, ISkillsRepository } from './types'
 
 interface GoogleTableSkillsRepositoryParams {
   email: string
@@ -49,14 +49,14 @@ export class GoogleTableSkillsRepository implements ISkillsRepository {
     return sheets
   }
 
-  async find (ids: string[]): Promise<Skills[]> {
+  async find (ids: string[]): Promise<PlayerWithSkills[]> {
     const sheets = await this.getSheets()
     const rows = await sheets.getRows()
 
     const columnNames = sheets.headerValues
 
     const players = rows.filter(row => ids.includes(row.Name)).map(row => {
-      const player: Skills = {
+      const player: PlayerWithSkills = {
         Name: row.Name
       }
 

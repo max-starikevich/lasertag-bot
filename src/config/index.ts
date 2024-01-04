@@ -1,3 +1,5 @@
+import { CompletionCreateParamsBase } from 'openai/resources/completions'
+
 import { Locales } from '$/lang/i18n-types'
 
 const APP_ENV = process.env.APP_ENV ?? 'local'
@@ -21,7 +23,7 @@ const defaultConfig = {
 export const requiredConfigInput = {
   WEBHOOK_BASE,
   BOT_TOKEN,
-  DEFAULT_LOCALE: process.env.DEFAULT_LOCALE as Locales,
+  DEFAULT_LOCALE: (process.env.DEFAULT_LOCALE ?? 'ru') as Locales,
   TELEGRAM_HOME_CHAT_ID: process.env.TELEGRAM_HOME_CHAT_ID as string,
 
   GOOGLE_SERVICE_ACCOUNT_EMAIL: process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL as string,
@@ -53,7 +55,8 @@ export const requiredConfigInput = {
   SKILLS_DOC_ID: process.env.SKILLS_DOC_ID as string,
   SKILLS_SHEETS_ID: process.env.SKILLS_SHEETS_ID as string,
 
-  OPENAI_API_KEY: process.env.OPENAI_API_KEY as string
+  OPENAI_API_KEY: process.env.OPENAI_API_KEY as string,
+  CHATGPT_MODEL: (process.env.CHATGPT_MODEL ?? 'gpt-4') as CompletionCreateParamsBase['model']
 }
 
 const config = { ...defaultConfig, ...requiredConfigInput }

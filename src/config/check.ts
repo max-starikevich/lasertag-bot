@@ -1,5 +1,6 @@
-import { localeNames } from '../lang/i18n-custom'
-import { Locales } from '../lang/i18n-types'
+import { localeNames } from '$/lang/i18n-custom'
+import { Locales } from '$/lang/i18n-types'
+
 import { requiredConfigInput as config } from './index'
 
 const isValidString = (s?: string): boolean => {
@@ -66,7 +67,8 @@ const requiredRuntimeVariables: EnvironmentToCheck = {
   SKILLS_DOC_ID: async () => isValidString(config.SKILLS_DOC_ID),
   SKILLS_SHEETS_ID: async () => isValidString(config.SKILLS_SHEETS_ID),
 
-  OPENAI_API_KEY: async () => isValidString(config.OPENAI_API_KEY)
+  OPENAI_API_KEY: async () => isValidString(config.OPENAI_API_KEY),
+  CHATGPT_MODEL: async () => isValidString(config.CHATGPT_MODEL)
 }
 
 export const checkEnvironment = async (): Promise<void> => {

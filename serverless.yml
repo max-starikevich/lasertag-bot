@@ -52,6 +52,7 @@ functions:
       SKILLS_SHEETS_ID: ${env:SKILLS_SHEETS_ID}
 
       OPENAI_API_KEY: ${env:OPENAI_API_KEY}
+      CHATGPT_MODEL: ${env:CHATGPT_MODEL}
     events:
       - http:
           path: /webhook/${env:BOT_TOKEN}
