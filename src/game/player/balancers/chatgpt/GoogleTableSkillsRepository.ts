@@ -63,7 +63,7 @@ export class GoogleTableSkillsRepository implements ISkillsRepository {
       columnNames.forEach((columnName) => {
         const columnValue = row[columnName]
 
-        if (columnValue == null) {
+        if (columnValue == null || columnName === '') {
           return
         }
 
