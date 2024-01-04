@@ -64,10 +64,10 @@ const skillsRepository = new GoogleTableSkillsRepository({
 const balancers: AvailableTeamBalancers = {
   noClans: new NoClansTeamBalancer(),
   withClans: new ClansTeamBalancer(),
-  chatGpt: new ChatGptTeamBalancer(config.OPENAI_API_KEY, skillsRepository)
+  chatGpt: new ChatGptTeamBalancer(config.CHATGPT_MODEL, config.OPENAI_API_KEY, skillsRepository)
 }
 
-export const bot = initBot({ token: config.BOT_TOKEN, storage, store, balancers, telegramApiOptions: { webhookReply: true } })
+export const bot = initBot({ token: config.BOT_TOKEN, storage, store, balancers })
 
 export const handler = async (
   event: APIGatewayProxyEvent

@@ -13,15 +13,9 @@ import { reportException } from '../errors'
 export const updateBotWebhook = async (ctx: Pick<GameContext, 'logger' | 'telegram'>): Promise<void> => {
   const { logger, telegram } = ctx
 
-  const { url: savedWebhook } = await telegram.getWebhookInfo()
+  await telegram.setWebhook(config.WEBHOOK_FULL, { allowed_updates: ['message', 'callback_query'], drop_pending_updates: true })
 
-  // if (config.WEBHOOK_FULL === savedWebhook) {
-  //   return
-  // }
-
-  await telegram.setWebhook(config.WEBHOOK_FULL, { allowed_updates: ['message', 'callback_query'], drop_pending_updates: true, max_connections: 100 })
-
-  logger.info(`✅ The webhook has been updated from "${savedWebhook ?? 'undefined'}" to "${config.WEBHOOK_FULL}"`)
+  logger.info(`✅ The webhook has been updated to "${config.WEBHOOK_FULL}"`)
 }
 
 export const updateBotCommands = async (ctx: Pick<GameContext, 'logger' | 'telegram' | 'locale'>, scope?: BotCommandScope): Promise<void> => {

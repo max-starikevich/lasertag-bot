@@ -3,7 +3,6 @@ import { getPlayerNames } from '$/game/player'
 import { generateId } from '$/utils'
 import { Action, ActionHandler, CommandContext } from '$/bot/types'
 
-import { RegisterRequiredError } from '$/errors/RegisterRequiredError'
 import { AccessDeniedError } from '$/errors/AccessDeniedError'
 
 import { GameData } from './types'
@@ -13,9 +12,9 @@ export const initializer = async (
   ctx: CommandContext,
   teams: Teams
 ): Promise<void> => {
-  const { store, currentPlayer } = ctx
+  const { isAdminInHomeChat, store } = ctx
 
-  if (currentPlayer?.isAdmin !== true) {
+  if (!isAdminInHomeChat) {
     return
   }
 
@@ -37,17 +36,9 @@ export const initializer = async (
 }
 
 const saveStatsHandler: ActionHandler = async ctx => {
-  const { lang, store, storage, players, currentPlayer } = ctx
+  const { isAdminInHomeChat, lang, store, storage, players } = ctx
 
-  if (ctx.from === undefined) {
-    throw new Error('Missing "ctx.from"')
-  }
-
-  if (currentPlayer === undefined) {
-    throw new RegisterRequiredError()
-  }
-
-  if (!currentPlayer.isAdmin) {
+  if (!isAdminInHomeChat) {
     throw new AccessDeniedError()
   }
 
