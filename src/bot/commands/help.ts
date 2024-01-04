@@ -12,7 +12,7 @@ const handler: CommandHandler = async (ctx) => {
       ${commandsInMenu
         .map(
           ({ name, description }) =>
-            `/${name} - ${description(ctx.lang).toLowerCase()}`
+            `/${name} - ${description(ctx.lang)}`
         )
         .join('\n\n')}
       `

@@ -59,7 +59,11 @@ export class ChatGptTeamBalancer implements ITeamBalancer {
 
     const [team1Players, team2Players] = [team1, team2].map((playerNames) =>
       playerNames.reduce<Player[]>((team, playerName) => {
-        const player = players.find(({ name }) => name === playerName)
+        const player = players.find(({ name }) =>
+          // sometimes ChatGPT ignores quotes in the player names,
+          // so let's trim them while matching response with player array
+          name.replace(/["']/g, '') === playerName.replace(/["']/g, '')
+        )
 
         if (player == null) {
           return team
