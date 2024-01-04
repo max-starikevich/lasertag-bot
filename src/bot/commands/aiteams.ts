@@ -6,9 +6,9 @@ import { Command, CommandHandler } from '../types'
 import { replyWithTeamList } from '.'
 
 const handler: CommandHandler = async (ctx) => {
-  const { isAdminInHomeChat, players, balancers, lang } = ctx
+  const { isAdmin, players, balancers, lang } = ctx
 
-  if (!isAdminInHomeChat) {
+  if (!isAdmin) {
     throw new AccessDeniedError()
   }
 

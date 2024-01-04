@@ -12,9 +12,9 @@ export const initializer = async (
   ctx: CommandContext,
   teams: Teams
 ): Promise<void> => {
-  const { isAdminInHomeChat, store } = ctx
+  const { isAdmin, store } = ctx
 
-  if (!isAdminInHomeChat) {
+  if (!isAdmin) {
     return
   }
 
@@ -36,9 +36,9 @@ export const initializer = async (
 }
 
 const saveStatsHandler: ActionHandler = async ctx => {
-  const { isAdminInHomeChat, lang, store, storage, players } = ctx
+  const { isAdmin, lang, store, storage, players } = ctx
 
-  if (!isAdminInHomeChat) {
+  if (!isAdmin) {
     throw new AccessDeniedError()
   }
 

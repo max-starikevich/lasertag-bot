@@ -41,9 +41,11 @@ export const initBot = ({ token, telegramApiOptions, storage, store, locale = co
   bot.context.balancers = balancers
 
   // will be overriden in the access middleware
-  bot.context.isAdminInHomeChat = false
+  bot.context.isAdminOfHomeChat = false
   bot.context.isCreatorOfHomeChat = false
   bot.context.isPrivateChat = false
+
+  bot.context.isAdmin = false
 
   bot.context.lang = L[locale]
   bot.context.locale = locale

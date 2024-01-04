@@ -19,11 +19,11 @@ export const accessMiddleware: BotMiddleware = async (ctx, next) => {
 
     if (status === 'creator') {
       ctx.isCreatorOfHomeChat = true
-      ctx.isAdminInHomeChat = true
+      ctx.isAdminOfHomeChat = true
     }
 
     if (status === 'administrator') {
-      ctx.isAdminInHomeChat = true
+      ctx.isAdminOfHomeChat = true
     }
   } catch (error) {
     if (error instanceof AccessDeniedError) {

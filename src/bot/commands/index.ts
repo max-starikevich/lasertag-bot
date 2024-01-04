@@ -98,9 +98,9 @@ export const replyWithTeamCount = async (ctx: CommandContext, [redPlayers, blueP
 }
 
 export const replyWithTeamBalance = async (ctx: CommandContext, teams: Teams): Promise<void> => {
-  const { isAdminInHomeChat } = ctx
+  const { isAdmin } = ctx
 
-  if (!isAdminInHomeChat || !ctx.isPrivateChat) {
+  if (!isAdmin) {
     return
   }
 

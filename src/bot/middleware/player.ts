@@ -20,6 +20,7 @@ export const playerMiddleware: BotMiddleware = async (ctx, next) => {
   }
 
   ctx.currentPlayer = currentPlayer
+  ctx.isAdmin = currentPlayer.isAdmin
 
   ctx.locale = currentPlayer.locale
   ctx.lang = getPlayerLang(currentPlayer)

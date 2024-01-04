@@ -21,7 +21,7 @@ export interface GameContext extends CustomContext {
 
   balancers: AvailableTeamBalancers
 
-  isAdminInHomeChat: boolean
+  isAdminOfHomeChat: boolean
   isCreatorOfHomeChat: boolean
 
   isPrivateChat: boolean
@@ -32,6 +32,8 @@ export interface GameContext extends CustomContext {
   locale: Locales
 
   currentPlayer: Player | undefined
+  isAdmin: boolean
+
   players: Player[]
 }
 
