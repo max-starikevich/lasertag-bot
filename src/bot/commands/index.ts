@@ -4,6 +4,7 @@ import { orderBy } from 'lodash'
 import { getSquadsForTeam } from '$/game/player'
 import { getTeamsLevels } from '$/game/player/balancers/utils'
 import { Player, Teams } from '$/game/player/types'
+import { GoogleDocumentError } from '$/errors/GoogleDocumentError'
 
 import { Command, CommandContext } from '../types'
 
@@ -78,11 +79,10 @@ export const replyWithTeamList = async ({ ctx, teams, showBalance = false, showS
 export const replyWithPlaceAndTime = async (ctx: CommandContext): Promise<void> => {
   const { storage } = ctx
 
-  const placeAndTimeData = await storage.getLocations()
-  const placeAndTime = placeAndTimeData.find(data => data.lang === ctx.locale)
+  const placeAndTime = await storage.getLocation()
 
   if (placeAndTime === undefined) {
-    throw new Error(`Missing game data for locale ${ctx.locale}`)
+    throw new GoogleDocumentError(`Missing game data for locale ${ctx.locale}`)
   }
 
   await ctx.replyWithHTML(dedent`

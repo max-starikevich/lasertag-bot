@@ -7,7 +7,7 @@ export interface IDebuggable {
 
 export interface IGameStorage extends IDebuggable {
   getPlayers: () => Promise<Player[]>
-  getLocations: () => Promise<GameLocation[]>
+  getLocation: () => Promise<GameLocation>
   getLinks: () => Promise<GameLink[]>
 
   savePlayer: (name: string, fields: Partial<Player>) => Promise<void>

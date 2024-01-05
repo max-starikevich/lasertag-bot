@@ -172,24 +172,23 @@ export class GoogleTableGameStorage implements IGameStorage {
     })
   }
 
-  public async getLocations (): Promise<GameLocation[]> {
+  public async getLocation (): Promise<GameLocation> {
     const sheets = await this.getSheets(this.game)
     const rows = await sheets.getRows()
 
     assertRows(rows)
 
-    return rows.reduce<GameLocation[]>((result, row) => {
-      const lang = extractLocale(row.lang)
+    if (rows.length === 0) {
+      throw new GoogleDocumentError()
+    }
 
-      if (lang === undefined) {
-        return result
-      }
+    const location = String(rows[0].location)
+    const date = String(rows[0].date)
 
-      const location = String(row.location)
-      const date = String(row.date)
-
-      return [...result, { location, date, lang }]
-    }, [])
+    return {
+      location,
+      date
+    }
   }
 
   public async getLinks (): Promise<GameLink[]> {
@@ -199,16 +198,8 @@ export class GoogleTableGameStorage implements IGameStorage {
     assertRows(rows)
 
     return rows.reduce<GameLink[]>((result, row) => {
-      const lang = extractLocale(row.lang)
-
-      if (lang === undefined) {
-        return result
-      }
-
       const url = String(row.url)
-      const description = String(row.description)
-
-      return [...result, { url, description, lang }]
+      return [...result, url]
     }, [])
   }
 
