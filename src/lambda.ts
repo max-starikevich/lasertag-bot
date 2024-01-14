@@ -40,7 +40,7 @@ export const handler = async (
 
     const update = parseJsonSafe<Update>(event.body)
 
-    if (update == null) {
+    if (update === null) {
       return {
         statusCode: 400,
         body: 'Incorrect payload'

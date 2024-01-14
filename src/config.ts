@@ -55,5 +55,6 @@ export const config = {
   OPENAI_API_KEY: process.env.OPENAI_API_KEY,
   CHATGPT_MODEL: (process.env.CHATGPT_MODEL ?? 'gpt-4') as CompletionCreateParamsBase['model'],
 
-  SENTRY_DEPLOY_WEBHOOK: process.env.SENTRY_DEPLOY_WEBHOOK
+  SENTRY_DEPLOY_WEBHOOK: process.env.SENTRY_DEPLOY_WEBHOOK,
+  SENTRY_DSN: process.env.SENTRY_DSN
 }

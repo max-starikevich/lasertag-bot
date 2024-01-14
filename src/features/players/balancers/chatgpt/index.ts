@@ -6,17 +6,22 @@ import { ChatGptTeamBalancer } from './ChatGptTeamBalancer'
 import { GoogleTableSkillsRepository } from './GoogleTableSkillsRepository'
 import { ISkillsRepository } from './types'
 
+let skillsRepository: ISkillsRepository
+let chatGptBalancer: ITeamBalancer
+
 export const getChatGptBalancer = async (): Promise<ITeamBalancer> => {
   if (config.OPENAI_API_KEY === undefined) {
     throw new FeatureUnavailableError()
   }
 
-  const skillsRepository = getSkillsRepository()
+  if (chatGptBalancer === undefined) {
+    chatGptBalancer = new ChatGptTeamBalancer(config.CHATGPT_MODEL, config.OPENAI_API_KEY, getSkillsRepository())
+  }
 
-  return new ChatGptTeamBalancer(config.CHATGPT_MODEL, config.OPENAI_API_KEY, skillsRepository)
+  return chatGptBalancer
 }
 
-export const getSkillsRepository = (): ISkillsRepository => {
+const getSkillsRepository = (): ISkillsRepository => {
   if (
     config.GOOGLE_SERVICE_ACCOUNT_EMAIL === undefined ||
     config.GOOGLE_PRIVATE_KEY === undefined ||
@@ -26,10 +31,14 @@ export const getSkillsRepository = (): ISkillsRepository => {
     throw new FeatureUnavailableError()
   }
 
-  return new GoogleTableSkillsRepository({
-    email: config.GOOGLE_SERVICE_ACCOUNT_EMAIL,
-    privateKey: config.GOOGLE_PRIVATE_KEY,
-    docId: config.SKILLS_DOC_ID,
-    sheetsId: config.SKILLS_SHEETS_ID
-  })
+  if (skillsRepository === undefined) {
+    skillsRepository = new GoogleTableSkillsRepository({
+      email: config.GOOGLE_SERVICE_ACCOUNT_EMAIL,
+      privateKey: config.GOOGLE_PRIVATE_KEY,
+      docId: config.SKILLS_DOC_ID,
+      sheetsId: config.SKILLS_SHEETS_ID
+    })
+  }
+
+  return skillsRepository
 }
