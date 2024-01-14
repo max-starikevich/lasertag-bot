@@ -1,9 +1,9 @@
 import { getRandomArray } from '$/utils.dev'
-import { Player } from '$/game/player/types'
-import { getTeamsLevels } from '$/game/player/balancers/utils'
+import { Player } from '$/features/players/types'
+import { getTeamsLevels } from '$/features/players/balancers/utils'
 
 import { NoClansTeamBalancer } from './NoClansTeamBalancer'
-import { areTwoTeamsTheSame } from '..'
+import { areTwoTeamsTheSame } from '../../utils'
 
 describe('NoClansTeamBalancer', () => {
   const numberOfTries = 1000

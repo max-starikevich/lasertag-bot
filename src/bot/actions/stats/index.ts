@@ -1,5 +1,5 @@
-import { Teams } from '$/game/player/types'
-import { getPlayerNames } from '$/game/player'
+import { Teams } from '$/features/players/types'
+import { getPlayerNames } from '$/features/players/utils'
 import { generateId } from '$/utils'
 import { Action, ActionHandler, CommandContext } from '$/bot/types'
 
@@ -12,12 +12,13 @@ export const initializer = async (
   ctx: CommandContext,
   teams: Teams
 ): Promise<void> => {
-  const { isAdmin, store } = ctx
+  const { isAdminPlayer, getKeyValueStore } = ctx
 
-  if (!isAdmin) {
+  if (!isAdminPlayer) {
     return
   }
 
+  const store = await getKeyValueStore()
   const [redNames, blueNames] = teams.map(team => getPlayerNames(team))
 
   const gameData: GameData = {
@@ -36,11 +37,14 @@ export const initializer = async (
 }
 
 const saveStatsHandler: ActionHandler = async ctx => {
-  const { isAdmin, lang, store, storage, players } = ctx
+  const { isAdminPlayer, lang, players, getKeyValueStore, getStorage } = ctx
 
-  if (!isAdmin) {
+  if (!isAdminPlayer) {
     throw new AccessDeniedError()
   }
+
+  const store = await getKeyValueStore()
+  const storage = await getStorage()
 
   const gameDataId = ctx.match[1]
 

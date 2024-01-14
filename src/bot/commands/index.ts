@@ -1,9 +1,10 @@
 import dedent from 'dedent-js'
 import { orderBy } from 'lodash'
 
-import { getSquadsForTeam } from '$/game/player'
-import { getTeamsLevels } from '$/game/player/balancers/utils'
-import { Player, Teams } from '$/game/player/types'
+import { getSquadsForTeam } from '$/features/players/utils'
+import { getTeamsLevels } from '$/features/players/balancers/utils'
+import { Player, Teams } from '$/features/players/types'
+
 import { GoogleDocumentError } from '$/errors/GoogleDocumentError'
 
 import { Command, CommandContext } from '../types'
@@ -77,8 +78,9 @@ export const replyWithTeamList = async ({ ctx, teams, showBalance = false, showS
 }
 
 export const replyWithPlaceAndTime = async (ctx: CommandContext): Promise<void> => {
-  const { storage } = ctx
+  const { getStorage } = ctx
 
+  const storage = await getStorage()
   const placeAndTime = await storage.getLocation()
 
   if (placeAndTime === undefined) {
@@ -98,9 +100,9 @@ export const replyWithTeamCount = async (ctx: CommandContext, [redPlayers, blueP
 }
 
 export const replyWithTeamBalance = async (ctx: CommandContext, teams: Teams): Promise<void> => {
-  const { isAdmin } = ctx
+  const { isAdminPlayer: isAdmin } = ctx
 
-  if (!isAdmin) {
+  if (isAdmin == null) {
     return
   }
 

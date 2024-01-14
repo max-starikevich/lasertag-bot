@@ -1,23 +1,21 @@
 import { Telegraf, MiddlewareFn } from 'telegraf'
-import { message, callbackQuery } from 'telegraf/filters'
+import { Message, Update } from 'telegraf/typings/core/types/typegram'
 
 import { GameContext } from '../types'
 import { commands } from '../commands'
+import { help } from '../commands/help'
+import { actions } from '../actions'
 
 import { accessMiddleware } from './access'
 import { loggingMiddleware } from './logging'
 import { analyticsMiddleware } from './analytics'
-import { groupChatMiddleware } from './group-chat'
-
-import { help } from '../commands/help'
-import { actions } from '../actions'
 import { playerMiddleware } from './player'
 
-export type BotMiddleware = MiddlewareFn<GameContext>
+export type BotMiddleware = MiddlewareFn<GameContext<Update.MessageUpdate<Message.TextMessage> | Update.CallbackQueryUpdate>>
 
 export const setBotMiddlewares = (bot: Telegraf<GameContext>): void => {
-  bot.on(message('text'), loggingMiddleware, analyticsMiddleware, groupChatMiddleware, accessMiddleware, playerMiddleware)
-  bot.on(callbackQuery(), loggingMiddleware, analyticsMiddleware, groupChatMiddleware, accessMiddleware, playerMiddleware)
+  bot.on('text', loggingMiddleware, analyticsMiddleware, accessMiddleware, playerMiddleware)
+  bot.on('callback_query', loggingMiddleware, analyticsMiddleware, accessMiddleware, playerMiddleware)
 
   commands.map((command) => bot.command(command.name, async (ctx) => await command.handler(ctx)))
 

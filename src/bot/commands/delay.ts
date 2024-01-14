@@ -1,9 +1,9 @@
 import { Command, CommandHandler } from '../types'
 
 const handler: CommandHandler = async (ctx) => {
-  const { isCreatorOfHomeChat } = ctx
+  const { isAdminPlayer } = ctx
 
-  if (!isCreatorOfHomeChat) {
+  if (!isAdminPlayer) {
     return
   }
 

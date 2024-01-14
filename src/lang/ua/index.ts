@@ -70,7 +70,9 @@ const ua: MappedTranslation = {
   ME_LOSSES: 'Поразки',
   ME_DRAWS: 'Нічиї',
   ME_GAME_COUNT: 'Всього ігор',
-  ME_WINRATE: 'Вінрейт'
+  ME_WINRATE: 'Вінрейт',
+
+  FEATURE_UNAVAILABLE: 'Функція зараз недоступна'
 }
 
 export default ua

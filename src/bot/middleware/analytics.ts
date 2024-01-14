@@ -3,8 +3,8 @@ import * as Sentry from '@sentry/node'
 import { BotMiddleware } from '.'
 
 export const analyticsMiddleware: BotMiddleware = async (ctx, next) => {
-  if (ctx.from == null) {
-    throw new Error('Missing "ctx.chat" and "ctx.from"')
+  if (ctx.from === undefined) {
+    throw new Error('Missing "ctx.from"')
   }
 
   Sentry.setUser({

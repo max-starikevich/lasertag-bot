@@ -1,40 +1,37 @@
 import { NarrowedContext } from 'telegraf'
 import { ChatMember, Message, Update } from 'telegraf/typings/core/types/typegram'
-
-import { Player, ITeamBalancer } from '$/game/player/types'
+import { Deunionize } from 'telegraf/typings/deunionize'
 
 import { ILogger } from '$/logger/types'
 import { Locales, TranslationFunctions } from '$/lang/i18n-types'
-import { IGameStorage, IGameStore } from '$/game/storage/types'
+
+import { Player, ITeamBalancer } from '$/features/players/types'
+import { IGameStorage } from '$/features/players/storage/types'
+import { IKeyValueStore } from '$/features/key-value/types'
+
 import { CustomContext } from './CustomContext'
 
-export interface AvailableTeamBalancers {
-  noClans: ITeamBalancer
-  withClans: ITeamBalancer
-  chatGpt: ITeamBalancer
-}
-
-export interface GameContext extends CustomContext {
-  storage: IGameStorage
-  store: IGameStore
+export interface GameContext<U extends Deunionize<Update> = Update> extends CustomContext<U> {
   logger: ILogger
-
-  balancers: AvailableTeamBalancers
-
-  isAdminOfHomeChat: boolean
-  isCreatorOfHomeChat: boolean
-
-  isPrivateChat: boolean
-
-  memberStatus: ChatMember['status']
 
   lang: TranslationFunctions
   locale: Locales
 
-  currentPlayer: Player | undefined
-  isAdmin: boolean
+  isAdminOfHomeChat: boolean
+  isCreatorOfHomeChat: boolean
+  isPrivateChat: boolean
+  memberStatus: ChatMember['status']
 
   players: Player[]
+  currentPlayer: Player | undefined
+  isAdminPlayer: boolean
+
+  getStorage: () => Promise<IGameStorage>
+  getKeyValueStore: () => Promise<IKeyValueStore>
+
+  getNoClansBalancer: () => Promise<ITeamBalancer>
+  getClansBalancer: () => Promise<ITeamBalancer>
+  getChatGptBalancer: () => Promise<ITeamBalancer>
 }
 
 export type CommandContext = NarrowedContext<GameContext, Update.MessageUpdate<Message.TextMessage>>

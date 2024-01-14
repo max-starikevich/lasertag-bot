@@ -2,7 +2,7 @@ import { GoogleSpreadsheet, GoogleSpreadsheetCell, GoogleSpreadsheetWorksheet } 
 import { decode } from 'html-entities'
 import { groupBy, omitBy, range } from 'lodash'
 
-import config from '$/config'
+import { config } from '$/config'
 import { extractNumber, extractString, parseRange } from '$/utils'
 import { extractLocale } from '$/lang/i18n-custom'
 import { GoogleDocumentError } from '$/errors/GoogleDocumentError'
@@ -10,11 +10,10 @@ import { StatsAlreadySavedError } from '$/errors/StatsAlreadySavedError'
 import { reportException } from '$/errors'
 
 import { EnrollData, GameData, GoogleSpreadsheetPlayerCellMap, GoogleTableGameStorageParams, LinksData, PlayersData, STATS_DATE_FORMAT, SheetsData, StatsData, StatsResult } from './types'
-import { GameStatsData, Player, Role } from '$/game/player/types'
-import { GameLink, GameLocation } from '$/game/types'
-import { IGameStorage } from '$/game/storage/types'
+import { GameStatsData, Player, Role } from '$/features/players/types'
+import { GameLink, GameLocation, IGameStorage } from '$/features/players/storage/types'
 import { assertRows, getCellsByRow, getCellsByRows, getDateByTimestamp } from './utils'
-import { extractRole } from '$/game/player'
+import { extractRole } from '$/features/players/utils'
 
 export class GoogleTableGameStorage implements IGameStorage {
   protected email: string
@@ -48,23 +47,6 @@ export class GoogleTableGameStorage implements IGameStorage {
         comment: parseRange(ranges.comment)
       }
     }
-  }
-
-  async loadDebugInfo (): Promise<object> {
-    await this.getSheets(this.players)
-    await this.getSheets(this.game)
-    await this.getSheets(this.links)
-    await this.getSheets(this.stats)
-    await this.getSheets(this.enroll)
-
-    return Object.values(this.documentMap).map(doc => ({
-      id: doc.spreadsheetId,
-      title: doc.title,
-      sheets: Object.values(doc.sheetsById).map(sheet => ({
-        id: sheet.sheetId,
-        title: sheet.title
-      }))
-    }))
   }
 
   public getStatsTimezone (): string {

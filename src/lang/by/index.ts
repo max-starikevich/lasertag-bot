@@ -70,7 +70,9 @@ const by: MappedTranslation = {
   ME_LOSSES: 'Паразы',
   ME_DRAWS: 'Нічыя',
   ME_GAME_COUNT: 'Усяго гульняў',
-  ME_WINRATE: 'Вінрэйт'
+  ME_WINRATE: 'Вінрэйт',
+
+  FEATURE_UNAVAILABLE: 'Функцыя зараз недаступная'
 }
 
 export default by

@@ -70,7 +70,9 @@ const pl: MappedTranslation = {
   ME_LOSSES: 'Porażki',
   ME_DRAWS: 'Remisy',
   ME_GAME_COUNT: 'Całkowita liczba gier',
-  ME_WINRATE: 'Wskaźnik zwycięstw'
+  ME_WINRATE: 'Wskaźnik zwycięstw',
+
+  FEATURE_UNAVAILABLE: 'Funkcja jest obecnie niedostępna'
 }
 
 export default pl

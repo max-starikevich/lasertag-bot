@@ -1,12 +1,12 @@
 import { BotCommandScope } from 'telegraf/typings/core/types/typegram'
 
-import config from '$/config'
+import { config } from '$/config'
 
 import { GameContext } from './types'
 import { commandsInMenu } from './bot'
 
 import L from '$/lang/i18n-node'
-import { Player } from '$/game/player/types'
+import { Player } from '$/features/players/types'
 import { extractLocale } from '$/lang/i18n-custom'
 import { reportException } from '../errors'
 

@@ -2,20 +2,15 @@ import Koa from 'koa'
 import bodyParser from 'koa-bodyparser'
 import Router from 'koa-router'
 
-import config from '$/config'
+import { config } from '$/config'
 import { bot, handler } from '$/lambda'
 import { unsetCommandsForGroups, updateBotCommands, updateBotCommandsForPlayers, updateBotWebhook } from '$/bot/webhooks'
 import { makeLogger } from '$/logger'
-import { IGameStorage } from './game/storage/types'
 
 const dev = async (): Promise<void> => {
   const logger = makeLogger()
 
   try {
-    if (bot == null) {
-      throw new Error('The instance is unavailable')
-    }
-
     await updateBotWebhook({
       telegram: bot.telegram,
       logger
@@ -32,7 +27,12 @@ const dev = async (): Promise<void> => {
       locale: config.DEFAULT_LOCALE
     })
 
-    const storage = bot.context.storage as IGameStorage
+    const storage = (await bot.context.getStorage?.())
+
+    if (storage === undefined) {
+      throw new Error('Storage is unavailable')
+    }
+
     const players = await storage.getPlayers()
 
     await updateBotCommandsForPlayers({

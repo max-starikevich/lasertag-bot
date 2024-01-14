@@ -1,7 +1,7 @@
 import { orderBy, groupBy, partition } from 'lodash'
 
-import { Player, ITeamBalancer, Teams } from '../types'
-import { balanceTeamsNTimes, getAverageTeamLevel } from './utils'
+import { Player, ITeamBalancer, Teams } from '../../types'
+import { balanceTeamsNTimes, getAverageTeamLevel } from '../utils'
 
 export class ClansTeamBalancer implements ITeamBalancer {
   async balance (players: Player[]): Promise<Teams> {

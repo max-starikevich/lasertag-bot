@@ -1,7 +1,7 @@
 import { Format } from 'logform'
 import { createLogger, format, transports } from 'winston'
 
-import config from '$/config'
+import { config } from '$/config'
 
 import { ILogger } from './types'
 

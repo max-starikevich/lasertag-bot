@@ -1,73 +1,24 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda'
-
-import config from '$/config'
+import { Update } from 'telegraf/typings/core/types/typegram'
 
 import { initBot } from '$/bot/bot'
 import { parseJsonSafe } from '$/utils'
 import { reportException } from '$/errors'
 
-import { GoogleTableGameStorage } from '$/game/storage/google-table/GoogleTableGameStorage'
-import { GoogleTableGameStore } from '$/game/storage/google-table/GoogleTableStore'
-import { AvailableTeamBalancers } from './bot/types'
+import { getStorage } from '$/features/players/storage'
+import { getKeyValueStore } from '$/features/key-value'
 
-import { NoClansTeamBalancer } from '$/game/player/balancers/NoClansTeamBalancer'
-import { ClansTeamBalancer } from '$/game/player/balancers/ClansTeamBalancer'
-import { ChatGptTeamBalancer } from '$/game/player/balancers/chatgpt/ChatGptTeamBalancer'
-import { GoogleTableSkillsRepository } from '$/game/player/balancers/chatgpt/GoogleTableSkillsRepository'
+import { getNoClansBalancer } from '$/features/players/balancers/no-clans'
+import { getClansBalancer } from '$/features/players/balancers/clans'
+import { getChatGptBalancer } from '$/features/players/balancers/chatgpt'
 
-const storage = new GoogleTableGameStorage({
-  email: config.GOOGLE_SERVICE_ACCOUNT_EMAIL,
-  privateKey: config.GOOGLE_PRIVATE_KEY,
-  players: {
-    docId: config.PLAYERS_DOC_ID,
-    sheetsId: config.PLAYERS_SHEETS_ID
-  },
-  game: {
-    docId: config.GAME_DOC_ID,
-    sheetsId: config.GAME_SHEETS_ID
-  },
-  links: {
-    docId: config.LINKS_DOC_ID,
-    sheetsId: config.LINKS_SHEETS_ID
-  },
-  stats: {
-    docId: config.STATS_DOC_ID,
-    sheetsId: config.STATS_SHEETS_ID,
-    timezone: config.STATS_TIMEZONE
-  },
-  enroll: {
-    docId: config.ENROLL_DOC_ID,
-    sheetsId: config.ENROLL_SHEETS_ID,
-    ranges: {
-      names: config.ENROLL_NAMES_RANGE,
-      count: config.ENROLL_COUNT_RANGE,
-      rent: config.ENROLL_RENT_RANGE,
-      comment: config.ENROLL_COMMENT_RANGE
-    }
-  }
+export const bot = initBot({
+  getStorage,
+  getKeyValueStore,
+  getNoClansBalancer,
+  getClansBalancer,
+  getChatGptBalancer
 })
-
-const store = new GoogleTableGameStore({
-  email: config.GOOGLE_SERVICE_ACCOUNT_EMAIL,
-  privateKey: config.GOOGLE_PRIVATE_KEY,
-  docId: config.STORE_DOC_ID,
-  sheetsId: config.STORE_SHEETS_ID
-})
-
-const skillsRepository = new GoogleTableSkillsRepository({
-  email: config.GOOGLE_SERVICE_ACCOUNT_EMAIL,
-  privateKey: config.GOOGLE_PRIVATE_KEY,
-  docId: config.SKILLS_DOC_ID,
-  sheetsId: config.SKILLS_SHEETS_ID
-})
-
-const balancers: AvailableTeamBalancers = {
-  noClans: new NoClansTeamBalancer(),
-  withClans: new ClansTeamBalancer(),
-  chatGpt: new ChatGptTeamBalancer(config.CHATGPT_MODEL, config.OPENAI_API_KEY, skillsRepository)
-}
-
-export const bot = initBot({ token: config.BOT_TOKEN, storage, store, balancers })
 
 export const handler = async (
   event: APIGatewayProxyEvent
@@ -87,16 +38,16 @@ export const handler = async (
       }
     }
 
-    const payload = parseJsonSafe(event.body)
+    const update = parseJsonSafe<Update>(event.body)
 
-    if (payload == null) {
+    if (update == null) {
       return {
         statusCode: 400,
         body: 'Incorrect payload'
       }
     }
 
-    await bot.handleUpdate(payload)
+    await bot.handleUpdate(update)
 
     return {
       statusCode: 200,

@@ -1,16 +1,12 @@
 import { unsetCommandsForGroups, updateBotCommands, updateBotCommandsForPlayers } from '$/bot/webhooks'
 import { makeLogger } from '$/logger'
 import { bot } from '$/lambda'
-import { IGameStorage } from '$/game/storage/types'
-import config from '$/config'
-import { checkEnvironment } from '$/config/check'
+import { config } from '$/config'
 
 async function run (): Promise<void> {
   const logger = makeLogger()
 
   try {
-    await checkEnvironment()
-
     await unsetCommandsForGroups({
       telegram: bot.telegram,
       logger
@@ -22,7 +18,12 @@ async function run (): Promise<void> {
       locale: config.DEFAULT_LOCALE
     })
 
-    const storage = bot.context.storage as IGameStorage
+    const storage = await bot.context.getStorage?.()
+
+    if (storage === undefined) {
+      throw new Error('Storage is unavailable')
+    }
+
     const players = await storage.getPlayers()
 
     await updateBotCommandsForPlayers({

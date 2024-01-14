@@ -1,7 +1,7 @@
 import { chunk, orderBy } from 'lodash'
 
-import { Player, ITeamBalancer, Teams } from '../types'
-import { balanceTeamsNTimes } from './utils'
+import { Player, ITeamBalancer, Teams } from '../../types'
+import { balanceTeamsNTimes } from '../utils'
 
 export class NoClansTeamBalancer implements ITeamBalancer {
   async balance (players: Player[]): Promise<Teams> {

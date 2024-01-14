@@ -6,7 +6,7 @@ import { AiError } from '$/errors/AiError'
 
 import { PlayerWithSkills, ISkillsRepository, balanceOutputExample, AiBalanceOutput } from './types'
 import { ITeamBalancer, Player, Teams } from '../../types'
-import { areTwoTeamsTheSame } from '../..'
+import { areTwoTeamsTheSame } from '../../utils'
 
 export class ChatGptTeamBalancer implements ITeamBalancer {
   private readonly client: OpenAI

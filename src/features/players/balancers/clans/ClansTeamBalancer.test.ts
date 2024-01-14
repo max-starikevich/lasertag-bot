@@ -2,10 +2,10 @@ import { intersection, times } from 'lodash'
 
 import { getRandomArray, getRandomNumber } from '$/utils.dev'
 
-import { ClanPlayer, Player } from '$/game/player/types'
-import { getTeamsLevels } from '$/game/player/balancers/utils'
-import { ClansTeamBalancer } from '$/game/player/balancers/ClansTeamBalancer'
-import { areTwoTeamsTheSame } from '..'
+import { ClanPlayer, Player } from '$/features/players/types'
+import { getTeamsLevels } from '$/features/players/balancers/utils'
+import { ClansTeamBalancer } from '$/features/players/balancers/clans/ClansTeamBalancer'
+import { areTwoTeamsTheSame } from '../../utils'
 
 const basePlayer: Player = {
   tableRow: 0,

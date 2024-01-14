@@ -70,7 +70,9 @@ const en: BaseTranslation = {
   ME_LOSSES: 'Losses',
   ME_DRAWS: 'Draws',
   ME_GAME_COUNT: 'Total',
-  ME_WINRATE: 'Win Rate'
+  ME_WINRATE: 'Win Rate',
+
+  FEATURE_UNAVAILABLE: 'Функцыя зараз недаступная'
 }
 
 export default en

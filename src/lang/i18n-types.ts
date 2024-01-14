@@ -228,6 +228,10 @@ type RootTranslation = {
 	 * W​i​n​ ​R​a​t​e
 	 */
 	ME_WINRATE: string
+	/**
+	 * Ф​у​н​к​ц​ы​я​ ​з​а​р​а​з​ ​н​е​д​а​с​т​у​п​н​а​я
+	 */
+	FEATURE_UNAVAILABLE: string
 }
 
 export type TranslationFunctions = {
@@ -439,6 +443,10 @@ export type TranslationFunctions = {
 	 * Win Rate
 	 */
 	ME_WINRATE: () => LocalizedString
+	/**
+	 * Функцыя зараз недаступная
+	 */
+	FEATURE_UNAVAILABLE: () => LocalizedString
 }
 
 export type Formatters = {}

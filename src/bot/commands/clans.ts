@@ -1,7 +1,7 @@
 import dedent from 'dedent-js'
 import { groupBy, orderBy } from 'lodash'
 
-import { getClanPlayers, orderTeamByGameCount } from '$/game/player'
+import { getClanPlayers, orderTeamByGameCount } from '$/features/players/utils'
 
 import { Command, CommandHandler } from '../types'
 

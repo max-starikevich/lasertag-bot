@@ -4,7 +4,7 @@ import { keyBy } from 'lodash'
 import { parseJsonSafe } from '$/utils'
 import { GoogleDocumentError } from '$/errors/GoogleDocumentError'
 
-import { IGameStore, StoreData } from '../types'
+import { IKeyValueStore, KeyValue } from './types'
 
 interface GoogleTableGameStorageParams {
   email: string
@@ -13,7 +13,7 @@ interface GoogleTableGameStorageParams {
   sheetsId: string
 }
 
-export class GoogleTableGameStore implements IGameStore {
+export class GoogleSheetsKeyValue implements IKeyValueStore {
   protected doc?: GoogleSpreadsheet
 
   protected email: string
@@ -26,25 +26,6 @@ export class GoogleTableGameStore implements IGameStore {
     this.privateKey = params.privateKey
     this.docId = params.docId
     this.sheetsId = params.sheetsId
-  }
-
-  async loadDebugInfo (): Promise<object> {
-    const sheets = await this.getSheets()
-    await sheets.getRows()
-
-    // it should be defined already,
-    // otherwise it would throw rejection
-    const document = this.doc as GoogleSpreadsheet
-
-    return {
-      class: GoogleTableGameStore.name,
-      id: document.spreadsheetId,
-      title: document.title,
-      sheets: Object.values(this.doc?.sheetsById ?? {}).map(sheet => ({
-        id: sheet.sheetId,
-        title: sheet.title
-      }))
-    }
   }
 
   protected async getSheets (): Promise<GoogleSpreadsheetWorksheet> {
@@ -71,7 +52,7 @@ export class GoogleTableGameStore implements IGameStore {
     return sheets
   }
 
-  async get <T>(keys: string[]): Promise<Array<StoreData<T>>> {
+  async get <T>(keys: string[]): Promise<Array<KeyValue<T>>> {
     const sheets = await this.getSheets()
     const rows = await sheets.getRows()
 
@@ -93,10 +74,10 @@ export class GoogleTableGameStore implements IGameStore {
     })
   }
 
-  async set <T>(data: Array<StoreData<T>>): Promise<void> {
+  async set <T>(objects: Array<KeyValue<T>>): Promise<void> {
     const sheets = await this.getSheets()
 
-    for (const { key, value } of data) {
+    for (const { key, value } of objects) {
       if (value === null) {
         continue
       }

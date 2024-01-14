@@ -2,7 +2,7 @@ import { GoogleSpreadsheetCell } from 'google-spreadsheet'
 
 import { ParsedRange } from '$/utils'
 
-import { Player } from '../../player/types'
+import { Player } from '../../types'
 
 export type GoogleSpreadsheetPlayerCellMap = { [key in keyof Partial<Player>]: GoogleSpreadsheetCell }
 export interface GoogleSpreadsheetCellMap { [key: string]: GoogleSpreadsheetCell }

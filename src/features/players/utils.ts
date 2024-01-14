@@ -1,12 +1,13 @@
 import { groupBy, isEqual, keyBy, orderBy } from 'lodash'
 import { User } from 'telegraf/typings/core/types/typegram'
 
-import config from '$/config'
+import { config } from '$/config'
 import L from '$/lang/i18n-node'
 import { TranslationFunctions } from '$/lang/i18n-types'
 
+import { stringToSha1 } from '$/utils'
+
 import { Player, ClanPlayer, Role, AdminPlayer } from './types'
-import { stringToSha1 } from '../../utils'
 
 export const getActivePlayers = (players: Player[]): Player[] => {
   return players.filter(({ count, level, isQuestionableCount }) => count > 0 && level > 0 && !isQuestionableCount)

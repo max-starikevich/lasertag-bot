@@ -3,12 +3,13 @@ import axios from 'axios'
 import { version } from '../../package.json'
 
 import { makeLogger } from '$/logger'
+import { config } from '$/config'
 
 async function run (): Promise<void> {
   const logger = makeLogger()
 
   try {
-    const sentryWebhook = process.env.SENTRY_DEPLOY_WEBHOOK
+    const sentryWebhook = config.SENTRY_DEPLOY_WEBHOOK
 
     if (sentryWebhook === undefined) {
       throw new Error("Sentry Webhook isn't specified")
