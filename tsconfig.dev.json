@@ -2,6 +2,6 @@
   "extends": "./tsconfig.json",
   "include": [
     "src/dev.ts",
-    "src/scripts/**/*.ts",
+    "src/scripts/**/*.ts"
   ]
 }

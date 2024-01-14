@@ -8,15 +8,20 @@ const en: BaseTranslation = {
   ABOUT_COMMAND_DESCRIPTION: 'Bot information',
 
   CLANS_COMMAND_DESCRIPTION: 'Clan information',
+  CLANS_NO_PLAYERS: 'No active clans at this moment',
 
   HELP_COMMAND_DESCRIPTION: 'Show available commands',
   HELP_TITLE: 'Available commands',
 
   PLAYERS_COMMAND_DESCRIPTION: 'Players in the record',
 
-  OLD_TEAMS_COMMAND_DESCRIPTION: 'Create teams without clans',
+  TEAMS_COMMAND_DESCRIPTION: 'Create teams without clans',
 
-  TEAMS_COMMAND_DESCRIPTION: 'Create teams with clans',
+  CLAN_TEAMS_COMMAND_DESCRIPTION: 'Create teams with clans',
+
+  AI_TEAMS_COMMAND_DESCRIPTION: 'Create teams using AI',
+  AI_TEAMS_ERROR_MESSAGE: 'AI failed to balance teams properly. Try again later',
+  AI_TEAMS_IN_PROGRESS: 'Please wait. AI is working on your request',
 
   REGISTER_COMMAND_DESCRIPTION: 'Add yourself to the bot\'s database',
   REGISTER_CHOOSE_YOURSELF: "Choose your name from the list. If it's missing then ask the game organizer to add it.",
@@ -35,7 +40,6 @@ const en: BaseTranslation = {
   LINKS_COMMAND_DESCRIPTION: 'Show useful links',
 
   ENROLL_COMMAND_DESCRIPTION: 'Add yourself to the player list',
-  ENROLL_COMMAND_SUCCESS: "You've been enrolled successfully",
 
   TEAMS_BALANCE: 'Team balance',
   RECORDED: 'Recorded',
@@ -43,17 +47,9 @@ const en: BaseTranslation = {
   COUNT: 'Count',
   STATS_WHO_WON: 'Which team won?',
   STATS_SAVE_SUCCESS: 'Stats saved successfully',
-  STATS_SAVE_APPROVED: 'Your request has been approved by admin. Stats saved successfully',
-  STATS_SEND_TO_ADMIN: 'Yes, send to admins',
-  STATS_SEND_TO_ADMIN_OFFER: 'Already played with these teams?',
-  STATS_SENT_SUCCESS: 'Stats have been sent to admin',
-  STATS_SAVE_REQUEST: 'Incoming stats save request from {username: string}',
   STATS_DRAW: 'Draw',
   STATS_NON_EXISTENT: 'Data for this game is lost or broken',
   STATS_ALREADY_SAVED: 'Stats for this game are already saved',
-  STATS_SAVE_REJECT: 'Reject',
-  STATS_SAVE_REJECTED: 'Stats have been rejected',
-  STATS_SAVE_REJECTED_FOR_USER: 'Your request has been rejected by admin',
 
   RENT_NOT_NEEDED: 'Not needed',
   ABSENT: "I'll be absent",
@@ -62,7 +58,6 @@ const en: BaseTranslation = {
   UNKNOWN_COMMAND: 'Unknown command. Use menu or command /{helpCommandName:string}',
   ACCESS_DENIED: 'Access denied',
   SHEETS_ERROR: 'Something is wrong with the Google document. Try again later',
-  GROUP_CHAT_WARNING: '✍️ Send me a private message here: @{botUsername:string}.',
 
   ACTION_HANDLER_WRONG_DATA: 'Wrong data provided',
 
@@ -75,7 +70,9 @@ const en: BaseTranslation = {
   ME_LOSSES: 'Losses',
   ME_DRAWS: 'Draws',
   ME_GAME_COUNT: 'Total',
-  ME_WINRATE: 'Win Rate'
+  ME_WINRATE: 'Win Rate',
+
+  FEATURE_UNAVAILABLE: 'Функцыя зараз недаступная'
 }
 
 export default en

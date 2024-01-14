@@ -1,5 +1,5 @@
-import { getPlayersByNames } from '$/game/player'
-import { Player } from '$/game/player/types'
+import { getPlayersByNames } from '$/features/players/utils'
+import { Player } from '$/features/players/types'
 
 import { CommandContext } from '../../types'
 import { GameResult, GameData } from './types'

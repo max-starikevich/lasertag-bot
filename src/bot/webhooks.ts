@@ -1,27 +1,21 @@
 import { BotCommandScope } from 'telegraf/typings/core/types/typegram'
 
-import config from '$/config'
+import { config } from '$/config'
 
 import { GameContext } from './types'
-import { commandsInMenu } from '.'
+import { commandsInMenu } from './bot'
 
 import L from '$/lang/i18n-node'
-import { Player } from '$/game/player/types'
+import { Player } from '$/features/players/types'
 import { extractLocale } from '$/lang/i18n-custom'
 import { reportException } from '../errors'
 
 export const updateBotWebhook = async (ctx: Pick<GameContext, 'logger' | 'telegram'>): Promise<void> => {
   const { logger, telegram } = ctx
 
-  const { url: savedWebhook } = await telegram.getWebhookInfo()
+  await telegram.setWebhook(config.WEBHOOK_FULL, { allowed_updates: ['message', 'callback_query'], drop_pending_updates: true })
 
-  if (config.WEBHOOK_FULL === savedWebhook) {
-    return
-  }
-
-  await telegram.setWebhook(config.WEBHOOK_FULL, { allowed_updates: ['message', 'callback_query'] })
-
-  logger.info(`✅ The webhook has been updated from "${savedWebhook ?? 'undefined'}" to "${config.WEBHOOK_FULL}"`)
+  logger.info(`✅ The webhook has been updated to "${config.WEBHOOK_FULL}"`)
 }
 
 export const updateBotCommands = async (ctx: Pick<GameContext, 'logger' | 'telegram' | 'locale'>, scope?: BotCommandScope): Promise<void> => {

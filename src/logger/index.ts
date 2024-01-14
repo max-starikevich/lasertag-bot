@@ -1,9 +1,9 @@
 import { Format } from 'logform'
 import { createLogger, format, transports } from 'winston'
 
-import config from '$/config'
+import { config } from '$/config'
 
-import { BaseLogger } from './types'
+import { ILogger } from './types'
 
 const { combine, timestamp, errors, printf, prettyPrint } = format
 
@@ -19,7 +19,7 @@ const devFormats: Format[] = [
   prettyPrint({ colorize: true })
 ]
 
-export const makeLogger = (id?: string): BaseLogger => {
+export const makeLogger = (id?: string): ILogger => {
   return createLogger({
     format: combine(
       ...[

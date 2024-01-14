@@ -1,17 +1,29 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda'
+import { Update } from 'telegraf/typings/core/types/typegram'
 
-import { initBot } from '$/bot'
+import { initBot } from '$/bot/bot'
 import { parseJsonSafe } from '$/utils'
-import { reportException } from './errors'
+import { reportException } from '$/errors'
 
-export const botPromise = initBot()
+import { getStorage } from '$/features/players/storage'
+import { getKeyValueStore } from '$/features/key-value'
+
+import { getNoClansBalancer } from '$/features/players/balancers/no-clans'
+import { getClansBalancer } from '$/features/players/balancers/clans'
+import { getChatGptBalancer } from '$/features/players/balancers/chatgpt'
+
+export const bot = initBot({
+  getStorage,
+  getKeyValueStore,
+  getNoClansBalancer,
+  getClansBalancer,
+  getChatGptBalancer
+})
 
 export const handler = async (
   event: APIGatewayProxyEvent
 ): Promise<APIGatewayProxyResult> => {
   try {
-    const bot = await botPromise
-
     if (bot === null) {
       return {
         statusCode: 500,
@@ -26,16 +38,16 @@ export const handler = async (
       }
     }
 
-    const payload = parseJsonSafe(event.body)
+    const update = parseJsonSafe<Update>(event.body)
 
-    if (payload == null) {
+    if (update === null) {
       return {
         statusCode: 400,
         body: 'Incorrect payload'
       }
     }
 
-    await bot.handleUpdate(payload)
+    await bot.handleUpdate(update)
 
     return {
       statusCode: 200,

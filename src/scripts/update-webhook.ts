@@ -1,16 +1,11 @@
 import { updateBotWebhook } from '$/bot/webhooks'
 import { makeLogger } from '$/logger'
-import { botPromise } from '$/lambda'
-import { checkEnvironment } from '../config/check'
+import { bot } from '$/lambda'
 
 async function run (): Promise<void> {
   const logger = makeLogger()
 
   try {
-    await checkEnvironment()
-
-    const bot = await botPromise
-
     await updateBotWebhook({
       telegram: bot.telegram,
       logger

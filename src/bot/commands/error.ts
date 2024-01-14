@@ -1,12 +1,10 @@
-import { AccessDeniedError } from '$/errors/AccessDeniedError'
-
 import { Command, CommandHandler } from '../types'
 
 const handler: CommandHandler = async (ctx) => {
-  const { isCreatorOfHomeChat } = ctx
+  const { isAdminPlayer } = ctx
 
-  if (!isCreatorOfHomeChat) {
-    throw new AccessDeniedError()
+  if (!isAdminPlayer) {
+    return
   }
 
   throw new Error('Dummy error to test error reporting')

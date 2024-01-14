@@ -2,7 +2,7 @@ import { chunk, range } from 'lodash'
 
 import { Action, ActionHandler, ActionInitializer } from '../types'
 
-import { RegisterRequiredError } from '$/errors/RegisterRequiredError.js'
+import { RegisterRequiredError } from '$/errors/RegisterRequiredError'
 
 export const initializer: ActionInitializer = async ctx => {
   const { currentPlayer, lang } = ctx
@@ -51,11 +51,13 @@ export const initializer: ActionInitializer = async ctx => {
 }
 
 const countHandler: ActionHandler = async ctx => {
-  const { lang, currentPlayer, storage } = ctx
+  const { lang, currentPlayer, getStorage } = ctx
 
   if (currentPlayer === undefined) {
     throw new RegisterRequiredError()
   }
+
+  const storage = await getStorage()
 
   const count = parseInt(ctx.match[1])
 
@@ -75,11 +77,13 @@ const countHandler: ActionHandler = async ctx => {
 }
 
 const rentHandler: ActionHandler = async ctx => {
-  const { lang, currentPlayer, storage } = ctx
+  const { lang, currentPlayer, getStorage } = ctx
 
   if (currentPlayer === undefined) {
     throw new RegisterRequiredError()
   }
+
+  const storage = await getStorage()
 
   const rentCount = parseInt(ctx.match[1])
 

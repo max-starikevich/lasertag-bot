@@ -1,41 +1,35 @@
+import { getActivePlayers, orderTeamByGameCount } from '$/features/players/utils'
+
 import { NotEnoughPlayersError } from '$/errors/NotEnoughPlayersError'
-import { getBalancedTeamsWithClans } from '$/game/player/balance/with-clans'
-import { getActivePlayers, orderTeamByGameCount } from '$/game/player'
 
 import { Command, CommandHandler } from '../types'
-import { replyWithPlaceAndTime, replyWithSquads, replyWithTeamBalance, replyWithTeamCount } from '.'
-import { initializer as replyWithStatsAction } from '../actions/stats'
+import { replyWithTeamList } from '.'
 
 const handler: CommandHandler = async (ctx) => {
-  await replyWithPlaceAndTime(ctx)
+  const { players, getClansBalancer } = ctx
 
-  const { players } = ctx
+  const clansBalancer = await getClansBalancer()
 
   const activePlayers = getActivePlayers(players)
-  const teams = getBalancedTeamsWithClans(activePlayers)
-  const [redPlayers, bluePlayers] = teams.map(team => orderTeamByGameCount(team))
 
-  if (redPlayers.length === 0 || bluePlayers.length === 0) {
+  if (activePlayers.length < 4) {
     throw new NotEnoughPlayersError()
   }
 
-  await replyWithTeamCount(ctx, [redPlayers, bluePlayers])
+  const teams = await clansBalancer.balance(activePlayers)
+  const [redPlayers, bluePlayers] = teams.map(team => orderTeamByGameCount(team))
 
-  if (redPlayers.length > 0) {
-    await replyWithSquads(ctx, redPlayers, '🔴')
-  }
-
-  if (bluePlayers.length > 0) {
-    await replyWithSquads(ctx, bluePlayers, '🔵')
-  }
-
-  await replyWithTeamBalance(ctx, [redPlayers, bluePlayers])
-  await replyWithStatsAction(ctx, teams)
+  await replyWithTeamList({
+    ctx,
+    teams: [redPlayers, bluePlayers],
+    showBalance: true,
+    showSquads: true
+  })
 }
 
 export const clanteams: Command = {
   name: 'clanteams',
   handler,
-  description: lang => lang.TEAMS_COMMAND_DESCRIPTION(),
+  description: lang => lang.CLAN_TEAMS_COMMAND_DESCRIPTION(),
   showInMenu: true
 }

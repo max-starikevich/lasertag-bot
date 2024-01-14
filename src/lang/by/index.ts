@@ -8,15 +8,20 @@ const by: MappedTranslation = {
   ABOUT_COMMAND_DESCRIPTION: 'Інфармацыя пра бота',
 
   CLANS_COMMAND_DESCRIPTION: 'Інфармацыя пра кланы',
+  CLANS_NO_PLAYERS: 'Няма актыўных кланаў на гэты момант',
 
   HELP_COMMAND_DESCRIPTION: 'Паказаць даступныя каманды',
   HELP_TITLE: 'Даступныя каманды',
 
   PLAYERS_COMMAND_DESCRIPTION: 'Сьпіс гульцоў, якія запісаліся',
 
-  OLD_TEAMS_COMMAND_DESCRIPTION: 'Стварыць каманды без кланаў',
+  TEAMS_COMMAND_DESCRIPTION: 'Стварыць каманды без кланаў',
 
-  TEAMS_COMMAND_DESCRIPTION: 'Стварыць каманды зь кланамі',
+  CLAN_TEAMS_COMMAND_DESCRIPTION: 'Стварыць каманды з кланамі',
+
+  AI_TEAMS_COMMAND_DESCRIPTION: 'Стварыць каманды з дапамогай штучнага інтэлекту (ШІ)',
+  AI_TEAMS_ERROR_MESSAGE: 'ШІ не змог збалансаваць каманды належным чынам. Паспрабуйце яшчэ раз пазьней',
+  AI_TEAMS_IN_PROGRESS: 'Калі ласка, пачакайце. ШІ апрацоўвае ваш запыт',
 
   REGISTER_COMMAND_DESCRIPTION: 'Дадаць сябе ў базу дадзеных бота',
   REGISTER_CHOOSE_YOURSELF: 'Выберыце сваё імя з файлу запісу. Калі яго няма - зьвярніцеся да арганізатара, каб ён дадаў.',
@@ -35,36 +40,26 @@ const by: MappedTranslation = {
   LINKS_COMMAND_DESCRIPTION: 'Карысныя спасылкі',
 
   ENROLL_COMMAND_DESCRIPTION: 'Запісацца ў файл',
-  ENROLL_COMMAND_SUCCESS: 'Вы пасьпяхова запісаны ў файл',
 
   TEAMS_BALANCE: 'Баланс каманд',
   RECORDED: 'Запісана',
   RENT: 'Патрэбны пракат',
   COUNT: 'Колькасьць',
-  STATS_WHO_WON: 'Якая каманда перамогла?',
+  STATS_WHO_WON: 'Якая каманда перамагла?',
   STATS_SAVE_SUCCESS: 'Статыстыка захавана',
-  STATS_SAVE_APPROVED: 'Ваш запыт ухвалены адміністратарам. Статыстыка захавана',
-  STATS_SEND_TO_ADMIN: 'Так, даслаць адмінам',
-  STATS_SEND_TO_ADMIN_OFFER: 'Ужо адыгралі гэтымі складамі?',
-  STATS_SENT_SUCCESS: 'Статыстыка адпраўленая адміністратару',
-  STATS_SAVE_REQUEST: 'Новы запыт на захаваньне статыстыкі\n\n{username: string}',
   STATS_DRAW: 'Нічыя',
   STATS_NON_EXISTENT: 'Дадзеныя для гэтай гульні ўжо страчаны ці сапсаваны',
   STATS_ALREADY_SAVED: 'Статыстыка для гэтай гульні ўжо захавана',
-  STATS_SAVE_REJECT: 'Адмова',
-  STATS_SAVE_REJECTED: 'Статыстыка адмоўленая',
-  STATS_SAVE_REJECTED_FOR_USER: 'Ваш запыт адмоўлены адміністратарам',
 
   RENT_NOT_NEEDED: 'Не патрэбен',
-  ABSENT: 'Мяне не будзе',
+  ABSENT: 'Мяне ня будзе',
 
   UNEXPECTED_ERROR_FOR_USER: 'Нечаканая памылка. Паўтарыце запыт пазьней',
   UNKNOWN_COMMAND: 'Не ўдалося распазнаць каманду. Выкарыстоўвайце меню ці каманду /{helpCommandName:string}',
   ACCESS_DENIED: 'Няма доступу',
-  SHEETS_ERROR: 'Нешта здарылася зь Google-дакументам. Паўтарыце запыт пазьней',
-  GROUP_CHAT_WARNING: '✍️ Пішыце мне сюды: @{botUsername:string}',
+  SHEETS_ERROR: 'Нешта здарылася з Google-дакументам. Паўтарыце запыт пазьней',
 
-  ACTION_HANDLER_WRONG_DATA: 'Уведзеныя няправільныя дадзеныя',
+  ACTION_HANDLER_WRONG_DATA: 'Уведзены няправільныя дадзеныя',
 
   NOT_ENOUGH_PLAYERS: 'Недастаткова гульцоў для гэтай функцыі',
 
@@ -75,7 +70,9 @@ const by: MappedTranslation = {
   ME_LOSSES: 'Паразы',
   ME_DRAWS: 'Нічыя',
   ME_GAME_COUNT: 'Усяго гульняў',
-  ME_WINRATE: 'Вінрэйт'
+  ME_WINRATE: 'Вінрэйт',
+
+  FEATURE_UNAVAILABLE: 'Функцыя зараз недаступная'
 }
 
 export default by

@@ -1,6 +1,6 @@
 import dedent from 'dedent-js'
 
-import { commandsInMenu } from '$/bot'
+import { commandsInMenu } from '$/bot/bot'
 
 import { Command, CommandHandler } from '../types'
 
@@ -12,7 +12,7 @@ const handler: CommandHandler = async (ctx) => {
       ${commandsInMenu
         .map(
           ({ name, description }) =>
-            `/${name} - ${description(ctx.lang).toLowerCase()}`
+            `/${name} - ${description(ctx.lang)}`
         )
         .join('\n\n')}
       `

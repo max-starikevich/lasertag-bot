@@ -8,15 +8,20 @@ const ru: MappedTranslation = {
   ABOUT_COMMAND_DESCRIPTION: 'Информация о боте',
 
   CLANS_COMMAND_DESCRIPTION: 'Информация о кланах',
+  CLANS_NO_PLAYERS: 'Нет активных кланов в данный момент',
 
   HELP_COMMAND_DESCRIPTION: 'Показать доступные команды',
   HELP_TITLE: 'Доступные команды',
 
   PLAYERS_COMMAND_DESCRIPTION: 'Список записавшихся игроков',
 
-  OLD_TEAMS_COMMAND_DESCRIPTION: 'Создать команды без кланов',
+  TEAMS_COMMAND_DESCRIPTION: 'Создать команды без кланов',
 
-  TEAMS_COMMAND_DESCRIPTION: 'Создать команды с кланами',
+  CLAN_TEAMS_COMMAND_DESCRIPTION: 'Создать команды с кланами',
+
+  AI_TEAMS_COMMAND_DESCRIPTION: 'Создать команды с помощью искусственного интеллекта (ИИ)',
+  AI_TEAMS_ERROR_MESSAGE: 'ИИ не смог должным образом сбалансировать команды. Попробуйте еще раз позже',
+  AI_TEAMS_IN_PROGRESS: 'Пожалуйста, подождите. ИИ работает над вашим запросом',
 
   REGISTER_COMMAND_DESCRIPTION: 'Добавить себя в базу данных бота',
   REGISTER_CHOOSE_YOURSELF: 'Выберите свое имя из списка. Если оно отсутствует - обратитесь к организатору, чтобы он вас добавил.',
@@ -35,7 +40,6 @@ const ru: MappedTranslation = {
   LINKS_COMMAND_DESCRIPTION: 'Полезные ссылки',
 
   ENROLL_COMMAND_DESCRIPTION: 'Записаться в файл',
-  ENROLL_COMMAND_SUCCESS: 'Вы записаны успешно',
 
   TEAMS_BALANCE: 'Баланс команд',
   RECORDED: 'Записано',
@@ -43,17 +47,9 @@ const ru: MappedTranslation = {
   COUNT: 'Количество',
   STATS_WHO_WON: 'Какая команда победила?',
   STATS_SAVE_SUCCESS: 'Статистика сохранена успешно',
-  STATS_SAVE_APPROVED: 'Ваш запрос одобрен администратором. Статистика успешно сохранена',
-  STATS_SEND_TO_ADMIN: 'Да, отправить администраторам',
-  STATS_SEND_TO_ADMIN_OFFER: 'Уже отыграли этими составами?',
-  STATS_SENT_SUCCESS: 'Статистика отправлена администратору',
-  STATS_SAVE_REQUEST: 'Запрос на сохранение статистики от {username: string}',
   STATS_DRAW: 'Ничья',
   STATS_NON_EXISTENT: 'Данные для этой игры уже потеряны или испорчены',
   STATS_ALREADY_SAVED: 'Статистика для этой игры уже сохранена',
-  STATS_SAVE_REJECT: 'Отклонить',
-  STATS_SAVE_REJECTED: 'Статистика отклонена',
-  STATS_SAVE_REJECTED_FOR_USER: 'Ваш запрос отклонен администратором',
 
   RENT_NOT_NEEDED: 'Не нужен',
   ABSENT: 'Меня не будет',
@@ -62,7 +58,6 @@ const ru: MappedTranslation = {
   UNKNOWN_COMMAND: 'Не удалось распознать команду. Используйте меню или команду /{helpCommandName:string}',
   ACCESS_DENIED: 'Нет доступа',
   SHEETS_ERROR: 'Что-то не так с Google-документом. Повторите запрос позже',
-  GROUP_CHAT_WARNING: '✍️ Пишите мне в личку тут: @{botUsername:string}',
 
   ACTION_HANDLER_WRONG_DATA: 'Указаны неверные данные',
 
@@ -75,7 +70,9 @@ const ru: MappedTranslation = {
   ME_LOSSES: 'Поражения',
   ME_DRAWS: 'Ничьи',
   ME_GAME_COUNT: 'Всего игр',
-  ME_WINRATE: 'Винрэйт'
+  ME_WINRATE: 'Винрэйт',
+
+  FEATURE_UNAVAILABLE: 'Функция сейчас недоступна'
 }
 
 export default ru

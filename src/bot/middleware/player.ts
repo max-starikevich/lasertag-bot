@@ -1,13 +1,14 @@
-import { getPlayerLang } from '$/game/player'
-
+import { getPlayerLang } from '$/features/players/utils'
 import { BotMiddleware } from '.'
 
 export const playerMiddleware: BotMiddleware = async (ctx, next) => {
-  if (ctx.from == null) {
+  if (ctx.from === undefined) {
     throw new Error('Missing "ctx.from"')
   }
 
-  const { storage } = ctx
+  const { getStorage } = ctx
+
+  const storage = await getStorage()
 
   const players = await storage.getPlayers()
 
@@ -20,6 +21,7 @@ export const playerMiddleware: BotMiddleware = async (ctx, next) => {
   }
 
   ctx.currentPlayer = currentPlayer
+  ctx.isAdminPlayer = currentPlayer.isAdmin
 
   ctx.locale = currentPlayer.locale
   ctx.lang = getPlayerLang(currentPlayer)

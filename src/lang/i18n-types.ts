@@ -10,6 +10,7 @@ export type Locales =
 	| 'en'
 	| 'pl'
 	| 'ru'
+	| 'ua'
 
 export type Translation = RootTranslation
 
@@ -41,6 +42,10 @@ type RootTranslation = {
 	 */
 	CLANS_COMMAND_DESCRIPTION: string
 	/**
+	 * N​o​ ​a​c​t​i​v​e​ ​c​l​a​n​s​ ​a​t​ ​t​h​i​s​ ​m​o​m​e​n​t
+	 */
+	CLANS_NO_PLAYERS: string
+	/**
 	 * S​h​o​w​ ​a​v​a​i​l​a​b​l​e​ ​c​o​m​m​a​n​d​s
 	 */
 	HELP_COMMAND_DESCRIPTION: string
@@ -55,11 +60,23 @@ type RootTranslation = {
 	/**
 	 * C​r​e​a​t​e​ ​t​e​a​m​s​ ​w​i​t​h​o​u​t​ ​c​l​a​n​s
 	 */
-	OLD_TEAMS_COMMAND_DESCRIPTION: string
+	TEAMS_COMMAND_DESCRIPTION: string
 	/**
 	 * C​r​e​a​t​e​ ​t​e​a​m​s​ ​w​i​t​h​ ​c​l​a​n​s
 	 */
-	TEAMS_COMMAND_DESCRIPTION: string
+	CLAN_TEAMS_COMMAND_DESCRIPTION: string
+	/**
+	 * C​r​e​a​t​e​ ​t​e​a​m​s​ ​u​s​i​n​g​ ​A​I
+	 */
+	AI_TEAMS_COMMAND_DESCRIPTION: string
+	/**
+	 * A​I​ ​f​a​i​l​e​d​ ​t​o​ ​b​a​l​a​n​c​e​ ​t​e​a​m​s​ ​p​r​o​p​e​r​l​y​.​ ​T​r​y​ ​a​g​a​i​n​ ​l​a​t​e​r
+	 */
+	AI_TEAMS_ERROR_MESSAGE: string
+	/**
+	 * P​l​e​a​s​e​ ​w​a​i​t​.​ ​A​I​ ​i​s​ ​w​o​r​k​i​n​g​ ​o​n​ ​y​o​u​r​ ​r​e​q​u​e​s​t
+	 */
+	AI_TEAMS_IN_PROGRESS: string
 	/**
 	 * A​d​d​ ​y​o​u​r​s​e​l​f​ ​t​o​ ​t​h​e​ ​b​o​t​'​s​ ​d​a​t​a​b​a​s​e
 	 */
@@ -115,10 +132,6 @@ type RootTranslation = {
 	 */
 	ENROLL_COMMAND_DESCRIPTION: string
 	/**
-	 * Y​o​u​'​v​e​ ​b​e​e​n​ ​e​n​r​o​l​l​e​d​ ​s​u​c​c​e​s​s​f​u​l​l​y
-	 */
-	ENROLL_COMMAND_SUCCESS: string
-	/**
 	 * T​e​a​m​ ​b​a​l​a​n​c​e
 	 */
 	TEAMS_BALANCE: string
@@ -143,27 +156,6 @@ type RootTranslation = {
 	 */
 	STATS_SAVE_SUCCESS: string
 	/**
-	 * Y​o​u​r​ ​r​e​q​u​e​s​t​ ​h​a​s​ ​b​e​e​n​ ​a​p​p​r​o​v​e​d​ ​b​y​ ​a​d​m​i​n​.​ ​S​t​a​t​s​ ​s​a​v​e​d​ ​s​u​c​c​e​s​s​f​u​l​l​y
-	 */
-	STATS_SAVE_APPROVED: string
-	/**
-	 * Y​e​s​,​ ​s​e​n​d​ ​t​o​ ​a​d​m​i​n​s
-	 */
-	STATS_SEND_TO_ADMIN: string
-	/**
-	 * A​l​r​e​a​d​y​ ​p​l​a​y​e​d​ ​w​i​t​h​ ​t​h​e​s​e​ ​t​e​a​m​s​?
-	 */
-	STATS_SEND_TO_ADMIN_OFFER: string
-	/**
-	 * S​t​a​t​s​ ​h​a​v​e​ ​b​e​e​n​ ​s​e​n​t​ ​t​o​ ​a​d​m​i​n
-	 */
-	STATS_SENT_SUCCESS: string
-	/**
-	 * I​n​c​o​m​i​n​g​ ​s​t​a​t​s​ ​s​a​v​e​ ​r​e​q​u​e​s​t​ ​f​r​o​m​ ​{​u​s​e​r​n​a​m​e​}
-	 * @param {string} username
-	 */
-	STATS_SAVE_REQUEST: RequiredParams<'username'>
-	/**
 	 * D​r​a​w
 	 */
 	STATS_DRAW: string
@@ -175,18 +167,6 @@ type RootTranslation = {
 	 * S​t​a​t​s​ ​f​o​r​ ​t​h​i​s​ ​g​a​m​e​ ​a​r​e​ ​a​l​r​e​a​d​y​ ​s​a​v​e​d
 	 */
 	STATS_ALREADY_SAVED: string
-	/**
-	 * R​e​j​e​c​t
-	 */
-	STATS_SAVE_REJECT: string
-	/**
-	 * S​t​a​t​s​ ​h​a​v​e​ ​b​e​e​n​ ​r​e​j​e​c​t​e​d
-	 */
-	STATS_SAVE_REJECTED: string
-	/**
-	 * Y​o​u​r​ ​r​e​q​u​e​s​t​ ​h​a​s​ ​b​e​e​n​ ​r​e​j​e​c​t​e​d​ ​b​y​ ​a​d​m​i​n
-	 */
-	STATS_SAVE_REJECTED_FOR_USER: string
 	/**
 	 * N​o​t​ ​n​e​e​d​e​d
 	 */
@@ -212,11 +192,6 @@ type RootTranslation = {
 	 * S​o​m​e​t​h​i​n​g​ ​i​s​ ​w​r​o​n​g​ ​w​i​t​h​ ​t​h​e​ ​G​o​o​g​l​e​ ​d​o​c​u​m​e​n​t​.​ ​T​r​y​ ​a​g​a​i​n​ ​l​a​t​e​r
 	 */
 	SHEETS_ERROR: string
-	/**
-	 * ✍​️​ ​S​e​n​d​ ​m​e​ ​a​ ​p​r​i​v​a​t​e​ ​m​e​s​s​a​g​e​ ​h​e​r​e​:​ ​@​{​b​o​t​U​s​e​r​n​a​m​e​}​.
-	 * @param {string} botUsername
-	 */
-	GROUP_CHAT_WARNING: RequiredParams<'botUsername'>
 	/**
 	 * W​r​o​n​g​ ​d​a​t​a​ ​p​r​o​v​i​d​e​d
 	 */
@@ -253,6 +228,10 @@ type RootTranslation = {
 	 * W​i​n​ ​R​a​t​e
 	 */
 	ME_WINRATE: string
+	/**
+	 * Ф​у​н​к​ц​ы​я​ ​з​а​р​а​з​ ​н​е​д​а​с​т​у​п​н​а​я
+	 */
+	FEATURE_UNAVAILABLE: string
 }
 
 export type TranslationFunctions = {
@@ -281,6 +260,10 @@ export type TranslationFunctions = {
 	 */
 	CLANS_COMMAND_DESCRIPTION: () => LocalizedString
 	/**
+	 * No active clans at this moment
+	 */
+	CLANS_NO_PLAYERS: () => LocalizedString
+	/**
 	 * Show available commands
 	 */
 	HELP_COMMAND_DESCRIPTION: () => LocalizedString
@@ -295,11 +278,23 @@ export type TranslationFunctions = {
 	/**
 	 * Create teams without clans
 	 */
-	OLD_TEAMS_COMMAND_DESCRIPTION: () => LocalizedString
+	TEAMS_COMMAND_DESCRIPTION: () => LocalizedString
 	/**
 	 * Create teams with clans
 	 */
-	TEAMS_COMMAND_DESCRIPTION: () => LocalizedString
+	CLAN_TEAMS_COMMAND_DESCRIPTION: () => LocalizedString
+	/**
+	 * Create teams using AI
+	 */
+	AI_TEAMS_COMMAND_DESCRIPTION: () => LocalizedString
+	/**
+	 * AI failed to balance teams properly. Try again later
+	 */
+	AI_TEAMS_ERROR_MESSAGE: () => LocalizedString
+	/**
+	 * Please wait. AI is working on your request
+	 */
+	AI_TEAMS_IN_PROGRESS: () => LocalizedString
 	/**
 	 * Add yourself to the bot's database
 	 */
@@ -353,10 +348,6 @@ export type TranslationFunctions = {
 	 */
 	ENROLL_COMMAND_DESCRIPTION: () => LocalizedString
 	/**
-	 * You've been enrolled successfully
-	 */
-	ENROLL_COMMAND_SUCCESS: () => LocalizedString
-	/**
 	 * Team balance
 	 */
 	TEAMS_BALANCE: () => LocalizedString
@@ -381,26 +372,6 @@ export type TranslationFunctions = {
 	 */
 	STATS_SAVE_SUCCESS: () => LocalizedString
 	/**
-	 * Your request has been approved by admin. Stats saved successfully
-	 */
-	STATS_SAVE_APPROVED: () => LocalizedString
-	/**
-	 * Yes, send to admins
-	 */
-	STATS_SEND_TO_ADMIN: () => LocalizedString
-	/**
-	 * Already played with these teams?
-	 */
-	STATS_SEND_TO_ADMIN_OFFER: () => LocalizedString
-	/**
-	 * Stats have been sent to admin
-	 */
-	STATS_SENT_SUCCESS: () => LocalizedString
-	/**
-	 * Incoming stats save request from {username}
-	 */
-	STATS_SAVE_REQUEST: (arg: { username: string }) => LocalizedString
-	/**
 	 * Draw
 	 */
 	STATS_DRAW: () => LocalizedString
@@ -412,18 +383,6 @@ export type TranslationFunctions = {
 	 * Stats for this game are already saved
 	 */
 	STATS_ALREADY_SAVED: () => LocalizedString
-	/**
-	 * Reject
-	 */
-	STATS_SAVE_REJECT: () => LocalizedString
-	/**
-	 * Stats have been rejected
-	 */
-	STATS_SAVE_REJECTED: () => LocalizedString
-	/**
-	 * Your request has been rejected by admin
-	 */
-	STATS_SAVE_REJECTED_FOR_USER: () => LocalizedString
 	/**
 	 * Not needed
 	 */
@@ -448,10 +407,6 @@ export type TranslationFunctions = {
 	 * Something is wrong with the Google document. Try again later
 	 */
 	SHEETS_ERROR: () => LocalizedString
-	/**
-	 * ✍️ Send me a private message here: @{botUsername}.
-	 */
-	GROUP_CHAT_WARNING: (arg: { botUsername: string }) => LocalizedString
 	/**
 	 * Wrong data provided
 	 */
@@ -488,6 +443,10 @@ export type TranslationFunctions = {
 	 * Win Rate
 	 */
 	ME_WINRATE: () => LocalizedString
+	/**
+	 * Функцыя зараз недаступная
+	 */
+	FEATURE_UNAVAILABLE: () => LocalizedString
 }
 
 export type Formatters = {}

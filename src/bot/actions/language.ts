@@ -25,15 +25,21 @@ export const initializer: ActionInitializer = async ctx => {
 }
 
 const handler: ActionHandler = async ctx => {
-  const { storage, currentPlayer } = ctx
+  const { currentPlayer, getStorage } = ctx
 
   if (currentPlayer === undefined) {
     throw new RegisterRequiredError()
   }
 
+  if (ctx.from === undefined) {
+    throw new Error('Missing "ctx.from"')
+  }
+
+  const storage = await getStorage()
+
   const locale = extractLocale(ctx.match[1])
 
-  if (ctx.chat === undefined || ctx.from === undefined || locale === undefined) {
+  if (locale === undefined) {
     return await ctx.reply(ctx.lang.ACTION_HANDLER_WRONG_DATA())
   }
 

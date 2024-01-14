@@ -1,9 +1,11 @@
 import dedent from 'dedent-js'
 import { orderBy } from 'lodash'
 
-import { getSquadsForTeam } from '$/game/player'
-import { getTeamsLevels } from '$/game/player/balance'
-import { Player, Teams } from '$/game/player/types'
+import { getSquadsForTeam } from '$/features/players/utils'
+import { getTeamsLevels } from '$/features/players/balancers/utils'
+import { Player, Teams } from '$/features/players/types'
+
+import { GoogleDocumentError } from '$/errors/GoogleDocumentError'
 
 import { Command, CommandContext } from '../types'
 
@@ -11,6 +13,7 @@ import { start, help } from './help'
 import { players } from './players'
 import { teams } from './teams'
 import { clanteams } from './clanteams'
+import { aiteams } from './aiteams'
 import { clans } from './clans'
 import { register } from './register'
 import { language } from './language'
@@ -20,12 +23,16 @@ import { links } from './links'
 import { enroll } from './enroll'
 import { me } from './me'
 import { error } from './error'
+import { delay } from './delay'
+
+import { initializer as replyWithStatsActions } from '../actions/stats'
 
 export const commands: Command[] = [
   start,
   enroll,
   me,
   players,
+  aiteams,
   clanteams,
   teams,
   clans,
@@ -35,23 +42,55 @@ export const commands: Command[] = [
   unregister,
   about,
   help,
-  error
+  error,
+  delay
 ]
 
-export const replyWithPlaceAndTime = async (ctx: CommandContext): Promise<void> => {
-  const { storage } = ctx
+interface ReplyWithTeamListParams {
+  ctx: CommandContext
+  teams: Teams
+  showBalance?: boolean
+  showSquads?: boolean
+}
 
-  const placeAndTimeData = await storage.getLocations()
-  const placeAndTime = placeAndTimeData.find(data => data.lang === ctx.locale)
+export const replyWithTeamList = async ({ ctx, teams, showBalance = false, showSquads = false }: ReplyWithTeamListParams): Promise<void> => {
+  await replyWithPlaceAndTime(ctx)
+
+  await replyWithTeamCount(ctx, teams)
+
+  const [redPlayers, bluePlayers] = teams
+
+  const replyWithPlayerListFunction = showSquads ? replyWithSquads : replyWithPlayers
+
+  if (redPlayers.length > 0) {
+    await replyWithPlayerListFunction(ctx, redPlayers, '🔴')
+  }
+
+  if (bluePlayers.length > 0) {
+    await replyWithPlayerListFunction(ctx, bluePlayers, '🔵')
+  }
+
+  if (showBalance) {
+    await replyWithTeamBalance(ctx, [redPlayers, bluePlayers])
+  }
+
+  await replyWithStatsActions(ctx, teams)
+}
+
+export const replyWithPlaceAndTime = async (ctx: CommandContext): Promise<void> => {
+  const { getStorage } = ctx
+
+  const storage = await getStorage()
+  const placeAndTime = await storage.getLocation()
 
   if (placeAndTime === undefined) {
-    throw new Error(`Missing game data for locale ${ctx.locale}`)
+    throw new GoogleDocumentError(`Missing game data for locale ${ctx.locale}`)
   }
 
   await ctx.replyWithHTML(dedent`
     📅 <b>${placeAndTime.date}</b>
     📍 <b>${placeAndTime.location}</b>
-  `)
+  `, { reply_to_message_id: ctx.message.message_id })
 }
 
 export const replyWithTeamCount = async (ctx: CommandContext, [redPlayers, bluePlayers]: Teams): Promise<void> => {
@@ -61,9 +100,9 @@ export const replyWithTeamCount = async (ctx: CommandContext, [redPlayers, blueP
 }
 
 export const replyWithTeamBalance = async (ctx: CommandContext, teams: Teams): Promise<void> => {
-  const { currentPlayer } = ctx
+  const { isAdminPlayer: isAdmin } = ctx
 
-  if (currentPlayer === undefined || !currentPlayer.isAdmin || !ctx.isPrivateChat) {
+  if (isAdmin == null) {
     return
   }
 
