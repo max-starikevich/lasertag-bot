@@ -16,7 +16,7 @@ const handler: CommandHandler = async (ctx) => {
   const chatGptBalancer = await getChatGptBalancer()
   const activePlayers = getActivePlayers(players)
 
-  if (activePlayers.length < 8) {
+  if (activePlayers.length < 4) {
     throw new NotEnoughPlayersError()
   }
 

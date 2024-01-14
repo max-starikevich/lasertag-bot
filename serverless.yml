@@ -16,10 +16,11 @@ functions:
   webhook:
     image: app
     environment:
-      NODE_OPTIONS: ${env:NODE_OPTIONS}
-      SENTRY_DSN: ${env:SENTRY_DSN}
       WEBHOOK_BASE: ${env:WEBHOOK_BASE}
       BOT_TOKEN: ${env:BOT_TOKEN}
+
+      NODE_OPTIONS: ${env:NODE_OPTIONS}
+      SENTRY_DSN: ${env:SENTRY_DSN}
       GOOGLE_SERVICE_ACCOUNT_EMAIL: ${env:GOOGLE_SERVICE_ACCOUNT_EMAIL}
       GOOGLE_PRIVATE_KEY: ${env:GOOGLE_PRIVATE_KEY}
       TELEGRAM_HOME_CHAT_ID: ${env:TELEGRAM_HOME_CHAT_ID}
