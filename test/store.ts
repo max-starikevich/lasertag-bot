@@ -1,16 +1,16 @@
-import { IGameStore, StoreData } from '$/game/storage/types'
+import { IKeyValueStore, KeyValue } from '$/features/key-value/types'
 
-export const getTestStore = (): IGameStore => {
+export const getKeyValueStore = async (): Promise<IKeyValueStore> => {
   const map = new Map<string, any>()
 
   return {
-    async get <T>(keys: string[]): Promise<Array<StoreData<T>>> {
+    async get <T>(keys: string[]): Promise<Array<KeyValue<T>>> {
       return keys.map(key => ({
         key, value: map.get(key)
       }))
     },
 
-    async set <T>(data: Array<StoreData<T>>): Promise<void> {
+    async set <T>(data: Array<KeyValue<T>>): Promise<void> {
       for (const { key, value } of data) {
         if (value === null) {
           continue
@@ -23,12 +23,6 @@ export const getTestStore = (): IGameStore => {
     async delete (keys): Promise<void> {
       for (const key of keys) {
         map.delete(key)
-      }
-    },
-
-    async loadDebugInfo (): Promise<object> {
-      return {
-        debug: 'some data'
       }
     }
   }

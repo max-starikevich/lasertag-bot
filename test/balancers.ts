@@ -1,12 +1,7 @@
-import { AvailableTeamBalancers } from '$/bot/types'
+import { NoClansTeamBalancer } from '$/features/players/balancers/no-clans/NoClansTeamBalancer'
+import { ClansTeamBalancer } from '$/features/players/balancers/clans/ClansTeamBalancer'
+import { ITeamBalancer } from '$/features/players/types'
 
-import { ClansTeamBalancer } from '$/game/player/balancers/ClansTeamBalancer'
-import { NoClansTeamBalancer } from '$/game/player/balancers/NoClansTeamBalancer'
-
-export const getBalancers = (): AvailableTeamBalancers => {
-  return {
-    noClans: new NoClansTeamBalancer(),
-    withClans: new ClansTeamBalancer(),
-    chatGpt: new NoClansTeamBalancer()
-  }
-}
+export const getNoClansBalancer = async (): Promise<ITeamBalancer> => new NoClansTeamBalancer()
+export const getClansBalancer = async (): Promise<ITeamBalancer> => new ClansTeamBalancer()
+export const getChatGptBalancer = async (): Promise<ITeamBalancer> => new NoClansTeamBalancer()

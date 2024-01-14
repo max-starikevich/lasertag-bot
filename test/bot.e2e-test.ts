@@ -2,10 +2,10 @@ import { initBot } from '$/bot/bot'
 import { baseLocale } from '$/lang/i18n-util'
 
 import { TelegrafTest } from './TelegrafTest/TelegrafTest'
-import { getBalancers } from './balancers'
 
-import { getTestStorage } from './storage'
-import { getTestStore } from './store'
+import { getChatGptBalancer, getClansBalancer, getNoClansBalancer } from './balancers'
+import { getStorage } from './storage'
+import { getKeyValueStore } from './store'
 
 describe('Telegraf bot', () => {
   const token = 'test'
@@ -27,15 +27,13 @@ describe('Telegraf bot', () => {
     username: 'TestUser'
   })
 
-  const storage = getTestStorage()
-  const store = getTestStore()
-  const balancers = getBalancers()
-
   const bot = initBot({
     token,
-    storage,
-    store,
-    balancers,
+    getStorage,
+    getKeyValueStore,
+    getNoClansBalancer,
+    getClansBalancer,
+    getChatGptBalancer,
     telegramApiOptions: {
       apiRoot: `http://127.0.0.1:${telegramApiPort}`
     },
@@ -63,7 +61,6 @@ describe('Telegraf bot', () => {
   describe('/about', () => {
     it('should properly get the information', async () => {
       await telegramApi.sendMessage({ text: '/about' })
-      expect(storage.getPlayers).not.toBeCalled()
     })
   })
 })

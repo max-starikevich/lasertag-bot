@@ -6,25 +6,19 @@ const APP_ENV = process.env.APP_ENV ?? 'local'
 const isProduction = APP_ENV === 'production'
 const isLocal = !isProduction
 
-if (process.env.BOT_TOKEN === undefined) throw new Error('Missing BOT_TOKEN')
-if (process.env.WEBHOOK_BASE === undefined) throw new Error('Missing WEBHOOK_BASE')
-
-const BOT_TOKEN = process.env.BOT_TOKEN
-
-const WEBHOOK_BASE = process.env.WEBHOOK_BASE
+const BOT_TOKEN = process.env.BOT_TOKEN ?? '123123123'
+const WEBHOOK_BASE = process.env.WEBHOOK_BASE ?? 'http://unknown-domain/webhook'
 const WEBHOOK_PATH = `/webhook/${BOT_TOKEN}`
 const WEBHOOK_FULL = `${WEBHOOK_BASE}${WEBHOOK_PATH}`
 
-const defaultConfig = {
+export const config = {
   isProduction,
   isLocal,
   APP_ENV,
   PORT: process.env.PORT ?? '4000', // dev only
   WEBHOOK_PATH,
-  WEBHOOK_FULL
-}
+  WEBHOOK_FULL,
 
-export const requiredConfig = {
   WEBHOOK_BASE,
   BOT_TOKEN,
   DEFAULT_LOCALE: (process.env.DEFAULT_LOCALE ?? 'ru') as Locales,
@@ -63,5 +57,3 @@ export const requiredConfig = {
 
   SENTRY_DEPLOY_WEBHOOK: process.env.SENTRY_DEPLOY_WEBHOOK
 }
-
-export const config = { ...defaultConfig, ...requiredConfig }

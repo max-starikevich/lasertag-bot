@@ -1,14 +1,16 @@
-import { Player, GameStatsData } from '$/game/player/types'
-import { IGameStorage } from '$/game/storage/types'
-import { GameLocation, GameLink } from '$/game/types'
+import { Player, GameStatsData } from '$/features/players/types'
+import { GameLink, GameLocation, IGameStorage } from '$/features/players/storage/types'
 
-export const getTestStorage = (): IGameStorage => {
+export const getStorage = async (): Promise<IGameStorage> => {
   return {
     getPlayers: async function (): Promise<Player[]> {
       return []
     },
-    getLocations: async function (): Promise<GameLocation[]> {
-      return []
+    getLocation: async function (): Promise<GameLocation> {
+      return {
+        location: 'test',
+        date: 'test'
+      }
     },
     getLinks: jest.fn(async function (): Promise<GameLink[]> {
       return []
@@ -21,9 +23,6 @@ export const getTestStorage = (): IGameStorage => {
     }),
     getStatsTimezone: jest.fn(function (): string {
       return 'Europe/Minsk'
-    }),
-    loadDebugInfo: jest.fn(async function (): Promise<object> {
-      return { debug: 'some data' }
     })
   }
 }
