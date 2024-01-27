@@ -5,23 +5,23 @@ export interface AiBalanceOutput {
 
 export const balanceOutputExample: AiBalanceOutput = {
   team1: [
-    'playerName',
-    'playerName',
-    'playerName',
-    'playerName',
-    'playerName',
-    'playerName',
-    'playerName',
-    'playerName'
+    'Emma',
+    'Liam',
+    'Olivia',
+    'Noah',
+    'Ava',
+    'Ethan',
+    'Isabella',
+    'Mason'
   ],
   team2: [
-    'playerName',
-    'playerName',
-    'playerName',
-    'playerName',
-    'playerName',
-    'playerName',
-    'playerName'
+    'Sophia',
+    'Jacob',
+    'Mia',
+    'William',
+    'Amelia',
+    'James',
+    'Harper'
   ]
 }
 
