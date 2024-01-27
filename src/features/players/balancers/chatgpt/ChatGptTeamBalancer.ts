@@ -17,14 +17,15 @@ export class ChatGptTeamBalancer implements ITeamBalancer {
 
   private generatePrompt (players: PlayerWithSkills[]): string {
     return `
-      Take a look at these ${players.length} Lasertag players in JSON format:
+      Take a look at these Lasertag players in JSON format:
 
       ${JSON.stringify(players)}
 
       I need you to balance those players into two teams as even as possible, using your creative approach.
-      Keep team sizes equal. One team can be larger than the other by only 1 player.
+      
+      It's crucial to keep team sizes equal. One team can be larger than the other by only 1 player.
 
-      Look closely at skill values and analyze how they impact on the Lasertag game.
+      Look closely at skill values and analyze how they impact the Lasertag game.
 
       Give me a full JSON object with all those Lasertag players in the following format:
 
