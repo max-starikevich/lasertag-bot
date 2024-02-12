@@ -6,9 +6,9 @@ export const playerMiddleware: BotMiddleware = async (ctx, next) => {
     throw new Error('Missing "ctx.from"')
   }
 
-  const { getStorage } = ctx
+  const { factories: { storageFactory } } = ctx
 
-  const storage = await getStorage()
+  const storage = await storageFactory()
 
   const players = await storage.getPlayers()
 

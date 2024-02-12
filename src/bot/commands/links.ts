@@ -1,9 +1,9 @@
 import { Command, CommandHandler } from '../types'
 
 const handler: CommandHandler = async (ctx) => {
-  const { getStorage } = ctx
+  const { factories: { storageFactory } } = ctx
 
-  const storage = await getStorage()
+  const storage = await storageFactory()
 
   const links = await storage.getLinks()
 

@@ -78,9 +78,9 @@ export const replyWithTeamList = async ({ ctx, teams, showBalance = false, showS
 }
 
 export const replyWithPlaceAndTime = async (ctx: CommandContext): Promise<void> => {
-  const { getStorage } = ctx
+  const { factories: { storageFactory } } = ctx
 
-  const storage = await getStorage()
+  const storage = await storageFactory()
   const placeAndTime = await storage.getLocation()
 
   if (placeAndTime === undefined) {

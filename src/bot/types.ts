@@ -5,11 +5,10 @@ import { Deunionize } from 'telegraf/typings/deunionize'
 import { ILogger } from '$/logger/types'
 import { Locales, TranslationFunctions } from '$/lang/i18n-types'
 
-import { Player, ITeamBalancer } from '$/features/players/types'
-import { IGameStorage } from '$/features/players/storage/types'
-import { IKeyValueStore } from '$/features/key-value/types'
+import { Player } from '$/features/players/types'
 
 import { CustomContext } from './CustomContext'
+import { FeatureFactories } from '../features/types'
 
 export interface GameContext<U extends Deunionize<Update> = Update> extends CustomContext<U> {
   logger: ILogger
@@ -26,12 +25,7 @@ export interface GameContext<U extends Deunionize<Update> = Update> extends Cust
   currentPlayer: Player | undefined
   isAdminPlayer: boolean
 
-  getStorage: () => Promise<IGameStorage>
-  getKeyValueStore: () => Promise<IKeyValueStore>
-
-  getNoClansBalancer: () => Promise<ITeamBalancer>
-  getClansBalancer: () => Promise<ITeamBalancer>
-  getChatGptBalancer: () => Promise<ITeamBalancer>
+  factories: FeatureFactories
 }
 
 export type CommandContext = NarrowedContext<GameContext, Update.MessageUpdate<Message.TextMessage>>

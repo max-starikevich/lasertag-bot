@@ -6,9 +6,9 @@ import { Command, CommandHandler } from '../types'
 import { replyWithTeamList } from '.'
 
 const handler: CommandHandler = async (ctx) => {
-  const { players, getClansBalancer } = ctx
+  const { players, factories: { clansBalancerFactory } } = ctx
 
-  const clansBalancer = await getClansBalancer()
+  const clansBalancer = await clansBalancerFactory()
 
   const activePlayers = getActivePlayers(players)
 

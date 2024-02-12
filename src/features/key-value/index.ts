@@ -6,7 +6,7 @@ import { IKeyValueStore } from './types'
 
 let store: IKeyValueStore
 
-export const getKeyValueStore = async (): Promise<IKeyValueStore> => {
+export const keyValueFactory = async (): Promise<IKeyValueStore> => {
   if (
     config.GOOGLE_SERVICE_ACCOUNT_EMAIL === undefined ||
     config.GOOGLE_PRIVATE_KEY === undefined ||

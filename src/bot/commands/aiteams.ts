@@ -7,13 +7,13 @@ import { Command, CommandHandler } from '../types'
 import { replyWithTeamList } from '.'
 
 const handler: CommandHandler = async (ctx) => {
-  const { isAdminPlayer, players, getChatGptBalancer } = ctx
+  const { isAdminPlayer, players, factories: { chatGptBalancerFactory } } = ctx
 
   if (!isAdminPlayer) {
     throw new AccessDeniedError()
   }
 
-  const chatGptBalancer = await getChatGptBalancer()
+  const chatGptBalancer = await chatGptBalancerFactory()
   const activePlayers = getActivePlayers(players)
 
   if (activePlayers.length < 8) {

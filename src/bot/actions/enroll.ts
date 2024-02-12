@@ -51,13 +51,13 @@ export const initializer: ActionInitializer = async ctx => {
 }
 
 const countHandler: ActionHandler = async ctx => {
-  const { lang, currentPlayer, getStorage } = ctx
+  const { lang, currentPlayer, factories: { storageFactory } } = ctx
 
   if (currentPlayer === undefined) {
     throw new RegisterRequiredError()
   }
 
-  const storage = await getStorage()
+  const storage = await storageFactory()
 
   const count = parseInt(ctx.match[1])
 
@@ -77,13 +77,13 @@ const countHandler: ActionHandler = async ctx => {
 }
 
 const rentHandler: ActionHandler = async ctx => {
-  const { lang, currentPlayer, getStorage } = ctx
+  const { lang, currentPlayer, factories: { storageFactory } } = ctx
 
   if (currentPlayer === undefined) {
     throw new RegisterRequiredError()
   }
 
-  const storage = await getStorage()
+  const storage = await storageFactory()
 
   const rentCount = parseInt(ctx.match[1])
 

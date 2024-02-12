@@ -25,7 +25,7 @@ export const initializer: ActionInitializer = async ctx => {
 }
 
 const handler: ActionHandler = async ctx => {
-  const { currentPlayer, getStorage } = ctx
+  const { currentPlayer, factories: { storageFactory } } = ctx
 
   if (currentPlayer === undefined) {
     throw new RegisterRequiredError()
@@ -35,7 +35,7 @@ const handler: ActionHandler = async ctx => {
     throw new Error('Missing "ctx.from"')
   }
 
-  const storage = await getStorage()
+  const storage = await storageFactory()
 
   const locale = extractLocale(ctx.match[1])
 

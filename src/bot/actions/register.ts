@@ -36,13 +36,13 @@ export const initializer: ActionInitializer = async ctx => {
 }
 
 const handler: ActionHandler = async ctx => {
-  const { players, lang, getStorage } = ctx
+  const { players, lang, factories: { storageFactory } } = ctx
 
   if (ctx.from === undefined) {
     throw new Error('Missing "ctx.from"')
   }
 
-  const storage = await getStorage()
+  const storage = await storageFactory()
 
   const playerHash = String(ctx.match[1])
 

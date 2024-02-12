@@ -6,9 +6,11 @@ import { config } from '$/config'
 import { bot, handler } from '$/lambda'
 import { unsetCommandsForGroups, updateBotCommands, updateBotCommandsForPlayers, updateBotWebhook } from '$/bot/webhooks'
 import { makeLogger } from '$/logger'
+import { GameContext } from '$/bot/types'
 
 const dev = async (): Promise<void> => {
   const logger = makeLogger()
+  const { factories: { storageFactory } } = bot.context as GameContext
 
   try {
     await updateBotWebhook({
@@ -27,7 +29,7 @@ const dev = async (): Promise<void> => {
       locale: config.DEFAULT_LOCALE
     })
 
-    const storage = (await bot.context.getStorage?.())
+    const storage = await storageFactory()
 
     if (storage === undefined) {
       throw new Error('Storage is unavailable')

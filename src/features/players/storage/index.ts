@@ -6,7 +6,7 @@ import { IGameStorage } from './types'
 
 let storage: IGameStorage
 
-export const getStorage = async (): Promise<IGameStorage> => {
+export const storageFactory = async (): Promise<IGameStorage> => {
   if (
     config.GOOGLE_SERVICE_ACCOUNT_EMAIL === undefined ||
     config.GOOGLE_PRIVATE_KEY === undefined ||

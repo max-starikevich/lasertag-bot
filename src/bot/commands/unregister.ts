@@ -3,13 +3,13 @@ import { RegisterRequiredError } from '$/errors/RegisterRequiredError'
 import { Command, CommandHandler } from '../types'
 
 const handler: CommandHandler = async (ctx) => {
-  const { lang, getStorage, currentPlayer } = ctx
+  const { lang, factories: { storageFactory }, currentPlayer } = ctx
 
   if (currentPlayer === undefined) {
     throw new RegisterRequiredError()
   }
 
-  const storage = await getStorage()
+  const storage = await storageFactory()
 
   currentPlayer.telegramUserId = null
 

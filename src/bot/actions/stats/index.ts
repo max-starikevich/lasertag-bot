@@ -12,13 +12,13 @@ export const initializer = async (
   ctx: CommandContext,
   teams: Teams
 ): Promise<void> => {
-  const { isAdminPlayer, getKeyValueStore } = ctx
+  const { isAdminPlayer, factories: { keyValueFactory } } = ctx
 
   if (!isAdminPlayer) {
     return
   }
 
-  const store = await getKeyValueStore()
+  const store = await keyValueFactory()
   const [redNames, blueNames] = teams.map(team => getPlayerNames(team))
 
   const gameData: GameData = {
@@ -37,14 +37,14 @@ export const initializer = async (
 }
 
 const saveStatsHandler: ActionHandler = async ctx => {
-  const { isAdminPlayer, lang, players, getKeyValueStore, getStorage } = ctx
+  const { isAdminPlayer, lang, players, factories: { keyValueFactory, storageFactory } } = ctx
 
   if (!isAdminPlayer) {
     throw new AccessDeniedError()
   }
 
-  const store = await getKeyValueStore()
-  const storage = await getStorage()
+  const store = await keyValueFactory()
+  const storage = await storageFactory()
 
   const gameDataId = ctx.match[1]
 

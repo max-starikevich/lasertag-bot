@@ -1,6 +1,6 @@
 import { ITeamBalancer } from '../../types'
 import { NoClansTeamBalancer } from './NoClansTeamBalancer'
 
-export const getNoClansBalancer = async (): Promise<ITeamBalancer> => {
+export const noClansBalancerFactory = async (): Promise<ITeamBalancer> => {
   return new NoClansTeamBalancer()
 }

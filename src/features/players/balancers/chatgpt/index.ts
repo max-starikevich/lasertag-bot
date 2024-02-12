@@ -9,19 +9,19 @@ import { ISkillsRepository } from './types'
 let skillsRepository: ISkillsRepository
 let chatGptBalancer: ITeamBalancer
 
-export const getChatGptBalancer = async (): Promise<ITeamBalancer> => {
+export const chatGptBalancerFactory = async (): Promise<ITeamBalancer> => {
   if (config.OPENAI_API_KEY === undefined) {
     throw new FeatureUnavailableError()
   }
 
   if (chatGptBalancer === undefined) {
-    chatGptBalancer = new ChatGptTeamBalancer(config.CHATGPT_MODEL, config.OPENAI_API_KEY, getSkillsRepository())
+    chatGptBalancer = new ChatGptTeamBalancer(config.CHATGPT_MODEL, config.OPENAI_API_KEY, skillsRepositoryFactory())
   }
 
   return chatGptBalancer
 }
 
-const getSkillsRepository = (): ISkillsRepository => {
+const skillsRepositoryFactory = (): ISkillsRepository => {
   if (
     config.GOOGLE_SERVICE_ACCOUNT_EMAIL === undefined ||
     config.GOOGLE_PRIVATE_KEY === undefined ||

@@ -2,9 +2,11 @@ import { unsetCommandsForGroups, updateBotCommands, updateBotCommandsForPlayers 
 import { makeLogger } from '$/logger'
 import { bot } from '$/lambda'
 import { config } from '$/config'
+import { GameContext } from '$/bot/types'
 
 async function run (): Promise<void> {
   const logger = makeLogger()
+  const { factories: { storageFactory } } = bot.context as GameContext
 
   try {
     await unsetCommandsForGroups({
@@ -18,7 +20,7 @@ async function run (): Promise<void> {
       locale: config.DEFAULT_LOCALE
     })
 
-    const storage = await bot.context.getStorage?.()
+    const storage = await storageFactory()
 
     if (storage === undefined) {
       throw new Error('Storage is unavailable')

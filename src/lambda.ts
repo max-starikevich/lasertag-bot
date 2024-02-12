@@ -5,19 +5,21 @@ import { initBot } from '$/bot/bot'
 import { parseJsonSafe } from '$/utils'
 import { reportException } from '$/errors'
 
-import { getStorage } from '$/features/players/storage'
-import { getKeyValueStore } from '$/features/key-value'
+import { storageFactory } from '$/features/players/storage'
+import { keyValueFactory } from '$/features/key-value'
 
-import { getNoClansBalancer } from '$/features/players/balancers/no-clans'
-import { getClansBalancer } from '$/features/players/balancers/clans'
-import { getChatGptBalancer } from '$/features/players/balancers/chatgpt'
+import { noClansBalancerFactory } from '$/features/players/balancers/no-clans'
+import { clansBalancerFactory } from '$/features/players/balancers/clans'
+import { chatGptBalancerFactory } from '$/features/players/balancers/chatgpt'
 
 export const bot = initBot({
-  getStorage,
-  getKeyValueStore,
-  getNoClansBalancer,
-  getClansBalancer,
-  getChatGptBalancer
+  factories: {
+    storageFactory,
+    keyValueFactory,
+    noClansBalancerFactory,
+    clansBalancerFactory,
+    chatGptBalancerFactory
+  }
 })
 
 export const handler = async (
