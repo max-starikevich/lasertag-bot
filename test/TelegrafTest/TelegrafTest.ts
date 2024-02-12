@@ -1,5 +1,5 @@
 import { Server } from 'http'
-import axios from 'axios'
+import axios, { AxiosInstance } from 'axios'
 import debug from 'debug'
 import { Chat, Message, User, WebhookInfo } from 'telegraf/typings/core/types/typegram'
 
@@ -24,6 +24,8 @@ export class TelegrafTest implements ITelegramClient {
     port: 2000,
     token: 'ABCD:1234567890'
   }
+
+  botApi: AxiosInstance
 
   updateId = 1
 
@@ -81,6 +83,13 @@ export class TelegrafTest implements ITelegramClient {
 
     this.setWebhook({
       url: this.options.botWebhookUrl
+    })
+
+    this.botApi = axios.create({
+      url: this.options.botWebhookUrl,
+      headers: {
+        'content-type': 'application/json'
+      }
     })
   }
 
@@ -172,16 +181,16 @@ export class TelegrafTest implements ITelegramClient {
   async sendUpdate (update: any): Promise<void> {
     this.updateId++
 
-    return await axios({
+    const response = await this.botApi.request({
       method: 'POST',
-      url: this.options.botWebhookUrl,
-      headers: {
-        'content-type': 'application/json'
-      },
       data: {
         update_id: this.updateId,
         ...update
       }
+    })
+
+    console.log({
+      response
     })
   }
 

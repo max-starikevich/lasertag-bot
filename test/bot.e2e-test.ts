@@ -3,9 +3,9 @@ import { baseLocale } from '$/lang/i18n-util'
 
 import { TelegrafTest } from './TelegrafTest/TelegrafTest'
 
-import { getChatGptBalancer, getClansBalancer, getNoClansBalancer } from './balancers'
-import { getStorage } from './storage'
-import { getKeyValueStore } from './store'
+import { chatGptBalancerFactory, clansBalancerFactory, noClansBalancerFactory } from './balancers'
+import { storageFactory } from './storage'
+import { keyValueFactory } from './store'
 
 describe('Telegraf bot', () => {
   const token = 'test'
@@ -29,11 +29,13 @@ describe('Telegraf bot', () => {
 
   const bot = initBot({
     token,
-    getStorage,
-    getKeyValueStore,
-    getNoClansBalancer,
-    getClansBalancer,
-    getChatGptBalancer,
+    factories: {
+      storageFactory,
+      keyValueFactory,
+      noClansBalancerFactory,
+      clansBalancerFactory,
+      chatGptBalancerFactory
+    },
     telegramApiOptions: {
       apiRoot: `http://127.0.0.1:${telegramApiPort}`
     },

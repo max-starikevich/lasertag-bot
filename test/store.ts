@@ -1,6 +1,6 @@
 import { IKeyValueStore, KeyValue } from '$/features/key-value/types'
 
-export const getKeyValueStore = async (): Promise<IKeyValueStore> => {
+export const keyValueFactory = async (): Promise<IKeyValueStore> => {
   const map = new Map<string, any>()
 
   return {

@@ -1,7 +1,7 @@
 import { Player, GameStatsData } from '$/features/players/types'
 import { GameLink, GameLocation, IGameStorage } from '$/features/players/storage/types'
 
-export const getStorage = async (): Promise<IGameStorage> => {
+export const storageFactory = async (): Promise<IGameStorage> => {
   return {
     getPlayers: async function (): Promise<Player[]> {
       return []
